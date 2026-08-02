@@ -16,9 +16,9 @@ function point(index: number, count: number, radius = RADIUS) {
   return { x: CENTER + radius * Math.cos(angle), y: CENTER + radius * Math.sin(angle) }
 }
 
-export function PhaseCycle({ phases }: { phases: readonly Phase[] }) {
+export function PhaseCycle({ phases, title, action }: { phases: readonly Phase[]; title: string; action: string }) {
   const rootRef = useRef<HTMLDivElement>(null)
-  const [active, setActive] = useState(2)
+  const [active, setActive] = useState(0)
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -72,10 +72,19 @@ export function PhaseCycle({ phases }: { phases: readonly Phase[] }) {
   return (
     <div ref={rootRef} className={`phase-cycle${visible ? ' is-visible' : ''}`}>
       <div className="phase-cycle__pin">
-        <div className="phase-cycle__copy" aria-live="polite">
-          <p className="phase-cycle__eyebrow">FASE {pad(active)} / {String(phases.length).padStart(2, '0')}</p>
-          <h3>{phase.name}</h3>
-          <p className="phase-cycle__description">{phase.description}</p>
+        <div className="phase-cycle__copy">
+          <div className="phase-cycle__meta">
+            <p className="section-index"><span>03</span><span aria-hidden="true">/</span><span>EL CICLO DE CRECIMIENTO</span></p>
+            <a className="text-link" href="/como-trabajamos">{action}<span aria-hidden="true">↗</span></a>
+          </div>
+          <h2 className="phase-cycle__section-title">{title}</h2>
+          <p className="phase-cycle__lead">DIEZ FASES · UN CICLO CONTINUO DE MEJORA</p>
+          <div className="phase-cycle__divider" aria-hidden="true" />
+          <div className="phase-cycle__phase" aria-live="polite">
+            <p className="phase-cycle__eyebrow">FASE {pad(active)} / {String(phases.length).padStart(2, '0')}</p>
+            <h3>{phase.name}</h3>
+            <p className="phase-cycle__description">{phase.description}</p>
+          </div>
         </div>
 
         <div className="phase-cycle__ring-wrap">
@@ -100,6 +109,12 @@ export function PhaseCycle({ phases }: { phases: readonly Phase[] }) {
         </div>
       </div>
 
+      <div className="phase-cycle__static-header">
+        <p className="section-index"><span>03</span><span aria-hidden="true">/</span><span>EL CICLO DE CRECIMIENTO</span></p>
+        <h2>{title}</h2>
+        <p>DIEZ FASES · UN CICLO CONTINUO DE MEJORA</p>
+        <a className="text-link" href="/como-trabajamos">{action}<span aria-hidden="true">↗</span></a>
+      </div>
       <ol className="phase-cycle__static">
         {phases.map((item, index) => <li key={item.name}><span>{pad(index)}</span><div><h3>{item.name}</h3><p>{item.description}</p></div></li>)}
       </ol>
