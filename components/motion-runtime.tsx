@@ -51,6 +51,8 @@ export function CountUp({ value }: { value: string }) {
     if (!match) return
     const [, sign, digits, suffix] = match
     const target = Number(digits)
+    // Intentional reset before the observer-driven count-up begins.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDisplay(`${sign}0${suffix}`)
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return

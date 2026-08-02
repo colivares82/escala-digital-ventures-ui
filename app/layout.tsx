@@ -1,6 +1,7 @@
 import { Analytics } from "@vercel/analytics/next"
 import type { Metadata, Viewport } from "next"
 import { Archivo, IBM_Plex_Mono, Instrument_Sans } from "next/font/google"
+import { sharedContent } from '@/content/es/shared'
 import "./globals.css"
 
 const archivo = Archivo({
@@ -24,11 +25,7 @@ const ibmPlexMono = IBM_Plex_Mono({
   display: "swap",
 })
 
-export const metadata: Metadata = {
-  title: "Escala Digital Ventures | Producto y tecnología",
-  description:
-    "Automatizamos tu negocio y construimos plataformas propias que crecen contigo.",
-}
+export const metadata: Metadata = sharedContent.metadata
 
 export const viewport: Viewport = {
   colorScheme: "light",

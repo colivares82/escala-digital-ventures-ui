@@ -1,7 +1,14 @@
+import { clients } from '@/content/es/clients'
+import { sharedContent } from '@/content/es/shared'
+
 export const homeContent = {
-  header: { brand: "ESCALA", nav: ["Qué hacemos", "Cómo trabajamos", "Casos de éxito", "Modelo de alianza", "Sobre Escala"], contact: "Hablemos", locales: ["ES", "EN", "CA"] },
+  header: sharedContent.header,
+  labels: {
+    hero: 'ESCALA DIGITAL VENTURES', problem: 'PUNTO DE PARTIDA', symptoms: 'Síntomas operativos', services: 'CAPACIDADES', framework: 'EL CICLO DE CRECIMIENTO', frameworkLead: 'DIEZ FASES · UN CICLO CONTINUO DE MEJORA', frameworkAria: 'Ciclo de crecimiento de diez fases', proof: 'EVIDENCIA', proofAttribution: 'EVIDENCIA VERIFICADA EN CLIENTES REALES', alliance: 'MODELO DE ALIANZA', allianceLegend: 'CADA ALIANZA: PLANO TÉCNICO · ESTRATÉGICO · VISIONARIO',
+  },
+  diagrams: { hero: 'Sistema manual que se transforma en una plataforma ordenada', problem: 'Flujo operativo fragmentado entre hojas, correos y documentos', proof: 'Evolución verificada de la operación', alliance: 'Cinco alianzas, dedicación completa. Dos ocupadas.' },
   hero: { eyebrow: "Escala Digital Ventures · Estudio de producto y tecnología · Mataró, Barcelona", title: "Automatizamos tu negocio. Escalamos contigo.", description: "Convertimos procesos manuales en plataformas propias que crecen contigo, con la disciplina del software empresarial global.", primaryCta: "Hablemos de tu negocio", secondaryCta: "Cómo trabajamos" },
-  claims: ["Software a medida, criterio de producto y compromiso de socio.", "Convertimos procesos manuales en plataformas que crecen contigo.", "Cinco alianzas. Toda nuestra dedicación.", "IA aplicada con criterio: donde aporta, no donde adorna."],
+  claims: sharedContent.claims,
   problem: { title: "Tu negocio funciona. Tus sistemas, no.", body: "Hojas de cálculo, correos, documentos sueltos y el conocimiento en la cabeza de dos o tres personas. Funciona… hasta que deja de funcionar: el volumen crece, los errores se multiplican, la facturación se retrasa y el negocio depende de que nadie se ponga enfermo. Escala entra exactamente ahí: digitaliza y automatiza el corazón operativo de tu empresa y lo convierte en una plataforma propia sobre la que puedes crecer.", symptoms: ["volumen que crece", "errores que se multiplican", "facturación que se retrasa", "dependencia de personas"] },
   services: { title: "Qué hacemos", action: "Ver todos los servicios", items: [
     { title: "Transformación digital y automatización de procesos", text: "Procesos críticos que viven en hojas de cálculo y en la cabeza de las personas." },
@@ -22,12 +29,9 @@ export const homeContent = {
     { name: "Measure", description: "Definir indicadores de negocio y métricas técnicas que permitan medir el impacto real de cada iniciativa." },
     { name: "Evolve", description: "Entender que ningún producto está terminado. La mejora continua forma parte del modelo de colaboración de Escala." }
   ] },
-  proof: { title: "Hechos, no promesas.", figures: [{ value: "100+", label: "REQUISITOS", caption: "implementados y verificados en producción" }, { value: "200+", label: "PRUEBAS", caption: "automatizadas sobre flujos reales" }, { value: "JUL 2026", label: "PRODUCCIÓN", caption: "fecha verificada de puesta en marcha" }, { value: "REAL", label: "OPERATIVA", caption: "clientes, proveedores y gestión interna operando en la plataforma" }], cases: [
-    { name: "MAGUPELL", title: "Digitalización integral de la inspección de calidad en el sector de la piel", text: "100+ requisitos funcionales · 200+ pruebas automatizadas · Producción: 1 julio 2026 · Facturación real a través de la plataforma", href: "/casos-de-exito/magupell" },
-    { name: "BioZero", title: "Plataforma de gestión clínica dental con IA", text: "Registros clínicos colaborativos, gamificación del paciente y análisis de imágenes con modelos de visión de última generación.", href: "/casos-de-exito/biozero" }
-  ]},
+  proof: { title: "Hechos, no promesas.", figures: [{ value: "100+", label: "REQUISITOS", caption: "implementados y verificados en producción" }, { value: "200+", label: "PRUEBAS", caption: "automatizadas sobre flujos reales" }, { value: "JUL 2026", label: "PRODUCCIÓN", caption: "fecha verificada de puesta en marcha" }, { value: "REAL", label: "OPERATIVA", caption: "clientes, proveedores y gestión interna operando en la plataforma" }], cases: clients },
   alliance: { title: "Cinco alianzas. Toda nuestra dedicación.", body: "Limitamos deliberadamente el número de clientes activos para garantizar dedicación, cercanía y acompañamiento continuo. No es una limitación: es el modelo.", action: "Conoce el modelo de alianza" },
   finalCta: { title: "Hablemos de tu negocio.", body: "Cuéntanos qué frena tu crecimiento. Escuchamos antes de proponer.", success: "Recibido. Te responderemos personalmente en un plazo de dos días laborables.", email: "hola@escaladigitalventures.com", location: "Mataró · Barcelona", languages: "Trabajamos en español, inglés, catalán y ruso." },
-  footer: { claim: "Automatizamos tu negocio. Escalamos contigo.", company: "Escala Digital Ventures, S.L.U. · Mataró, Barcelona", direction: "Dirección general: referencia en colivares.com" }
+  footer: sharedContent.footer
 } as const
 export type HomeContent = typeof homeContent
