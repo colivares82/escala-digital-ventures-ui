@@ -42,7 +42,7 @@ export function PhaseJourney({ phases }: { phases: readonly Phase[] }) {
   return (
     <div ref={rootRef} className="phase-journey" style={{
       '--journey-position': `${progress * 100}%`,
-      '--path-x': `${5 + progress * 90}%`,
+      '--path-x': `${62 + progress * 32}%`,
       '--path-y': `${78 - progress * 58}%`,
     } as CSSProperties}>
       <div className="phase-journey__pin">
@@ -53,7 +53,7 @@ export function PhaseJourney({ phases }: { phases: readonly Phase[] }) {
             <span
               className={`phase-journey__node ${index < active ? 'is-complete' : index === active ? 'is-active' : ''}`}
               style={{
-                '--node-x': `${5 + (index / (phases.length - 1)) * 90}%`,
+                '--node-x': `${62 + (index / (phases.length - 1)) * 32}%`,
                 '--node-y': `${78 - (index / (phases.length - 1)) * 58}%`,
               } as CSSProperties}
               key={item.name}
@@ -76,7 +76,7 @@ export function PhaseJourney({ phases }: { phases: readonly Phase[] }) {
             <article
               className="phase-journey__preview"
               style={{
-                left: `${47 + index * 17}%`,
+                left: `${64 + index * 13}%`,
                 top: `${58 - index * 14}%`,
                 '--preview-delay': `${index * -1.2}s`,
               } as CSSProperties}

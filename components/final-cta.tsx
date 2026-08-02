@@ -36,7 +36,7 @@ export function FinalCTA({ content }: { content: typeof homeContent.finalCta }) 
   return (
     <section className="final-cta dark-surface" id="contacto">
       <div className="page-shell final-cta__inner">
-        <SectionIndex index="07" label="CONVERSACIÓN" />
+        <SectionIndex index="06" label="CONVERSACIÓN" />
         <div className="final-cta__grid">
           <div className="final-cta__intro">
             <WordReveal as="h2" text={content.title} className="final-cta__title" />
