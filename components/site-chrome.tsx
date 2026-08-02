@@ -5,17 +5,21 @@ type FooterContent = typeof homeContent.footer
 
 export function SiteHeader({ content }: { content: HeaderContent }) {
   return (
-    <header className="deep-sea border-b border-paper-line">
-      <div className="section-shell flex min-h-20 items-center justify-between gap-8">
-        <span className="font-display text-xl font-semibold tracking-[-0.04em]">{content.brand}</span>
-        <nav className="hidden items-center gap-7 xl:flex" aria-label="Navegación principal">
-          {content.nav.map((label) => <span className="font-mono text-[0.6875rem] text-paper-muted" key={label}>{label}</span>)}
+    <header className="border-b border-border">
+      <div className="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-8 px-5 md:px-8">
+        <span className="font-display text-lg font-semibold tracking-tight">{content.brand}</span>
+        <nav className="hidden items-center gap-6 lg:flex" aria-label="Navegación principal">
+          {content.nav.map((label) => (
+            <span className="font-mono text-xs text-muted-foreground" key={label}>{label}</span>
+          ))}
         </nav>
         <div className="flex items-center gap-5">
-          <div className="hidden items-center gap-3 font-mono text-[0.6875rem] sm:flex" aria-label="Idiomas">
-            {content.locales.map((locale, index) => <span className={index === 0 ? "text-calibre" : "text-paper-muted"} key={locale}>{locale}</span>)}
+          <div className="hidden items-center gap-2 font-mono text-[0.6875rem] sm:flex" aria-label="Idiomas">
+            {content.locales.map((locale, index) => (
+              <span className={index === 0 ? "text-primary" : "text-muted-foreground"} key={locale}>{locale}</span>
+            ))}
           </div>
-          <span className="cta-calibre">{content.contact}</span>
+          <span className="border border-foreground px-4 py-2 font-mono text-xs font-medium">{content.contact}</span>
         </div>
       </div>
     </header>
@@ -24,10 +28,10 @@ export function SiteHeader({ content }: { content: HeaderContent }) {
 
 export function SiteFooter({ content }: { content: FooterContent }) {
   return (
-    <footer className="paper-surface border-t border-border py-14">
-      <div className="section-shell flex flex-col justify-between gap-12 md:flex-row md:items-end">
-        <p className="font-display max-w-2xl text-[clamp(2rem,4vw,4.5rem)] font-semibold leading-[0.95] tracking-[-0.05em] text-balance">{content.claim}</p>
-        <p className="font-mono text-[0.625rem] uppercase tracking-widest text-muted-foreground md:max-w-xs md:text-right">{content.company}</p>
+    <footer className="border-t border-border py-10">
+      <div className="mx-auto flex max-w-7xl flex-col justify-between gap-5 px-5 md:flex-row md:items-end md:px-8">
+        <p className="font-display max-w-md text-xl font-medium text-balance">{content.claim}</p>
+        <p className="font-mono text-xs text-muted-foreground">{content.company}</p>
       </div>
     </footer>
   )
