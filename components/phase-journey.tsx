@@ -1,0 +1,8 @@
+"use client"
+import { useEffect, useRef, useState } from "react"
+const phasePaths=["M12 62H70V24H132V62H208","M12 24H74L104 76H152L208 24","M12 74L58 30L104 74L152 30L208 74","M12 62C56 12 82 106 116 62S172 12 208 62","M12 26H76V88H144V26H208","M12 62H62L92 20L128 92L160 62H208","M12 88V28H62V88H112V28H162V88H208","M12 28L60 88L110 28L160 88L208 28","M12 62H42C72 62 72 24 104 24S134 94 166 94S188 62 208 62","M12 88L54 32L96 72L138 24L174 58L208 26"]
+export function PhaseJourney({ phases }: { phases: readonly string[] }) {
+ const root=useRef<HTMLOListElement>(null); const [active,setActive]=useState(0)
+ useEffect(()=>{const nodes=root.current?.querySelectorAll("li");if(!nodes)return;const o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)setActive(Number((e.target as HTMLElement).dataset.index))}),{rootMargin:"-42% 0px -42%",threshold:.01});nodes.forEach(n=>o.observe(n));return()=>o.disconnect()},[])
+ return <div className="journey"><aside className="journey__rail" aria-label={`Fase ${active+1} de ${phases.length}`}><span>{String(active+1).padStart(2,"0")}</span><div>{phases.map((p,i)=><i className={i<=active?"is-active":""} key={p}/>)}</div><span>{String(phases.length).padStart(2,"0")}</span></aside><ol ref={root} className="journey__list">{phases.map((phase,i)=><li data-index={i} className={i===active?"is-active":""} key={phase}><div className="phase-card"><p>FASE {String(i+1).padStart(2,"0")} / {String(phases.length).padStart(2,"0")}</p><h3>{phase}</h3><svg viewBox="0 0 220 112" role="img" aria-label={`Diagrama de la fase ${phase}`}><path d={phasePaths[i]}/><circle className="phase-pulse" cx="12" cy="62" r="4"/></svg></div></li>)}</ol></div>
+}
