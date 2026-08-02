@@ -9,12 +9,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true vitest run",
+    "test:watch": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true vitest",
+    "test:coverage": "VITE_CONFIG_NATIVE_IGNORE_WARNING=true vitest run --coverage",
+    "standards:sync": "escala-standards-sync",
+    "postinstall": "escala-standards-sync"
   },
   "dependencies": {
     "clsx": "^2.1.1",
     "lenis": "^1.3.25",
-    "next": "16.2.12",
+    "next": "^16.2.12",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "tailwind-merge": "^3.3.0",
@@ -22,13 +27,21 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
+    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^24",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "^6.0.5",
+    "@vitest/coverage-v8": "^4.1.10",
+    "escala-dev-standards": "github:colivares82/escala-dev-standards#v1.0.0",
     "eslint": "^9.39.5",
     "eslint-config-next": "16.2.12",
+    "jsdom": "^29.1.1",
     "postcss": "^8.5",
     "tailwindcss": "^4.3.3",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "vitest": "^4.1.10"
   }
 }
