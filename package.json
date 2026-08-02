@@ -9,12 +9,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "standards:sync": "escala-standards-sync",
+    "postinstall": "escala-standards-sync"
   },
   "dependencies": {
     "clsx": "^2.1.1",
     "lenis": "^1.3.25",
-    "next": "16.2.12",
+    "next": "^16.2.12",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "tailwind-merge": "^3.3.0",
@@ -25,6 +27,7 @@
     "@types/node": "^24",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
+    "escala-dev-standards": "github:colivares82/escala-dev-standards#v1.0.0",
     "eslint": "^9.39.5",
     "eslint-config-next": "16.2.12",
     "postcss": "^8.5",
