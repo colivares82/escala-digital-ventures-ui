@@ -1,99 +1,26 @@
-import type { homeContent } from '@/content/es/home'
-import { FrameworkDiagram, HeroSystemDiagram, ProblemDiagram, ProofChart } from '@/components/system-diagrams'
+import { homeContent } from "@/content/es/home"
+import { CountUp, Reveal } from "@/components/motion-runtime"
+import { PhaseIllustration, ProblemIllustration } from "@/components/system-diagrams"
 
-function Eyebrow({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
-  return <p className={dark ? 'eyebrow eyebrow--dark' : 'eyebrow'}>{children}</p>
-}
+const claims = ["Automatizamos tu negocio. Escalamos contigo.", "Software a medida, criterio de producto y compromiso de socio.", "Convertimos procesos manuales en plataformas que crecen contigo.", "Cinco alianzas. Toda nuestra dedicación.", "No construimos aplicaciones. Construimos capacidades."]
+function Index({ children }: { children: string }) { return <p className="section-index" aria-hidden="true">{children}</p> }
 
 export function Hero({ content }: { content: typeof homeContent.hero }) {
-  return (
-    <section className='surface-dark hero-section' id='hero'>
-      <div className='section-container hero-grid'>
-        <div className='hero-copy'>
-          <Eyebrow dark>{content.eyebrow}</Eyebrow>
-          <h1 className='display-title hero-title'>{content.title}</h1>
-          <p className='hero-lead'>{content.description}</p>
-          <div className='action-row'>
-            <a className='button button--amber' href='#contacto'>{content.primaryCta}</a>
-            <a className='text-link text-link--dark' href='#metodo'>{content.secondaryCta}</a>
-          </div>
-        </div>
-        <HeroSystemDiagram />
-      </div>
-    </section>
-  )
+  return <section className="hero-v2 dark-surface" id="inicio"><div className="hero-v2__inner"><p className="eyebrow hero-v2__eyebrow">{content.eyebrow}</p><h1 className="hero-title" aria-label={content.title}><span className="hero-line"><span>Automatizamos</span></span><span className="hero-line"><span>tu negocio.</span></span><span className="hero-line hero-line--offset"><span>Escalamos contigo.</span></span></h1><div className="hero-v2__bottom"><p>{content.description}</p><div className="action-row"><a className="button button--amber" href="#contacto">{content.primaryCta}</a><a className="text-link" href="#metodo">{content.secondaryCta}</a></div></div></div><div className="marquee" aria-hidden="true"><div className="marquee__track">{[...claims,...claims].map((claim,i)=><span key={`${claim}-${i}`}>{claim}<b>+</b></span>)}</div></div></section>
 }
 
 export function ProblemSection({ content }: { content: typeof homeContent.problem }) {
-  return (
-    <section className='surface-light content-section' id='problema'>
-      <div className='section-container section-grid'>
-        <div className='section-copy'>
-          <Eyebrow>{content.eyebrow}</Eyebrow>
-          <h2 className='display-title section-title'>{content.title}</h2>
-          <p className='section-body'>{content.body}</p>
-        </div>
-        <ProblemDiagram />
-      </div>
-    </section>
-  )
+  return <section className="indexed-section problem-v2" id="que-hacemos"><div className="section-wrap"><Index>01 / 03</Index><Reveal className="problem-v2__grid"><div><p className="eyebrow">{content.eyebrow}</p><h2>{content.title}</h2></div><div className="problem-v2__copy"><p>{content.body}</p><ProblemIllustration /></div></Reveal></div></section>
 }
 
 export function FrameworkSection({ content }: { content: typeof homeContent.framework }) {
-  return (
-    <section className='surface-light framework-section' id='metodo'>
-      <div className='section-container'>
-        <div className='framework-heading'>
-          <div className='section-copy'>
-            <Eyebrow>{content.eyebrow}</Eyebrow>
-            <h2 className='display-title section-title'>{content.title}</h2>
-          </div>
-          <p className='section-body'>{content.description}</p>
-        </div>
-        <FrameworkDiagram phases={content.phases} />
-      </div>
-    </section>
-  )
+  return <section className="framework-v2 dark-surface" id="metodo"><div className="section-wrap framework-v2__intro"><Index>02 / 03</Index><p className="eyebrow">{content.eyebrow}</p><h2>{content.title}</h2><p>{content.description}</p></div><ol className="phase-stack">{content.phases.map((phase,index)=><li className="phase-panel" key={phase}><div className="phase-panel__inner"><p className="phase-panel__number">{String(index+1).padStart(2,"0")} / 10</p><h3>{phase}</h3><PhaseIllustration index={index}/></div></li>)}</ol></section>
 }
 
 export function ProofSection({ content }: { content: typeof homeContent.proof }) {
-  return (
-    <section className='surface-dark proof-section' id='prueba'>
-      <div className='section-container'>
-        <div className='proof-heading'>
-          <div className='section-copy'>
-            <Eyebrow dark>{content.eyebrow}</Eyebrow>
-            <h2 className='display-title section-title'>{content.title}</h2>
-          </div>
-          <p className='proof-client'>{content.client}</p>
-        </div>
-        <div className='proof-grid'>
-          <ProofChart />
-          <dl className='readout-grid'>
-            {content.figures.map((figure) => (
-              <div className='readout' key={figure.label}>
-                <dt>{figure.label}</dt>
-                <dd>{figure.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </div>
-    </section>
-  )
+  return <section className="indexed-section proof-v2" id="casos"><div className="section-wrap"><Index>03 / 03</Index><Reveal><div className="proof-v2__header"><div><p className="eyebrow">{content.eyebrow}</p><h2>{content.title}</h2></div><p className="proof-v2__client">{content.client}</p></div></Reveal><dl className="readout-list">{content.figures.map((figure,index)=><div className="readout-v2" key={figure.label}><dt>{figure.label}</dt><dd className={index > 1 ? "readout-v2__text" : ""}>{index < 2 ? <CountUp value={figure.value}/> : figure.value}</dd></div>)}</dl></div></section>
 }
 
 export function FinalCta({ content }: { content: typeof homeContent.finalCta }) {
-  return (
-    <section className='surface-light final-cta' id='contacto'>
-      <div className='section-container final-cta__inner'>
-        <p className='eyebrow'>04 · CONVERSEMOS</p>
-        <h2 className='display-title final-cta__title'>{content.title}</h2>
-        <div className='final-cta__footer'>
-          <p className='section-body'>{content.body}</p>
-          <a className='button button--mar' href='mailto:hola@escaladigitalventures.com'>{content.action}</a>
-        </div>
-      </div>
-    </section>
-  )
+  return <section className="closing-v2 dark-surface" id="contacto"><div className="closing-v2__inner"><p className="eyebrow">CONTACTO / BARCELONA</p><a className="closing-v2__title" href="mailto:hola@escaladigitalventures.com">{content.title}</a><div className="closing-v2__bottom"><p>{content.body}</p><a className="button button--amber" href="mailto:hola@escaladigitalventures.com">{content.action}</a></div></div></section>
 }
