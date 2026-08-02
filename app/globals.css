@@ -33,7 +33,9 @@
   --paper: #f7f7f4;
   --ink: #16181d;
   --pino: #0e3b2e;
-  --calibre: #d4550e;
+  --bosc: #0b2e23;
+  --calibre: #e8590c;
+  --calibre-surface: #f2703f;
   --neutral-soft: rgb(22 24 29 / 0.05);
   --neutral-line: rgb(22 24 29 / 0.18);
   --neutral-strong: rgb(22 24 29 / 0.64);
@@ -49,6 +51,23 @@
 }
 
 .font-display { font-stretch: semi-expanded; }
+.deep-surface {
+  --color-foreground: var(--paper);
+  --color-muted-foreground: rgb(247 247 244 / 0.72);
+  --color-border: rgb(247 247 244 / 0.28);
+  --neutral-line: rgb(247 247 244 / 0.28);
+  color: var(--paper);
+  background: linear-gradient(118deg, var(--bosc), var(--pino));
+}
+.deep-surface .text-muted-foreground { color: rgb(247 247 244 / 0.76); }
+.deep-surface .border-border { border-color: rgb(247 247 244 / 0.28); }
+.deep-surface .scale-rule { border-color: rgb(247 247 244 / 0.28); }
+.deep-surface .scale-rule__tick,
+.deep-surface .readout::before { background: var(--calibre-surface); }
+.deep-surface__accent,
+.deep-surface__link { color: var(--calibre-surface); }
+.deep-surface__button { background: var(--paper); color: var(--bosc); }
+.deep-surface__button:hover { background: rgb(247 247 244 / 0.88); }
 .skip-link { position: fixed; inset: 0 auto auto 0; z-index: 50; transform: translateY(-120%); background: var(--paper); padding: 0.75rem 1rem; font-family: var(--font-ibm-plex-mono); font-size: 0.75rem; }
 .skip-link:focus { transform: translateY(0); }
 
