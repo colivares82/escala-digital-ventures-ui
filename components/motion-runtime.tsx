@@ -75,6 +75,11 @@ export function Reveal({ children, className = "" }: { children: React.ReactNode
   return <div ref={ref} className={`reveal ${className}`}>{children}</div>
 }
 
+export function DiagramReveal({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  const ref = useVisible<HTMLDivElement>(0.12)
+  return <div ref={ref} className={`diagram-reveal ${className}`}>{children}</div>
+}
+
 export function WordReveal({ text, as = "h2", className = "" }: { text: string; as?: "h1" | "h2" | "p"; className?: string }) {
   const ref = useVisible<HTMLElement>(0.25)
   const Tag = as

@@ -1,10 +1,22 @@
-type Kind = "hero" | "problem" | "proof" | "outcome"
-const paths: Record<Kind, string[]> = {
-  hero: ["M18 34H72L100 78H154L188 40H242", "M18 112H64V70H116V112H170V70H242", "M72 34V70M154 78V112M188 40V70"],
-  problem: ["M18 34C74 34 54 120 118 120S174 28 242 28", "M18 76C70 76 76 42 128 42S184 124 242 124", "M18 122C76 122 86 76 148 76S196 86 242 86"],
-  proof: ["M18 126H62V104H106V78H150V52H194V26H242", "M18 136H242"],
-  outcome: ["M18 112L64 76L108 94L154 44L198 62L242 22", "M18 132H242"]
+'use client'
+
+import { DiagramReveal } from '@/components/motion-runtime'
+
+type Kind = 'hero' | 'problem' | 'proof' | 'outcome'
+type NodeProps = { x: number; y: number; label: string; alert?: boolean; active?: boolean; circle?: boolean }
+
+function Node({ x, y, label, alert, active, circle }: NodeProps) {
+  return <g className={`diagram-node${active ? ' is-active' : ''}${alert ? ' is-alert' : ''}`}><title>{label}</title>{circle ? <circle cx={x} cy={y} r="11" /> : <rect x={x-30} y={y-12} width="60" height="24" rx="1" />}<text x={x} y={y+3}>{label}</text>{alert&&<path className="diagram-alert" d={`M${x+24} ${y-18}v-9m0 14v1`} />}</g>
 }
-export function SystemDiagram({ kind, label }: { kind: Kind; label: string }) {
-  return <figure className={`system-diagram system-diagram--${kind}`}><svg viewBox="0 0 260 152" role="img" aria-label={label}>{paths[kind].map((d,i)=><path key={d} d={d} style={{"--path-index":i} as React.CSSProperties}/>)}{[18,64,108,154,198,242].map((x,i)=><circle key={x} cx={x} cy={i%2?76:112} r="3"/>)}<circle className="system-diagram__pulse" cx="18" cy="112" r="5"/></svg><figcaption>{label}</figcaption></figure>
+function Connector({ d, manual=false, pulse=false }: { d:string; manual?:boolean; pulse?:boolean }) {
+ return <><path className={`diagram-connector ${manual?'is-manual':'is-solid'}`} d={d}/>{pulse&&<circle className="diagram-traveler" r="3"><animateMotion dur="3.6s" repeatCount="indefinite" path={d}/></circle>}</>
+}
+function Plate({ children, label, number, className='' }: {children:React.ReactNode;label:string;number:string;className?:string}) {
+ return <DiagramReveal className={className}><figure className="system-diagram"><svg viewBox="0 0 640 400" role="img" aria-label={label}><defs><pattern id={`grid-${number}`} width="32" height="32" patternUnits="userSpaceOnUse"><path className="diagram-grid" d="M32 0H0V32"/></pattern></defs><rect className="diagram-grid-fill" width="640" height="400" fill={`url(#grid-${number})`}/><path className="diagram-frame" d="M16 40V16h24M600 16h24v24M16 360v24h24M600 384h24v-24"/>{children}</svg><figcaption>FIG. {number} — {label}</figcaption></figure></DiagramReveal>
+}
+export function SystemDiagram({ kind, label }: { kind:Kind; label:string }) {
+ if(kind==='hero')return <Plate number="01" label={label} className="hero-plate"><g className="diagram-assembly"><Node x={74} y={82} label="HOJA DE CÁLCULO"/><Node x={74} y={160} label="CORREO"/><Node x={74} y={238} label="ALBARÁN"/><Node x={74} y={316} label="NOTAS"/><Connector manual d="M104 82C174 82 172 156 238 168"/><Connector manual d="M104 160H238"/><Connector manual d="M104 238C176 238 174 184 238 172"/><Connector manual d="M104 316C190 316 182 206 238 178"/><Node x={270} y={170} label="NÚCLEO" circle active/><Connector pulse d="M281 159L356 94"/><Connector pulse d="M281 181L356 280"/><Connector pulse d="M292 170H514"/><Node x={404} y={82} label="PLATAFORMA"/><Node x={526} y={158} label="FACTURACIÓN"/><Node x={404} y={292} label="INFORMES"/><Node x={526} y={280} label="DATOS"/><Connector d="M434 82H526V146"/><Connector d="M434 292H526V292"/><Connector d="M526 170V268"/></g></Plate>
+ if(kind==='problem')return <Plate number="02" label={label}><Node x={108} y={88} label="HOJA DE CÁLCULO"/><Node x={316} y={76} label="CORREO" alert/><Node x={514} y={118} label="ALBARÁN"/><Node x={172} y={292} label="NOTAS"/><Node x={430} y={294} label="RETRABAJO"/><Connector manual d="M138 88C230 28 250 190 346 76"/><Connector manual d="M346 76C430 52 408 180 484 118"/><Connector manual d="M108 100C90 198 250 200 172 280"/><Connector manual d="M202 292C286 208 340 360 400 294"/><Connector manual d="M514 130C560 232 464 232 430 282"/><Connector manual d="M138 94C254 140 346 228 400 286"/></Plate>
+ if(kind==='proof')return <Plate number="04" label={label}><path className="proof-fill" d="M72 330H158V270H246V210H334V144H422V82H568V350H72Z"/><path className="diagram-connector is-solid proof-stair" d="M72 330H158V270H246V210H334V144H422V82H568"/>{[['BASE',112,318],['+18%',200,258],['+42%',288,198],['+67%',376,132],['+93%',482,70]].map(([t,x,y])=><text className="proof-value" key={t} x={x} y={y}>{t}</text>)}<circle className="diagram-traveler"><animateMotion dur="4.5s" repeatCount="indefinite" path="M72 330H158V270H246V210H334V144H422V82H568"/></circle></Plate>
+ return <Plate number="05" label={label}><Connector pulse d="M76 310L180 252L284 206L388 126L526 70"/><Node x={76} y={310} label="DIAGNÓSTICO" circle/><Node x={180} y={252} label="DISEÑO" circle/><Node x={284} y={206} label="ENTREGA" circle/><Node x={388} y={126} label="MEJORA" circle active/><Node x={526} y={70} label="ESCALA" circle/><text className="diagram-annotation" x="376" y="94">SOCIO CONTINUO</text></Plate>
 }
