@@ -27,7 +27,7 @@ export const homeContent = {
     { name: "BioZero", title: "Plataforma de gestión clínica dental con IA", text: "Registros clínicos colaborativos, gamificación del paciente y análisis de imágenes con modelos de visión de última generación.", href: "/casos-de-exito/biozero" }
   ]},
   alliance: { title: "Cinco alianzas. Toda nuestra dedicación.", body: "Limitamos deliberadamente el número de clientes activos para garantizar dedicación, cercanía y acompañamiento continuo. No es una limitación: es el modelo.", action: "Conoce el modelo de alianza" },
-  finalCta: { title: "Hablemos de tu negocio.", body: "Cuéntanos qué frena tu crecimiento. Escuchamos antes de proponer.", action: "Hablemos" },
+  finalCta: { title: "Hablemos de tu negocio.", body: "Cuéntanos qué frena tu crecimiento. Escuchamos antes de proponer.", success: "Recibido. Te responderemos personalmente en un plazo de dos días laborables.", email: "hola@escaladigitalventures.com", location: "Mataró · Barcelona", languages: "Trabajamos en español, inglés y catalán." },
   footer: { claim: "Automatizamos tu negocio. Escalamos contigo.", company: "Escala Digital Ventures, S.L.U. · Mataró, Barcelona", direction: "Dirección general: referencia en colivares.com" }
 } as const
 export type HomeContent = typeof homeContent
