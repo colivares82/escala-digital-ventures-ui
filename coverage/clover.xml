@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1785710919546" clover="3.2.0">
+  <project timestamp="1785710919546" name="All files">
+    <metrics statements="199" coveredstatements="196" conditionals="133" coveredconditionals="112" methods="60" coveredmethods="59" elements="392" coveredelements="367" complexity="0" loc="199" ncloc="199" packages="3" files="16" classes="16"/>
+    <package name="components">
+      <metrics statements="187" coveredstatements="184" conditionals="133" coveredconditionals="112" methods="60" coveredmethods="59"/>
+      <file name="claims-marquee.tsx" path="/Users/colivares/Desktop/Web Projects/escala-digital-ventures-ui/components/claims-marquee.tsx">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="5" count="9" type="stmt"/>
+        <line num="7" count="9" type="stmt"/>
+        <line num="14" count="64" type="stmt"/>
+      </file>
+      <file name="client-chip.tsx" path="/Users/colivares/Desktop/Web Projects/escala-digital-ventures-ui/components/client-chip.tsx">
+        <metrics statements="1" coveredstatements="1" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
+        <line num="11" count="14" type="stmt"/>
+      </file>
+      <file name="contact-form.tsx" path="/Users/colivares/Desktop/Web Projects/escala-digital-ventures-ui/components/contact-form.tsx">
+        <metrics statements="28" coveredstatements="28" conditionals="42" coveredconditionals="38" methods="3" coveredmethods="3"/>
+        <line num="1" count="3" type="stmt"/>
+        <line num="21" count="22" type="stmt"/>
+        <line num="24" count="22" type="cond" truecount="2" falsecount="0"/>
+        <line num="34" count="22" type="stmt"/>
+        <line num="35" count="22" type="stmt"/>
+        <line num="38" count="6" type="stmt"/>
+        <line num="39" count="6" type="stmt"/>
+        <line num="40" count="6" type="stmt"/>
+        <line num="41" count="6" type="cond" truecount="1" falsecount="1"/>
+        <line num="43" count="6" type="cond" truecount="3" falsecount="1"/>
+        <line num="44" count="4" type="stmt"/>
+        <line num="46" count="6" type="cond" truecount="3" falsecount="1"/>
+        <line num="47" count="4" type="stmt"/>
+        <line num="49" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="50" count="4" type="stmt"/>
+        <line num="51" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="52" count="1" type="stmt"/>
+        <line num="54" count="6" type="cond" truecount="3" falsecount="1"/>
+        <line num="55" count="4" type="stmt"/>
+        <line num="57" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="58" count="5" type="stmt"/>
+        <line num="61" count="6" type="stmt"/>
+        <line num="62" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="65" count="22" type="cond" truecount="2" falsecount="0"/>
+        <line num="66" count="2" type="stmt"/>
+        <line num="74" count="20" type="stmt"/>
+        <line num="158" count="60" type="stmt"/>
+        <line num="159" count="60" type="stmt"/>
+      </file>
+      <file name="final-cta.tsx" path="/Users/colivares/Desktop/Web Projects/escala-digital-ventures-ui/components/final-cta.tsx">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="12" count="7" type="stmt"/>
+      </file>
+      <file name="home-sections.tsx" path="/Users/colivares/Desktop/Web Projects/escala-digital-ventures-ui/components/home-sections.tsx">
+        <metrics statements="16" coveredstatements="16" conditionals="0" coveredconditionals="0" methods="10" coveredmethods="10"/>
+        <line num="19" count="5" type="stmt"/>
+        <line num="21" count="5" type="stmt"/>
+        <line num="59" count="4" type="stmt"/>
+        <line num="61" count="4" type="stmt"/>
+        <line num="74" count="16" type="stmt"/>
+        <line num="104" count="5" type="stmt"/>
+        <line num="106" count="5" type="stmt"/>
+        <line num="121" count="25" type="stmt"/>
+        <line num="139" count="3" type="stmt"/>
+        <line num="141" count="3" type="stmt"/>
+        <line num="164" count="4" type="stmt"/>
+        <line num="166" count="4" type="stmt"/>
+        <line num="177" count="8" type="stmt"/>
+        <line num="190" count="16" type="stmt"/>
+        <line num="208" count="4" type="stmt"/>
+        <line num="210" count="4" type="stmt"/>
+      </file>
+      <file name="motion-runtime.tsx" path="/Users/colivares/Desktop/Web Projects/escala-digital-ventures-ui/components/motion-runtime.tsx">
+        <metrics statements="54" coveredstatements="52" conditionals="22" coveredconditionals="15" methods="17" coveredmethods="17"/>
+        <line num="1" count="6" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="17" count="2" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="25" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="41" count="101" type="stmt"/>
+        <line num="43" count="101" type="stmt"/>
+        <line num="44" count="101" type="stmt"/>
+        <line num="45" count="101" type="cond" truecount="1" falsecount="1"/>
+        <line num="47" count="101" type="cond" truecount="1" falsecount="1"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="52" count="101" type="stmt"/>
+        <line num="54" count="101" type="cond" truecount="1" falsecount="1"/>
+        <line num="55" count="101" type="stmt"/>
+        <line num="56" count="101" type="stmt"/>
+        <line num="60" count="101" type="stmt"/>
+        <line num="61" count="101" type="stmt"/>
+        <line num="64" count="101" type="stmt"/>
+        <line num="69" count="30" type="stmt"/>
+        <line num="70" count="30" type="stmt"/>
+        <line num="72" count="30" type="stmt"/>
+        <line num="73" count="15" type="stmt"/>
+        <line num="74" count="15" type="cond" truecount="3" falsecount="1"/>
+        <line num="76" count="15" type="stmt"/>
+        <line num="77" count="15" type="cond" truecount="1" falsecount="1"/>
+        <line num="79" count="15" type="stmt"/>
+        <line num="80" count="15" type="stmt"/>
+        <line num="84" count="15" type="stmt"/>
+        <line num="86" count="15" type="stmt"/>
+        <line num="88" count="15" type="cond" truecount="1" falsecount="1"/>
+        <line num="89" count="15" type="stmt"/>
+        <line num="90" count="15" type="stmt"/>
+        <line num="91" count="15" type="stmt"/>
+        <line num="92" count="15" type="stmt"/>
+        <line num="95" count="15" type="cond" truecount="1" falsecount="1"/>
+        <line num="97" count="15" type="stmt"/>
+        <line num="98" count="15" type="stmt"/>
+        <line num="102" count="15" type="stmt"/>
+        <line num="103" count="15" type="stmt"/>
+        <line num="106" count="30" type="stmt"/>
+        <line num="121" count="37" type="stmt"/>
+        <line num="122" count="37" type="stmt"/>
+        <line num="137" count="31" type="stmt"/>
+        <line num="138" count="31" type="stmt"/>
+        <line num="158" count="33" type="stmt"/>
+        <line num="159" count="33" type="stmt"/>
+        <line num="161" count="33" type="stmt"/>
+        <line num="168" count="126" type="stmt"/>
+      </file>
+      <file name="phase-cycle.tsx" path="/Users/colivares/Desktop/Web Projects/escala-digital-ventures-ui/components/phase-cycle.tsx">
+        <metrics statements="58" coveredstatements="57" conditionals="29" coveredconditionals="21" methods="13" coveredmethods="12"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="19" count="1056" type="stmt"/>
+        <line num="23" count="726" type="stmt"/>
+        <line num="24" count="726" type="stmt"/>
+        <line num="53" count="33" type="stmt"/>
+        <line num="54" count="33" type="stmt"/>
+        <line num="55" count="33" type="stmt"/>
+        <line num="57" count="33" type="stmt"/>
+        <line num="58" count="15" type="stmt"/>
+        <line num="59" count="15" type="cond" truecount="1" falsecount="1"/>
+        <line num="62" count="15" type="stmt"/>
+        <line num="64" count="15" type="cond" truecount="1" falsecount="1"/>
+        <line num="65" count="15" type="stmt"/>
+        <line num="66" count="15" type="stmt"/>
+        <line num="71" count="15" type="stmt"/>
+        <line num="73" count="15" type="stmt"/>
+        <line num="75" count="15" type="stmt"/>
+        <line num="76" count="15" type="stmt"/>
+        <line num="78" count="15" type="cond" truecount="1" falsecount="1"/>
+        <line num="79" count="15" type="stmt"/>
+        <line num="80" count="15" type="stmt"/>
+        <line num="81" count="15" type="stmt"/>
+        <line num="82" count="15" type="stmt"/>
+        <line num="85" count="15" type="stmt"/>
+        <line num="86" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="89" count="15" type="stmt"/>
+        <line num="90" count="15" type="stmt"/>
+        <line num="91" count="15" type="stmt"/>
+        <line num="93" count="15" type="stmt"/>
+        <line num="94" count="15" type="stmt"/>
+        <line num="95" count="15" type="cond" truecount="1" falsecount="1"/>
+        <line num="96" count="15" type="stmt"/>
+        <line num="97" count="15" type="stmt"/>
+        <line num="101" count="33" type="stmt"/>
+        <line num="102" count="3" type="stmt"/>
+        <line num="103" count="3" type="stmt"/>
+        <line num="104" count="3" type="cond" truecount="3" falsecount="1"/>
+        <line num="105" count="3" type="stmt"/>
+        <line num="106" count="3" type="stmt"/>
+        <line num="112" count="33" type="stmt"/>
+        <line num="113" count="33" type="stmt"/>
+        <line num="114" count="33" type="stmt"/>
+        <line num="115" count="33" type="stmt"/>
+        <line num="117" count="33" type="stmt"/>
+        <line num="170" count="330" type="stmt"/>
+        <line num="171" count="330" type="stmt"/>
+        <line num="173" count="330" type="cond" truecount="2" falsecount="0"/>
+        <line num="179" count="330" type="stmt"/>
+        <line num="187" count="1" type="stmt"/>
+        <line num="189" count="2" type="cond" truecount="3" falsecount="1"/>
+        <line num="190" count="2" type="stmt"/>
+        <line num="191" count="2" type="stmt"/>
+        <line num="231" count="330" type="stmt"/>
+      </file>
+      <file name="readout.tsx" path="/Users/colivares/Desktop/Web Projects/escala-digital-ventures-ui/components/readout.tsx">
+        <metrics statements="5" coveredstatements="5" conditionals="6" coveredconditionals="4" methods="1" coveredmethods="1"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="31" count="24" type="cond" truecount="1" falsecount="1"/>
+        <line num="32" count="24" type="cond" truecount="1" falsecount="1"/>
+        <line num="34" count="24" type="stmt"/>
+      </file>
+      <file name="section-index.tsx" path="/Users/colivares/Desktop/Web Projects/escala-digital-ventures-ui/components/section-index.tsx">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="8" count="32" type="stmt"/>
+      </file>
+      <file name="site-chrome.tsx" path="/Users/colivares/Desktop/Web Projects/escala-digital-ventures-ui/components/site-chrome.tsx">
+        <metrics statements="8" coveredstatements="8" conditionals="2" coveredconditionals="2" methods="6" coveredmethods="6"/>
+        <line num="9" count="7" type="stmt"/>
+        <line num="11" count="7" type="stmt"/>
+        <line num="29" count="35" type="stmt"/>
+        <line num="38" count="21" type="stmt"/>
+        <line num="56" count="6" type="stmt"/>
+        <line num="58" count="6" type="stmt"/>
+        <line num="65" count="24" type="stmt"/>
+        <line num="78" count="12" type="stmt"/>
+      </file>
+      <file name="system-diagram.tsx" path="/Users/colivares/Desktop/Web Projects/escala-digital-ventures-ui/components/system-diagram.tsx">
+        <metrics statements="12" coveredstatements="12" conditionals="29" coveredconditionals="29" methods="5" coveredmethods="5"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="41" count="158" type="stmt"/>
+        <line num="84" count="139" type="stmt"/>
+        <line num="110" count="30" type="stmt"/>
+        <line num="154" count="30" type="cond" truecount="2" falsecount="0"/>
+        <line num="155" count="9" type="stmt"/>
+        <line num="182" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="183" count="7" type="stmt"/>
+        <line num="203" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="204" count="7" type="stmt"/>
+        <line num="224" count="42" type="stmt"/>
+        <line num="240" count="7" type="stmt"/>
+      </file>
+    </package>
+    <package name="content.es">
+      <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="clients.ts" path="/Users/colivares/Desktop/Web Projects/escala-digital-ventures-ui/content/es/clients.ts">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="10" count="4" type="stmt"/>
+      </file>
+      <file name="home.ts" path="/Users/colivares/Desktop/Web Projects/escala-digital-ventures-ui/content/es/home.ts">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="4" count="4" type="stmt"/>
+      </file>
+      <file name="shared.ts" path="/Users/colivares/Desktop/Web Projects/escala-digital-ventures-ui/content/es/shared.ts">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="7" type="stmt"/>
+      </file>
+    </package>
+    <package name="lib">
+      <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="motion-constants.ts" path="/Users/colivares/Desktop/Web Projects/escala-digital-ventures-ui/lib/motion-constants.ts">
+        <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="8" count="8" type="stmt"/>
+        <line num="11" count="8" type="stmt"/>
+        <line num="14" count="8" type="stmt"/>
+        <line num="17" count="8" type="stmt"/>
+        <line num="20" count="8" type="stmt"/>
+        <line num="23" count="8" type="stmt"/>
+        <line num="31" count="8" type="stmt"/>
+      </file>
+      <file name="routes.ts" path="/Users/colivares/Desktop/Web Projects/escala-digital-ventures-ui/lib/routes.ts">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="6" count="6" type="stmt"/>
+        <line num="23" count="6" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

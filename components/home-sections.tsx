@@ -7,7 +7,7 @@ import { Readout } from '@/components/readout'
 import { SectionIndex } from '@/components/section-index'
 import { SystemDiagram } from '@/components/system-diagram'
 import { Reveal, WordReveal } from '@/components/motion-runtime'
-import { ROUTES } from '@/lib/routes'
+import { ANCHORS, ROUTES } from '@/lib/routes'
 
 export function Hero({
   content,
@@ -28,11 +28,11 @@ export function Hero({
             <WordReveal as="h1" text={content.title} />
             <p>{content.description}</p>
             <div className="hero__actions">
-              <a className="primary-link" href="#contacto">
+              <a className="primary-link" href={ANCHORS.CONTACTO}>
                 {content.primaryCta}
                 <span aria-hidden="true">↗</span>
               </a>
-              <a className="text-link" href="#metodo">
+              <a className="text-link" href={ANCHORS.METODO}>
                 {content.secondaryCta}
                 <span aria-hidden="true">↓</span>
               </a>

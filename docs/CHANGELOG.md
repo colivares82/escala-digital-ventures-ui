@@ -6,6 +6,32 @@ All notable changes, newest first.
 
 ---
 
+## [Unreleased] — Compliance pass (second session)
+
+### Added
+- `@vitest/coverage-v8` — coverage provider; `npm run test:coverage` now enforces the 70% gate for real
+- Tests for all previously untested components: `PhaseCycle`, `SystemDiagram`, `SiteHeader`/`SiteFooter`, `FinalCTA`, and all home sections (Hero, ProblemSection, ServicesPreview, FrameworkSection, ProofSection, AllianceTeaser)
+- `window.scrollTo` mock in `phase-cycle.test.tsx`
+- 138 total tests (was 71), all passing
+
+### Changed
+- `package.json` scripts: `test*` commands now prefix `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress the harmless Vite ESM warning
+- `vitest.config.ts`: coverage `exclude` extended to omit locale stubs (`content/ca/**`, `content/en/**`) and unused `lib/utils.ts`
+- `components/contact-form.tsx`: `href="/privacidad"` → `ROUTES.PRIVACY` (last inline route string)
+- `components/home-sections.tsx`: `href="#contacto"` → `ANCHORS.CONTACTO`, `href="#metodo"` → `ANCHORS.METODO`; imports `ANCHORS` from `lib/routes.ts`
+- `components/site-chrome.tsx`: `href="#inicio"` → `ANCHORS.INICIO`, `href="#contacto"` → `ANCHORS.CONTACTO`
+- `TODO.md`: replaced with pointer to `docs/BACKLOG.md`
+
+### Coverage (post this session)
+| Metric | Before | After | Threshold |
+|--------|--------|-------|-----------|
+| Statements | 49% | 94% | 70% ✅ |
+| Branches | 45% | 84% | 70% ✅ |
+| Functions | 41% | 98% | 70% ✅ |
+| Lines | 50% | 98% | 70% ✅ |
+
+---
+
 ## [Unreleased] — Refactor + test baseline
 
 ### Added

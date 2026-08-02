@@ -1,5 +1,6 @@
 import type { homeContent } from '@/content/es/home'
 import { sharedContent } from '@/content/es/shared'
+import { ANCHORS } from '@/lib/routes'
 
 type HeaderContent = typeof homeContent.header
 type FooterContent = typeof homeContent.footer
@@ -12,7 +13,7 @@ export function SiteHeader({ content }: { content: HeaderContent }) {
       <div className="page-shell site-header__inner">
         <a
           className="site-brand"
-          href="#inicio"
+          href={ANCHORS.INICIO}
           aria-label={accessibility.homeLabel}
         >
           <span aria-hidden="true">
@@ -42,7 +43,7 @@ export function SiteHeader({ content }: { content: HeaderContent }) {
               </span>
             ))}
           </p>
-          <a className="header-cta" href="#contacto">
+          <a className="header-cta" href={ANCHORS.CONTACTO}>
             {content.contact}
           </a>
         </div>

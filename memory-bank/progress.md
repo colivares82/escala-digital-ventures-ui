@@ -21,11 +21,15 @@
 | Styleguide route (`/styleguide`, noindex) | Complete |
 | Content in typed ES dictionaries — no hardcoded strings | Complete |
 | Route + motion constants (`lib/routes.ts`, `lib/motion-constants.ts`) | Complete |
+| All internal links use `ROUTES.*` / `ANCHORS.*` — zero inline URL strings | Complete |
 | Security headers in `next.config.mjs` | Complete |
-| Vitest + RTL test suite — 71 tests, 100% pass | Complete |
-| 70% coverage threshold enforced | Complete |
+| Vitest + RTL test suite — 138 tests, 100% pass | Complete |
+| Coverage: statements 94%, branches 84%, functions 98%, lines 98% | Complete |
+| 70% coverage threshold enforced by `@vitest/coverage-v8` | Complete |
+| `next build` clean — 3 static pages generated | Complete |
 | `docs/` taxonomy (ARCHITECTURE, BACKLOG, CHANGELOG, TRACEABILITY) | Complete |
 | `memory-bank/` — all six core files | Complete |
+| `TODO.md` superseded by `docs/BACKLOG.md` | Complete |
 
 ## What's left ⬜
 
@@ -43,7 +47,6 @@
 | Aviso legal + Privacidad legal pages | P1 | PAGE-07 |
 | Cookieless analytics (Plausible) | P2 | ANALYTICS-01 |
 | Lighthouse ≥95 validation | P2 | PERF-01 |
-| Increase test coverage to 80%+ | P2 | TEST-01 |
 | GCP Cloud Run deployment (dev + prod) | P2 | — |
 | GitHub Actions CI/CD | P2 | — |
 
@@ -53,6 +56,4 @@
 |-------|----------|-------|
 | Header nav uses anchors, not true routes | Medium | Works for home; will break as interior pages deploy. Fix when first interior page is built. |
 | Contact form does not transmit | Medium | Expected v1 behavior. Top P0 item. |
-| Vitest ESM warning for `configLoader: 'native'` | Low | Not an error; suppress or rename to `.mjs`. |
 | EN/CA locale content stubs only | Low | Expected; stubs warn against silent fallback. |
-| Test coverage at floor (70%) | Low | Increase alongside interior page implementation. |

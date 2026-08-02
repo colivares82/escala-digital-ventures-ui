@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from 'react'
 import { sharedContent } from '@/content/es/shared'
+import { ROUTES } from '@/lib/routes'
 
 type ContactField = 'name' | 'company' | 'email' | 'blocker' | 'consent'
 type Errors = Partial<Record<ContactField, string>>
@@ -118,7 +119,7 @@ export function ContactForm({
         />
         <label htmlFor="contact-consent">
           {copy.consentPrefix}{' '}
-          <a href="/privacidad">{copy.privacyLabel}</a>.
+          <a href={ROUTES.PRIVACY}>{copy.privacyLabel}</a>.
         </label>
         {errors.consent && (
           <span className="contact-error" id="contact-consent-error">
