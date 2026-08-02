@@ -1,33 +1,32 @@
-# escala-digital-ventures-ui
+# Escala Digital Ventures UI
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+Approved v1 marketing site built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4.
 
-## Built with v0
+## Requirements
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+- Node.js 22+
+- npm
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_pnGONCjuUrjCcsN5W6blL7J8qAXZ)
-
-## Getting Started
-
-First, run the development server:
+## Workflow
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+npm run lint
+npx tsc --noEmit
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Routes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `/` — approved Spanish home
+- `/styleguide` — internal noindex component and token reference
 
-## Learn More
+## Structure
 
-To learn more, take a look at the following resources:
+- `app/` — App Router routes, metadata, and global design tokens
+- `components/` — typed presentational and interactive components
+- `content/es/` — reviewed Spanish shared, home, and client content
+- `content/en/`, `content/ca/` — reserved for reviewed translations
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+The contact form validates in the browser but does not transmit or persist data. See `TODO.md` before connecting production services and `DECISIONS.md` for approved design rationale.
