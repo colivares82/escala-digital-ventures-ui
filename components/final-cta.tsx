@@ -64,6 +64,7 @@ export function FinalCTA({ content }: { content: typeof homeContent.finalCta }) 
                   {errors.consent && <span className="contact-error" id="contact-consent-error">{errors.consent}</span>}
                 </div>
                 <button type="submit">Enviar <span aria-hidden="true">↗</span></button>
+                {Object.keys(errors).length > 0 && <p className="contact-fallback">¿Prefieres escribirnos directamente? <a href={`mailto:${content.email}`}>{content.email}</a></p>}
               </form>
             )}
             <address className="contact-meta">

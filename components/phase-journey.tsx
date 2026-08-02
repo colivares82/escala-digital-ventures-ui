@@ -51,7 +51,7 @@ export function PhaseJourney({ phases }: { phases: readonly Phase[] }) {
           <span className="phase-journey__line-complete" />
           {phases.map((item, index) => (
             <span
-              className={`phase-journey__node ${index < active ? 'is-complete' : index === active ? 'is-active' : ''}`}
+              className={`phase-journey__node ${index < active ? 'is-complete' : index === active ? 'is-active' : ''} ${index > active && index <= active + 3 ? 'is-previewed' : ''}`}
               style={{
                 '--node-x': `${5 + (index / (phases.length - 1)) * 90}%`,
                 '--node-y': `${78 - (index / (phases.length - 1)) * 58}%`,
