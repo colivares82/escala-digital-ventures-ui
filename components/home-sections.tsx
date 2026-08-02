@@ -1,36 +1,24 @@
-import type { homeContent } from "@/content/es/home"
-import { FrameworkRule, ScaleRule } from "@/components/scale-rule"
+import type { homeContent } from '@/content/es/home'
+import { FrameworkDiagram, HeroSystemDiagram, ProblemDiagram, ProofChart } from '@/components/system-diagrams'
 
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="font-mono text-[0.6875rem] font-medium uppercase leading-relaxed tracking-widest text-muted-foreground">
-      {children}
-    </p>
-  )
+function Eyebrow({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
+  return <p className={dark ? 'eyebrow eyebrow--dark' : 'eyebrow'}>{children}</p>
 }
 
 export function Hero({ content }: { content: typeof homeContent.hero }) {
   return (
-    <section className="deep-surface">
-      <div className="mx-auto grid min-h-[calc(100svh-5rem)] max-w-7xl grid-cols-1 content-center gap-12 px-5 py-20 md:grid-cols-12 md:px-8 md:py-28">
-        <div className="flex flex-col gap-8 md:col-span-10 lg:col-span-9">
-          <Eyebrow>{content.eyebrow}</Eyebrow>
-          <h1 className="font-display max-w-5xl text-[clamp(2.75rem,7vw,5.75rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-balance">
-            {content.title}
-          </h1>
-          <ScaleRule variant="hero" />
-        </div>
-        <div className="flex flex-col gap-8 md:col-span-6 md:col-start-7 lg:col-span-5 lg:col-start-8">
-          <p className="text-lg leading-relaxed text-pretty md:text-xl">{content.description}</p>
-          <div className="flex flex-wrap items-center gap-5">
-            <a className="deep-surface__button px-5 py-3 font-mono text-xs font-medium transition-colors" href="#">
-              {content.primaryCta}
-            </a>
-            <a className="link-underline deep-surface__link font-mono text-xs font-medium" href="#">
-              {content.secondaryCta}
-            </a>
+    <section className='surface-dark hero-section' id='hero'>
+      <div className='section-container hero-grid'>
+        <div className='hero-copy'>
+          <Eyebrow dark>{content.eyebrow}</Eyebrow>
+          <h1 className='display-title hero-title'>{content.title}</h1>
+          <p className='hero-lead'>{content.description}</p>
+          <div className='action-row'>
+            <a className='button button--amber' href='#contacto'>{content.primaryCta}</a>
+            <a className='text-link text-link--dark' href='#metodo'>{content.secondaryCta}</a>
           </div>
         </div>
+        <HeroSystemDiagram />
       </div>
     </section>
   )
@@ -38,58 +26,73 @@ export function Hero({ content }: { content: typeof homeContent.hero }) {
 
 export function ProblemSection({ content }: { content: typeof homeContent.problem }) {
   return (
-    <section className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 py-24 md:grid-cols-12 md:px-8 md:py-36">
-      <div className="flex flex-col gap-6 md:col-span-7">
-        <Eyebrow>{content.eyebrow}</Eyebrow>
-        <h2 className="font-display text-[clamp(2.25rem,5vw,4.25rem)] font-semibold leading-[1.04] tracking-[-0.035em] text-balance">
-          {content.title}
-        </h2>
+    <section className='surface-light content-section' id='problema'>
+      <div className='section-container section-grid'>
+        <div className='section-copy'>
+          <Eyebrow>{content.eyebrow}</Eyebrow>
+          <h2 className='display-title section-title'>{content.title}</h2>
+          <p className='section-body'>{content.body}</p>
+        </div>
+        <ProblemDiagram />
       </div>
-      <p className="text-base leading-relaxed text-pretty md:col-span-6 md:col-start-7 md:text-lg">{content.body}</p>
-      <ScaleRule className="md:col-span-12" />
     </section>
   )
 }
 
 export function FrameworkSection({ content }: { content: typeof homeContent.framework }) {
   return (
-    <section className="mx-auto flex max-w-7xl flex-col gap-14 px-5 py-24 md:px-8 md:py-36">
-      <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
-        <div className="flex flex-col gap-6 md:col-span-7">
-          <Eyebrow>{content.eyebrow}</Eyebrow>
-          <h2 className="font-display text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-[1.04] tracking-[-0.035em] text-balance">
-            {content.title}
-          </h2>
+    <section className='surface-light framework-section' id='metodo'>
+      <div className='section-container'>
+        <div className='framework-heading'>
+          <div className='section-copy'>
+            <Eyebrow>{content.eyebrow}</Eyebrow>
+            <h2 className='display-title section-title'>{content.title}</h2>
+          </div>
+          <p className='section-body'>{content.description}</p>
         </div>
-        <p className="text-base leading-relaxed md:col-span-5 md:col-start-8 md:self-end md:text-lg">{content.description}</p>
+        <FrameworkDiagram phases={content.phases} />
       </div>
-      <FrameworkRule phases={content.phases} />
     </section>
   )
 }
 
 export function ProofSection({ content }: { content: typeof homeContent.proof }) {
   return (
-    <section className="deep-surface">
-      <div className="mx-auto flex max-w-7xl flex-col gap-14 px-5 py-24 md:px-8 md:py-36">
-        <ScaleRule />
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
-          <div className="flex flex-col gap-6 md:col-span-7">
-            <Eyebrow>{content.eyebrow}</Eyebrow>
-            <h2 className="font-display text-[clamp(2.25rem,5vw,4.25rem)] font-semibold leading-[1.04] tracking-[-0.035em] text-balance">
-              {content.title}
-            </h2>
+    <section className='surface-dark proof-section' id='prueba'>
+      <div className='section-container'>
+        <div className='proof-heading'>
+          <div className='section-copy'>
+            <Eyebrow dark>{content.eyebrow}</Eyebrow>
+            <h2 className='display-title section-title'>{content.title}</h2>
           </div>
-          <p className="deep-surface__accent font-mono text-xs font-medium md:col-span-3 md:col-start-10 md:self-end">{content.client}</p>
+          <p className='proof-client'>{content.client}</p>
         </div>
-        <dl className="grid grid-cols-1 border-t border-border sm:grid-cols-2 lg:grid-cols-4">
-          {content.figures.map((figure) => (
-            <div className="readout flex min-h-48 flex-col justify-between gap-8 border-b border-border py-6 sm:px-6 sm:first:pl-0 lg:border-r lg:last:border-r-0" key={figure.label}>
-              <dt className="max-w-44 font-mono text-[0.6875rem] uppercase leading-relaxed tracking-wider text-muted-foreground">{figure.label}</dt>
-              <dd className="deep-surface__accent font-mono text-[clamp(2.5rem,4vw,4rem)] font-medium leading-none tracking-[-0.04em]">{figure.value}</dd>
-            </div>
-          ))}
-        </dl>
+        <div className='proof-grid'>
+          <ProofChart />
+          <dl className='readout-grid'>
+            {content.figures.map((figure) => (
+              <div className='readout' key={figure.label}>
+                <dt>{figure.label}</dt>
+                <dd>{figure.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export function FinalCta({ content }: { content: typeof homeContent.finalCta }) {
+  return (
+    <section className='surface-light final-cta' id='contacto'>
+      <div className='section-container final-cta__inner'>
+        <p className='eyebrow'>04 · CONVERSEMOS</p>
+        <h2 className='display-title final-cta__title'>{content.title}</h2>
+        <div className='final-cta__footer'>
+          <p className='section-body'>{content.body}</p>
+          <a className='button button--mar' href='mailto:hola@escaladigitalventures.com'>{content.action}</a>
+        </div>
       </div>
     </section>
   )
