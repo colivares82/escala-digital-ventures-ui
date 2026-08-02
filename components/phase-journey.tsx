@@ -38,11 +38,32 @@ export function PhaseJourney({ phases }: { phases: readonly Phase[] }) {
   }, [phases.length])
 
   const phase = phases[active]
-  const localProgress = Math.min(1, Math.max(0, progress * phases.length - active))
 
   return (
-    <div ref={rootRef} className="phase-journey" style={{ '--journey-position': `${progress * 100}%`, '--phase-position': `${localProgress * 88}%` } as CSSProperties}>
+    <div ref={rootRef} className="phase-journey" style={{
+      '--journey-position': `${progress * 100}%`,
+      '--path-x': `${5 + progress * 90}%`,
+      '--path-y': `${78 - progress * 58}%`,
+    } as CSSProperties}>
       <div className="phase-journey__pin">
+        <div className="phase-journey__spine" aria-hidden="true">
+          <span className="phase-journey__line" />
+          <span className="phase-journey__line-complete" />
+          {phases.map((item, index) => (
+            <span
+              className={`phase-journey__node ${index < active ? 'is-complete' : index === active ? 'is-active' : ''}`}
+              style={{
+                '--node-x': `${5 + (index / (phases.length - 1)) * 90}%`,
+                '--node-y': `${78 - (index / (phases.length - 1)) * 58}%`,
+              } as CSSProperties}
+              key={item.name}
+            >
+              {pad(index)}
+            </span>
+          ))}
+          <span className="phase-journey__pulse" />
+        </div>
+
         <div className="phase-journey__active" aria-live="polite">
           <span className="phase-journey__number" aria-hidden="true">{pad(active)}</span>
           <p className="phase-journey__eyebrow">FASE {pad(active)} / {String(phases.length).padStart(2, '0')}</p>
@@ -50,17 +71,21 @@ export function PhaseJourney({ phases }: { phases: readonly Phase[] }) {
           <p className="phase-journey__description">{phase.description}</p>
         </div>
 
-        <div className="phase-journey__path" aria-hidden="true">
-          <span className="phase-journey__line" />
-          <span className="phase-journey__pulse" />
-          <div className="phase-journey__upcoming">
-            {phases.slice(active + 1, active + 4).map((item, index) => (
-              <article className="phase-journey__preview" key={item.name}>
-                <span>{pad(active + index + 1)}</span>
-                <strong>{item.name}</strong>
-              </article>
-            ))}
-          </div>
+        <div className="phase-journey__upcoming" aria-hidden="true">
+          {phases.slice(active + 1, active + 4).map((item, index) => (
+            <article
+              className="phase-journey__preview"
+              style={{
+                left: `${47 + index * 17}%`,
+                top: `${58 - index * 14}%`,
+                '--preview-delay': `${index * -1.2}s`,
+              } as CSSProperties}
+              key={`${active}-${item.name}`}
+            >
+              <span>{pad(active + index + 1)}</span>
+              <strong>{item.name}</strong>
+            </article>
+          ))}
         </div>
 
         <ol className="phase-journey__rail" aria-label="Progreso del Escala Growth Framework">
