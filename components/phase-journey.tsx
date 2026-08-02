@@ -1,28 +1,46 @@
 'use client'
 
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type Phase = { readonly name: string; readonly description: string }
 
+const SIZE = 520
+const CENTER = SIZE / 2
+const RADIUS = 185
+const LABEL_RADIUS = RADIUS + 44
+const CIRCUMFERENCE = 2 * Math.PI * RADIUS
 const pad = (value: number) => String(value + 1).padStart(2, '0')
 
-export function PhaseJourney({ phases }: { phases: readonly Phase[] }) {
+function point(index: number, count: number, radius = RADIUS) {
+  const angle = (-90 + index * (360 / count)) * (Math.PI / 180)
+  return { x: CENTER + radius * Math.cos(angle), y: CENTER + radius * Math.sin(angle) }
+}
+
+export function PhaseCycle({ phases }: { phases: readonly Phase[] }) {
   const rootRef = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
-  const [progress, setProgress] = useState(0)
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     const root = rootRef.current
     if (!root) return
 
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setVisible(true)
+        observer.disconnect()
+      }
+    }, { threshold: 0.01 })
+    observer.observe(root)
+
     let frame = 0
     const update = () => {
       frame = 0
+      if (window.matchMedia('(max-width: 767px), (prefers-reduced-motion: reduce)').matches) return
       const rect = root.getBoundingClientRect()
       const distance = Math.max(root.offsetHeight - window.innerHeight, 1)
-      const nextProgress = Math.min(1, Math.max(0, -rect.top / distance))
-      setProgress(nextProgress)
-      setActive(Math.min(phases.length - 1, Math.floor(nextProgress * phases.length)))
+      const progress = Math.min(1, Math.max(0, -rect.top / distance))
+      setActive(Math.min(phases.length - 1, Math.floor(progress * phases.length)))
     }
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update)
@@ -31,79 +49,60 @@ export function PhaseJourney({ phases }: { phases: readonly Phase[] }) {
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll)
     return () => {
+      observer.disconnect()
       if (frame) cancelAnimationFrame(frame)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
     }
   }, [phases.length])
 
+  const selectPhase = (index: number) => {
+    setActive(index)
+    const root = rootRef.current
+    if (!root || window.matchMedia('(max-width: 767px), (prefers-reduced-motion: reduce)').matches) return
+    const distance = root.offsetHeight - window.innerHeight
+    window.scrollTo({ top: root.offsetTop + (index / Math.max(phases.length - 1, 1)) * distance, behavior: 'smooth' })
+  }
+
   const phase = phases[active]
+  const progressLength = CIRCUMFERENCE * (active / phases.length)
+  const evolve = point(phases.length - 1, phases.length, RADIUS + 26)
+  const discover = point(0, phases.length, RADIUS + 26)
 
   return (
-    <div ref={rootRef} className="phase-journey" style={{
-      '--journey-position': `${progress * 100}%`,
-      '--path-x': `${62 + progress * 32}%`,
-      '--path-y': `${78 - progress * 58}%`,
-    } as CSSProperties}>
-      <div className="phase-journey__pin">
-        <div className="phase-journey__spine" aria-hidden="true">
-          <span className="phase-journey__line" />
-          <span className="phase-journey__line-complete" />
-          {phases.map((item, index) => (
-            <span
-              className={`phase-journey__node ${index < active ? 'is-complete' : index === active ? 'is-active' : ''}`}
-              style={{
-                '--node-x': `${62 + (index / (phases.length - 1)) * 32}%`,
-                '--node-y': `${78 - (index / (phases.length - 1)) * 58}%`,
-              } as CSSProperties}
-              key={item.name}
-            >
-              {pad(index)}
-            </span>
-          ))}
-          <span className="phase-journey__pulse" />
-        </div>
-
-        <div className="phase-journey__active" aria-live="polite">
-          <span className="phase-journey__number" aria-hidden="true">{pad(active)}</span>
-          <p className="phase-journey__eyebrow">FASE {pad(active)} / {String(phases.length).padStart(2, '0')}</p>
+    <div ref={rootRef} className={`phase-cycle${visible ? ' is-visible' : ''}`}>
+      <div className="phase-cycle__pin">
+        <div className="phase-cycle__copy" aria-live="polite">
+          <p className="phase-cycle__eyebrow">FASE {pad(active)} / {String(phases.length).padStart(2, '0')}</p>
           <h3>{phase.name}</h3>
-          <p className="phase-journey__description">{phase.description}</p>
+          <p className="phase-cycle__description">{phase.description}</p>
+          <p className="phase-cycle__hint">SCROLL O CLIC AVANZA LA FASE · EVOLVE CONECTA CON DISCOVER: EL MÉTODO ES UN CICLO, NO UNA LÍNEA</p>
         </div>
 
-        <div className="phase-journey__upcoming" aria-hidden="true">
-          {phases.slice(active + 1, active + 4).map((item, index) => (
-            <article
-              className="phase-journey__preview"
-              style={{
-                left: `${64 + index * 13}%`,
-                top: `${58 - index * 14}%`,
-                '--preview-delay': `${index * -1.2}s`,
-              } as CSSProperties}
-              key={`${active}-${item.name}`}
-            >
-              <span>{pad(active + index + 1)}</span>
-              <strong>{item.name}</strong>
-            </article>
-          ))}
+        <div className="phase-cycle__ring-wrap">
+          <span className="phase-cycle__ghost" aria-hidden="true">{pad(active)}</span>
+          <svg className="phase-cycle__ring" viewBox={`0 0 ${SIZE} ${SIZE}`} role="group" aria-label="Ciclo de crecimiento de diez fases">
+            <circle className="phase-cycle__base" cx={CENTER} cy={CENTER} r={RADIUS} />
+            <circle className="phase-cycle__progress" cx={CENTER} cy={CENTER} r={RADIUS} pathLength={CIRCUMFERENCE} strokeDasharray={`${progressLength} ${CIRCUMFERENCE}`} />
+            <path className="phase-cycle__return" d={`M ${evolve.x} ${evolve.y} A ${RADIUS + 26} ${RADIUS + 26} 0 0 1 ${discover.x} ${discover.y}`} />
+            {phases.map((item, index) => {
+              const node = point(index, phases.length)
+              const label = point(index, phases.length, LABEL_RADIUS)
+              const state = index < active ? 'is-complete' : index === active ? 'is-active' : 'is-upcoming'
+              return (
+                <g className={`phase-cycle__node ${state}`} key={item.name} role="button" tabIndex={0} aria-label={`Fase ${pad(index)}: ${item.name}`} aria-current={index === active ? 'step' : undefined} onClick={() => selectPhase(index)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectPhase(index) } }}>
+                  <circle cx={node.x} cy={node.y} r={index === active ? 18 : 13} />
+                  <text className="phase-cycle__node-number" x={node.x} y={node.y + 3.5}>{pad(index)}</text>
+                  <text className="phase-cycle__node-label" x={label.x} y={label.y + 3}>{item.name.toUpperCase()}</text>
+                </g>
+              )
+            })}
+          </svg>
         </div>
-
-        <ol className="phase-journey__rail" aria-label="Progreso del Escala Growth Framework">
-          {phases.map((item, index) => (
-            <li key={item.name} className={index < active ? 'is-complete' : index === active ? 'is-active' : ''} aria-current={index === active ? 'step' : undefined}>
-              <span>{pad(index)}</span><i aria-hidden="true" />
-            </li>
-          ))}
-        </ol>
       </div>
 
-      <ol className="phase-journey__static">
-        {phases.map((item, index) => (
-          <li key={item.name}>
-            <span>{pad(index)}</span>
-            <div><h3>{item.name}</h3><p>{item.description}</p></div>
-          </li>
-        ))}
+      <ol className="phase-cycle__static">
+        {phases.map((item, index) => <li key={item.name}><span>{pad(index)}</span><div><h3>{item.name}</h3><p>{item.description}</p></div></li>)}
       </ol>
     </div>
   )
