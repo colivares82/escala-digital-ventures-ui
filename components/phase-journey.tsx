@@ -72,22 +72,23 @@ export function PhaseCycle({ phases, title, action }: { phases: readonly Phase[]
   return (
     <div ref={rootRef} className={`phase-cycle${visible ? ' is-visible' : ''}`}>
       <div className="phase-cycle__pin">
-        <div className="phase-cycle__copy">
+        <header className="phase-cycle__header">
           <div className="phase-cycle__meta">
             <p className="section-index"><span>03</span><span aria-hidden="true">/</span><span>EL CICLO DE CRECIMIENTO</span></p>
             <a className="text-link" href="/como-trabajamos">{action}<span aria-hidden="true">↗</span></a>
           </div>
           <h2 className="phase-cycle__section-title">{title}</h2>
           <p className="phase-cycle__lead">DIEZ FASES · UN CICLO CONTINUO DE MEJORA</p>
-          <div className="phase-cycle__divider" aria-hidden="true" />
+        </header>
+
+        <div className="phase-cycle__body">
           <div className="phase-cycle__phase" aria-live="polite">
             <p className="phase-cycle__eyebrow">FASE {pad(active)} / {String(phases.length).padStart(2, '0')}</p>
             <h3>{phase.name}</h3>
             <p className="phase-cycle__description">{phase.description}</p>
           </div>
-        </div>
 
-        <div className="phase-cycle__ring-wrap">
+          <div className="phase-cycle__ring-wrap">
           <span className="phase-cycle__ghost" aria-hidden="true">{pad(active)}</span>
           <svg className="phase-cycle__ring" viewBox={`0 0 ${SIZE} ${SIZE}`} role="group" aria-label="Ciclo de crecimiento de diez fases">
             <circle className="phase-cycle__base" cx={CENTER} cy={CENTER} r={RADIUS} />
@@ -105,7 +106,8 @@ export function PhaseCycle({ phases, title, action }: { phases: readonly Phase[]
                 </g>
               )
             })}
-          </svg>
+            </svg>
+          </div>
         </div>
       </div>
 
