@@ -1,8 +1,85 @@
 'use client'
-import { useEffect,useRef,useState } from 'react'
-import { DiagramReveal } from '@/components/motion-runtime'
-const specs=[
- ['ENTRADAS','MAPA','SALIDAS'],['DATOS','PATRÓN','HALLAZGO'],['RIESGO','PRIORIDAD','PLAN'],['PROCESO','ARQUITECTURA','SISTEMA'],['MÓDULO','PRUEBA','VALIDADO'],['PILOTO','SEÑAL','AJUSTE'],['SISTEMA','PERSONAS','ADOPCIÓN'],['MÉTRICA','CONTROL','MEJORA'],['SEÑAL','VERSIÓN','ESCALA'],['OPERACIÓN','ALIANZA','FUTURO']
-]
-function PhasePlate({index,name}:{index:number;name:string}){const labels=specs[index];const manual=index<3;const y=index%2?68:82;return <DiagramReveal><svg className="phase-diagram" viewBox="0 0 420 180" role="img" aria-label={`Diagrama de la fase ${name}`}><defs><pattern id={`phase-grid-${index}`} width="32" height="32" patternUnits="userSpaceOnUse"><path className="diagram-grid" d="M32 0H0V32"/></pattern></defs><rect className="diagram-grid-fill" width="420" height="180" fill={`url(#phase-grid-${index})`}/><path className="diagram-frame" d="M10 30V10h20M390 10h20v20M10 150v20h20M390 170h20v-20"/><path className={`diagram-connector ${manual?'is-manual':'is-solid'}`} d={`M72 ${y}C138 ${index%3===0?32:142} 198 ${index%3===1?42:128} 210 90S302 ${index%2?42:140} 350 ${90-index%3*12}`}/>{!manual&&<circle className="diagram-traveler" r="3"><animateMotion dur="3.4s" repeatCount="indefinite" path={`M72 ${y}C138 ${index%3===0?32:142} 198 ${index%3===1?42:128} 210 90S302 ${index%2?42:140} 350 ${90-index%3*12}`}/></circle>}{[[72,y],[210,90],[350,90-index%3*12]].map(([x,py],i)=><g className={`diagram-node${i===1?' is-active':''}`} key={labels[i]}><rect x={x-38} y={py-13} width="76" height="26" rx="1"/><text x={x} y={py+3}>{labels[i]}</text></g>)}<text className="diagram-annotation" x="22" y="156">FIG. 03.{String(index+1).padStart(2,'0')} — {name.toUpperCase()}</text></svg></DiagramReveal>}
-export function PhaseJourney({phases}:{phases:readonly string[]}){const root=useRef<HTMLOListElement>(null);const[active,setActive]=useState(0);useEffect(()=>{const nodes=root.current?.querySelectorAll('li');if(!nodes)return;const o=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)setActive(Number((e.target as HTMLElement).dataset.index))}),{rootMargin:'-42% 0px -42%',threshold:.01});nodes.forEach(n=>o.observe(n));return()=>o.disconnect()},[]);return <div className="journey"><aside className="journey__rail" aria-label={`Fase ${active+1} de ${phases.length}`}><span>{String(active+1).padStart(2,'0')}</span><div>{phases.map((p,i)=><i className={i<=active?'is-active':''} key={p}/>)}</div><span>{String(phases.length).padStart(2,'0')}</span></aside><ol ref={root} className="journey__list">{phases.map((phase,i)=><li data-index={i} className={i===active?'is-active':''} key={phase}><div className="phase-card"><p>FASE {String(i+1).padStart(2,'0')} / {String(phases.length).padStart(2,'0')}</p><h3>{phase}</h3><PhasePlate index={i} name={phase}/></div></li>)}</ol></div>}
+
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
+
+type Phase = { readonly name: string; readonly description: string }
+
+const pad = (value: number) => String(value + 1).padStart(2, '0')
+
+export function PhaseJourney({ phases }: { phases: readonly Phase[] }) {
+  const rootRef = useRef<HTMLDivElement>(null)
+  const [active, setActive] = useState(0)
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    const root = rootRef.current
+    if (!root) return
+
+    let frame = 0
+    const update = () => {
+      frame = 0
+      const rect = root.getBoundingClientRect()
+      const distance = Math.max(root.offsetHeight - window.innerHeight, 1)
+      const nextProgress = Math.min(1, Math.max(0, -rect.top / distance))
+      setProgress(nextProgress)
+      setActive(Math.min(phases.length - 1, Math.floor(nextProgress * phases.length)))
+    }
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update)
+    }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      if (frame) cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [phases.length])
+
+  const phase = phases[active]
+  const localProgress = Math.min(1, Math.max(0, progress * phases.length - active))
+
+  return (
+    <div ref={rootRef} className="phase-journey" style={{ '--journey-position': `${progress * 100}%`, '--phase-position': `${localProgress * 88}%` } as CSSProperties}>
+      <div className="phase-journey__pin">
+        <div className="phase-journey__active" aria-live="polite">
+          <span className="phase-journey__number" aria-hidden="true">{pad(active)}</span>
+          <p className="phase-journey__eyebrow">FASE {pad(active)} / {String(phases.length).padStart(2, '0')}</p>
+          <h3>{phase.name}</h3>
+          <p className="phase-journey__description">{phase.description}</p>
+        </div>
+
+        <div className="phase-journey__path" aria-hidden="true">
+          <span className="phase-journey__line" />
+          <span className="phase-journey__pulse" />
+          <div className="phase-journey__upcoming">
+            {phases.slice(active + 1, active + 4).map((item, index) => (
+              <article className="phase-journey__preview" key={item.name}>
+                <span>{pad(active + index + 1)}</span>
+                <strong>{item.name}</strong>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <ol className="phase-journey__rail" aria-label="Progreso del Escala Growth Framework">
+          {phases.map((item, index) => (
+            <li key={item.name} className={index < active ? 'is-complete' : index === active ? 'is-active' : ''} aria-current={index === active ? 'step' : undefined}>
+              <span>{pad(index)}</span><i aria-hidden="true" />
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <ol className="phase-journey__static">
+        {phases.map((item, index) => (
+          <li key={item.name}>
+            <span>{pad(index)}</span>
+            <div><h3>{item.name}</h3><p>{item.description}</p></div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  )
+}
