@@ -18,7 +18,7 @@ function point(index: number, count: number, radius = RADIUS) {
 
 export function PhaseCycle({ phases }: { phases: readonly Phase[] }) {
   const rootRef = useRef<HTMLDivElement>(null)
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState(2)
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -76,14 +76,13 @@ export function PhaseCycle({ phases }: { phases: readonly Phase[] }) {
           <p className="phase-cycle__eyebrow">FASE {pad(active)} / {String(phases.length).padStart(2, '0')}</p>
           <h3>{phase.name}</h3>
           <p className="phase-cycle__description">{phase.description}</p>
-          <p className="phase-cycle__hint">SCROLL O CLIC AVANZA LA FASE · EVOLVE CONECTA CON DISCOVER: EL MÉTODO ES UN CICLO, NO UNA LÍNEA</p>
         </div>
 
         <div className="phase-cycle__ring-wrap">
           <span className="phase-cycle__ghost" aria-hidden="true">{pad(active)}</span>
           <svg className="phase-cycle__ring" viewBox={`0 0 ${SIZE} ${SIZE}`} role="group" aria-label="Ciclo de crecimiento de diez fases">
             <circle className="phase-cycle__base" cx={CENTER} cy={CENTER} r={RADIUS} />
-            <circle className="phase-cycle__progress" cx={CENTER} cy={CENTER} r={RADIUS} pathLength={CIRCUMFERENCE} strokeDasharray={`${progressLength} ${CIRCUMFERENCE}`} />
+            <circle className="phase-cycle__progress" cx={CENTER} cy={CENTER} r={RADIUS} strokeDasharray={`${progressLength} ${CIRCUMFERENCE}`} />
             <path className="phase-cycle__return" d={`M ${evolve.x} ${evolve.y} A ${RADIUS + 26} ${RADIUS + 26} 0 0 1 ${discover.x} ${discover.y}`} />
             {phases.map((item, index) => {
               const node = point(index, phases.length)

@@ -22,7 +22,7 @@ export const homeContent = {
     { name: "Measure", description: "Definir indicadores de negocio y métricas técnicas que permitan medir el impacto real de cada iniciativa." },
     { name: "Evolve", description: "Entender que ningún producto está terminado. La mejora continua forma parte del modelo de colaboración de Escala." }
   ] },
-  proof: { title: "Hechos, no promesas.", figures: [{ value: "100+", label: "REQUISITOS", caption: "implementados y verificados en producción" }, { value: "200+", label: "PRUEBAS", caption: "automatizadas sobre flujos reales" }, { value: "JUL 2026", label: "PRODUCCIÓN", caption: "fecha verificada de puesta en marcha" }, { value: "REAL", label: "FACTURACIÓN", caption: "operada por el cliente en su plataforma" }], cases: [
+  proof: { title: "Hechos, no promesas.", figures: [{ value: "100+", label: "REQUISITOS", caption: "implementados y verificados en producción" }, { value: "200+", label: "PRUEBAS", caption: "automatizadas sobre flujos reales" }, { value: "JUL 2026", label: "PRODUCCIÓN", caption: "fecha verificada de puesta en marcha" }, { value: "REAL", label: "OPERATIVA", caption: "clientes, proveedores y gestión interna operando en la plataforma" }], cases: [
     { name: "MAGUPELL", title: "Digitalización integral de la inspección de calidad en el sector de la piel", text: "100+ requisitos funcionales · 200+ pruebas automatizadas · Producción: 1 julio 2026 · Facturación real a través de la plataforma", href: "/casos-de-exito/magupell" },
     { name: "BioZero", title: "Plataforma de gestión clínica dental con IA", text: "Registros clínicos colaborativos, gamificación del paciente y análisis de imágenes con modelos de visión de última generación.", href: "/casos-de-exito/biozero" }
   ]},
