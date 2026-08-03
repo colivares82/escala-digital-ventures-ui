@@ -1,8 +1,10 @@
 # El Libro de Escala
 
-## Escala Digital Ventures — Base de conocimiento corporativa
+**Escala Digital Ventures — Base de conocimiento corporativa**
+**Versión:** 2.1 · Julio 2026 · Mataró, Barcelona · www.escaladigitalventures.com
 
-**Versión:** 2.1 · Julio 2026
+© 2026 Escala Digital Ventures, S.L.U. Todos los derechos reservados. Este documento y su contenido —textos, metodologías, marcos de trabajo (incluido el Escala Growth Framework), narrativa de marca y materiales derivados— son propiedad de Escala Digital Ventures, S.L.U. Queda prohibida su reproducción, distribución o comunicación pública, total o parcial, sin autorización expresa y por escrito de Escala Digital Ventures, S.L.U.
+
 **Propósito:** Este documento es la base de conocimiento única de Escala Digital Ventures. Consolida la identidad, la filosofía, la experiencia, la metodología, el modelo de negocio, los casos de éxito y la narrativa de marca de la firma en un solo texto de referencia. Es la fuente de la que se derivarán la web corporativa (www.escaladigitalventures.com), propuestas comerciales, materiales de venta y cualquier contenido futuro. Está redactado sin nombres de empleadores anteriores: habla siempre de Escala y del resultado de la experiencia que la respalda. El detalle de la trayectoria vive en colivares.com, la referencia pública del Director General de Escala.
 
 ---
@@ -43,8 +45,6 @@ Cada decisión debe responder a una pregunta: ¿seguirá aportando valor dentro 
 
 **Velocidad con criterio.** Gracias a un flujo de trabajo asistido por IA y a una metodología dirigida por especificaciones, Escala entrega a una velocidad propia de equipos mucho mayores, sin sacrificar calidad ni control.
 
----
-
 ## Capítulo 2. La Filosofía de Escala
 
 ### La tecnología no es el producto
@@ -78,8 +78,6 @@ Toda decisión técnica debe justificarse por su impacto empresarial: mantenimie
 ### La calidad es una inversión
 
 La calidad no es un lujo; es la inversión que reduce deuda técnica, incidencias y coste futuro. Construir para evolucionar, no solo para entregar.
-
----
 
 ## Capítulo 3. El Manifiesto de Escala
 
@@ -132,13 +130,11 @@ De esa experiencia nace una convicción central: una empresa necesita capacidade
 
 ### Aprendizaje continuo
 
-La tecnología cambia constantemente. Escala mantiene una mentalidad de mejora continua, explorando y adoptando nuevas capacidades —modelos, herramientas, patrones— únicamente cuando generan valor real para el cliente. A ello se suma la experiencia de trabajo en entornos multiculturales y distribuidos, operando profesionalmente en español, inglés y ruso.
+La tecnología cambia constantemente. Escala mantiene una mentalidad de mejora continua, explorando y adoptando nuevas capacidades —modelos, herramientas, patrones— únicamente cuando generan valor real para el cliente. A ello se suma la experiencia de trabajo en entornos multiculturales y distribuidos, operando profesionalmente en español e inglés.
 
 ### La referencia
 
-La trayectoria profesional completa de quien dirige Escala —su Director General— está disponible como referencia pública en **colivares.com**. Los materiales de Escala hablan siempre de lo que esa experiencia aporta a los clientes; el detalle biográfico y profesional vive en esa página personal.
-
----
+La trayectoria profesional completa de quien dirige Escala —su Director General— está disponible como referencia pública en colivares.com. Los materiales de Escala hablan siempre de lo que esa experiencia aporta a los clientes; el detalle biográfico y profesional vive en esa página personal.
 
 ## Capítulo 5. Nuestra forma de entender el Producto
 
@@ -170,8 +166,6 @@ Cada plataforma desarrollada incrementa el valor de la empresa. Debe ser escalab
 
 Escala actúa como socio estratégico de producto: ayuda a definir visión, roadmap, prioridades y evolución tecnológica para que cada inversión genere ventajas competitivas sostenibles.
 
----
-
 ## Capítulo 6. Ingeniería como Ventaja Competitiva
 
 ### La ingeniería como inversión
@@ -188,7 +182,7 @@ Las pruebas automatizadas, las revisiones de código, la integración continua y
 
 ### Developer Experience
 
-Las herramientas internas también son producto. Cuanto más sencillo resulta desarrollar, desplegar y mantener un sistema, mayor velocidad obtiene el negocio para innovar. Esta convicción —forjada durante años construyendo plataformas y herramientas para cientos de miles de desarrolladores— se aplica también a los proyectos de Escala: cada plataforma se entrega con su tubería de despliegue, sus entornos y su documentación, lista para evolucionar sin fricción.
+Las herramientas internas también son producto. Cuanto más sencillo resulta desarrollar, desplegar y mantener un sistema, mayor velocidad obtiene el negocio para innovar. Esta convicción —forjada durante años construyendo plataformas y herramientas para cientos de miles de desarrolladores— se aplica también a los proyectos de Escala: cada plataforma se entrega con su pipeline de despliegue, sus entornos y su documentación, lista para evolucionar sin fricción.
 
 ### Reducir deuda técnica
 
@@ -197,8 +191,6 @@ Cada decisión técnica evalúa su impacto futuro. La deuda técnica solo se ace
 ### El stack y la práctica de Escala
 
 En la práctica, esto se traduce en decisiones concretas: TypeScript de extremo a extremo, React en el frontend, NestJS en el backend, PostgreSQL como base de datos, despliegues contenedorizados en Google Cloud (región europea), integración y entrega continuas con GitHub Actions, entornos separados de desarrollo y producción, cobertura de pruebas automatizadas como norma, control de versiones visible en la propia aplicación y revisión de seguridad de credenciales e infraestructura. El cliente es propietario de su plataforma, su código y sus datos.
-
----
 
 ## Capítulo 7. Inteligencia Artificial y Automatización aplicada al Negocio
 
@@ -234,25 +226,16 @@ Escala no solo integra IA en los productos de sus clientes: la utiliza en su pro
 
 El Escala Growth Framework es la metodología propia de Escala Digital Ventures para transformar empresas mediante tecnología. No es una metodología de desarrollo de software; es un marco estratégico que conecta negocio, personas, procesos y tecnología en un ciclo continuo de mejora. Consta de diez fases:
 
-**1. Discover.** Comprender profundamente el negocio, sus objetivos, limitaciones, oportunidades y procesos. Escuchar antes de proponer.
-
-**2. Understand.** Modelar cómo funciona realmente la organización, identificar cuellos de botella, dependencias y fuentes de fricción.
-
-**3. Simplify.** Eliminar complejidad innecesaria antes de introducir tecnología. Un mal proceso automatizado sigue siendo un mal proceso.
-
-**4. Design.** Diseñar la experiencia, la arquitectura y el modelo operativo pensando en escalabilidad, mantenibilidad y adopción.
-
-**5. Validate.** Validar hipótesis rápidamente mediante prototipos navegables, pruebas con usuarios y entregas incrementales para reducir riesgos antes de invertir en construcción.
-
-**6. Build.** Construir plataformas con estándares elevados de ingeniería, automatización, seguridad y calidad.
-
-**7. Automate.** Automatizar procesos completos para reducir errores, aumentar productividad y liberar tiempo para actividades de mayor valor.
-
-**8. Scale.** Preparar la plataforma y la organización para crecer sin necesidad de rediseños continuos.
-
-**9. Measure.** Definir indicadores de negocio y métricas técnicas que permitan medir el impacto real de cada iniciativa.
-
-**10. Evolve.** Entender que ningún producto está terminado. La mejora continua forma parte del modelo de colaboración de Escala.
+1. **Discover.** Comprender profundamente el negocio, sus objetivos, limitaciones, oportunidades y procesos. Escuchar antes de proponer.
+2. **Understand.** Modelar cómo funciona realmente la organización, identificar cuellos de botella, dependencias y fuentes de fricción.
+3. **Simplify.** Eliminar complejidad innecesaria antes de introducir tecnología. Un mal proceso automatizado sigue siendo un mal proceso.
+4. **Design.** Diseñar la experiencia, la arquitectura y el modelo operativo pensando en escalabilidad, mantenibilidad y adopción.
+5. **Validate.** Validar hipótesis rápidamente mediante prototipos navegables, pruebas con usuarios y entregas incrementales para reducir riesgos antes de invertir en construcción.
+6. **Build.** Construir plataformas con estándares elevados de ingeniería, automatización, seguridad y calidad.
+7. **Automate.** Automatizar procesos completos para reducir errores, aumentar productividad y liberar tiempo para actividades de mayor valor.
+8. **Scale.** Preparar la plataforma y la organización para crecer sin necesidad de rediseños continuos.
+9. **Measure.** Definir indicadores de negocio y métricas técnicas que permitan medir el impacto real de cada iniciativa.
+10. **Evolve.** Entender que ningún producto está terminado. La mejora continua forma parte del modelo de colaboración de Escala.
 
 El Escala Growth Framework convierte cada proyecto en un proceso permanente de evolución. Su objetivo no es entregar software, sino aumentar la capacidad de crecimiento del negocio.
 
@@ -338,6 +321,8 @@ Los casos de éxito de Escala demuestran transformación empresarial. El foco es
 
 **Impacto.** El proyecto pasó de los requisitos iniciales a producción con más de cien requisitos funcionales implementados y más de doscientas pruebas automatizadas. La plataforma entró en producción el 1 de julio de 2026 en dominio propio sobre Google Cloud y comenzó a generar valor desde el primer mes: gran aceptación por parte de los usuarios, estabilidad operativa y un hito clave — la empresa ya opera y factura a sus propios clientes directamente a través de la aplicación. El verdadero éxito fue convertir el software en parte esencial de la operación diaria.
 
+**MAGUPELL en cifras:** 100+ requisitos funcionales implementados · 200+ pruebas automatizadas · 1 jul 2026 en producción sobre Google Cloud · Mes 1 facturando a clientes con estabilidad.
+
 **Siguientes pasos.** La alianza continúa en modalidad de soporte y evolución mensual, con nuevas funcionalidades entrando en producción a partir del feedback real de los usuarios. Este caso condensa el modelo Escala completo: análisis del negocio, especificación rigurosa, construcción a medida, puesta en producción y acompañamiento continuo como socio tecnológico.
 
 ## Capítulo 16. BioZero — Plataforma de gestión clínica dental con IA
@@ -348,7 +333,7 @@ Los casos de éxito de Escala demuestran transformación empresarial. El foco es
 
 **Lo que demuestra.** BioZero acredita la capacidad de Escala para aplicar IA de forma útil y concreta en un sector regulado y sensible, y para llevar un producto desde el concepto hasta una primera versión funcional en manos del cliente.
 
-## El futuro de este capítulo
+### El futuro de este capítulo
 
 Cada nuevo cliente ampliará esta parte del libro con historias centradas en crecimiento, eficiencia, automatización y creación de ventajas competitivas sostenibles.
 
@@ -384,9 +369,7 @@ Propuestas de titular y claims para trabajar el copy de la web y los materiales 
 
 La voz de Escala es directa, segura y cercana: habla de negocio antes que de tecnología, evita la jerga vacía, usa la primera persona del plural, promete solo lo que puede demostrar y respalda cada afirmación con hechos — producción real, facturación real, pruebas reales, clientes reales. Es la voz de un socio experto que se sienta al lado del empresario, no enfrente.
 
-Reglas editoriales permanentes: nunca se citan por su nombre los empleadores anteriores del equipo fundador (la experiencia se describe siempre de forma anonimizada: "multinacionales líderes de software empresarial", "startups de Silicon Valley", "plataformas usadas por más de 40.000 empresas en más de cien países"); en los materiales de Escala no se detalla la trayectoria personal del fundador — se remite a colivares.com, la referencia pública de su Director General; y todo caso de éxito se cuenta con datos verificables y con el permiso del cliente.
-
----
+**Reglas editoriales permanentes:** nunca se citan por su nombre los empleadores anteriores del equipo fundador (la experiencia se describe siempre de forma anonimizada: "multinacionales líderes de software empresarial", "startups de Silicon Valley", "plataformas usadas por más de 40.000 empresas en más de cien países"); en los materiales de Escala no se detalla la trayectoria personal del fundador — se remite a colivares.com, la referencia pública de su Director General; y todo caso de éxito se cuenta con datos verificables y con el permiso del cliente.
 
 ## Cierre
 

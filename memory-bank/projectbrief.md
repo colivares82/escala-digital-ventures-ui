@@ -11,9 +11,14 @@
 
 Corporate marketing website for Escala Digital Ventures. **Not** an app, **not** a monorepo — a static Next.js site deployed to Google Cloud Run. The site communicates what Escala is, proves it with verifiable facts, and drives qualified conversations.
 
-## Spec source of truth
+## Spec sources of truth
 
-`escala-web-content-spec.md` (v1.0, August 2026) — derived from "El Libro de Escala v2.1". All copy, routes, design decisions, and requirements originate from this spec. Never contradict it.
+- **El Libro de Escala v2.1** → `docs/el-libro-de-escala-v2.1.md` — business knowledge base, copy authority
+- **Website Content & Design Spec v1.1** → `docs/escala-web-content-spec-v1.1.md` — product spec, design system, routes, i18n
+- **Development plan** → `PLAN.md` — phase tracking and backlog backbone
+- **Engineering standards** → `.clinerules/`
+
+All copy, routes, design decisions, and requirements originate from these documents. Never contradict them.
 
 ## Goals
 
@@ -33,6 +38,7 @@ Corporate marketing website for Escala Digital Ventures. **Not** an app, **not**
 - **ES** — default (no `/es` prefix), master copy, fully implemented
 - **EN** — at `/en`, pending professional translation review by Carlos
 - **CA** — at `/ca`, pending professional translation review by Carlos
+- **RU — NOT a working language. Must not appear anywhere.**
 
 ## Pages planned (spec §4.1)
 

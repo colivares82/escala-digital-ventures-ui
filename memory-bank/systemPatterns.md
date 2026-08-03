@@ -11,6 +11,10 @@ Next.js App Router (SSG)
   └── content/es/           # typed content dictionaries (source of truth for all copy)
   └── lib/                  # constants, utilities
   └── tests/                # Vitest + RTL
+  └── docs/                 # ARCHITECTURE, BACKLOG, CHANGELOG, TRACEABILITY, Libro v2.1, Spec v1.1
+  └── specs/                # implementation specs; specs/mockups/ for wireframes
+  └── memory-bank/          # agent persistent context
+  └── PLAN.md               # phase tracking and backlog backbone (repo root)
 ```
 
 ## Component pattern
@@ -47,6 +51,7 @@ Adding a new interior page: add a new file under `content/es/`, add the page und
 - **Routes:** `lib/routes.ts` — `ROUTES.*` and `ANCHORS.*`. Never use inline URL strings.
 - **Motion:** `lib/motion-constants.ts` — all timings, thresholds, media queries. Never use magic numbers.
 - **CSS tokens:** `--paper`, `--ink`, `--mar`, `--abisal`, `--ambre` in `:root`. Never use hex inline.
+- **i18n slugs (future):** `lib/i18n/routes.ts` — locale-slug map (reserved, created in Phase 1).
 
 ## Animation pattern
 
@@ -74,3 +79,10 @@ Vitest + React Testing Library:
 - Constants: `UPPER_SNAKE_CASE`
 - CSS: `.BEM__block--modifier`
 - Content keys: `camelCase`
+
+## Spec-driven development loop
+
+All implementation follows the spec-driven flow (per `.clinerules/agentic-workflow.md`):
+1. Spec first (English, lives in `specs/`) → approved by Carlos
+2. Wireframe if new UI (lives in `specs/mockups/`)
+3. Implement → test → update traceability → update memory bank
