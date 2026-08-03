@@ -1,7 +1,14 @@
 import { clients } from '@/content/es/clients'
 import { sharedContent } from '@/content/es/shared'
+import type { HomePageDictionary } from '@/content/types'
 
 export const homeContent = {
+  meta: {
+    title: 'Escala Digital Ventures | Producto y tecnología',
+    description:
+      'Estudio de producto y tecnología que automatiza operaciones y construye plataformas digitales para empresas en crecimiento.',
+  },
+
   header: sharedContent.header,
 
   /**
@@ -189,6 +196,6 @@ export const homeContent = {
   },
 
   footer: sharedContent.footer,
-} as const
+} as const satisfies HomePageDictionary
 
 export type HomeContent = typeof homeContent
