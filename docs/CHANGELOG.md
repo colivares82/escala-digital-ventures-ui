@@ -6,6 +6,49 @@ All notable changes, newest first.
 
 ---
 
+## [Unreleased] — Phase 1: i18n architecture + interior page system
+
+Spec: `specs/spec-phase1-i18n-architecture.md` (SPEC-P1 v1.0)
+
+### Added
+- `lib/i18n/types.ts` — `Locale`, `LOCALES`, `DEFAULT_LOCALE`, `PageId`, `CaseSlug`, `CASE_SLUGS`, `PageParams`, `RouteResolution` types
+- `lib/i18n/routes.ts` — route map (all 10 pages × 3 locales per spec §4.1); `getPath`, `resolvePath`, `getAlternates` helpers; reverse lookup built at module load for O(1) resolution
+- `lib/i18n/dictionary.ts` — `getDictionary(locale)` typed bundle accessor; Phase 1 returns ES for all locales
+- `lib/config.ts` — `SITE_URL` env-aware constant
+- `content/types.ts` — `PageMeta`, `HomePageDictionary`, `ServicesDictionary`, ... interfaces for all pages
+- `content/data/cases.ts` — locale-aware case-study data (moved from `content/es/clients.ts`); per-locale copy fields ready for Phase 5
+- `content/es/{services,method,cases,alliance,about,contact,legal,privacy}.ts` — Phase 1 stubs; meta populated; `satisfies` interface check
+- `content/en/*` and `content/ca/*` — full per-page re-exports of ES content; `TODO(P5): translate` markers; barrel `index.ts`
+- `app/[[...path]]/page.tsx` — single catch-all route; `resolvePath` for resolution; `notFound()` on unknown paths; `dynamicParams = false`; `generateStaticParams` (home × 3 locales in Phase 1); `generateMetadata` with canonical, hreflang × 3 + x-default, OG
+- `app/sitemap.ts` — built pages × locales with `alternates.languages`; commented-out Phase 2 entries
+- `app/robots.ts` — allow `/`; disallow `/styleguide`; references sitemap
+- `components/locale-switcher.tsx` — page-preserving locale links; `aria-current`; IBM Plex Mono; `--ambre` active; 50% opacity inactive; keyboard operable; hides on small screens
+- `components/page-header.tsx` — interior page header; `eyebrow`, `title`, `lead?`, `surface: 'paper' | 'abisal'`; BEM CSS; asymmetric 12-col grid
+- `specs/spec-phase1-i18n-architecture.md` — spec in repo
+- `docs/adding-a-page.md` — AC-9 guide: adding a page = interface + ES dict + route entry + component
+- Tests: `tests/lib/i18n/routes.test.ts` (61 tests: inverse property, null cases, alternates), `tests/lib/i18n/meta.test.ts` (42 tests: length limits, AC-6 ruso guard), `tests/lib/i18n/dictionary.test.ts`, `tests/components/page-header.test.tsx`
+
+### Changed
+- `app/page.tsx` → **deleted**; home migrated into `app/[[...path]]/page.tsx` (pixel parity preserved)
+- `app/layout.tsx` — per-page metadata removed (now in catch-all); fallback `title.template` added; `lang="es"` with Phase 6 note
+- `components/site-chrome.tsx` — `SiteHeader` accepts `currentPage`, `locale`, `pageParams` props; locale display replaced by `<LocaleSwitcher>`
+- `content/es/home.ts` — `meta` field added; `satisfies HomePageDictionary`
+- `content/es/clients.ts` — **backward-compat adapter** re-exporting from `content/data/cases.ts`; data source moved
+- `app/globals.css` — `PageHeader` BEM styles added; `LocaleSwitcher` styles (`.locale-switcher`, `.locale-switcher__link`); responsive hide rule updated from `.site-header__actions p` to `.locale-switcher`
+- `app/styleguide/page.tsx` — section 05 "Plantilla de página" added: `PageHeader` both surfaces + interior section + `FinalCTA` (AC-8)
+- `vitest.config.ts` — `content/types.ts` excluded from coverage (type-only file)
+
+### Coverage (post Phase 1)
+| Metric | After | Threshold |
+|--------|-------|-----------|
+| Statements | ~93% | 70% ✅ |
+| Branches | ~83% | 70% ✅ |
+| Functions | ~96% | 70% ✅ |
+| Lines | ~97% | 70% ✅ |
+Total tests: 252 (all passing).
+
+---
+
 ## [Unreleased] — Phase 0: Documentation sync
 
 ### Added

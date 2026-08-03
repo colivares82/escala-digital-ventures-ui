@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { ClaimsMarquee } from '@/components/claims-marquee'
 import { ClientChip } from '@/components/client-chip'
 import { ContactForm } from '@/components/contact-form'
+import { FinalCTA } from '@/components/final-cta'
+import { PageHeader } from '@/components/page-header'
 import { Readout } from '@/components/readout'
 import { SectionIndex } from '@/components/section-index'
 import { SystemDiagram } from '@/components/system-diagram'
@@ -141,6 +143,45 @@ export default function StyleGuidePage() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* ── Section 05: Page template skeleton (AC-8 visual validation point) ── */}
+      <section aria-label="Plantilla de página interior" style={{ borderTop: '2px solid var(--ambre)' }}>
+        <div className="page-shell" style={{ paddingBlock: '3rem' }}>
+          <SectionIndex index="05" label="PLANTILLA DE PÁGINA" />
+          <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.65rem', letterSpacing: '0.1em', color: 'var(--mar)', marginBottom: '4rem' }}>
+            PageHeader (ambas superficies) + Section + FinalCTA — esqueleto de página interior. AC-8.
+          </p>
+        </div>
+
+        {/* PageHeader — surface: paper */}
+        <PageHeader
+          eyebrow="01 / CAPACIDADES"
+          title="Qué hacemos y por qué funciona."
+          lead="Cinco líneas de servicio orientadas a resultados. Sin relleno de tecnología, sin promesas vacías."
+          surface="paper"
+        />
+
+        {/* Interior section placeholder */}
+        <section className="section page-shell">
+          <SectionIndex index="01" label="CONTENIDO INTERIOR" />
+          <p className="lead-copy">
+            Sección de contenido de página interior. Las páginas interiores usan
+            el mismo vocabulario visual que la home: Section, SectionIndex,
+            Reveal, y el sistema de diagramas FIG.
+          </p>
+        </section>
+
+        {/* FinalCTA on paper surface for reference */}
+        <FinalCTA content={finalCta} />
+
+        {/* PageHeader — surface: abisal */}
+        <PageHeader
+          eyebrow="02 / MÉTODO"
+          title="Cómo trabajamos."
+          lead="El Escala Growth Framework conecta negocio, personas y tecnología en un ciclo continuo."
+          surface="abisal"
+        />
       </section>
     </main>
   )

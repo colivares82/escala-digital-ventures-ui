@@ -46,12 +46,26 @@ All copy in typed `as const` dictionaries:
 
 Adding a new interior page: add a new file under `content/es/`, add the page under `app/`, wire content as props. Zero changes to existing components.
 
+## i18n routing pattern (Phase 1 — SPEC-P1)
+
+Single catch-all route `app/[[...path]]/page.tsx`:
+- `resolvePath(segments)` → `RouteResolution | null` — O(1) lookup via pre-built reverse map
+- `dynamicParams = false` — unrecognized paths → 404; no runtime
+- `generateStaticParams` emits only BUILT pages (Option A); interior pages added as Phase 2 builds them
+- `generateMetadata` sets canonical + hreflang × 3 + x-default per resolved page
+- `getDictionary(locale)` returns typed `Dictionary` bundle; Phase 1 returns ES for all locales
+
+Adding a page: interface in `content/types.ts` + ES dict + EN/CA re-exports + route entry (if new) + component + `generateStaticParams` update. Full guide: `docs/adding-a-page.md`.
+
+Known limitation: `<html lang>` is `"es"` globally; EN/CA get correct `lang` on `<main>` instead. Phase 6 middleware will fix `<html lang>` properly.
+
 ## Constants pattern
 
-- **Routes:** `lib/routes.ts` — `ROUTES.*` and `ANCHORS.*`. Never use inline URL strings.
+- **Routes (ES anchors):** `lib/routes.ts` — `ROUTES.*` and `ANCHORS.*`. Home page uses these.
+- **Routes (i18n):** `lib/i18n/routes.ts` — `getPath`, `resolvePath`, `getAlternates`. All locale-aware routing uses this. Never hard-code localized slugs.
 - **Motion:** `lib/motion-constants.ts` — all timings, thresholds, media queries. Never use magic numbers.
 - **CSS tokens:** `--paper`, `--ink`, `--mar`, `--abisal`, `--ambre` in `:root`. Never use hex inline.
-- **i18n slugs (future):** `lib/i18n/routes.ts` — locale-slug map (reserved, created in Phase 1).
+- **Site URL:** `lib/config.ts` — `SITE_URL` (env-aware). Never hard-code the domain.
 
 ## Animation pattern
 

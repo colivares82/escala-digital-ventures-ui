@@ -35,16 +35,22 @@ Status: ☑ done
 contributor (or agent) could build page 2 from the docs alone. ✅
 
 ## PHASE 1 — i18n architecture + interior page system
-Status: ☐
-- ☐ Locale routing: ES at root, `/en`, `/ca`, localized slug map
-  (spec §4.1) in one source file.
-- ☐ `/content/{es,en,ca}` structure; ES only populated.
-- ☐ Per-page metadata + hreflang alternates + sitemap plumbing.
-- ☐ LocaleSwitcher preserves current page.
-- ☐ Interior-page components: PageHeader + section templates, proven on
-  a throwaway route.
+Status: ☑ done
+- ☑ Locale routing: `app/[[...path]]/page.tsx` catch-all; `lib/i18n/routes.ts`
+  route map (10 pages × 3 locales per spec §4.1); `getPath`, `resolvePath`,
+  `getAlternates` helpers; `dynamicParams = false`.
+- ☑ `/content/{es,en,ca}` structure; ES populated + meta on all stubs;
+  EN/CA re-export ES with `TODO(P5)` markers; `content/data/cases.ts`.
+- ☑ Per-page metadata (title/description/canonical) + hreflang × 3 + x-default
+  OG; `app/sitemap.ts`; `app/robots.ts`.
+- ☑ `LocaleSwitcher` — page-preserving links, `aria-current`, keyboard accessible.
+- ☑ `PageHeader` (paper/abisal) + `/styleguide` "Plantilla de página" (AC-8).
+- ☑ `docs/adding-a-page.md` — AC-9 guide.
+- ☑ 252 tests passing; coverage ≥ 93% statements (well above 70% gate).
+- ☑ Option A: route map complete; only home × 3 locales emitted/sitemapped.
+  Interior routes `notFound()` until Phase 2 builds them.
 **Exit criteria:** `/en` and `/ca` render the home with ES fallback and
-correct hreflang; adding a page = dictionary + route entry only.
+correct hreflang; adding a page = dictionary + route entry only. ✅
 
 ## PHASE 2 — Interior pages (one session each, this order)
 Status: ☐

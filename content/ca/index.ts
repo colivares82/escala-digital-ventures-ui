@@ -1,2 +1,14 @@
-// Reserved for reviewed Catalan content. Do not fall back silently to Spanish.
-export const catalanContentStatus = 'pending-review' as const
+/**
+ * Catalan locale barrel.
+ * TODO(P5): replace re-exports with reviewed Catalan translations.
+ */
+export * from './home'
+export * from './services'
+export * from './method'
+export * from './cases'
+export * from './alliance'
+export * from './about'
+export * from './contact'
+export * from './legal'
+export * from './privacy'
+export * from './shared'

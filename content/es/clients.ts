@@ -1,3 +1,11 @@
+/**
+ * Backward-compat adapter for home-page proof section and existing tests.
+ * Source of truth has moved to content/data/cases.ts (SPEC-P1 FR-3.1).
+ * Phase 2: migrate ProofSection/ClientChip to consume CaseStudy directly;
+ *          at that point this file can be deleted.
+ */
+import { cases } from '@/content/data/cases'
+
 export type Client = {
   readonly name: string
   readonly eyebrow: string
@@ -7,21 +15,12 @@ export type Client = {
   readonly status: string
 }
 
-export const clients = [
-  {
-    name: 'MAGUPELL',
-    eyebrow: 'EN PRODUCCIÓN · SECTOR PIEL',
-    title: 'Digitalización integral de la inspección de calidad en el sector de la piel',
-    text: '100+ requisitos funcionales · 200+ pruebas automatizadas · Producción: 1 julio 2026 · Facturación real a través de la plataforma',
-    href: '/casos-de-exito/magupell',
-    status: 'Ver caso',
-  },
-  {
-    name: 'BioZero',
-    eyebrow: 'V1 ENTREGADA · CLÍNICA DENTAL + IA',
-    title: 'Plataforma de gestión clínica dental con IA',
-    text: 'Registros clínicos colaborativos, gamificación del paciente y análisis de imágenes con modelos de visión de última generación.',
-    href: '/casos-de-exito/biozero',
-    status: 'Ver caso',
-  },
-] as const satisfies readonly Client[]
+/** Flat ES-locale view of case studies — used by home ProofSection and tests. */
+export const clients: readonly Client[] = cases.map((c) => ({
+  name: c.name,
+  href: c.href,
+  eyebrow: c.content.es.eyebrow,
+  title: c.content.es.title,
+  text: c.content.es.text,
+  status: c.content.es.status,
+}))

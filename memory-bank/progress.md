@@ -35,14 +35,37 @@
 | `memory-bank/` — all six core files updated | Complete |
 | Russian removed from all codebase files | Complete |
 
+## What works ✅ — Phase 1 additions
+
+| Feature | Status |
+|---------|--------|
+| `lib/i18n/types.ts` — Locale, PageId, CaseSlug types | Complete |
+| `lib/i18n/routes.ts` — route map (10 pages × 3 locales); getPath/resolvePath/getAlternates | Complete |
+| `lib/i18n/dictionary.ts` — getDictionary(locale) typed bundle | Complete |
+| `lib/config.ts` — SITE_URL env-aware | Complete |
+| `content/types.ts` — page dictionary interfaces | Complete |
+| `content/data/cases.ts` — locale-aware case study data | Complete |
+| `content/es/` — all 10 page dictionaries (home full; stubs with meta for others) | Complete |
+| `content/en/*` + `content/ca/*` — re-exports with TODO(P5) markers | Complete |
+| `app/[[...path]]/page.tsx` — catch-all; home × 3 locales rendered; others 404 | Complete |
+| `app/sitemap.ts` — home × 3 locales with hreflang alternates | Complete |
+| `app/robots.ts` — allow `/`; disallow `/styleguide` | Complete |
+| `components/locale-switcher.tsx` — page-preserving, accessible, IBM Plex Mono | Complete |
+| `components/page-header.tsx` — `eyebrow`, `title`, `lead?`, `surface` | Complete |
+| `/styleguide` section 05 "Plantilla de página" (AC-8) | Complete (awaiting Carlos approval) |
+| `docs/adding-a-page.md` (AC-9) | Complete |
+| `specs/spec-phase1-i18n-architecture.md` in repo | Complete |
+| 252 tests; coverage ~93% statements; build clean | Complete |
+
 ## What's left ⬜ (ordered by PLAN phases)
 
 ### Phase 1 — i18n architecture
-| Feature | Priority | Backlog ID |
-|---------|----------|-----------|
-| Locale routing (ES root, `/en`, `/ca`) + slug map | P0 | I18N-01 |
-| Per-page SEO metadata + OG + sitemap + robots | P0 | SEO-01 |
-| Interior-page scaffolding (PageHeader + section templates) | P0 | I18N-01 |
+| Feature | Priority | Status |
+|---------|----------|--------|
+| AC-2: Carlos visual parity check on `/` | P0 | Awaiting review |
+| AC-8: Carlos approves `/styleguide` "Plantilla de página" | P0 | Awaiting review |
+| AC-10: Lighthouse baseline (deferred — GCP not ready) | P2 | Deferred to Phase 7 |
+| Phase 1 fully done pending Carlos reviews above | — | — |
 
 ### Phase 2 — Interior pages
 | Feature | Priority | Backlog ID |

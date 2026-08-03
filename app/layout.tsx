@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next'
 import { Archivo, IBM_Plex_Mono, Instrument_Sans } from 'next/font/google'
-import { sharedContent } from '@/content/es/shared'
 import './globals.css'
 
 const archivo = Archivo({
@@ -24,7 +23,19 @@ const ibmPlexMono = IBM_Plex_Mono({
   display: 'swap',
 })
 
-export const metadata: Metadata = sharedContent.metadata
+/**
+ * Site-wide fallback metadata.
+ * Per-page titles, descriptions, canonical, and hreflang are set in
+ * generateMetadata inside app/[[...path]]/page.tsx.
+ */
+export const metadata: Metadata = {
+  title: {
+    default: 'Escala Digital Ventures',
+    template: '%s | Escala Digital Ventures',
+  },
+  description:
+    'Estudio de producto y tecnología que automatiza operaciones y construye plataformas digitales.',
+}
 
 export const viewport: Viewport = {
   colorScheme: 'light',
@@ -36,6 +47,9 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
+    // lang="es" is the default locale (ES content is the only populated locale in Phase 1).
+    // Phase 6 (middleware) will dynamically set the correct lang per request for EN/CA.
+    // Interior pages additionally set lang on <main> for EN/CA (see [[...path]]/page.tsx).
     <html
       className={`${archivo.variable} ${instrumentSans.variable} ${ibmPlexMono.variable} bg-background`}
       lang="es"

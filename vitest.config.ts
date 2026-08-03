@@ -11,16 +11,18 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       include: ['components/**', 'lib/**', 'content/**'],
-      exclude: [
-        '**/__tests__/**',
-        '**/*.test.*',
-        'tests/**',
-        // Locale stub files — intentionally empty pending translation review
-        'content/ca/**',
-        'content/en/**',
-        // Utility available for future use; not yet called in production code
-        'lib/utils.ts',
-      ],
+        exclude: [
+          '**/__tests__/**',
+          '**/*.test.*',
+          'tests/**',
+          // Type-only file — interface declarations only, no runtime code
+          'content/types.ts',
+          // Locale stub files — intentionally empty pending translation review (Phase 5)
+          'content/ca/**',
+          'content/en/**',
+          // Utility available for future use; not yet called in production code
+          'lib/utils.ts',
+        ],
       thresholds: {
         lines:      70,
         statements: 70,
