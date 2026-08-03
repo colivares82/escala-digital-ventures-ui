@@ -1,12 +1,63 @@
 # Backlog
 
-> Cross-linked docs: [ARCHITECTURE](./ARCHITECTURE.md) · [CHANGELOG](./CHANGELOG.md) · [REQUIREMENTS_TRACEABILITY](./REQUIREMENTS_TRACEABILITY.md)
+> Cross-linked docs: [ARCHITECTURE](./ARCHITECTURE.md) · [CHANGELOG](./CHANGELOG.md) · [REQUIREMENTS_TRACEABILITY](./REQUIREMENTS_TRACEABILITY.md) · [PLAN](../PLAN.md)
 
-Items ordered by priority. The first open item is always "what to work on next."
+Items ordered by PLAN.md phase. The first open item in the first open phase is always "what to work on next."
 
 ---
 
-## P0 — Must do before go-live
+## Phase 1 — i18n architecture + interior page system
+
+### [I18N-01] Locale routing — ES root, EN `/en`, CA `/ca`
+- Implement `app/[locale]/` segment routing following spec §4.1 slug map
+- Create `lib/i18n/routes.ts` with localized slug → canonical mapping
+- Add `hreflang` alternates + `x-default` (ES) to every page
+- LocaleSwitcher preserves current page across locales
+- Interior-page scaffolding: PageHeader component + section template, proven on a throwaway route
+- Professional translation review by Carlos before any non-ES locale is indexed
+- **Content status:** `content/en/index.ts` and `content/ca/index.ts` are stubs marked `pending-review`
+- **Exit criteria:** `/en` and `/ca` render home with ES fallback + correct hreflang; adding a page = dictionary + route entry only
+
+### [SEO-01] Metadata per page
+- `title ≤ 60 chars`, `description ≤ 155 chars` per page per spec §7
+- OG image with identity (abisal background, claim in Archivo, ambre accent)
+- `sitemap.xml` with all locale alternates
+- `robots.txt` (index all except `/styleguide`)
+- Structured data: `Organization` + `ProfessionalService` on home; `BreadcrumbList` on inner pages
+- **Dependencies:** I18N-01 (pages must exist before sitemap)
+
+---
+
+## Phase 2 — Interior pages (one session each, spec §5)
+
+### [PAGE-02] Cómo trabajamos `/como-trabajamos`
+- **First interior page** (reuses existing `PhaseCycle` component)
+- ExecutionPractice: 5 practices as editorial list (Libro Ch. 9)
+- HowWeBuild section (Libro Ch. 7)
+- FinalCTA
+
+### [PAGE-01] Qué hacemos `/que-hacemos`
+- 5 service sections (problem-first, per spec §5.2 + Libro Ch. 11)
+- IdealClientNote section + CTA (Libro Ch. 12)
+
+### [PAGE-03] Casos de éxito index + detail pages
+- Index: `/casos-de-exito` — CaseStudyCard components
+- MAGUPELL: `/casos-de-exito/magupell` — narrative from spec §5.4 + Libro Ch. 15
+- BioZero: `/casos-de-exito/biozero` — narrative from spec §5.4 + Libro Ch. 16
+- CaseStudy template: sector eyebrow, H1, ImpactReadouts, narrative sections
+- Data-driven: adding a case = data entry, not a new component
+
+### [PAGE-04] Modelo de alianza `/modelo-de-alianza`
+- WhyFive, FIG.05 constellation reused, ThreePlanes, Commitments (5, Libro Ch. 13), FinalCTA
+
+### [PAGE-05] Sobre Escala `/sobre-escala`
+- DNA (mission/vision), Values (5), Experience (anonymized, 6 areas), Manifesto (10 beliefs, mono-index style)
+- FinalCTA
+- Language references: Spanish and English only (per spec §5.6 + Libro Ch. 4). **No Russian.**
+
+---
+
+## Phase 3 — Contact, end to end
 
 ### [CONTACT-01] Connect contact form to API + email provider
 - Add Next.js API route (`app/api/contact/route.ts`)
@@ -15,76 +66,73 @@ Items ordered by priority. The first open item is always "what to work on next."
 - Rate limiting per IP
 - Transactional email via the same provider used in MAGUPELL
 - Success/error response handled by `ContactForm` via fetch
-- Confirm final `hola@escaladigitalventures.com` address with Carlos before wiring
-- **Dependencies:** none
-
-### [I18N-01] Locale routing — EN and CA
-- Implement `app/[locale]/` segment routing following `lib/routes.ts` slug map
-- Create `lib/i18n/routes.ts` with EN/CA slug → ES-default mapping
-- Add `hreflang` alternates + `x-default` to every page
-- Locale switcher preserves current page
-- Professional translation review by Carlos before any locale is indexed
-- **Content status:** `content/en/index.ts` and `content/ca/index.ts` are stubs marked `pending-review`
-
-### [SEO-01] Metadata per page
-- `title ≤ 60 chars`, `description ≤ 155 chars` per page per spec §7
-- OG image generated with identity (paper background, claim, rule motif)
-- `sitemap.xml` with all locale alternates
-- `robots.txt` (index all except `/styleguide`)
-- Structured data: `Organization` + `ProfessionalService` on home; `BreadcrumbList` on inner pages
-
----
-
-## P1 — Interior pages (all spec §5)
-
-### [PAGE-01] Qué hacemos `/que-hacemos`
-- 5 service sections (problem-first, what-we-do paragraph per spec §5.2)
-- IdealClientNote section + CTA
-
-### [PAGE-02] Cómo trabajamos `/como-trabajamos`
-- FrameworkFull: interactive `PhaseCycle` with full phase descriptions
-- ExecutionPractice: 5 practices (H3 + paragraph)
-- HowWeBuild section
-- FinalCTA
-
-### [PAGE-03] Casos de éxito index + detail pages
-- Index: `/casos-de-exito` — two CaseStudyCards
-- MAGUPELL: `/casos-de-exito/magupell` — narrative from spec §5.4
-- BioZero: `/casos-de-exito/biozero` — narrative from spec §5.4
-- CaseStudy template: eyebrow, H1, ImpactReadouts, narrative sections
-
-### [PAGE-04] Modelo de alianza `/modelo-de-alianza`
-- WhyFive, ThreePlanes, Commitments (vertical rule), FinalCTA
-
-### [PAGE-05] Sobre Escala `/sobre-escala`
-- DNA, Values (5), Experience (anonymized, per spec §5.6), Manifesto (10 beliefs)
-- FinalCTA
+- Error state shows `hola@escaladigitalventures.com` as direct fallback
+- **Confirm final email address with Carlos before wiring**
+- **Dependencies:** none (can be done before interior pages if needed)
 
 ### [PAGE-06] Contacto `/contacto`
-- Dedicated contact page (reuses `ContactForm` + live API from CONTACT-01)
-
-### [PAGE-07] Legal pages
-- Aviso legal `/aviso-legal` — LSSI-CE data (Carlos to provide final CIF, address, registry)
-- Privacidad `/privacidad` — RGPD privacy policy
+- Dedicated contact page reusing `ContactForm` + live API from CONTACT-01
+- H1 «Hablemos de tu negocio.»; lead per spec §5.7
+- **Dependencies:** CONTACT-01
 
 ---
 
-## P2 — Quality and analytics
+## Phase 4 — Legal & analytics
+
+### [PAGE-07] Legal pages
+- `/aviso-legal` — LSSI-CE: razón social, CIF, domicilio, datos registrales, email (Carlos provides final data; agent drafts)
+- `/privacidad` — RGPD: responsable, finalidad, base legal, conservación, derechos, sin cesiones
 
 ### [ANALYTICS-01] Cookieless analytics
-- Integrate Plausible (self-hosted) or equivalent per spec §5.8
+- Integrate Plausible (self-hosted) or equivalent per spec §8
 - No cookie banner required (cookieless)
 - Conversion events: contact form submit, CTA clicks
+
+### 404 + favicon + OG images
+- 404 page with the identity
+- Favicon set
+- OG images (abisal background, Archivo claim, ambre accent)
+
+---
+
+## Phase 5 — EN & CA content
+
+### EN + CA dictionaries
+- Claude delivers full `en` and `ca` dictionaries: claims recrafted (not translated)
+  - EN primary: "We automate your business. We scale with you."
+  - CA: «Automatitzem el teu negoci. Escalem amb tu.»
+- Carlos reviews register of both languages
+- Localized slugs active per spec §4.1; hreflang QA across all pages
+- **Dependencies:** I18N-01 routing must be live
+
+---
+
+## Phase 6 — Google Cloud infrastructure & domain _(blocked: GCP not ready)_
+
+### GCP Cloud Run + GitHub Actions
+- Dockerfile (`output: "standalone"`)
+- Cloud Run services: `dev` + `prod`, European region
+- GitHub Actions: lint + test + build → deploy dev → manual approval → prod
+- `dev.escaladigitalventures.com` protected (IAP or basic auth)
+- Domain mapping for prod prepared (DNS not switched until Phase 7)
+- **Note:** The dev/main branch workflow will be configured here. Branches can be created earlier without the cloud target.
+
+---
+
+## Phase 7 — Launch QA & go-live
 
 ### [PERF-01] Lighthouse ≥ 95 in all categories
 - Fonts already self-hosted via `next/font`
 - Verify zero third-party scripts post-analytics
 - Image optimization: real case-study imagery if clients provide
 
-### [TEST-01] Increase test coverage
-- Add tests for `PhaseCycle`, `SystemDiagram`, `SiteHeader`, `SiteFooter`
-- E2E tests (Playwright) for home page critical journey + contact form
-- 70% gate is the floor; target 80%+ across all component tests
+### Launch checklist
+- AA + keyboard audit; real-device responsive pass (360px minimum)
+- Forms e2e in dev environment
+- Sitemap/robots verified
+- Structured data validated
+- DNS switch → production live
+- Post-launch: extract reusables to escala-dev-standards (diagram kit, i18n pattern, web rules template)
 
 ---
 
@@ -93,5 +141,5 @@ Items ordered by priority. The first open item is always "what to work on next."
 - Blog/insights section
 - Newsletter
 - `colivares.com` link (text mention only until site is live — no `<a>` tag)
-- Dark mode
+- Dark mode toggle
 - CRM integration

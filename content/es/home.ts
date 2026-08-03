@@ -185,7 +185,7 @@ export const homeContent = {
     // Assumption: placeholder address per spec §5.7 — confirm final value before go-live.
     email: 'hola@escaladigitalventures.com',
     location: 'Mataró · Barcelona',
-    languages: 'Trabajamos en español, inglés, catalán y ruso.',
+    languages: 'Trabajamos en español, inglés y catalán.',
   },
 
   footer: sharedContent.footer,

@@ -68,16 +68,26 @@ npm run test:coverage # Vitest + v8 coverage (enforces 70% gate)
 ## Design tokens (CSS custom properties in `:root`)
 
 ```
---paper:               #f7f7f4   /* page background */
---ink:                 #16181d   /* text */
---mar:                 #0e3a5d   /* primary accent — links, buttons, active states */
---abisal:              #0a2b45   /* dark surface */
---ambre:               #ffb703   /* amber — tick marks, highlights ONLY */
---abisal-gradient-end: #082238   /* gradient end in framework/phase-cycle backgrounds */
+--paper:               #f7f7f4   /* light surfaces background */
+--ink:                 #16181d   /* text on light surfaces */
+--mar:                 #0e3a5d   /* links, buttons, active states on light surfaces */
+--abisal:              #0a2b45   /* dark surfaces (hero, framework, alliance, contact) */
+--ambre:               #ffb703   /* single accent: tick-marks, pulses, active states, highlights */
+--abisal-gradient-end: #082238   /* radial gradient end on dark surfaces only */
 --line:                rgba(22,24,29,0.2)
 --line-light:          rgba(247,247,244,0.2)
 ```
 
+## Typography tokens (spec v1.1 §3.3)
+
+Three display sizes, tokenized — no ad-hoc heading sizes:
+- `--text-display-xl` — clamp(3.5rem, 8vw, 7rem) — home hero H1 ONLY
+- `--text-display-lg` — clamp(2.5rem, 5vw, 4rem) — all section H2s, page H1s, contact headline
+- `--text-figure` — clamp(2.25rem, 3.5vw, 3.25rem) — readout figures
+
 ## Deployment target
 
-Google Cloud Run (containerized), separate dev and prod environments. CI/CD: GitHub Actions. Not yet configured — see `docs/BACKLOG.md` for infra items.
+Google Cloud Run (containerized), separate dev and prod environments, European region.
+CI/CD: GitHub Actions (lint + test + build → deploy dev → manual approval → prod).
+**Status:** Not yet configured — GCP account pending. See `PLAN.md` Phase 6.
+The GitHub Actions branch workflow (dev/main) will be set up when GCP is ready.
