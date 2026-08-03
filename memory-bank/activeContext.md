@@ -1,60 +1,70 @@
 # Active Context
 
-_Last updated: March 2026 (Phase 0 completed)_
+_Last updated: March 2026 (Phase 1 completed)_
 
 ## Current state
 
-**Phase 0 complete.** The repository documentation now matches the built reality. Sources of truth are synchronized, Russian is removed everywhere in the codebase, and the Memory Bank is fully up to date.
+**Phase 1 complete.** The i18n architecture and interior-page system are in place. All 10 pages × 3 locales are defined in the route map; only home × 3 locales are rendered (Option A). Every subsequent phase adds a page by: interface + ES dict + route entry + component — no routing engineering required.
 
-The Spanish home page is complete, tested (138 tests, all passing), and builds clean. All engineering standards pass (coverage: statements 94%, branches 84%, functions 98%, lines 98%).
+Test suite: 252 tests, all passing. Coverage: ~93% statements (>> 70% gate). Build: clean, TypeScript strict.
 
-## What was just done (Phase 0)
+## What was just done (Phase 1)
 
-1. **Documentation sync:**
-   - `docs/el-libro-de-escala-v2.1.md` — Libro v2.1 added (supersedes stale root copy deleted)
-   - `docs/escala-web-content-spec-v1.1.md` — Spec v1.1 added (supersedes stale root copy deleted)
-   - `PLAN.md` at repo root — phase tracking guide with Phase 0 marked done
-   - Stale root files removed: `escala-book-base-de-conocimiento.md`, `escala-web-content-spec.md`
+1. **i18n core (`lib/i18n/`):**
+   - `types.ts` — `Locale`, `PageId`, `CaseSlug`, `RouteResolution` types
+   - `routes.ts` — route map (spec §4.1 exactly); `getPath`, `resolvePath`, `getAlternates`; pre-built reverse lookup; trailing slash normalization
+   - `dictionary.ts` — `getDictionary(locale)` → typed `Dictionary` bundle
 
-2. **Russian removed from codebase:**
-   - `content/es/home.ts` `languages` field: "Trabajamos en español, inglés, catalán y ruso." → "Trabajamos en español, inglés y catalán."
-   - (Old stale root files also contained Russian references — those files are now deleted)
+2. **Content restructure:**
+   - `content/types.ts` — page dictionary interfaces (`PageMeta`, `HomePageDictionary`, `ServicesDictionary`, …)
+   - `content/data/cases.ts` — locale-aware case studies (source of truth; `clients.ts` is now a backward-compat adapter)
+   - `content/es/home.ts` — `meta` field added; `satisfies HomePageDictionary`
+   - ES stub dictionaries for all 9 non-home pages (meta only; Phase 2 adds full content)
+   - `content/en/*` and `content/ca/*` — full per-page re-exports with `TODO(P5)` markers
 
-3. **Memory Bank updated:** All six core files reviewed and updated to reflect the as-built identity ("Sistemas en movimiento"), spec v1.1 content, and current PLAN phases.
+3. **Routing:**
+   - `app/[[...path]]/page.tsx` — single catch-all; `dynamicParams = false`; `generateStaticParams` (home × 3); `generateMetadata` (canonical, hreflang, OG)
+   - `app/page.tsx` deleted; home migrated with pixel parity
+   - `app/sitemap.ts` — built pages × locales; Phase 2 entries commented out
+   - `app/robots.ts` — allow `/`; disallow `/styleguide`
 
-4. **BACKLOG reordered** per PLAN.md phases: Phase 1 (i18n) → Phase 2 (interior pages) → Phase 3 (contact) → Phase 4 (legal/analytics) → Phase 5 (EN/CA) → Phase 6 (GCP infra).
+4. **LocaleSwitcher:**
+   - `components/locale-switcher.tsx` — page-preserving links via `getAlternates`; `aria-current`; IBM Plex Mono; accessible; hides on small screens
+   - `SiteHeader` updated to accept `currentPage`, `locale`, `pageParams` and render `<LocaleSwitcher>`
 
-## What comes next (priority order)
+5. **Interior page system:**
+   - `components/page-header.tsx` — `eyebrow`, `title`, `lead?`, `surface` props; BEM CSS; approved identity
+   - `/styleguide` section 05 "Plantilla de página" — PageHeader both surfaces + Section + FinalCTA (AC-8)
 
-**Phase 1 — i18n architecture + interior page system**
-1. **[I18N-01]** Locale routing: `app/[locale]/` segment, `lib/i18n/routes.ts` slug map (spec §4.1), `hreflang` alternates, LocaleSwitcher preserving current page.
-2. **[SEO-01]** Per-page metadata, OG images, `sitemap.xml`, `robots.txt`, structured data.
-3. Interior-page scaffolding: PageHeader + section templates proven on a throwaway route.
+6. **Docs + testing:**
+   - `docs/adding-a-page.md` (AC-9)
+   - `specs/spec-phase1-i18n-architecture.md` in repo
+   - 4 new test files; 2 refactored; all green
+   - `PLAN.md` Phase 1 marked done
 
-**Phase 2 — Interior pages** (after Phase 1 scaffolding is in place)
-4. **[PAGE-02]** `/como-trabajamos` — first, reuses existing PhaseCycle
-5. **[PAGE-01]** `/que-hacemos`
-6. **[PAGE-03]** `/casos-de-exito` + MAGUPELL + BioZero
-7. **[PAGE-04]** `/modelo-de-alianza`
-8. **[PAGE-05]** `/sobre-escala`
+## Known limitation (documented)
 
-**Phase 3 — Contact end-to-end**
-9. **[CONTACT-01]** API route + transactional email + honeypot + rate limit + `/contacto` page
+`<html lang>` is hardcoded `"es"` in root layout. Next.js static catch-all routes cannot dynamically set this without middleware. Phase 6 (middleware deployment on GCP) will address it. For Phase 1 this is acceptable because EN/CA content is ES fallback anyway. Interior pages set `lang` on `<main>` for EN/CA as an intermediate accessibility measure.
 
-**Phase 6 — GCP + GitHub Actions** (blocked: GCP account not ready)
-- Branch workflow (dev/main) will be configured once GCP is available
-- Branches can be created now if useful for isolation
+## What comes next (Phase 2)
+
+Each page in priority order:
+1. **[PAGE-02]** `/como-trabajamos` — first; reuses PhaseCycle; needs spec from Claude first
+2. **[PAGE-01]** `/que-hacemos` — 5 service lines; needs spec
+3. **[PAGE-03]** `/casos-de-exito` + MAGUPELL + BioZero
+4. **[PAGE-04]** `/modelo-de-alianza`
+5. **[PAGE-05]** `/sobre-escala`
+
+For each Phase 2 page:
+- Spec written first (English, in `specs/`)
+- `docs/adding-a-page.md` is the implementation guide
+- Update `generateStaticParams` + sitemap + renderer switch in catch-all
 
 ## Active decisions open
 
-- **Email address:** `hola@escaladigitalventures.com` is a placeholder. Must be confirmed by Carlos before CONTACT-01.
+- **Email address:** `hola@escaladigitalventures.com` is a placeholder. Confirm before CONTACT-01.
 - **Legal data:** CIF, registered address, registry data for Aviso Legal — Carlos to provide.
 - **EN/CA copy:** pending professional translation + Carlos review. Do not index until reviewed.
-- **Real imagery:** case-study context images pending from clients (MAGUPELL, BioZero). No stock photos per spec.
-- **GCP account:** not ready. Phase 6 (infra + GitHub Actions CI/CD) is blocked until available.
-
-## Known issues / technical debt
-
-- Header nav uses section anchors (`#que-hacemos`, `#metodo`) — these will switch to true routes as interior pages are built.
-- `/styleguide` route is dev-only and should remain noindex in all environments.
-- No remaining route/anchor literal strings — all use `ROUTES.*` / `ANCHORS.*` constants.
+- **Real imagery:** case-study context images pending from clients (MAGUPELL, BioZero).
+- **GCP account:** not ready. Phase 6 (infra + GitHub Actions CI/CD) blocked.
+- **AC-8 approval:** Carlos must review `/styleguide` "Plantilla de página" section (section 05) and approve `PageHeader` both surfaces before Phase 2.1 spec is unblocked.
