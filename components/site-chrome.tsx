@@ -1,11 +1,26 @@
+import { LocaleSwitcher } from '@/components/locale-switcher'
 import type { homeContent } from '@/content/es/home'
 import { sharedContent } from '@/content/es/shared'
+import type { Locale, PageId, PageParams } from '@/lib/i18n/types'
 import { ANCHORS } from '@/lib/routes'
 
 type HeaderContent = typeof homeContent.header
 type FooterContent = typeof homeContent.footer
 
-export function SiteHeader({ content }: { content: HeaderContent }) {
+export function SiteHeader({
+  content,
+  currentPage = 'home',
+  locale = 'es',
+  pageParams,
+}: {
+  content: HeaderContent
+  /** Current page ID — used by LocaleSwitcher to build locale-preserving hrefs. */
+  currentPage?: PageId
+  /** Active locale — highlights the correct locale in LocaleSwitcher. */
+  locale?: Locale
+  /** Dynamic params (e.g. case detail slug) — passed to LocaleSwitcher. */
+  pageParams?: PageParams
+}) {
   const { accessibility } = sharedContent
 
   return (
@@ -33,16 +48,11 @@ export function SiteHeader({ content }: { content: HeaderContent }) {
         </nav>
 
         <div className="site-header__actions">
-          <p aria-label={accessibility.languages}>
-            {content.locales.map((locale, index) => (
-              <span
-                aria-current={index === 0 ? 'page' : undefined}
-                key={locale}
-              >
-                {locale}
-              </span>
-            ))}
-          </p>
+          <LocaleSwitcher
+            currentPage={currentPage}
+            locale={locale}
+            pageParams={pageParams}
+          />
           <a className="header-cta" href={ANCHORS.CONTACTO}>
             {content.contact}
           </a>
