@@ -230,8 +230,39 @@ h1, h2, h3, h4, p {
   color: rgb(247 247 244 / 0.45);
   font: 500 0.62rem var(--font-ibm-plex-mono);
 }
-.site-header__actions [aria-current='page'] {
+/* LocaleSwitcher (replaces static locale spans — SPEC-P1 FR-5) */
+.locale-switcher {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.locale-switcher__link {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: inherit;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.5;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.locale-switcher__link[aria-current='page'] {
+  opacity: 1;
   color: var(--ambre);
+}
+
+.locale-switcher__link:hover {
+  opacity: 0.8;
+}
+
+.locale-switcher__link:focus-visible {
+  outline: 2px solid var(--ambre);
+  outline-offset: 3px;
+  border-radius: 1px;
 }
 
 /* Header CTA + primary link — rectangular, 1px border, mono type */
@@ -1504,6 +1535,67 @@ h1, h2, h3, h4, p {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────── */
+/* PAGE HEADER — interior pages (SPEC-P1 FR-6.1)                                */
+/* Eyebrow top-left · asymmetric title cols 1–7 · lead ≤60ch                  */
+/* ─────────────────────────────────────────────────────────────────────────── */
+.page-header {
+  padding-block: 8rem 5rem;
+}
+.page-header__inner {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 2rem;
+}
+.page-header__eyebrow {
+  grid-column: 1 / -1;
+  margin: 0 0 2rem;
+  color: var(--ambre);
+  font: 500 0.65rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.12em;
+}
+.dark-surface .page-header__eyebrow,
+.section--dark .page-header__eyebrow {
+  color: var(--ambre);
+}
+.page-header__title {
+  grid-column: 1 / 8;
+  margin: 0;
+  font: 600 var(--text-display-lg) / 0.9 var(--font-archivo);
+  letter-spacing: -0.06em;
+  text-wrap: balance;
+}
+.page-header__lead {
+  grid-column: 1 / 7;
+  max-width: 60ch;
+  margin: 1.5rem 0 0;
+  font-size: 1.15rem;
+  line-height: 1.65;
+}
+.dark-surface .page-header__lead {
+  color: rgb(247 247 244 / 0.72);
+}
+
+@media (max-width: 1023px) {
+  .page-header__title {
+    grid-column: 1 / 10;
+  }
+  .page-header__lead {
+    grid-column: 1 / 10;
+  }
+}
+@media (max-width: 639px) {
+  .page-header {
+    padding-block: 6rem 4rem;
+  }
+  .page-header__title {
+    grid-column: 1 / -1;
+  }
+  .page-header__lead {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
 /* STYLEGUIDE  (noindex dev route at /styleguide)                                */
 /* ─────────────────────────────────────────────────────────────────────────── */
 .styleguide__hero {
@@ -1714,7 +1806,7 @@ h1, h2, h3, h4, p {
   .page-shell {
     width: calc(100% - 2rem);
   }
-  .site-header__actions p {
+  .locale-switcher {
     display: none;
   }
   .site-header__inner {
