@@ -1,13 +1,22 @@
 import { ContactForm } from '@/components/contact-form'
 import { WordReveal } from '@/components/motion-runtime'
 import { SectionIndex } from '@/components/section-index'
-import { homeContent } from '@/content/es/home'
 import { sharedContent } from '@/content/es/shared'
+
+/** Structural interface accepted by FinalCTA — any page can pass its own content. */
+export interface FinalCtaContent {
+  readonly title: string
+  readonly body: string
+  readonly success: string
+  readonly email: string
+  readonly location: string
+  readonly languages: string
+}
 
 export function FinalCTA({
   content,
 }: {
-  content: typeof homeContent.finalCta
+  content: FinalCtaContent
 }) {
   return (
     <section className="final-cta dark-surface" id="contacto">

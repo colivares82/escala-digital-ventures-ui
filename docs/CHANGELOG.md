@@ -6,6 +6,31 @@ All notable changes, newest first.
 
 ---
 
+## [Unreleased] — Phase 2.4: /modelo-de-alianza
+
+Spec: `specs/spec-p2.4-modelo-de-alianza.md` (SPEC-P2.4 v1.0) · Wireframe: `specs/mockups/wireframe-p2.4-modelo-de-alianza-final.html` · Ownership §0: alliance page uses corrected framing; Libro/services.ts patch pending (DECISIONS.md).
+
+### Added
+- `content/types.ts` — `AllianceDictionary` interface (pageHeader, whyFive, seats[5], planes{3}, commitments{5}, finalCta) + `AllianceSeat`, `AlliancePlane`, `AllianceCommitment` types
+- `content/es/alliance.ts` — full ES dictionary (all sections verbatim from Libro Ch. 11–13); commitment 01 = "A MEDIDA" corrected framing (§0 FR-6); no code-ownership wording
+- `components/alliance-constellation.tsx` — parameterized SVG constellation; `size: 'compact' | 'large'`; regular pentagon geometry (−90°, every 72°); draw-on-scroll animations via `[data-visible="true"]` + `--ac-delay` CSS custom property stagger; occupied = solid + ambre pulse; free = dashed + reduced opacity; `prefers-reduced-motion` static fallback
+- `components/alliance-planes.tsx` — three-column grid (abisal); middle column ambre highlight; "PLANO · 0X" labels, Archivo H3, body, depth mono line; mobile stack
+- `components/commitments-band.tsx` — 5-cell horizontal band (paper); mono number (mar), mono tag (ambre-dk, AA), body, ambre tick; mobile stack
+- `components/pages/alliance.tsx` — page compositor: PageHeader → WhyFive+Constellation → AlliancePlanes → CommitmentsBand → FinalCTA
+- `app/[[...path]]/page.tsx` — +3 `generateStaticParams` entries; `alliance` added to `BUILT_PAGES`; render branch for `AlliancePage`
+- `app/sitemap.ts` — alliance × 3 locales added
+- `content/es/shared.ts` — header nav + footer nav "Modelo de alianza" updated to `/modelo-de-alianza` (was `/#alianza`)
+- `app/globals.css` — Phase 2.4 BEM: `.alliance-constellation` (all ac-* classes), `.alliance-why`, `.alliance-planes`, `.commitments-band`; draw-on-scroll with `[data-visible="true"]`; `prefers-reduced-motion` overrides; responsive ≤767px
+- `app/styleguide/page.tsx` — section 09: AllianceConstellation (compact + large instances), AlliancePlanes, CommitmentsBand
+- `DECISIONS.md` — constellation extraction rationale, FinalCTA typing fix, ownership wording pending status
+- Tests: `tests/components/alliance-constellation.test.tsx` (15); `tests/components/alliance-planes.test.tsx` (10); `tests/components/commitments-band.test.tsx` (11); `tests/content/content-integrity.test.ts` extended with 26 alliance integrity tests. **Total: 518 tests, 35 files, all passing.**
+
+### Changed
+- `components/final-cta.tsx` — prop type widened from `typeof homeContent.finalCta` to structural `FinalCtaContent` interface (no behavior change; enables any page to pass its own finalCta copy without literal-type collision)
+- `content/types.ts` — `AllianceDictionary` stub replaced with full Phase 2.4 interface
+
+---
+
 ## [Unreleased] — Phase 2.3: /casos-de-exito + /magupell + /biozero
 
 Spec: `specs/spec-p2.3-casos-de-exito.md` (SPEC-P2.3 v1.0) · Wireframe: `specs/mockups/wireframe-p2.3-casos-de-exito.html` · Logo permission: pending (Phase 7 checklist)

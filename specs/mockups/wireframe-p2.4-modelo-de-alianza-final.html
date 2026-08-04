@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WIREFRAME P2.4 FINAL — modelo de alianza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,500;112,600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#F7F7F4;--ink:#16181D;--mar:#0E3A5D;--abisal:#0A2B45;--abisal-deep:#082238;--ambre:#FFB703;--ambre-dk:#B85C00;
+    --display:'Archivo',system-ui,sans-serif;--body:'Instrument Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--body);background:var(--paper);color:var(--ink)}
+  .mono{font-family:var(--mono)}
+  .wf{background:#111;color:#eee;font-family:var(--mono);font-size:12px;padding:14px 32px;letter-spacing:.05em;position:sticky;top:0;z-index:99}
+  .wf b{color:var(--ambre)}
+  .note{font-family:var(--mono);font-size:11px;color:var(--ambre-dk);border-left:1px dashed var(--ambre-dk);padding-left:10px;margin:14px 6vw;max-width:720px;line-height:1.5}
+  .note.d{color:var(--ambre);border-color:var(--ambre)}
+  .wrap{padding:64px 6vw}
+  .abisal{background:radial-gradient(ellipse at 50% 45%,var(--abisal),var(--abisal-deep));color:var(--paper);position:relative}
+  .abisal::before{content:"";position:absolute;inset:0;opacity:.05;background-image:linear-gradient(#F7F7F4 1px,transparent 1px),linear-gradient(90deg,#F7F7F4 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+  .sec-idx{font-family:var(--mono);font-size:12px;letter-spacing:.15em}
+  .sec-idx .n{color:var(--ambre-dk)}
+  .abisal .sec-idx .n{color:var(--ambre)}
+  h1.page{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(2.5rem,5vw,4rem);line-height:1.05;margin:14px 0 18px;max-width:16ch}
+  .lead{font-size:19px;line-height:1.6;max-width:60ch;opacity:.8}
+  .abisal .lead{color:rgba(247,247,244,.85);opacity:1}
+  h2.sec{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(2rem,4vw,3rem);line-height:1.08;margin:6px 0 12px}
+  svg text{font-family:'IBM Plex Mono',monospace}
+  .reuse{display:inline-block;font-family:var(--mono);font-size:10px;color:var(--ambre);border:1px solid var(--ambre);padding:2px 8px;border-radius:2px}
+
+  .whyfive{display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:center}
+  .const-lg{display:flex;justify-content:center;align-items:center}
+
+  .cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:24px}
+  .col{border:1px solid rgba(247,247,244,.25);padding:30px 26px;min-height:300px;display:flex;flex-direction:column}
+  .col.mid{border-color:var(--ambre);background:rgba(255,183,3,.03)}
+  .col .cl{font-family:var(--mono);font-size:11px;color:rgba(247,247,244,.6);letter-spacing:.1em}
+  .col.mid .cl{color:var(--ambre)}
+  .col h3{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:1.6rem;margin:12px 0 14px}
+  .col p{font-size:.92rem;line-height:1.6;color:rgba(247,247,244,.82)}
+  .col .depth{margin-top:auto;padding-top:18px;font-family:var(--mono);font-size:9px;color:rgba(247,247,244,.4);letter-spacing:.1em}
+
+  .commit{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid rgba(22,24,29,.2);margin-top:24px}
+  .cm{padding:26px 20px;border:.5px solid rgba(22,24,29,.14);min-height:190px;display:flex;flex-direction:column}
+  .cm .cn{font-family:var(--mono);font-size:1.6rem;color:var(--mar)}
+  .cm .ct{font-family:var(--mono);font-size:10px;color:var(--ambre-dk);letter-spacing:.06em;margin:10px 0 8px}
+  .cm p{font-size:.85rem;line-height:1.45;opacity:.85}
+  .cm .tick{width:22px;height:2px;background:var(--ambre);margin-top:auto}
+
+  .cta{background:radial-gradient(ellipse at 50% 45%,var(--abisal),var(--abisal-deep));color:var(--paper);position:relative;margin-top:40px}
+  .cta h2{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(2rem,4vw,3rem)}
+  /* constellation draw-on-scroll (same idea as home) */
+  #const .draw{opacity:0;animation:appear .5s ease-out forwards}
+  #const .core1{animation-delay:.05s}#const .core2{animation-delay:.15s}
+  #const .conn{stroke-dasharray:200;stroke-dashoffset:200;animation:draw .6s ease-out forwards}
+  #const .pulse{opacity:0;animation:appear .4s ease-out forwards}
+  #const .node{opacity:0;animation:appear .45s ease-out forwards}
+  #const .lbl{opacity:0;animation:appear .5s ease-out forwards}
+  @keyframes appear{to{opacity:1}}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  @media (prefers-reduced-motion:reduce){#const *{animation:none!important;opacity:1!important;stroke-dashoffset:0!important}}
+
+</style>
+</head>
+<body>
+<div class="wf">WIREFRAME · <b>P2.4 FINAL</b> · /modelo-de-alianza · constelación centrada y simétrica · 3 planos en columnas · compromisos en banda</div>
+
+<!-- A · PAGEHEADER -->
+<section class="wrap">
+  <div class="sec-idx"><span class="n">A</span>&nbsp;/&nbsp;MODELO DE ALIANZA</div>
+  <h1 class="page">Cinco alianzas. Toda nuestra dedicación.</h1>
+  <p class="lead">No buscamos proyectos; buscamos socios. Y elegimos a nuestros socios tanto como ellos nos eligen a nosotros.</p>
+</section>
+
+<!-- B · POR QUÉ SOLO CINCO — constelación centrada y simétrica (5 plazas en pentágono) -->
+<section class="wrap abisal">
+  <div class="sec-idx"><span class="n">B</span>&nbsp;/&nbsp;POR QU&Eacute; SOLO CINCO</div>
+  <div class="whyfive" style="margin-top:22px">
+    <div>
+      <h2 class="sec">Por qué solo cinco</h2>
+      <p class="lead">Limitamos deliberadamente el número de clientes activos —aproximadamente cinco alianzas— para garantizar dedicación, cercanía y acompañamiento continuo. No es una limitación: es el modelo de negocio. Cada cliente recibe una implicación profunda y acceso directo al conocimiento estratégico acumulado.</p>
+    </div>
+    <div class="const-lg">
+      <!-- symmetric: 5 seats on a regular pentagon around ESCALA, first seat at top (-90deg) -->
+      <svg width="420" height="420" viewBox="0 0 420 420" id="const">
+        <!-- center -->
+        <circle class="draw core1" cx="210" cy="210" r="30" fill="none" stroke="#F7F7F4" stroke-width="1.5"/>
+        <circle class="draw core2" cx="210" cy="210" r="42" fill="none" stroke="rgba(247,247,244,.5)" stroke-width="1.5"/>
+        <text class="draw core2" x="210" y="214" text-anchor="middle" font-size="11" fill="#F7F7F4">ESCALA</text>
+        <!-- seats drawn by script for perfect symmetry -->
+        <g id="seats"></g>
+      </svg>
+    </div>
+  </div>
+  <div class="note d" style="margin-left:0">Constelación NUEVA, centrada y simétrica: 5 plazas en pentágono regular alrededor de ESCALA (primera plaza arriba). 2 ocupadas (MAGUPELL, BIOZERO, sólidas con pulso ámbar) + 3 disponibles (discontinuas). viewBox cuadrado y centrado. MISMA animación de dibujado que la constelación de la home (centro → conectores → nodos, pulsos ámbar).</div>
+</section>
+
+<!-- C · TRES PLANOS — three columns (opción 2, elegida) -->
+<section class="wrap abisal">
+  <div class="sec-idx"><span class="n">C</span>&nbsp;/&nbsp;TRES PLANOS DE ACOMPA&Ntilde;AMIENTO</div>
+  <h2 class="sec" style="margin-top:14px">Tres planos de acompañamiento</h2>
+  <p class="lead">Cada alianza recibe acompañamiento simultáneo en tres planos.</p>
+  <div class="cols3">
+    <div class="col"><div class="cl">PLANO · 01</div><h3>Técnico</h3><p>Diseñamos, construimos, desplegamos y operamos tu plataforma de principio a fin: arquitectura, desarrollo full-stack, cloud, seguridad, pruebas, monitorización y soporte continuo. La capacidad de un departamento técnico completo sin tener que crearlo.</p><div class="depth">ARQUITECTURA · CÓDIGO · OPERACIÓN</div></div>
+    <div class="col mid"><div class="cl">PLANO · 02</div><h3>Estratégico</h3><p>Dirección externa de producto y tecnología: priorizamos el roadmap, traducimos necesidades de negocio en especificaciones ejecutables, decidimos qué construir, qué no y en qué orden, y medimos el impacto de cada iteración.</p><div class="depth">ROADMAP · PRIORIDAD · IMPACTO</div></div>
+    <div class="col"><div class="cl">PLANO · 03</div><h3>Visionario</h3><p>Aportamos perspectiva de hacia dónde van el software, la automatización y la IA, y te ayudamos a anticiparte: qué procesos automatizar después, qué datos capturar hoy para explotar mañana, qué capacidades de IA tienen sentido para tu sector y cuáles son ruido.</p><div class="depth">ANTICIPACIÓN · DATOS · IA</div></div>
+  </div>
+</section>
+
+<!-- D · COMPROMISOS — horizontal band -->
+<section class="wrap">
+  <div class="sec-idx"><span class="n">D</span>&nbsp;/&nbsp;COMPROMISOS DE CADA ALIANZA</div>
+  <h2 class="sec" style="color:var(--ink)">Compromisos de cada alianza</h2>
+  <div class="commit">
+    <div class="cm"><div class="cn">01</div><div class="ct">A MEDIDA</div><p>Soluciones ajustadas a las necesidades y oportunidades reales de tu negocio — no plantillas.</p><div class="tick"></div></div>
+    <div class="cm"><div class="cn">02</div><div class="ct">ESPECIFICACIÓN</div><p>Cada funcionalidad se especifica y aprueba antes de construirse.</p><div class="tick"></div></div>
+    <div class="cm"><div class="cn">03</div><div class="ct">CALIDAD</div><p>Se demuestra con pruebas automatizadas y estabilidad en producción, no con promesas.</p><div class="tick"></div></div>
+    <div class="cm"><div class="cn">04</div><div class="ct">SOPORTE</div><p>Continuo, trazable y transparente en su facturación.</p><div class="tick"></div></div>
+    <div class="cm"><div class="cn">05</div><div class="ct">MEDIDA</div><p>Un único indicador final: el crecimiento y la eficiencia de tu negocio.</p><div class="tick"></div></div>
+  </div>
+  <div class="note" style="margin-left:0">Banda horizontal de 5 celdas iguales · número + etiqueta mono + texto + tick ámbar · carta de garantías. En móvil colapsa a lista vertical.</div>
+</section>
+
+<!-- CTA -->
+<section class="wrap cta">
+  <span class="reuse">REUSE · FinalCTA</span>
+  <h2 style="margin-top:14px">Hablemos de tu negocio.</h2>
+  <p class="lead" style="color:rgba(247,247,244,.85)">Cuéntanos qué frena tu crecimiento. Escuchamos antes de proponer.</p>
+</section>
+
+<script>
+// perfectly symmetric pentagon of 5 seats around center
+const NS='http://www.w3.org/2000/svg', g=document.getElementById('seats');
+const CX=210, CY=210, R=150, coreR=42;
+const seats=[
+  {name:'MAGUPELL', state:'occupied'},
+  {name:'BIOZERO',  state:'occupied'},
+  {name:'DISPONIBLE',state:'free'},
+  {name:'DISPONIBLE',state:'free'},
+  {name:'DISPONIBLE',state:'free'},
+];
+function el(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e}
+seats.forEach((s,i)=>{
+  const ang=(-90 + i*72)*Math.PI/180;
+  const x=CX+R*Math.cos(ang), y=CY+R*Math.sin(ang);
+  // connector from core edge to seat edge
+  const cx0=CX+coreR*Math.cos(ang), cy0=CY+coreR*Math.sin(ang);
+  const nodeR=22;
+  const x1=x-nodeR*Math.cos(ang), y1=y-nodeR*Math.sin(ang);
+  const occ=s.state==='occupied';
+  const delay=0.35 + i*0.12;
+  const ln=el('line',{class:'conn',x1:cx0,y1:cy0,x2:x1,y2:y1,stroke:occ?'#F7F7F4':'rgba(247,247,244,.4)','stroke-width':occ?1.5:1.2}); ln.style.animationDelay=delay+'s'; if(!occ) ln.style.strokeDasharray='4 4,200';
+  g.appendChild(ln);
+  if(occ){ // ambre pulse dot mid-connector
+    const pd=el('circle',{class:'pulse',cx:(cx0+x1)/2,cy:(cy0+y1)/2,r:4,fill:'#FFB703'}); pd.style.animationDelay=(delay+0.3)+'s'; g.appendChild(pd);
+  }
+  const nd=el('circle',{class:'node',cx:x,cy:y,r:nodeR,fill:'none',stroke:occ?'#F7F7F4':'rgba(247,247,244,.45)','stroke-width':occ?1.5:1.2,'stroke-dasharray':occ?'0':'4 4'}); nd.style.animationDelay=(delay+0.2)+'s'; g.appendChild(nd);
+  // label outside the node, radially
+  const lx=CX+(R+40)*Math.cos(ang), ly=CY+(R+40)*Math.sin(ang);
+  const tx=el('text',Object.assign({class:'lbl','text-anchor':'middle','font-size':occ?10:9,fill:occ?'#F7F7F4':'rgba(247,247,244,.55)'},{x:lx,y:ly+3})); tx.style.animationDelay=(delay+0.35)+'s'; tx.textContent=s.name; g.appendChild(tx);
+});
+</script>
+</body>
+</html>

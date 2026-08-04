@@ -9,6 +9,7 @@ import { methodContent } from '@/content/es/method'
 import { servicesContent } from '@/content/es/services'
 import { sharedContent } from '@/content/es/shared'
 import { clients } from '@/content/es/clients'
+import { allianceContent } from '@/content/es/alliance'
 import type { ServiceFigVariant } from '@/content/types'
 
 describe('sharedContent', () => {
@@ -278,5 +279,143 @@ describe('servicesContent — Phase 2.2 (SPEC-P2.2 AC-7)', () => {
   it('contains no Russian language (AC-7 grep guard)', () => {
     const allText = JSON.stringify(servicesContent)
     expect(allText).not.toMatch(/ruso|rusa|русский|russian/i)
+  })
+})
+
+describe('allianceContent — Phase 2.4 (SPEC-P2.4 AC-7)', () => {
+  it('has valid page meta', () => {
+    expect(allianceContent.meta.title).toBeTruthy()
+    expect(allianceContent.meta.description).toBeTruthy()
+  })
+
+  it('meta title is ≤60 characters', () => {
+    expect(allianceContent.meta.title.length).toBeLessThanOrEqual(60)
+  })
+
+  it('meta description is ≤155 characters', () => {
+    expect(allianceContent.meta.description.length).toBeLessThanOrEqual(155)
+  })
+
+  it('has all pageHeader fields', () => {
+    expect(allianceContent.pageHeader.eyebrow).toBeTruthy()
+    expect(allianceContent.pageHeader.title).toBeTruthy()
+    expect(allianceContent.pageHeader.lead).toBeTruthy()
+  })
+
+  it('pageHeader title contains the correct H1 (spec FR-2.1)', () => {
+    expect(allianceContent.pageHeader.title).toContain('Cinco alianzas')
+  })
+
+  it('has all whyFive fields', () => {
+    expect(allianceContent.whyFive.sectionEyebrow).toBeTruthy()
+    expect(allianceContent.whyFive.heading).toBeTruthy()
+    expect(allianceContent.whyFive.body).toBeTruthy()
+    expect(allianceContent.whyFive.constellationAria).toBeTruthy()
+  })
+
+  // FR-3.2: exactly 5 seats
+  it('has exactly 5 constellation seats (SPEC-P2.4 FR-3.2)', () => {
+    expect(allianceContent.seats).toHaveLength(5)
+  })
+
+  it('exactly 2 seats are occupied (MAGUPELL + BIOZERO)', () => {
+    const occupied = allianceContent.seats.filter((s) => s.state === 'occupied')
+    expect(occupied).toHaveLength(2)
+  })
+
+  it('exactly 3 seats are free', () => {
+    const free = allianceContent.seats.filter((s) => s.state === 'free')
+    expect(free).toHaveLength(3)
+  })
+
+  it('MAGUPELL and BIOZERO are the occupied seats', () => {
+    const occupiedNames = allianceContent.seats
+      .filter((s) => s.state === 'occupied')
+      .map((s) => s.name)
+    expect(occupiedNames).toContain('MAGUPELL')
+    expect(occupiedNames).toContain('BIOZERO')
+  })
+
+  // FR-4.1: exactly 3 planes
+  it('has exactly 3 planes (SPEC-P2.4 FR-4.1)', () => {
+    expect(allianceContent.planes.items).toHaveLength(3)
+  })
+
+  it('every plane has index, title, body, and depth', () => {
+    allianceContent.planes.items.forEach((plane) => {
+      expect(plane.index).toBeTruthy()
+      expect(plane.title).toBeTruthy()
+      expect(plane.body).toBeTruthy()
+      expect(plane.depth).toBeTruthy()
+    })
+  })
+
+  it('planes are indexed 01, 02, 03', () => {
+    const indices = allianceContent.planes.items.map((p) => p.index)
+    expect(indices).toEqual(['01', '02', '03'])
+  })
+
+  it('middle plane (02) is the strategic plane', () => {
+    expect(allianceContent.planes.items[1]!.title).toBe('Estratégico')
+  })
+
+  // FR-5.1: exactly 5 commitments
+  it('has exactly 5 commitments (SPEC-P2.4 FR-5.1)', () => {
+    expect(allianceContent.commitments.items).toHaveLength(5)
+  })
+
+  it('commitment 01 tag is "A MEDIDA" (§0 corrected framing, FR-6)', () => {
+    expect(allianceContent.commitments.items[0]!.tag).toBe('A MEDIDA')
+  })
+
+  it('every commitment has n, tag, and body', () => {
+    allianceContent.commitments.items.forEach((c) => {
+      expect(c.n).toBeTruthy()
+      expect(c.tag).toBeTruthy()
+      expect(c.body).toBeTruthy()
+    })
+  })
+
+  it('commitments are numbered 01–05', () => {
+    const numbers = allianceContent.commitments.items.map((c) => c.n)
+    expect(numbers).toEqual(['01', '02', '03', '04', '05'])
+  })
+
+  // FR-6: no code/IP-ownership wording
+  it('does not contain "propiedad del código" or equivalent (§0 FR-6)', () => {
+    const allText = JSON.stringify(allianceContent)
+    expect(allText).not.toMatch(/propietari[oa] de (tu|su) código/i)
+    expect(allText).not.toMatch(/propietari[oa] de su plataforma, su código/i)
+  })
+
+  it('has finalCta with all required fields', () => {
+    expect(allianceContent.finalCta.title).toBeTruthy()
+    expect(allianceContent.finalCta.body).toBeTruthy()
+    expect(allianceContent.finalCta.success).toBeTruthy()
+    expect(allianceContent.finalCta.email).toBeTruthy()
+    expect(allianceContent.finalCta.location).toBeTruthy()
+    expect(allianceContent.finalCta.languages).toBeTruthy()
+  })
+
+  it('finalCta email matches expected domain', () => {
+    expect(allianceContent.finalCta.email).toMatch(/@escaladigitalventures\.com$/)
+  })
+
+  it('contains no Russian language (AC-7 grep guard)', () => {
+    const allText = JSON.stringify(allianceContent)
+    expect(allText).not.toMatch(/ruso|rusa|русский|russian/i)
+  })
+
+  // AC-10: shared nav links to the correct route
+  it('shared nav "Modelo de alianza" points to /modelo-de-alianza', () => {
+    const allianceNav = sharedContent.header.nav.find((n) => n.pageId === 'alliance')
+    expect(allianceNav?.href).toBe('/modelo-de-alianza')
+  })
+
+  it('shared footer "Modelo de alianza" points to /modelo-de-alianza', () => {
+    const allianceFooter = sharedContent.footer.navigation.find(
+      (n) => n.label === 'Modelo de alianza'
+    )
+    expect(allianceFooter?.href).toBe('/modelo-de-alianza')
   })
 })

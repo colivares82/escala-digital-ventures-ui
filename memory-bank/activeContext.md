@@ -1,49 +1,43 @@
 # Active Context
 
-_Last updated: April 2026 (Phase 2.3 completed)_
+_Last updated: April 2026 (Phase 2.4 completed)_
 
 ## Current state
 
-**Phase 2.3 complete.** `/casos-de-exito` (index) + `/casos-de-exito/magupell` + `/casos-de-exito/biozero` are live at all 3 locale slugs. 450 tests, all passing. Build clean, TypeScript strict.
+**Phase 2.4 complete.** `/modelo-de-alianza` is live at all 3 locale slugs. 518 tests, all passing. Build clean, TypeScript strict. SPEC-P2.4 all ACs satisfied.
 
-## What was just done (Phase 2.3 — SPEC-P2.3)
+## What was just done (Phase 2.4 — SPEC-P2.4)
 
 1. **Spec filed:**
-   - `specs/spec-p2.3-casos-de-exito.md` — implementation spec (authored by Carlos/Claude, approved before build)
+   - `specs/spec-p2.4-modelo-de-alianza.md` — implementation spec + wireframe at `specs/mockups/wireframe-p2.4-modelo-de-alianza-final.html` (approved before build)
 
-2. **Data model:**
-   - `content/data/cases.ts` — full `CaseStudy` type (mode, brand with `StaticImageData` logos, readouts, capabilities?, dossier fields, per-case meta, plate); `getCase(slug)` helper
-   - Logos at `app/assets/brand/*.png` — static import via `next/image` (build-time missing-file check; see DECISIONS.md)
-   - `content/types.ts` — `CasesDictionary` expanded with all index-page and dossier UI labels
+2. **Type contracts:**
+   - `content/types.ts` — `AllianceDictionary` full interface (was stub); +`AllianceSeat`, `AlliancePlane`, `AllianceCommitment` types
 
 3. **Content layer:**
-   - `content/es/cases.ts` — full ES dictionary (pageHeader "A / CASOS DE ÉXITO", card labels, dossier navigation labels)
-   - EN/CA re-export ES with `TODO(P5)` markers (unchanged pattern)
+   - `content/es/alliance.ts` — full ES copy (Libro Ch. 11–13); commitment 01 = "A MEDIDA" corrected §0 framing; no code-ownership wording
+   - `content/es/shared.ts` — nav + footer "Modelo de alianza" → `/modelo-de-alianza` (was `/#alianza`)
 
-4. **New components (6):**
-   - `components/readout-strip.tsx` — adaptive-column bordered grid (--readout-cols CSS var)
-   - `components/dossier-field.tsx` — two-column field row (ordinal num + key / body text)
-   - `components/capability-grid.tsx` — 3-up grid; null guard for MAGUPELL (no capabilities)
-   - `components/brand-header.tsx` — client logo (next/image) + sector + H1 + plate + visit link; placeholder when logo null
-   - `components/case-card.tsx` — index card with logo, eyebrow, name, subtitle, "ABRIR EXPEDIENTE ↗"
-   - `components/case-dossier.tsx` — single mode-aware template (data-forward: 4 readouts + 5 fields; capability-forward: 2 readouts + CapabilityGrid + 3 fields); next/back nav
+4. **New components (3):**
+   - `components/alliance-constellation.tsx` — parameterized `size: 'compact' | 'large'`; regular pentagon geometry (−90°, every 72°); occupied = solid + ambre pulse; free = dashed + reduced opacity; draw-on-scroll via `[data-visible="true"]` ancestor + `--ac-delay` CSS stagger; reduced-motion static
+   - `components/alliance-planes.tsx` — three columns (abisal); middle ambre highlight; PLANO labels + Archivo H3 + body + depth mono; mobile stack
+   - `components/commitments-band.tsx` — 5-cell horizontal band (paper); mono number (mar) + mono tag (ambre-dk AA) + body + ambre tick; mobile stack
 
 5. **Page assembly + routing:**
-   - `components/pages/cases.tsx` — PageHeader → CaseCard grid (data-driven, sorted by order) → FinalCTA
-   - `generateStaticParams` extended: +9 entries (index × 3 + 2 details × 3)
-   - `generateMetadata` updated: caseDetail uses per-case `CaseStudy.meta`
-   - `app/sitemap.ts` — 3 new pages added
-   - Nav: "Casos de éxito" → true route `/casos-de-exito` (header + footer)
+   - `components/pages/alliance.tsx` — PageHeader → WhyFive+Constellation → AlliancePlanes → CommitmentsBand → FinalCTA
+   - `generateStaticParams` +3 entries; `alliance` added to `BUILT_PAGES`; render branch
+   - `app/sitemap.ts` — alliance × 3 locales
+   - `components/final-cta.tsx` — prop widened from `typeof homeContent.finalCta` to `FinalCtaContent` interface (enables any page finalCta)
 
 6. **CSS + styleguide:**
-   - `app/globals.css` — full Phase 2.3 BEM block; responsive ≤767px + ≤479px
-   - `app/styleguide/page.tsx` — section 08: all 6 new components incl. BrandHeader placeholder state
+   - `app/globals.css` — full Phase 2.4 BEM block; constellation animation (`ac-*` classes, `[data-visible]` trigger, `prefers-reduced-motion`); responsive ≤767px
+   - `app/styleguide/page.tsx` — section 09: constellation compact + large, AlliancePlanes, CommitmentsBand
 
 7. **Tests + docs:**
-   - 84 new tests across 7 test files (450 total, 31 files)
-   - `PLAN.md` — Phase 2.3 marked ☑
+   - 68 new tests across 4 test files/extensions (518 total, 35 files)
+   - `PLAN.md` — Phase 2.4 marked ☑
    - `docs/CHANGELOG.md` updated
-   - `DECISIONS.md` — logo asset location rationale
+   - `DECISIONS.md` — constellation extraction, FinalCTA typing, ownership wording status
 
 ## Known issues / open items
 
@@ -52,10 +46,11 @@ _Last updated: April 2026 (Phase 2.3 completed)_
 - **FIG.06 provisional:** `ExecutionPipelineFig` internals are still provisional.
 - **EN/CA translations:** all locales serve ES fallback (Phase 5).
 - **Logo-display permission (BioZero):** pending Carlos confirmation before go-live (Phase 7 checklist). FR-3.6.
+- **Ownership wording pending patch:** `content/es/services.ts` line 2 + `docs/el-libro-de-escala-v2.1.md` (Ch. 6, 13, 15, 19) + `docs/escala-web-content-spec-v1.1.md` (§2, §5.2, §5.4) still contain old "client owns code" wording. Scheduled for Phase 2.5 or dedicated patch. See `DECISIONS.md`.
 
-## What comes next (Phase 2.4)
+## What comes next (Phase 2.5)
 
-**[PAGE-04]** `/modelo-de-alianza` — reuses constellation diagram; three planes + commitments (Libro Ch. 11–13).
+**[PAGE-05]** `/sobre-escala` — DNA, values, manifesto (10 beliefs), anonymized experience trajectory, colivares.com text mention (Libro Ch. 1–4).
 - Spec from Claude first (English), wireframe if needed, then build.
 
 ## Active decisions open
@@ -67,3 +62,4 @@ _Last updated: April 2026 (Phase 2.3 completed)_
 - **GCP account:** not ready. Phase 6 blocked.
 - **ServiceFig variants:** DRAFT VISUAL — Carlos will iterate one-by-one after review.
 - **Logo-display permission:** Carlos to confirm for MAGUPELL + BioZero before Phase 7 launch.
+- **Ownership wording:** Carlos to update Libro docs + services.ts (Phase 2.5 or standalone patch).

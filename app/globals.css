@@ -2828,3 +2828,399 @@ h1, h2, h3, h4, p {
     font-size: 1.75rem;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* PHASE 2.4 — /modelo-de-alianza                                             */
+/* AllianceConstellation · WhyFive · AlliancePlanes · CommitmentsBand        */
+/* Spec: SPEC-P2.4                                                             */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── AllianceConstellation SVG ── */
+
+/* All animated elements start invisible */
+.alliance-constellation .ac-draw {
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-out);
+  transition-delay: var(--ac-delay, 0s);
+}
+
+/* Core rings */
+.alliance-constellation .ac-core {
+  stroke: rgb(247 247 244 / 0.5);
+  stroke-width: 1.5;
+}
+.alliance-constellation .ac-core1 {
+  /* Inner ring slightly more visible */
+  stroke: rgb(247 247 244 / 0.7);
+}
+
+/* ESCALA label */
+.alliance-constellation .ac-core-label {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 11px;
+  fill: var(--paper);
+  letter-spacing: 0.08em;
+}
+
+/* Connectors — solid (occupied) */
+.alliance-constellation .ac-conn--solid {
+  stroke: var(--paper);
+  stroke-width: 1.5;
+  fill: none;
+  /* Draw animation: stroke travels from core outward. 300 covers all sizes. */
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  opacity: 0;
+  transition:
+    stroke-dashoffset 0.6s var(--ease-out),
+    opacity 0.2s var(--ease-out);
+  transition-delay: var(--ac-delay, 0s);
+}
+
+/* Connectors — dashed (free) */
+.alliance-constellation .ac-conn--dashed {
+  stroke: rgb(247 247 244 / 0.4);
+  stroke-width: 1.2;
+  stroke-dasharray: 4 4;
+  fill: none;
+  /* Fade in only (dashed lines keep their visual dash pattern) */
+  transition: opacity 0.5s var(--ease-out);
+  transition-delay: var(--ac-delay, 0s);
+}
+
+/* Ambre pulse dot (occupied seats) */
+.alliance-constellation .ac-pulse {
+  fill: var(--ambre);
+}
+
+/* Node rings */
+.alliance-constellation .ac-node {
+  fill: none;
+}
+.alliance-constellation .ac-node--solid {
+  stroke: var(--paper);
+  stroke-width: 1.5;
+}
+.alliance-constellation .ac-node--dashed {
+  stroke: rgb(247 247 244 / 0.45);
+  stroke-width: 1.2;
+  stroke-dasharray: 4 4;
+}
+
+/* Seat labels */
+.alliance-constellation .ac-label {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+.alliance-constellation .ac-label--occupied {
+  fill: var(--paper);
+}
+.alliance-constellation .ac-label--free {
+  fill: rgb(247 247 244 / 0.55);
+  font-size: 9px;
+}
+
+/* Compact size (home) label size */
+.alliance-constellation--compact .ac-label {
+  font-size: 9px;
+}
+.alliance-constellation--compact .ac-core-label {
+  font-size: 9px;
+}
+
+/* Triggered: all fade-in elements become visible */
+[data-visible="true"] .alliance-constellation .ac-draw {
+  opacity: 1;
+}
+
+/* Triggered: solid connectors draw from center */
+[data-visible="true"] .alliance-constellation .ac-conn--solid {
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+
+/* Reduced-motion: everything immediately visible, no transitions */
+@media (prefers-reduced-motion: reduce) {
+  .alliance-constellation .ac-draw,
+  .alliance-constellation .ac-conn--solid,
+  .alliance-constellation .ac-conn--dashed {
+    opacity: 1 !important;
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+}
+
+/* ── Section B: WhyFive + Constellation (abisal) ── */
+
+.alliance-why {
+  background: radial-gradient(ellipse at 50% 45%, var(--abisal), var(--abisal-gradient-end));
+  padding: var(--space-section) 0;
+}
+
+.alliance-why__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.alliance-why__eyebrow {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--ambre);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.alliance-why__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5vw;
+  align-items: center;
+}
+
+.alliance-why__text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.alliance-why__heading {
+  font-family: var(--font-archivo);
+  font-stretch: 112%;
+  font-weight: 600;
+  font-size: var(--text-display-lg);
+  line-height: 1.08;
+  color: var(--paper);
+}
+
+.alliance-why__body {
+  font-size: 1.1rem;
+  line-height: 1.65;
+  color: rgb(247 247 244 / 0.85);
+  max-width: 52ch;
+}
+
+.alliance-why__figure {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ── Section C: AlliancePlanes (abisal, continuation of dark band) ── */
+
+.alliance-planes {
+  background: radial-gradient(ellipse at 50% 45%, var(--abisal), var(--abisal-gradient-end));
+  padding: var(--space-section) 0;
+  border-top: 1px solid rgb(247 247 244 / 0.1);
+}
+
+.alliance-planes__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.alliance-planes__eyebrow {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--ambre);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.alliance-planes__heading {
+  font-family: var(--font-archivo);
+  font-stretch: 112%;
+  font-weight: 600;
+  font-size: var(--text-display-lg);
+  line-height: 1.08;
+  color: var(--paper);
+  margin-bottom: 0.25rem;
+}
+
+.alliance-planes__lead {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgb(247 247 244 / 0.8);
+  margin-bottom: 1.5rem;
+}
+
+.alliance-planes__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.alliance-planes__col {
+  border: 1px solid rgb(247 247 244 / 0.2);
+  padding: 1.875rem 1.625rem;
+  min-height: 18.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Middle column (Estratégico) — ambre accent */
+.alliance-planes__col--highlighted {
+  border-color: var(--ambre);
+  /* Very subtle ambre tint — AA contrast preserved on all text */
+  background: rgb(255 183 3 / 0.04);
+}
+
+.alliance-planes__col-label {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  color: rgb(247 247 244 / 0.6);
+  text-transform: uppercase;
+}
+
+.alliance-planes__col--highlighted .alliance-planes__col-label {
+  color: var(--ambre);
+}
+
+.alliance-planes__col-title {
+  font-family: var(--font-archivo);
+  font-stretch: 112%;
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1.15;
+  color: var(--paper);
+  margin: 0.75rem 0 0.875rem;
+}
+
+.alliance-planes__col-body {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgb(247 247 244 / 0.82);
+  flex: 1;
+}
+
+.alliance-planes__col-depth {
+  margin-top: auto;
+  padding-top: 1.125rem;
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.1em;
+  color: rgb(247 247 244 / 0.4);
+  text-transform: uppercase;
+}
+
+/* ── Section D: CommitmentsBand (paper surface) ── */
+
+.commitments-band {
+  background: var(--paper);
+  padding: var(--space-section) 0;
+}
+
+.commitments-band__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.commitments-band__eyebrow {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--ambre-dk);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.commitments-band__heading {
+  font-family: var(--font-archivo);
+  font-stretch: 112%;
+  font-weight: 600;
+  font-size: var(--text-display-lg);
+  line-height: 1.08;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+}
+
+/* Five-cell horizontal grid with shared outer border */
+.commitments-band__grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border: 1px solid rgb(22 24 29 / 0.2);
+  margin-top: 1.5rem;
+}
+
+.commitments-band__cell {
+  padding: 1.625rem 1.25rem;
+  border: 0.5px solid rgb(22 24 29 / 0.14);
+  min-height: 11.875rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ordinal number — mar, mono, large */
+.commitments-band__number {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 1.6rem;
+  color: var(--mar);
+  line-height: 1;
+  display: block;
+}
+
+/* Tag — ambre-dk, AA on paper (4.5:1 verified, see DECISIONS.md) */
+.commitments-band__tag {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.06em;
+  color: var(--ambre-dk);
+  text-transform: uppercase;
+  margin: 0.625rem 0 0.5rem;
+  display: block;
+}
+
+.commitments-band__body {
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--ink);
+  opacity: 0.85;
+  flex: 1;
+}
+
+/* Ambre tick — 22px wide, 2px tall, at cell bottom */
+.commitments-band__tick {
+  display: block;
+  width: 1.375rem;
+  height: 2px;
+  background: var(--ambre);
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+/* ── Phase 2.4 responsive (≤767px) ── */
+@media (max-width: 767px) {
+  /* WhyFive: stack text above constellation */
+  .alliance-why__grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .alliance-why__figure {
+    order: -1; /* constellation appears above text on mobile */
+  }
+
+  /* AlliancePlanes: single column stack */
+  .alliance-planes__grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .alliance-planes__col {
+    min-height: auto;
+  }
+
+  /* CommitmentsBand: vertical stack */
+  .commitments-band__grid {
+    grid-template-columns: 1fr;
+  }
+  .commitments-band__cell {
+    min-height: auto;
+    border-bottom: 0.5px solid rgb(22 24 29 / 0.14);
+  }
+}
