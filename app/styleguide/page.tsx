@@ -1,7 +1,10 @@
 import type { Metadata } from 'next'
+import { AiBuildBlock } from '@/components/ai-build-block'
 import { ClaimsMarquee } from '@/components/claims-marquee'
 import { ClientChip } from '@/components/client-chip'
 import { ContactForm } from '@/components/contact-form'
+import { ExecutionPipelineFig } from '@/components/execution-pipeline-fig'
+import { ExecutionPractices } from '@/components/execution-practices'
 import { FinalCTA } from '@/components/final-cta'
 import { PageHeader } from '@/components/page-header'
 import { Readout } from '@/components/readout'
@@ -9,6 +12,7 @@ import { SectionIndex } from '@/components/section-index'
 import { SystemDiagram } from '@/components/system-diagram'
 import { clients } from '@/content/es/clients'
 import { homeContent } from '@/content/es/home'
+import { methodContent } from '@/content/es/method'
 
 export const metadata: Metadata = {
   title: 'Style guide | Escala Digital Ventures',
@@ -181,6 +185,47 @@ export default function StyleGuidePage() {
           title="Cómo trabajamos."
           lead="El Escala Growth Framework conecta negocio, personas y tecnología en un ciclo continuo."
           surface="abisal"
+        />
+      </section>
+
+      {/* ── Section 06: Phase 2.1 components (SPEC-P2.1 AC-8) ── */}
+      <section aria-label="Componentes Fase 2.1" style={{ borderTop: '2px solid var(--ambre)' }}>
+        <div className="page-shell" style={{ paddingBlock: '3rem' }}>
+          <SectionIndex index="06" label="COMPONENTES FASE 2.1" />
+          <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.65rem', letterSpacing: '0.1em', color: 'var(--mar)', marginBottom: '2rem' }}>
+            ExecutionPractices · ExecutionPipelineFig · AiBuildBlock — SPEC-P2.1 AC-8.
+          </p>
+        </div>
+
+        {/* ExecutionPractices — 2 sample panels */}
+        <ExecutionPractices
+          sectionIndex={methodContent.executionPractices.sectionIndex}
+          sectionLabel={methodContent.executionPractices.sectionEyebrow}
+          title={methodContent.executionPractices.title}
+          lead={methodContent.executionPractices.lead}
+          practices={methodContent.executionPractices.practices.slice(0, 2)}
+        />
+
+        {/* ExecutionPipelineFig — FIG.06 (PROVISIONAL VISUAL) */}
+        <ExecutionPipelineFig
+          sectionIndex={methodContent.pipeline.sectionIndex}
+          sectionLabel={methodContent.pipeline.sectionEyebrow}
+          sectionTitle={methodContent.pipeline.sectionTitle}
+          nodes={methodContent.pipeline.nodes}
+          caption={methodContent.pipeline.caption}
+          legend={methodContent.pipeline.legend}
+          ariaLabel={methodContent.pipeline.ariaLabel}
+          returnArcLabel={methodContent.pipeline.returnArcLabel}
+        />
+
+        {/* AiBuildBlock — sober, no protagonist */}
+        <AiBuildBlock
+          sectionIndex={methodContent.aiBuild.sectionIndex}
+          sectionLabel={methodContent.aiBuild.sectionEyebrow}
+          title={methodContent.aiBuild.title}
+          lead={methodContent.aiBuild.lead}
+          points={methodContent.aiBuild.points}
+          diagram={methodContent.aiBuild.diagram}
         />
       </section>
     </main>

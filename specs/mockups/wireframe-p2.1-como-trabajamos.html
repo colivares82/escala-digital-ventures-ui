@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WIREFRAME P2.1 — /como-trabajamos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,500;112,600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#F7F7F4;--ink:#16181D;--mar:#0E3A5D;--abisal:#0A2B45;--abisal-deep:#082238;--ambre:#FFB703;
+    --display:'Archivo',system-ui,sans-serif;--body:'Instrument Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--body);background:var(--paper);color:var(--ink)}
+  .mono{font-family:var(--mono)}
+  .wf{background:#111;color:#eee;font-family:var(--mono);font-size:12px;padding:14px 32px;letter-spacing:.05em;position:sticky;top:0;z-index:99}
+  .wf b{color:var(--ambre)}
+  .note{font-family:var(--mono);font-size:11px;color:#B85C00;border-left:1px dashed #B85C00;padding-left:10px;margin:8px 0;max-width:640px;line-height:1.5}
+  .note.d{color:var(--ambre);border-color:var(--ambre)}
+  .sec-idx{font-family:var(--mono);font-size:12px;letter-spacing:.15em}
+  .sec-idx .n{color:#B85C00}
+  .abisal .sec-idx .n{color:var(--ambre)}
+  .wrap{padding:72px 6vw}
+  .abisal{background:radial-gradient(ellipse at 60% 40%,var(--abisal),var(--abisal-deep));color:var(--paper);position:relative}
+  .abisal::before{content:"";position:absolute;inset:0;opacity:.05;background-image:linear-gradient(#F7F7F4 1px,transparent 1px),linear-gradient(90deg,#F7F7F4 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+  h1.page{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(2.5rem,5vw,4rem);line-height:1.05;margin:14px 0 18px;max-width:20ch}
+  .lead{font-size:19px;line-height:1.6;max-width:60ch;color:var(--ink);opacity:.8}
+  .abisal .lead{color:rgba(247,247,244,.85)}
+  h2.sec{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(2rem,4vw,3rem);line-height:1.08;margin:10px 0 8px}
+  /* ring band (reused component, placeholder) */
+  .ringband{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative}
+  .ring-ph{position:relative;flex:1;display:grid;grid-template-columns:44% 1fr;align-items:center;gap:4vw;margin-top:24px}
+  .ring-txt .eyebrow{font-family:var(--mono);color:var(--ambre);font-size:12px;letter-spacing:.15em}
+  .ring-txt h3{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:3rem;margin:8px 0 14px}
+  .ring-txt p{color:rgba(247,247,244,.85);max-width:52ch;line-height:1.6}
+  .ring-svg{display:flex;justify-content:center}
+  .reuse{display:inline-block;font-family:var(--mono);font-size:10px;color:var(--ambre);border:1px solid var(--ambre);padding:2px 8px;border-radius:2px;margin-bottom:8px}
+  /* stacked practice panels */
+  .stack{position:relative;margin-top:32px}
+  .panel{position:sticky;border:1px solid rgba(22,24,29,.2);background:#fff;padding:38px 42px;margin-bottom:24px;box-shadow:0 -2px 0 rgba(0,0,0,.02)}
+  .panel .pidx{font-family:var(--mono);font-size:12px;color:var(--mar);letter-spacing:.1em}
+  .panel h3{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:1.9rem;margin:10px 0 12px}
+  .panel p{line-height:1.6;max-width:70ch;opacity:.85}
+  .panel .tie{font-family:var(--mono);font-size:10px;color:var(--ambre);margin-top:14px;letter-spacing:.08em}
+  /* AI sober block */
+  .ai{border-top:1px solid rgba(247,247,244,.15);margin-top:8px}
+  .ai .grid{display:grid;grid-template-columns:1fr 1fr;gap:4vw;align-items:center;margin-top:20px}
+  .ai p{color:rgba(247,247,244,.85);line-height:1.7;max-width:52ch}
+  .ai .fig{border:1px solid rgba(247,247,244,.2);padding:24px;min-height:200px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:rgba(247,247,244,.5);text-align:center;position:relative}
+  /* final cta */
+  .cta{min-height:60vh;display:flex;flex-direction:column;justify-content:center}
+  .cta h2{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(2.5rem,5vw,4rem);line-height:1.05}
+  .btn{display:inline-block;margin-top:24px;border:1px solid var(--paper);color:var(--paper);font-family:var(--mono);font-size:13px;padding:16px 28px;width:fit-content}
+  svg text{font-family:var(--mono)}
+</style>
+</head>
+<body>
+<div class="wf">WIREFRAME · <b>P2.1</b> /como-trabajamos · anillo interactivo (reuso) · prácticas en paneles apilados · IA sobria · <b>FIG.06 propuesta</b></div>
+
+<!-- PAGEHEADER (paper) -->
+<section class="wrap">
+  <div class="sec-idx"><span class="n">A</span>&nbsp;/&nbsp;CÓMO TRABAJAMOS</div>
+  <h1 class="page">Cómo trabajamos</h1>
+  <p class="lead">Un marco estratégico propio y una práctica de ejecución disciplinada. El objetivo nunca es entregar software: es aumentar la capacidad de crecimiento de tu negocio.</p>
+  <div class="note">PageHeader reutilizado (Fase 1). El índice de página usa letras (A/B/C…) para no chocar con el 00–06 numérico de la home. ¿OK o prefieres 01/02…?</div>
+</section>
+
+<!-- RING (abisal) — reused PhaseCycle -->
+<section class="abisal">
+  <div class="wrap ringband">
+    <div>
+      <div class="sec-idx"><span class="n">B</span>&nbsp;/&nbsp;EL CICLO DE CRECIMIENTO</div>
+      <span class="reuse" style="margin-top:14px">REUSE · PhaseCycle (iter-03, tal cual)</span>
+      <h2 class="sec">El Escala Growth Framework</h2>
+      <div class="mono" style="font-size:11px;color:rgba(247,247,244,.5);letter-spacing:.1em">DIEZ FASES · UN CICLO CONTINUO DE MEJORA</div>
+    </div>
+    <div class="ring-ph">
+      <div class="ring-txt">
+        <div class="eyebrow">FASE 03 / 10</div>
+        <h3>Simplify</h3>
+        <p>Eliminar complejidad innecesaria antes de introducir tecnología. Un mal proceso automatizado sigue siendo un mal proceso.</p>
+      </div>
+      <div class="ring-svg">
+        <svg width="440" height="440" viewBox="0 0 520 520" id="ring"></svg>
+      </div>
+    </div>
+    <div class="note d">El anillo es el MISMO componente de la home, sin cambios. Aquí es el cuerpo de la página (no una sección de resumen): puede llevar las 10 descripciones completas al desplazarse.</div>
+  </div>
+</section>
+
+<!-- EXECUTION PRACTICES (paper) — stacked panels -->
+<section class="wrap">
+  <div class="sec-idx"><span class="n">C</span>&nbsp;/&nbsp;LA EJECUCIÓN, EN EL DÍA A DÍA</div>
+  <h2 class="sec">La ejecución, en el día a día</h2>
+  <p class="lead" style="margin-bottom:8px">El framework estratégico se materializa en una práctica concreta y disciplinada — la segunda ventaja competitiva de Escala.</p>
+  <div class="note">Paneles apilados con scroll: cada práctica se fija (sticky) al llegar y la siguiente se superpone encima. 5 paneles. Cada uno enlaza a la fase del framework que materializa.</div>
+
+  <div class="stack">
+    <div class="panel" style="top:80px">
+      <div class="pidx">01 · PRÁCTICA</div>
+      <h3>Dirigido por especificaciones</h3>
+      <p>Antes de escribir una línea de código, cada funcionalidad se documenta: contexto de negocio, requisitos numerados, modelo de datos, casos límite y criterios de aceptación. Cuando hay interfaz, la especificación incluye un prototipo visual navegable que apruebas antes de construir.</p>
+      <div class="tie">↳ MATERIALIZA LA FASE · VALIDATE</div>
+    </div>
+    <div class="panel" style="top:96px">
+      <div class="pidx">02 · PRÁCTICA</div>
+      <h3>Desarrollo asistido por IA, dirigido por criterio senior</h3>
+      <p>Una biblioteca interna de estándares, reglas y patrones probados en producción gobierna un flujo de ingeniería asistida por IA: consistencia entre proyectos y velocidad excepcional, siempre bajo revisión y dirección experta.</p>
+      <div class="tie">↳ MATERIALIZA LAS FASES · DESIGN · BUILD</div>
+    </div>
+    <div class="panel" style="top:112px">
+      <div class="pidx">03 · PRÁCTICA</div>
+      <h3>Calidad verificable</h3>
+      <p>Cobertura de pruebas automatizadas como norma, integración y despliegue continuos, entornos separados de desarrollo y producción, y revisiones de seguridad. La calidad se demuestra con hechos: estabilidad en producción, no promesas.</p>
+      <div class="tie">↳ MATERIALIZA LA FASE · BUILD</div>
+    </div>
+    <div class="panel" style="top:128px">
+      <div class="pidx">04 · PRÁCTICA</div>
+      <h3>Iteración basada en uso real</h3>
+      <p>Tras el lanzamiento, el roadmap se alimenta del feedback directo de los usuarios: se recoge, se prioriza, se especifica y se entrega en ciclos cortos. El producto mejora todos los meses porque se construye sobre lo que el negocio necesita.</p>
+      <div class="tie">↳ MATERIALIZA LAS FASES · MEASURE · EVOLVE</div>
+    </div>
+    <div class="panel" style="top:144px">
+      <div class="pidx">05 · PRÁCTICA</div>
+      <h3>Acompañamiento trazable</h3>
+      <p>Cada alianza en producción incluye una bolsa mensual de horas de soporte y evolución, con trazabilidad completa del trabajo realizado. El producto nunca se queda quieto y el cliente nunca se queda solo.</p>
+      <div class="tie">↳ MATERIALIZA EL COMPROMISO · SOPORTE CONTINUO</div>
+    </div>
+  </div>
+</section>
+
+<!-- FIG.06 pipeline (abisal) -->
+<section class="abisal">
+  <div class="wrap">
+    <div class="sec-idx"><span class="n">D</span>&nbsp;/&nbsp;EL FLUJO DE EJECUCIÓN</div>
+    <h2 class="sec">De la especificación al feedback</h2>
+    <div class="note d">FIG. 06 propuesta: el pipeline del Cap. 9 en el lenguaje del kit de diagramas — 6 nodos con un pulso ámbar que recorre el ciclo y vuelve (Feedback → Especificación). Es la ÚNICA composición nueva "de firma" de esta página. Si no la quieres, esta sección se elimina y las prácticas quedan como bloque principal.</div>
+    <svg width="100%" height="150" viewBox="0 0 1100 150" style="margin-top:24px">
+      <g stroke="#F7F7F4" stroke-width="1.5" fill="none" opacity="0.5">
+        <line x1="90" y1="70" x2="1010" y2="70"/>
+      </g>
+      <g font-family="IBM Plex Mono" font-size="10" fill="#F7F7F4">
+        <g><rect x="40" y="52" width="120" height="36" fill="none" stroke="#F7F7F4"/><text x="60" y="74">ESPECIFICACIÓN</text></g>
+        <g><rect x="210" y="52" width="110" height="36" fill="none" stroke="#F7F7F4"/><text x="238" y="74">PROTOTIPO</text></g>
+        <g><rect x="370" y="52" width="120" height="36" fill="none" stroke="#F7F7F4"/><text x="392" y="74">CONSTRUCCIÓN</text></g>
+        <g><rect x="540" y="52" width="100" height="36" fill="none" stroke="#F7F7F4"/><text x="566" y="74">CALIDAD</text></g>
+        <g><rect x="690" y="52" width="110" height="36" fill="none" stroke="#F7F7F4"/><text x="716" y="74">PRODUCCIÓN</text></g>
+        <g><rect x="850" y="52" width="110" height="36" fill="none" stroke="#F7F7F4"/><text x="878" y="74">FEEDBACK</text></g>
+      </g>
+      <circle cx="300" cy="70" r="5" fill="#FFB703"/>
+      <path d="M905 88 Q960 130 700 135 Q400 140 155 88" fill="none" stroke="#FFB703" stroke-width="1" stroke-dasharray="3 4" opacity="0.7"/>
+      <text x="470" y="132" font-family="IBM Plex Mono" font-size="9" fill="#FFB703">CICLO CONTINUO · EL FEEDBACK REALIMENTA LA SIGUIENTE ESPECIFICACIÓN</text>
+    </svg>
+  </div>
+</section>
+
+<!-- AI SOBER BLOCK (abisal, continues) -->
+<section class="abisal ai">
+  <div class="wrap">
+    <div class="sec-idx"><span class="n">E</span>&nbsp;/&nbsp;CÓMO CONSTRUIMOS</div>
+    <div class="grid">
+      <div>
+        <h2 class="sec" style="font-size:2.2rem">La IA también en cómo construimos</h2>
+        <p>Usamos un flujo propio de ingeniería asistida por agentes de IA, gobernado por una biblioteca interna de estándares, reglas y patrones probados en producción. Entregamos con la velocidad de un equipo completo y la coherencia de una sola mente — la demostración práctica de lo que predicamos.</p>
+      </div>
+      <div class="fig">[ diagrama sobrio pequeño:<br>biblioteca de reglas → agente → criterio senior → producción<br>(kit de líneas, sin protagonismo) ]</div>
+    </div>
+    <div class="note d">Bloque sobrio, sin ser protagonista: media pantalla, un solo diagrama pequeño de apoyo. Cierra el argumento "practicamos lo que predicamos".</div>
+  </div>
+</section>
+
+<!-- FINAL CTA (abisal) -->
+<section class="abisal">
+  <div class="wrap cta">
+    <span class="reuse">REUSE · FinalCTA</span>
+    <h2>Hablemos de tu negocio.</h2>
+    <p class="lead" style="color:rgba(247,247,244,.85)">Cuéntanos qué frena tu crecimiento. Escuchamos antes de proponer.</p>
+    <a class="btn">Hablemos ↗</a>
+  </div>
+</section>
+
+<script>
+// minimal ring render (reference only — real component is the repo's PhaseCycle)
+const FASES=[["Discover"],["Understand"],["Simplify"],["Design"],["Validate"],["Build"],["Automate"],["Scale"],["Measure"],["Evolve"]];
+const svg=document.getElementById('ring'),NS='http://www.w3.org/2000/svg';const CX=260,CY=260,R=185,N=10;let active=2;
+function el(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e}
+function pos(i,r=R){const ang=(-90+i*36)*Math.PI/180;return[CX+r*Math.cos(ang),CY+r*Math.sin(ang)]}
+svg.appendChild(el('circle',{cx:CX,cy:CY,r:R,fill:'none',stroke:'rgba(247,247,244,.18)','stroke-width':1.5}));
+const C=2*Math.PI*R;svg.appendChild(el('circle',{cx:CX,cy:CY,r:R,fill:'none',stroke:'#FFB703','stroke-width':3,'stroke-dasharray':`${C*active/N} ${C}`,transform:`rotate(-90 ${CX} ${CY})`,'stroke-linecap':'round'}));
+const[x10,y10]=pos(9,R+26),[x1,y1]=pos(0,R+26);svg.appendChild(el('path',{d:`M ${x10} ${y10} A ${R+26} ${R+26} 0 0 1 ${x1} ${y1}`,fill:'none',stroke:'rgba(255,183,3,.5)','stroke-width':1,'stroke-dasharray':'3 4'}));
+FASES.forEach((f,i)=>{const[x,y]=pos(i),done=i<active,act=i===active;svg.appendChild(el('circle',{cx:x,cy:y,r:act?18:13,fill:'#0A2B45',stroke:act||done?'#FFB703':'rgba(247,247,244,.35)','stroke-width':act?2.5:1.5}));const num=el('text',{x:x,y:y+3.5,'text-anchor':'middle','font-size':act?11:9,fill:act||done?'#FFB703':'rgba(247,247,244,.55)'});num.textContent=String(i+1).padStart(2,'0');svg.appendChild(num);const[lx,ly]=pos(i,R+44);const lab=el('text',{x:lx,y:ly+3,'text-anchor':'middle','font-size':10,fill:act?'#FFB703':'rgba(247,247,244,.6)'});lab.textContent=f[0].toUpperCase();svg.appendChild(lab)});
+const g=el('text',{x:CX,y:CY+30,'text-anchor':'middle','font-size':130,fill:'rgba(247,247,244,.07)','font-family':'Archivo'});g.textContent='03';svg.appendChild(g);
+</script>
+</body>
+</html>

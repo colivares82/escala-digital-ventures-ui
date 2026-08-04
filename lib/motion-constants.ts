@@ -4,6 +4,22 @@
  * must come from here — no magic numbers in component logic.
  */
 
+// ── Site header ──────────────────────────────────────────────────────────────
+
+/** Full header height in rem (at-rest / scrolling-up). */
+export const HEADER_HEIGHT_REM = 5
+
+/** Compact header height in rem (20% smaller, activates on scroll-down). */
+export const HEADER_HEIGHT_COMPACT_REM = 4
+
+/** Scroll distance (px) after which the header shadow appears. */
+export const HEADER_SCROLL_SHADOW_PX = 4
+
+/** Minimum scroll depth (px) required before compact mode can activate. */
+export const HEADER_COMPACT_THRESHOLD_PX = 80
+
+// ── Animation ─────────────────────────────────────────────────────────────────
+
 /** Duration in milliseconds for the count-up animation in Readout. */
 export const COUNT_UP_DURATION_MS = 500
 

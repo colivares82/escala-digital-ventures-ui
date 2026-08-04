@@ -35,6 +35,12 @@ Items ordered by PLAN.md phase. The first open item in the first open phase is a
 - HowWeBuild section (Libro Ch. 7)
 - FinalCTA
 
+### [NAV-01] Upgrade nav hrefs for unbuilt pages as they ship
+- Currently "Qué hacemos / Casos de éxito / Modelo de alianza / Sobre Escala" link to home anchors (`/#que-hacemos`, etc.) as fallback.
+- As each page ships in Phase 2.n: update its `href` in `content/es/shared.ts` header nav from the anchor to the true route.
+- No code changes needed to `SiteHeader` — the `pageId`-based active state already works once the href is a true route.
+- Follow-up from SPEC-P2.1 decision (agreed with Carlos, April 2026).
+
 ### [PAGE-01] Qué hacemos `/que-hacemos`
 - 5 service sections (problem-first, per spec §5.2 + Libro Ch. 11)
 - IdealClientNote section + CTA (Libro Ch. 12)

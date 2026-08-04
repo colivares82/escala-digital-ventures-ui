@@ -6,6 +6,20 @@
 
 ---
 
+## Interior-page section index convention (established Phase 2.1 — SPEC-P2.1 FR-2.2)
+
+Home page sections use numeric indexes `00`–`06` as wayfinding eyebrows (e.g. "03 / EL CICLO DE CRECIMIENTO"). Interior pages use **letter indexes** `A`, `B`, `C`… to avoid visual collision with the home's numeric system.
+
+### Rules
+- The letter index lives in the **content dictionary** (e.g. `method.phaseCycle.sectionIndex = 'B'`), not hardcoded in the component.
+- `PhaseCycle` accepts a `sectionIndex?: string` prop (default `"03"` for home backward compat).
+- All Phase 2 interior pages should follow A/B/C/D/E order for their sections.
+- Example from `/como-trabajamos`: A·PageHeader · B·PhaseCycle · C·ExecutionPractices · D·FIG.06 · E·AiBuildBlock.
+
+When building a new interior page, define the letter indexes in the page's content dictionary and pass them as props to `SectionIndex` or component-specific `sectionIndex` props.
+
+---
+
 ## The four steps
 
 ### 1. Add the TypeScript interface in `content/types.ts`

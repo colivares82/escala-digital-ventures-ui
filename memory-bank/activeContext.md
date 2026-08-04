@@ -1,70 +1,66 @@
 # Active Context
 
-_Last updated: March 2026 (Phase 1 completed)_
+_Last updated: April 2026 (Phase 2.1 completed)_
 
 ## Current state
 
-**Phase 1 complete.** The i18n architecture and interior-page system are in place. All 10 pages × 3 locales are defined in the route map; only home × 3 locales are rendered (Option A). Every subsequent phase adds a page by: interface + ES dict + route entry + component — no routing engineering required.
+**Phase 2.1 complete.** `/como-trabajamos` is live at all 3 locale slugs. 291 tests, all passing. Build clean, TypeScript strict.
 
-Test suite: 252 tests, all passing. Coverage: ~93% statements (>> 70% gate). Build: clean, TypeScript strict.
+## What was just done (Phase 2.1 — SPEC-P2.1)
 
-## What was just done (Phase 1)
+1. **Content layer:**
+   - `content/types.ts` — `MethodDictionary` expanded from stub to full Phase 2.1 interface
+   - `content/es/method.ts` — full ES dictionary; verbatim Libro Ch. 7 (AiBuild lead), Ch. 9 (5 practices); spec v1.1 §5.3 lead; phases NOT duplicated (shared from `homeContent.framework.phases` per FR-3.2)
 
-1. **i18n core (`lib/i18n/`):**
-   - `types.ts` — `Locale`, `PageId`, `CaseSlug`, `RouteResolution` types
-   - `routes.ts` — route map (spec §4.1 exactly); `getPath`, `resolvePath`, `getAlternates`; pre-built reverse lookup; trailing slash normalization
-   - `dictionary.ts` — `getDictionary(locale)` → typed `Dictionary` bundle
+2. **PhaseCycle prop-gating (FR-3.3):**
+   - `action` made optional — omit to suppress the self-link on the method page
+   - `sectionIndex` added as prop (default `"03"`) — interior pages pass the letter index (e.g. `"B"`)
+   - Fully backward-compatible: home renders identically, 16 PhaseCycle tests pass
 
-2. **Content restructure:**
-   - `content/types.ts` — page dictionary interfaces (`PageMeta`, `HomePageDictionary`, `ServicesDictionary`, …)
-   - `content/data/cases.ts` — locale-aware case studies (source of truth; `clients.ts` is now a backward-compat adapter)
-   - `content/es/home.ts` — `meta` field added; `satisfies HomePageDictionary`
-   - ES stub dictionaries for all 9 non-home pages (meta only; Phase 2 adds full content)
-   - `content/en/*` and `content/ca/*` — full per-page re-exports with `TODO(P5)` markers
+3. **Three new components:**
+   - `components/execution-practices.tsx` — 5 sticky panels; CSS-only, no JS; mobile/reduced-motion plain stack
+   - `components/execution-pipeline-fig.tsx` — FIG.06, **PROVISIONAL VISUAL** (Carlos will redesign); fully isolated; ambre pulse; reduced-motion static; sr-only accessible text
+   - `components/ai-build-block.tsx` — sober abisal block; Libro Ch. 7/9 only; 3–4 mono points; editorial guardrail; small inline diagram
 
-3. **Routing:**
-   - `app/[[...path]]/page.tsx` — single catch-all; `dynamicParams = false`; `generateStaticParams` (home × 3); `generateMetadata` (canonical, hreflang, OG)
-   - `app/page.tsx` deleted; home migrated with pixel parity
-   - `app/sitemap.ts` — built pages × locales; Phase 2 entries commented out
-   - `app/robots.ts` — allow `/`; disallow `/styleguide`
+4. **Page assembly + routing:**
+   - `components/pages/method.tsx` — page compositor; all copy via props
+   - `generateStaticParams` extended: method × 3 locales
+   - `app/sitemap.ts` — `method` added to `BUILT_PAGES`
 
-4. **LocaleSwitcher:**
-   - `components/locale-switcher.tsx` — page-preserving links via `getAlternates`; `aria-current`; IBM Plex Mono; accessible; hides on small screens
-   - `SiteHeader` updated to accept `currentPage`, `locale`, `pageParams` and render `<LocaleSwitcher>`
+5. **Header nav → true routes (AC-11):**
+   - `content/es/shared.ts` — "Cómo trabajamos" nav href now `/como-trabajamos`; `pageId` added to nav items for active detection; unbuilt pages use home anchors as fallback
+   - `components/site-chrome.tsx` — active state via `aria-current="page"` on matching `pageId`; brand link uses `ROUTES.HOME` on interior pages
 
-5. **Interior page system:**
-   - `components/page-header.tsx` — `eyebrow`, `title`, `lead?`, `surface` props; BEM CSS; approved identity
-   - `/styleguide` section 05 "Plantilla de página" — PageHeader both surfaces + Section + FinalCTA (AC-8)
+6. **CSS + styleguide:**
+   - `app/globals.css` — BEM styles for all 3 new components; `.sr-only` utility; reduced-motion overrides; active nav style
+   - `app/styleguide/page.tsx` — section 06: ExecutionPractices (2 panels), ExecutionPipelineFig, AiBuildBlock
 
-6. **Docs + testing:**
-   - `docs/adding-a-page.md` (AC-9)
-   - `specs/spec-phase1-i18n-architecture.md` in repo
-   - 4 new test files; 2 refactored; all green
-   - `PLAN.md` Phase 1 marked done
+7. **Tests + docs:**
+   - 39 new tests (23 component + 11 content-integrity + 4 PhaseCycle regression + 1 existing site-chrome)
+   - `docs/adding-a-page.md` — interior A/B/C letter index convention documented
+   - `docs/CHANGELOG.md` updated
+   - `PLAN.md` — Phase 2.1 marked ☑
 
-## Known limitation (documented)
+## Known issues / open items
 
-`<html lang>` is hardcoded `"es"` in root layout. Next.js static catch-all routes cannot dynamically set this without middleware. Phase 6 (middleware deployment on GCP) will address it. For Phase 1 this is acceptable because EN/CA content is ES fallback anyway. Interior pages set `lang` on `<main>` for EN/CA as an intermediate accessibility measure.
+- **FIG.06 provisional:** `ExecutionPipelineFig` internals are provisional. Carlos will redesign the visual. The component is isolated — only `execution-pipeline-fig.tsx` needs to change.
+- **Nav fallback for unbuilt pages:** Qué hacemos, Casos de éxito, Modelo de alianza, Sobre Escala still link to home anchors (`/#que-hacemos`, etc.) until their pages ship. Track in BACKLOG as follow-up action.
+- **EN/CA translations:** all locales serve ES fallback (Phase 5).
+- **FinalCTA on method page:** embedded ContactForm (Phase 3 will switch to `/contacto` link once that page ships).
+- **Lighthouse baseline:** deferred to Phase 7 (GCP not ready).
 
-## What comes next (Phase 2)
+## What comes next (Phase 2.2)
 
-Each page in priority order:
-1. **[PAGE-02]** `/como-trabajamos` — first; reuses PhaseCycle; needs spec from Claude first
-2. **[PAGE-01]** `/que-hacemos` — 5 service lines; needs spec
-3. **[PAGE-03]** `/casos-de-exito` + MAGUPELL + BioZero
-4. **[PAGE-04]** `/modelo-de-alianza`
-5. **[PAGE-05]** `/sobre-escala`
-
-For each Phase 2 page:
-- Spec written first (English, in `specs/`)
-- `docs/adding-a-page.md` is the implementation guide
-- Update `generateStaticParams` + sitemap + renderer switch in catch-all
+**[PAGE-01]** `/que-hacemos` — spec from Claude first (English, MAGUPELL format), wireframe if needed, then build.
+- 5 service lines problem-first (Libro Ch. 11)
+- IdealClientNote section (Ch. 12)
+- FinalCTA
 
 ## Active decisions open
 
-- **Email address:** `hola@escaladigitalventures.com` is a placeholder. Confirm before CONTACT-01.
-- **Legal data:** CIF, registered address, registry data for Aviso Legal — Carlos to provide.
-- **EN/CA copy:** pending professional translation + Carlos review. Do not index until reviewed.
-- **Real imagery:** case-study context images pending from clients (MAGUPELL, BioZero).
-- **GCP account:** not ready. Phase 6 (infra + GitHub Actions CI/CD) blocked.
-- **AC-8 approval:** Carlos must review `/styleguide` "Plantilla de página" section (section 05) and approve `PageHeader` both surfaces before Phase 2.1 spec is unblocked.
+- **Email address:** `hola@escaladigitalventures.com` placeholder. Confirm before Phase 3 CONTACT-01.
+- **Legal data:** CIF, registered address for Aviso Legal — Carlos to provide.
+- **EN/CA copy:** professional translation + review pending. Phase 5.
+- **Real imagery:** case-study context images pending from clients.
+- **GCP account:** not ready. Phase 6 blocked.
+- **Nav upgrade for unbuilt pages:** when /que-hacemos ships, update its `pageId` and href in `shared.ts`.
