@@ -2461,3 +2461,370 @@ h1, h2, h3, h4, p {
     font-size: 1.5rem;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* PHASE 2.3 — CASOS DE ÉXITO (expediente técnico)                             */
+/* Index: CaseCard grid · Dossier: BrandHeader, ReadoutStrip,                  */
+/* DossierField, CapabilityGrid, NextCase nav                                   */
+/* Spec: SPEC-P2.3                                                               */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Cases index page ── */
+.cases-index {
+  padding-block: 6rem 8rem;
+}
+.cases-index__inner {
+  /* Breathing room below PageHeader */
+}
+
+/* 2-column card grid; wraps naturally for more cards */
+.cases-index-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--line);
+}
+
+/* ── CaseCard ── */
+.case-index-card {
+  padding: 2.25rem 2.25rem;
+  border: 0.5px solid var(--line);
+  position: relative;
+  min-height: 16rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.case-index-card__eyebrow {
+  margin: 0 0 1.25rem;
+  font: 500 0.65rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  color: var(--mar);
+}
+.case-index-card__logo {
+  margin: 0 0 1rem;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+.case-index-card__logo img {
+  max-height: 44px;
+  width: auto;
+  display: block;
+}
+.case-index-card__logo-placeholder {
+  height: 44px;
+  margin: 0 0 1rem;
+  border: 1px dashed var(--line);
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  font: 500 0.65rem var(--font-ibm-plex-mono);
+  color: var(--ambre-dk);
+  width: fit-content;
+}
+.case-index-card__name {
+  margin: 0 0 0.5rem;
+  font: 600 clamp(1.5rem, 3vw, 2.25rem) / 1.1 var(--font-archivo);
+  font-stretch: 112%;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.case-index-card__subtitle {
+  margin: 0;
+  flex: 1;
+  color: rgb(22 24 29 / 0.75);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+.case-index-card__cta {
+  display: inline-block;
+  margin-top: 1.75rem;
+  font: 500 0.65rem var(--font-ibm-plex-mono);
+  color: var(--mar);
+  text-decoration: none;
+  border-bottom: 1px solid var(--mar);
+  padding-bottom: 0.2rem;
+  letter-spacing: 0.04em;
+  width: fit-content;
+}
+.case-index-card__cta:focus-visible {
+  outline: 2px solid var(--ambre);
+  outline-offset: 4px;
+}
+
+/* ── Dossier page wrapper ── */
+.dossier-page {
+  padding-block: 5rem 6rem;
+}
+.dossier-page__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── BrandHeader ── */
+.brand-header {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+}
+.brand-header__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.brand-header__sector {
+  margin: 0 0 1rem;
+  font: 500 0.65rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.08em;
+  color: var(--ambre-dk);
+}
+.brand-header__brandrow {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
+}
+.brand-header__logo-wrap {
+  display: flex;
+  align-items: center;
+}
+.brand-header__logo {
+  max-height: 56px;
+  width: auto;
+  display: block;
+}
+.brand-header__logo-placeholder {
+  height: 56px;
+  border: 1px dashed var(--line);
+  display: flex;
+  align-items: center;
+  padding: 0 1.25rem;
+  font: 500 0.65rem var(--font-ibm-plex-mono);
+  color: var(--ambre-dk);
+  width: fit-content;
+}
+.brand-header__visit {
+  font: 500 0.65rem var(--font-ibm-plex-mono);
+  color: var(--mar);
+  text-decoration: none;
+  border: 1px solid var(--mar);
+  padding: 0.5rem 0.875rem;
+  white-space: nowrap;
+  transition: background 180ms, color 180ms;
+}
+.brand-header__visit:hover {
+  background: var(--mar);
+  color: var(--paper);
+}
+.brand-header__visit:focus-visible {
+  outline: 2px solid var(--ambre);
+  outline-offset: 4px;
+}
+.brand-header__title {
+  margin: 0;
+  font: 600 clamp(2rem, 4vw, 3rem) / 1.05 var(--font-archivo);
+  font-stretch: 112%;
+  letter-spacing: -0.04em;
+  max-width: 22ch;
+}
+.brand-header__plate {
+  margin: 0;
+  font: 500 0.6rem / 1.6 var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  color: var(--mar);
+  text-align: right;
+  flex-shrink: 0;
+  /* Right-aligned even when title wraps */
+  align-self: flex-start;
+}
+
+/* ── ReadoutStrip — adaptive columns via --readout-cols CSS var ── */
+.readout-strip {
+  display: grid;
+  grid-template-columns: repeat(var(--readout-cols, 4), 1fr);
+  border: 1px solid var(--line);
+  margin: 2rem 0;
+}
+.readout-strip__cell {
+  padding: 1.5rem 1.25rem;
+  border: 0.5px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.readout-strip__label {
+  font: 500 0.6rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.06em;
+  color: var(--mar);
+}
+.readout-strip__value {
+  font: 500 clamp(1.6rem, 3vw, 2.4rem) / 1 var(--font-ibm-plex-mono);
+  color: var(--mar);
+  letter-spacing: -0.02em;
+}
+.readout-strip__caption {
+  font: 500 0.55rem / 1.5 var(--font-ibm-plex-mono);
+  color: rgb(22 24 29 / 0.55);
+  letter-spacing: 0.02em;
+}
+
+/* ── CapabilityGrid ── */
+.capability-grid-section {
+  margin: 2rem 0;
+}
+.capability-grid-section__eyebrow {
+  margin: 0 0 1rem;
+  font: 500 0.65rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  color: var(--mar);
+}
+.capability-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.capability-card {
+  background: var(--paper);
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.capability-card__index {
+  font: 500 0.6rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.08em;
+  color: var(--mar);
+}
+.capability-card__title {
+  margin: 0;
+  font: 600 1.1rem / 1.2 var(--font-archivo);
+  font-stretch: 112%;
+}
+.capability-card__body {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: rgb(22 24 29 / 0.8);
+}
+
+/* ── DossierField — narrative two-column fields ── */
+.dossier-narrative {
+  margin-top: 2rem;
+}
+.dossier-field {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 2rem;
+  padding: 1.75rem 0;
+  border-top: 1px solid var(--line);
+  align-items: start;
+}
+.dossier-field__key {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.dossier-field__num {
+  display: block;
+  font: 500 2rem / 1 var(--font-ibm-plex-mono);
+  color: var(--mar);
+  letter-spacing: -0.04em;
+}
+.dossier-field__name {
+  font: 500 0.6rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.08em;
+  color: var(--ambre-dk);
+  text-transform: uppercase;
+}
+.dossier-field__body {
+  margin: 0;
+  line-height: 1.65;
+  max-width: 60ch;
+  color: rgb(22 24 29 / 0.88);
+}
+
+/* ── NextCase navigation ── */
+.dossier-nextcase {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-top: 1px solid var(--line);
+  margin-top: 3rem;
+  padding-top: 2rem;
+}
+.dossier-nextcase__link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  color: inherit;
+  text-decoration: none;
+}
+.dossier-nextcase__link:focus-visible {
+  outline: 2px solid var(--ambre);
+  outline-offset: 4px;
+}
+.dossier-nextcase__label {
+  font: 500 0.6rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.08em;
+  color: var(--mar);
+}
+.dossier-nextcase__name {
+  font: 600 clamp(1.25rem, 3vw, 1.6rem) / 1.1 var(--font-archivo);
+  font-stretch: 112%;
+}
+.dossier-nextcase__back {
+  font: 500 0.65rem var(--font-ibm-plex-mono);
+  color: var(--mar);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--mar);
+  padding-bottom: 0.1rem;
+}
+.dossier-nextcase__back:focus-visible {
+  outline: 2px solid var(--ambre);
+  outline-offset: 4px;
+}
+
+/* ── Phase 2.3 responsive (≤767px) ── */
+@media (max-width: 767px) {
+  /* Index cards: 1 column */
+  .cases-index-grid {
+    grid-template-columns: 1fr;
+  }
+  /* ReadoutStrip: max 2 columns */
+  .readout-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  /* CapabilityGrid: 1 column */
+  .capability-grid {
+    grid-template-columns: 1fr;
+  }
+  /* DossierField: single column */
+  .dossier-field {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  /* BrandHeader: stack plate below title */
+  .brand-header__plate {
+    text-align: left;
+    align-self: auto;
+  }
+}
+
+/* ── Phase 2.3 responsive (≤479px) ── */
+@media (max-width: 479px) {
+  /* ReadoutStrip: 1 column on smallest screens */
+  .readout-strip {
+    grid-template-columns: 1fr;
+  }
+  .brand-header__title {
+    font-size: 1.75rem;
+  }
+}

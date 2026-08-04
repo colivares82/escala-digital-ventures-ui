@@ -146,12 +146,31 @@ export interface MethodDictionary {
   }
 }
 
-/** Phase 1 stub — Phase 2 will add full content. */
+/** Phase 2.3 — /casos-de-exito index page content. Spec: SPEC-P2.3 FR-6.1 */
 export interface CasesDictionary {
   readonly meta: PageMeta
+  readonly pageHeader: {
+    readonly eyebrow: string
+    readonly title: string
+    readonly lead: string
+  }
+  readonly card: {
+    /** Prefix for card eyebrow: "EXPEDIENTE" (zero-padded ordinal appended by component). */
+    readonly expedienteLabel: string
+    /** CTA label on index cards: "ABRIR EXPEDIENTE ↗" */
+    readonly openLabel: string
+  }
+  /** Label for the "visit site ↗" link in BrandHeader. */
+  readonly visitLabel: string
+  /** Section eyebrow above the capability grid: "CAPACIDADES ENTREGADAS". */
+  readonly capabilitiesLabel: string
+  /** Next-case nav label: "SIGUIENTE EXPEDIENTE ↓" */
+  readonly nextLabel: string
+  /** Back-to-index nav label: "VOLVER AL ÍNDICE ↑" */
+  readonly backLabel: string
 }
 
-/** Phase 1 stub — Phase 2 will add full content. */
+/** Phase 2.3 — detail-page meta lives in CaseStudy.meta (content/data/cases.ts). */
 export interface CaseDetailDictionary {
   readonly meta: PageMeta
 }

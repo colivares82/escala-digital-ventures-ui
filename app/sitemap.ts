@@ -22,12 +22,12 @@ type BuiltPageEntry = { page: PageId; params?: PageParams }
  */
 const BUILT_PAGES: BuiltPageEntry[] = [
   { page: 'home' },
-  { page: 'method' },      // Phase 2.1 — SPEC-P2.1
-  { page: 'services' },    // Phase 2.2 — SPEC-P2.2
+  { page: 'method' },                             // Phase 2.1 — SPEC-P2.1
+  { page: 'services' },                           // Phase 2.2 — SPEC-P2.2
+  { page: 'cases' },                              // Phase 2.3 — SPEC-P2.3
+  { page: 'caseDetail', params: { slug: 'magupell' } }, // Phase 2.3
+  { page: 'caseDetail', params: { slug: 'biozero' } },  // Phase 2.3
   // Phase 2 — uncomment as pages are built:
-  // { page: 'cases' },
-  // { page: 'caseDetail', params: { slug: 'magupell' } },
-  // { page: 'caseDetail', params: { slug: 'biozero' } },
   // { page: 'alliance' },
   // { page: 'about' },
   // { page: 'contact' },

@@ -12,10 +12,13 @@ import {
 import { MotionRuntime } from '@/components/motion-runtime'
 import { MethodPage } from '@/components/pages/method'
 import { ServicesPage } from '@/components/pages/services'
+import { CasesPage } from '@/components/pages/cases'
+import { CaseDossier } from '@/components/case-dossier'
 import { SiteFooter, SiteHeader } from '@/components/site-chrome'
 import { SITE_URL } from '@/lib/config'
 import { getDictionary } from '@/lib/i18n/dictionary'
 import { getAlternates, getPath, resolvePath } from '@/lib/i18n/routes'
+import { getCase } from '@/content/data/cases'
 
 type RouteParams = { path?: string[] }
 
@@ -29,20 +32,30 @@ export const dynamicParams = false
 /**
  * Phase 1: home × 3 locales.
  * Phase 2.1: method × 3 locales added.
- * Phase 2.n: add each new page's path entries when its component is ready.
- * Spec: SPEC-P1 FR-2.2 · SPEC-P2.1 FR-1.1
+ * Phase 2.2: services × 3 locales added.
+ * Phase 2.3: cases index + 2 case details × 3 locales added.
+ * Spec: SPEC-P1 FR-2.2 · SPEC-P2.1 FR-1.1 · SPEC-P2.3 FR-1.1
  */
 export async function generateStaticParams(): Promise<RouteParams[]> {
   return [
-    {},                                   // ES home: /
-    { path: ['en'] },                     // EN home: /en
-    { path: ['ca'] },                     // CA home: /ca
-    { path: ['como-trabajamos'] },        // ES method
-    { path: ['en', 'how-we-work'] },      // EN method
-    { path: ['ca', 'com-treballem'] },    // CA method
-    { path: ['que-hacemos'] },            // ES services — SPEC-P2.2
-    { path: ['en', 'what-we-do'] },       // EN services
-    { path: ['ca', 'que-fem'] },          // CA services
+    {},                                              // ES home: /
+    { path: ['en'] },                               // EN home: /en
+    { path: ['ca'] },                               // CA home: /ca
+    { path: ['como-trabajamos'] },                  // ES method
+    { path: ['en', 'how-we-work'] },                // EN method
+    { path: ['ca', 'com-treballem'] },              // CA method
+    { path: ['que-hacemos'] },                      // ES services — SPEC-P2.2
+    { path: ['en', 'what-we-do'] },                 // EN services
+    { path: ['ca', 'que-fem'] },                    // CA services
+    { path: ['casos-de-exito'] },                   // ES cases index — SPEC-P2.3
+    { path: ['en', 'case-studies'] },               // EN cases index
+    { path: ['ca', 'casos-dexit'] },                // CA cases index
+    { path: ['casos-de-exito', 'magupell'] },       // ES MAGUPELL
+    { path: ['en', 'case-studies', 'magupell'] },   // EN MAGUPELL
+    { path: ['ca', 'casos-dexit', 'magupell'] },    // CA MAGUPELL
+    { path: ['casos-de-exito', 'biozero'] },        // ES BioZero
+    { path: ['en', 'case-studies', 'biozero'] },    // EN BioZero
+    { path: ['ca', 'casos-dexit', 'biozero'] },     // CA BioZero
   ]
 }
 
@@ -66,8 +79,13 @@ export async function generateMetadata({
       case 'home':       return dict.home.meta
       case 'services':   return dict.services.meta
       case 'method':     return dict.method.meta
-      case 'cases':
-      case 'caseDetail': return dict.cases.meta  // Phase 2 will add caseDetail.meta
+      case 'cases':      return dict.cases.meta
+      case 'caseDetail': {
+        // Per-case meta from CaseStudy.meta (SPEC-P2.3 FR-6.2)
+        const slug = pageParams?.slug
+        const caseData = slug ? getCase(slug) : null
+        return caseData?.meta ?? dict.cases.meta
+      }
       case 'alliance':   return dict.alliance.meta
       case 'about':      return dict.about.meta
       case 'contact':    return dict.contact.meta
@@ -111,12 +129,18 @@ export default async function Page({
   // Unknown path → 404. Also covers /es/... which is not a valid prefix (spec §5).
   if (!resolution) notFound()
 
-  const { page, locale } = resolution
+  const { page, locale, params: pageParams } = resolution
   const dict = getDictionary(locale)
   const { home, shared } = dict
 
   // Pages not yet built → 404 until Phase 2.n adds them.
-  if (page !== 'home' && page !== 'method' && page !== 'services') notFound()
+  const BUILT_PAGES = ['home', 'method', 'services', 'cases', 'caseDetail'] as const
+  if (!BUILT_PAGES.includes(page as (typeof BUILT_PAGES)[number])) notFound()
+
+  // For caseDetail, resolve the case and 404 on unknown slug.
+  const caseData =
+    page === 'caseDetail' && pageParams?.slug ? getCase(pageParams.slug) : null
+  if (page === 'caseDetail' && !caseData) notFound()
 
   return (
     <MotionRuntime>
@@ -127,6 +151,7 @@ export default async function Page({
         content={home.header}
         currentPage={page}
         locale={locale}
+        pageParams={pageParams}
       />
       {/* lang on main provides locale signal for EN/CA; html lang stays "es" until
           Phase 6 middleware sets it correctly per-request. */}
@@ -138,6 +163,10 @@ export default async function Page({
           <MethodPage dict={dict} />
         ) : page === 'services' ? (
           <ServicesPage dict={dict} locale={locale} />
+        ) : page === 'cases' ? (
+          <CasesPage dict={dict} locale={locale} />
+        ) : page === 'caseDetail' && caseData ? (
+          <CaseDossier caseStudy={caseData} dict={dict.cases} locale={locale} />
         ) : (
           <>
             <Hero content={home.hero} claims={home.claims} />

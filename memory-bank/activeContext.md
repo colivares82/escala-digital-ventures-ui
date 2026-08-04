@@ -1,62 +1,62 @@
 # Active Context
 
-_Last updated: April 2026 (Phase 2.2 completed)_
+_Last updated: April 2026 (Phase 2.3 completed)_
 
 ## Current state
 
-**Phase 2.2 complete.** `/que-hacemos` is live at all 3 locale slugs. 366 tests, all passing. Build clean, TypeScript strict.
+**Phase 2.3 complete.** `/casos-de-exito` (index) + `/casos-de-exito/magupell` + `/casos-de-exito/biozero` are live at all 3 locale slugs. 450 tests, all passing. Build clean, TypeScript strict.
 
-## What was just done (Phase 2.2 — SPEC-P2.2)
+## What was just done (Phase 2.3 — SPEC-P2.3)
 
 1. **Spec filed:**
-   - `specs/spec-p2.2-que-hacemos.md` — implementation spec in repo (authored by Claude, approved by Carlos, spec-driven loop followed)
+   - `specs/spec-p2.3-casos-de-exito.md` — implementation spec (authored by Carlos/Claude, approved before build)
 
-2. **Design token:**
-   - `--ambre-dk: #b85c00` added to `:root` in `globals.css` — AA-safe dark amber on `--paper`; used exclusively for the problem-line text in ServiceRow
-   - `DECISIONS.md` — rationale recorded (pure `--ambre` does NOT pass AA on paper)
+2. **Data model:**
+   - `content/data/cases.ts` — full `CaseStudy` type (mode, brand with `StaticImageData` logos, readouts, capabilities?, dossier fields, per-case meta, plate); `getCase(slug)` helper
+   - Logos at `app/assets/brand/*.png` — static import via `next/image` (build-time missing-file check; see DECISIONS.md)
+   - `content/types.ts` — `CasesDictionary` expanded with all index-page and dossier UI labels
 
 3. **Content layer:**
-   - `content/types.ts` — `ServicesDictionary` interface + `ServiceFigVariant` type union; `problemPrefix` for i18n-safe problem label
-   - `content/es/services.ts` — full ES dictionary verbatim from Libro v2.1 Ch. 11 (5 services) + Ch. 12 (ideal client); all five `figVariant`, `figLabels`, `figCaption` per wireframe FIG.07–11
-   - EN/CA re-exports already present and compile correctly
+   - `content/es/cases.ts` — full ES dictionary (pageHeader "A / CASOS DE ÉXITO", card labels, dossier navigation labels)
+   - EN/CA re-export ES with `TODO(P5)` markers (unchanged pattern)
 
-4. **New components:**
-   - `components/service-fig.tsx` — ONE parameterized component with five ISOLATED variant renderers (`capture`, `platform`, `ai`, `product`, `evolve`); FIG.07–11 DRAFT VISUAL; IntersectionObserver pulse-on-entry; reduced-motion → static (no animateMotion rendered); sr-only caption; changing one variant touches only its own function (AC-5)
-   - `components/service-row.tsx` — three-column grid (64px / 1fr / 320px), `--ambre-dk` problem line, 1px ink-18% borders, mobile stacks below
-   - `components/ideal-client-note.tsx` — abisal band, eyebrow B / ¿ENCAJAMOS?, Libro Ch. 12 body, CTA → `#contacto` interim (BACKLOG follow-up for Phase 3)
+4. **New components (6):**
+   - `components/readout-strip.tsx` — adaptive-column bordered grid (--readout-cols CSS var)
+   - `components/dossier-field.tsx` — two-column field row (ordinal num + key / body text)
+   - `components/capability-grid.tsx` — 3-up grid; null guard for MAGUPELL (no capabilities)
+   - `components/brand-header.tsx` — client logo (next/image) + sector + H1 + plate + visit link; placeholder when logo null
+   - `components/case-card.tsx` — index card with logo, eyebrow, name, subtitle, "ABRIR EXPEDIENTE ↗"
+   - `components/case-dossier.tsx` — single mode-aware template (data-forward: 4 readouts + 5 fields; capability-forward: 2 readouts + CapabilityGrid + 3 fields); next/back nav
 
 5. **Page assembly + routing:**
-   - `components/pages/services.tsx` — A·PageHeader → 5×ServiceRow (staggered Reveal) → B·IdealClientNote → FinalCTA
-   - `generateStaticParams` extended: services × 3 locales
-   - `app/sitemap.ts` — `services` added to `BUILT_PAGES`
+   - `components/pages/cases.tsx` — PageHeader → CaseCard grid (data-driven, sorted by order) → FinalCTA
+   - `generateStaticParams` extended: +9 entries (index × 3 + 2 details × 3)
+   - `generateMetadata` updated: caseDetail uses per-case `CaseStudy.meta`
+   - `app/sitemap.ts` — 3 new pages added
+   - Nav: "Casos de éxito" → true route `/casos-de-exito` (header + footer)
 
-6. **Nav upgrade:**
-   - `content/es/shared.ts` — "Qué hacemos" in both header and footer nav → true route `/que-hacemos`; active state via existing `pageId` mechanism
+6. **CSS + styleguide:**
+   - `app/globals.css` — full Phase 2.3 BEM block; responsive ≤767px + ≤479px
+   - `app/styleguide/page.tsx` — section 08: all 6 new components incl. BrandHeader placeholder state
 
-7. **CSS + styleguide:**
-   - `app/globals.css` — BEM for `.service-row`, `.service-fig`, `.ideal-client`, `.service-rows`; stagger via `--row-index` CSS custom prop; responsive ≤767px/≤639px; reduced-motion overrides
-   - `app/styleguide/page.tsx` — section 07: all five ServiceFig variants grid + ServiceRow sample + IdealClientNote
-
-8. **Tests + docs:**
-   - 75 new tests (32 ServiceFig + 14 ServiceRow + 10 IdealClientNote + 15 content-integrity + 4 existing passing)
-   - Actually total: 366 tests (was 291 after Phase 2.1, +75 new)
-   - `PLAN.md` — Phase 2.2 marked ☑
+7. **Tests + docs:**
+   - 84 new tests across 7 test files (450 total, 31 files)
+   - `PLAN.md` — Phase 2.3 marked ☑
    - `docs/CHANGELOG.md` updated
-   - `docs/BACKLOG.md` — BACKLOG item added for CTA follow-up + NAV-01 progress updated
+   - `DECISIONS.md` — logo asset location rationale
 
 ## Known issues / open items
 
-- **ServiceFig figures DRAFT:** All five are coherent drafts reproducing the wireframe geometry. Carlos will refine each variant individually — changing one variant touches only its isolated render function.
-- **IdealClientNote CTA interim:** Points to `#contacto` anchor (FinalCTA on same page) until Phase 3 ships `/contacto`. BACKLOG item `PAGE-06-CTA` tracks this.
-- **FIG.06 provisional:** `ExecutionPipelineFig` internals are still provisional (Phase 2.1 open item).
-- **Nav fallback for unbuilt pages:** Casos de éxito, Modelo de alianza, Sobre Escala still link to home anchors until Phase 2.3/2.4/2.5 ship.
+- **ServiceFig figures DRAFT:** All five are coherent drafts. Carlos will refine each variant individually.
+- **IdealClientNote CTA interim:** Points to `#contacto` anchor until Phase 3 ships `/contacto`.
+- **FIG.06 provisional:** `ExecutionPipelineFig` internals are still provisional.
 - **EN/CA translations:** all locales serve ES fallback (Phase 5).
+- **Logo-display permission (BioZero):** pending Carlos confirmation before go-live (Phase 7 checklist). FR-3.6.
 
-## What comes next (Phase 2.3)
+## What comes next (Phase 2.4)
 
-**[PAGE-03]** `/casos-de-exito` — case study index + MAGUPELL + BioZero detail pages (data-driven template).
+**[PAGE-04]** `/modelo-de-alianza` — reuses constellation diagram; three planes + commitments (Libro Ch. 11–13).
 - Spec from Claude first (English), wireframe if needed, then build.
-- Sources: Libro Ch. 14–16, spec v1.1 §5.4, `content/data/cases.ts`
 
 ## Active decisions open
 
@@ -66,3 +66,4 @@ _Last updated: April 2026 (Phase 2.2 completed)_
 - **Real imagery:** case-study context images pending from clients.
 - **GCP account:** not ready. Phase 6 blocked.
 - **ServiceFig variants:** DRAFT VISUAL — Carlos will iterate one-by-one after review.
+- **Logo-display permission:** Carlos to confirm for MAGUPELL + BioZero before Phase 7 launch.
