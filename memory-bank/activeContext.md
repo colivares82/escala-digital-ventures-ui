@@ -1,46 +1,66 @@
 # Active Context
 
-_Last updated: August 2026_
+_Last updated: April 2026 (Phase 2.1 completed)_
 
 ## Current state
 
-The project has completed **two refactor passes**. The codebase is now fully compliant with all Escala engineering standards. The Spanish home page is tested, built, and ready.
+**Phase 2.1 complete.** `/como-trabajamos` is live at all 3 locale slugs. 291 tests, all passing. Build clean, TypeScript strict.
 
-## What was just done (second session)
+## What was just done (Phase 2.1 — SPEC-P2.1)
 
-1. **Coverage gate activated:**
-   - Installed `@vitest/coverage-v8`; `npm run test:coverage` now enforces the 70% threshold for real
-   - Coverage achieved: statements 94%, branches 84%, functions 98%, lines 98%
+1. **Content layer:**
+   - `content/types.ts` — `MethodDictionary` expanded from stub to full Phase 2.1 interface
+   - `content/es/method.ts` — full ES dictionary; verbatim Libro Ch. 7 (AiBuild lead), Ch. 9 (5 practices); spec v1.1 §5.3 lead; phases NOT duplicated (shared from `homeContent.framework.phases` per FR-3.2)
 
-2. **Remaining inline route/anchor strings eliminated:**
-   - `contact-form.tsx`: `href="/privacidad"` → `ROUTES.PRIVACY`
-   - `home-sections.tsx`: `href="#contacto"` → `ANCHORS.CONTACTO`, `href="#metodo"` → `ANCHORS.METODO`
-   - `site-chrome.tsx`: `href="#inicio"` → `ANCHORS.INICIO`, `href="#contacto"` → `ANCHORS.CONTACTO`
+2. **PhaseCycle prop-gating (FR-3.3):**
+   - `action` made optional — omit to suppress the self-link on the method page
+   - `sectionIndex` added as prop (default `"03"`) — interior pages pass the letter index (e.g. `"B"`)
+   - Fully backward-compatible: home renders identically, 16 PhaseCycle tests pass
 
-3. **Full test suite:**
-   - 138 tests, all passing (14 test files)
-   - Added tests for: `PhaseCycle`, `SystemDiagram`, `SiteHeader`, `SiteFooter`, `FinalCTA`, `Hero`, `ProblemSection`, `ServicesPreview`, `FrameworkSection`, `ProofSection`, `AllianceTeaser`
+3. **Three new components:**
+   - `components/execution-practices.tsx` — 5 sticky panels; CSS-only, no JS; mobile/reduced-motion plain stack
+   - `components/execution-pipeline-fig.tsx` — FIG.06, **PROVISIONAL VISUAL** (Carlos will redesign); fully isolated; ambre pulse; reduced-motion static; sr-only accessible text
+   - `components/ai-build-block.tsx` — sober abisal block; Libro Ch. 7/9 only; 3–4 mono points; editorial guardrail; small inline diagram
 
-4. **Build verified:** `next build` produces 3 static pages (/, /styleguide, /_not-found) — clean
+4. **Page assembly + routing:**
+   - `components/pages/method.tsx` — page compositor; all copy via props
+   - `generateStaticParams` extended: method × 3 locales
+   - `app/sitemap.ts` — `method` added to `BUILT_PAGES`
 
-5. **Housekeeping:** `TODO.md` replaced with pointer to `docs/BACKLOG.md`; CHANGELOG updated
+5. **Header nav → true routes (AC-11):**
+   - `content/es/shared.ts` — "Cómo trabajamos" nav href now `/como-trabajamos`; `pageId` added to nav items for active detection; unbuilt pages use home anchors as fallback
+   - `components/site-chrome.tsx` — active state via `aria-current="page"` on matching `pageId`; brand link uses `ROUTES.HOME` on interior pages
 
-## What comes next (priority order)
+6. **CSS + styleguide:**
+   - `app/globals.css` — BEM styles for all 3 new components; `.sr-only` utility; reduced-motion overrides; active nav style
+   - `app/styleguide/page.tsx` — section 06: ExecutionPractices (2 panels), ExecutionPipelineFig, AiBuildBlock
 
-1. **[CONTACT-01]** Connect contact form to a Next.js API route + transactional email provider. Confirm final email address before connecting. Add honeypot, rate limiting, server-side zod validation.
-2. **[I18N-01]** Locale routing for EN and CA. Implement `app/[locale]/` segment routing + `lib/i18n/routes.ts` slug map. Carlos reviews all translations before indexing.
-3. **[SEO-01]** Per-page metadata, OG images, `sitemap.xml`, `robots.txt`, structured data.
-4. **[PAGE-01→07]** Interior pages: Qué hacemos, Cómo trabajamos, Casos de éxito, Modelo de alianza, Sobre Escala, Contacto, Legal/Privacidad.
+7. **Tests + docs:**
+   - 39 new tests (23 component + 11 content-integrity + 4 PhaseCycle regression + 1 existing site-chrome)
+   - `docs/adding-a-page.md` — interior A/B/C letter index convention documented
+   - `docs/CHANGELOG.md` updated
+   - `PLAN.md` — Phase 2.1 marked ☑
+
+## Known issues / open items
+
+- **FIG.06 provisional:** `ExecutionPipelineFig` internals are provisional. Carlos will redesign the visual. The component is isolated — only `execution-pipeline-fig.tsx` needs to change.
+- **Nav fallback for unbuilt pages:** Qué hacemos, Casos de éxito, Modelo de alianza, Sobre Escala still link to home anchors (`/#que-hacemos`, etc.) until their pages ship. Track in BACKLOG as follow-up action.
+- **EN/CA translations:** all locales serve ES fallback (Phase 5).
+- **FinalCTA on method page:** embedded ContactForm (Phase 3 will switch to `/contacto` link once that page ships).
+- **Lighthouse baseline:** deferred to Phase 7 (GCP not ready).
+
+## What comes next (Phase 2.2)
+
+**[PAGE-01]** `/que-hacemos` — spec from Claude first (English, MAGUPELL format), wireframe if needed, then build.
+- 5 service lines problem-first (Libro Ch. 11)
+- IdealClientNote section (Ch. 12)
+- FinalCTA
 
 ## Active decisions open
 
-- **Email address:** `hola@escaladigitalventures.com` is a placeholder. Must be confirmed by Carlos before CONTACT-01.
-- **Legal data:** CIF, registered address, registry data for Aviso Legal — Carlos to provide.
-- **EN/CA copy:** pending professional translation + Carlos review. Do not index until reviewed.
-- **Real imagery:** case-study context images pending from clients (MAGUPELL, BioZero). No stock photos per spec.
-
-## Known issues / technical debt
-
-- Header nav uses section anchors (`#que-hacemos`, `#metodo`) — these will need to switch to true routes as interior pages are built.
-- `/styleguide` route is dev-only and should remain noindex in all environments.
-- No remaining route/anchor literal strings — all use `ROUTES.*` / `ANCHORS.*` constants.
+- **Email address:** `hola@escaladigitalventures.com` placeholder. Confirm before Phase 3 CONTACT-01.
+- **Legal data:** CIF, registered address for Aviso Legal — Carlos to provide.
+- **EN/CA copy:** professional translation + review pending. Phase 5.
+- **Real imagery:** case-study context images pending from clients.
+- **GCP account:** not ready. Phase 6 blocked.
+- **Nav upgrade for unbuilt pages:** when /que-hacemos ships, update its `pageId` and href in `shared.ts`.

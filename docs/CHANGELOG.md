@@ -1,8 +1,99 @@
 # Changelog
 
-> Cross-linked docs: [ARCHITECTURE](./ARCHITECTURE.md) · [BACKLOG](./BACKLOG.md) · [REQUIREMENTS_TRACEABILITY](./REQUIREMENTS_TRACEABILITY.md)
+> Cross-linked docs: [ARCHITECTURE](./ARCHITECTURE.md) · [BACKLOG](./BACKLOG.md) · [REQUIREMENTS_TRACEABILITY](./REQUIREMENTS_TRACEABILITY.md) · [PLAN](../PLAN.md)
 
 All notable changes, newest first.
+
+---
+
+## [Unreleased] — Phase 2.1: /como-trabajamos
+
+Spec: `specs/spec-p2.1-como-trabajamos.md` (SPEC-P2.1 v1.0) · Wireframe: `specs/mockups/wireframe-p2.1-como-trabajamos.html`
+
+### Added
+- `content/types.ts` — `MethodDictionary` interface (full Phase 2.1: pageHeader, phaseCycle, executionPractices, pipeline, aiBuild, finalCta)
+- `content/es/method.ts` — full ES dictionary; verbatim from Libro v2.1 Ch. 7 (AiBuild), Ch. 8 (phases shared from home), Ch. 9 (5 practices); spec v1.1 §5.3 lead
+- `components/execution-practices.tsx` — 5 sticky panels, CSS-only stacking (no JS scroll-jacking), mobile/reduced-motion plain stack
+- `components/execution-pipeline-fig.tsx` — FIG.06 isolated/swappable component (PROVISIONAL VISUAL); ambre pulse; IntersectionObserver fade-in; reduced-motion static; full sr-only accessible text
+- `components/ai-build-block.tsx` — sober abisal block; Libro Ch. 7/9 claims only; 3–4 mono points; small inline diagram; editorial guardrail enforced
+- `components/pages/method.tsx` — page compositor: A·PageHeader → B·PhaseCycle → C·ExecutionPractices → D·FIG.06 → E·AiBuildBlock → FinalCTA
+- `app/globals.css` — BEM styles for Phase 2.1 components + reduced-motion overrides; `.sr-only` utility; active nav state
+- Tests: `tests/components/execution-practices.test.tsx` (8 tests), `tests/components/execution-pipeline-fig.test.tsx` (7 tests), `tests/components/ai-build-block.test.tsx` (8 tests); `methodContent` describe in `content-integrity.test.ts` (11 tests)
+
+### Changed
+- `components/phase-cycle.tsx` — `action` now optional (omit to suppress self-link on method page); `sectionIndex` now a prop (default `"03"`); both header and static fallback use prop (FR-3.3)
+- `app/[[...path]]/page.tsx` — `generateStaticParams` + renderer updated for `method` × 3 locales; `SiteHeader` receives correct `currentPage`
+- `app/sitemap.ts` — `{ page: 'method' }` added to `BUILT_PAGES`
+- `content/es/shared.ts` — header nav "Cómo trabajamos" → true route `/como-trabajamos`; all nav items get `pageId` for active-state detection; footer nav updated to match
+- `components/site-chrome.tsx` — active nav state via `aria-current="page"` on items matching `currentPage`; brand link route-aware (home anchor on home, `/` on interior pages)
+- `app/styleguide/page.tsx` — section 06 added: ExecutionPractices, ExecutionPipelineFig, AiBuildBlock
+- `docs/adding-a-page.md` — interior A/B/C letter index convention documented
+
+### Tests
+- 291 tests, 21 files — all passing. Coverage well above 70% gate.
+
+---
+
+## [Unreleased] — Phase 1: i18n architecture + interior page system
+
+Spec: `specs/spec-phase1-i18n-architecture.md` (SPEC-P1 v1.0)
+
+### Added
+- `lib/i18n/types.ts` — `Locale`, `LOCALES`, `DEFAULT_LOCALE`, `PageId`, `CaseSlug`, `CASE_SLUGS`, `PageParams`, `RouteResolution` types
+- `lib/i18n/routes.ts` — route map (all 10 pages × 3 locales per spec §4.1); `getPath`, `resolvePath`, `getAlternates` helpers; reverse lookup built at module load for O(1) resolution
+- `lib/i18n/dictionary.ts` — `getDictionary(locale)` typed bundle accessor; Phase 1 returns ES for all locales
+- `lib/config.ts` — `SITE_URL` env-aware constant
+- `content/types.ts` — `PageMeta`, `HomePageDictionary`, `ServicesDictionary`, ... interfaces for all pages
+- `content/data/cases.ts` — locale-aware case-study data (moved from `content/es/clients.ts`); per-locale copy fields ready for Phase 5
+- `content/es/{services,method,cases,alliance,about,contact,legal,privacy}.ts` — Phase 1 stubs; meta populated; `satisfies` interface check
+- `content/en/*` and `content/ca/*` — full per-page re-exports of ES content; `TODO(P5): translate` markers; barrel `index.ts`
+- `app/[[...path]]/page.tsx` — single catch-all route; `resolvePath` for resolution; `notFound()` on unknown paths; `dynamicParams = false`; `generateStaticParams` (home × 3 locales in Phase 1); `generateMetadata` with canonical, hreflang × 3 + x-default, OG
+- `app/sitemap.ts` — built pages × locales with `alternates.languages`; commented-out Phase 2 entries
+- `app/robots.ts` — allow `/`; disallow `/styleguide`; references sitemap
+- `components/locale-switcher.tsx` — page-preserving locale links; `aria-current`; IBM Plex Mono; `--ambre` active; 50% opacity inactive; keyboard operable; hides on small screens
+- `components/page-header.tsx` — interior page header; `eyebrow`, `title`, `lead?`, `surface: 'paper' | 'abisal'`; BEM CSS; asymmetric 12-col grid
+- `specs/spec-phase1-i18n-architecture.md` — spec in repo
+- `docs/adding-a-page.md` — AC-9 guide: adding a page = interface + ES dict + route entry + component
+- Tests: `tests/lib/i18n/routes.test.ts` (61 tests: inverse property, null cases, alternates), `tests/lib/i18n/meta.test.ts` (42 tests: length limits, AC-6 ruso guard), `tests/lib/i18n/dictionary.test.ts`, `tests/components/page-header.test.tsx`
+
+### Changed
+- `app/page.tsx` → **deleted**; home migrated into `app/[[...path]]/page.tsx` (pixel parity preserved)
+- `app/layout.tsx` — per-page metadata removed (now in catch-all); fallback `title.template` added; `lang="es"` with Phase 6 note
+- `components/site-chrome.tsx` — `SiteHeader` accepts `currentPage`, `locale`, `pageParams` props; locale display replaced by `<LocaleSwitcher>`
+- `content/es/home.ts` — `meta` field added; `satisfies HomePageDictionary`
+- `content/es/clients.ts` — **backward-compat adapter** re-exporting from `content/data/cases.ts`; data source moved
+- `app/globals.css` — `PageHeader` BEM styles added; `LocaleSwitcher` styles (`.locale-switcher`, `.locale-switcher__link`); responsive hide rule updated from `.site-header__actions p` to `.locale-switcher`
+- `app/styleguide/page.tsx` — section 05 "Plantilla de página" added: `PageHeader` both surfaces + interior section + `FinalCTA` (AC-8)
+- `vitest.config.ts` — `content/types.ts` excluded from coverage (type-only file)
+
+### Coverage (post Phase 1)
+| Metric | After | Threshold |
+|--------|-------|-----------|
+| Statements | ~93% | 70% ✅ |
+| Branches | ~83% | 70% ✅ |
+| Functions | ~96% | 70% ✅ |
+| Lines | ~97% | 70% ✅ |
+Total tests: 252 (all passing).
+
+---
+
+## [Unreleased] — Phase 0: Documentation sync
+
+### Added
+- `docs/el-libro-de-escala-v2.1.md` — El Libro de Escala v2.1 (supersedes `escala-book-base-de-conocimiento.md`)
+- `docs/escala-web-content-spec-v1.1.md` — Website Content & Design Spec v1.1 (supersedes `escala-web-content-spec.md`)
+- `PLAN.md` at repo root — full 7-phase development tracking guide; Phase 0 marked done
+- `memory-bank/` — all six core files updated to reflect as-built identity ("Sistemas en movimiento"), spec v1.1, and PLAN phases
+
+### Changed
+- `content/es/home.ts` `finalCta.languages`: removed "y ruso" — working languages are Spanish, English and Catalan only (spec v1.1 decision)
+- `docs/BACKLOG.md` — reordered per PLAN phases (Phase 1 i18n → Phase 2 pages → Phase 3 contact → Phase 4 legal → Phase 5 EN/CA → Phase 6 GCP); cross-link to PLAN added
+- `docs/ARCHITECTURE.md` — identity name corrected to "Sistemas en movimiento" (was "instrumento de medida", retired in spec v1.1)
+- `memory-bank/productContext.md` — design principle updated to as-built "Sistemas en movimiento"; 7-section home structure documented
+
+### Removed
+- `escala-book-base-de-conocimiento.md` (root) — superseded by `docs/el-libro-de-escala-v2.1.md`
+- `escala-web-content-spec.md` (root) — superseded by `docs/escala-web-content-spec-v1.1.md`
 
 ---
 

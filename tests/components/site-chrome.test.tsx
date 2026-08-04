@@ -1,8 +1,18 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { SiteHeader, SiteFooter } from '@/components/site-chrome'
 import { sharedContent } from '@/content/es/shared'
+import {
+  HEADER_COMPACT_THRESHOLD_PX,
+  HEADER_SCROLL_SHADOW_PX,
+} from '@/lib/motion-constants'
 
 const { header, footer } = sharedContent
+
+/** Simulate a scroll event at the given scrollY position. */
+function simulateScroll(y: number) {
+  Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: y })
+  window.dispatchEvent(new Event('scroll'))
+}
 
 describe('SiteHeader', () => {
   it('renders the brand name', () => {
@@ -49,6 +59,68 @@ describe('SiteHeader', () => {
   it('renders the contact CTA with correct text', () => {
     render(<SiteHeader content={header} />)
     expect(screen.getByRole('link', { name: header.contact })).toBeInTheDocument()
+  })
+
+  // ── Scroll behavior ──────────────────────────────────────────────────────
+
+  it('does not have is-scrolled class at the top of the page', () => {
+    Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: 0 })
+    const { container } = render(<SiteHeader content={header} />)
+    const headerEl = container.querySelector('.site-header')
+    expect(headerEl).not.toHaveClass('is-scrolled')
+  })
+
+  it('adds is-scrolled class when scrolled past the shadow threshold', async () => {
+    Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: 0 })
+    const { container } = render(<SiteHeader content={header} />)
+    const headerEl = container.querySelector('.site-header')
+
+    await act(async () => {
+      simulateScroll(HEADER_SCROLL_SHADOW_PX + 1)
+      // Let rAF (mocked to fire immediately) flush
+      await new Promise((r) => setTimeout(r, 0))
+    })
+
+    expect(headerEl).toHaveClass('is-scrolled')
+  })
+
+  it('does not have is-compact class at top of page', () => {
+    Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: 0 })
+    const { container } = render(<SiteHeader content={header} />)
+    expect(container.querySelector('.site-header')).not.toHaveClass('is-compact')
+  })
+
+  it('adds is-compact class when scrolling down past the threshold', async () => {
+    // Start past threshold so the first scroll "down" triggers compact.
+    Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: HEADER_COMPACT_THRESHOLD_PX })
+    const { container } = render(<SiteHeader content={header} />)
+    const headerEl = container.querySelector('.site-header')
+
+    await act(async () => {
+      simulateScroll(HEADER_COMPACT_THRESHOLD_PX + 40) // scroll down
+      await new Promise((r) => setTimeout(r, 0))
+    })
+
+    expect(headerEl).toHaveClass('is-compact')
+  })
+
+  it('removes is-compact class when scrolling back up', async () => {
+    Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: HEADER_COMPACT_THRESHOLD_PX + 40 })
+    const { container } = render(<SiteHeader content={header} />)
+
+    // First scroll down to activate compact.
+    await act(async () => {
+      simulateScroll(HEADER_COMPACT_THRESHOLD_PX + 80)
+      await new Promise((r) => setTimeout(r, 0))
+    })
+
+    // Then scroll up.
+    await act(async () => {
+      simulateScroll(HEADER_COMPACT_THRESHOLD_PX + 20)
+      await new Promise((r) => setTimeout(r, 0))
+    })
+
+    expect(container.querySelector('.site-header')).not.toHaveClass('is-compact')
   })
 })
 

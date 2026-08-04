@@ -5,6 +5,7 @@
  */
 
 import { homeContent } from '@/content/es/home'
+import { methodContent } from '@/content/es/method'
 import { sharedContent } from '@/content/es/shared'
 import { clients } from '@/content/es/clients'
 
@@ -130,5 +131,63 @@ describe('clients', () => {
 
   it('MAGUPELL is the first client (production-proven proof point)', () => {
     expect(clients[0].name).toBe('MAGUPELL')
+  })
+})
+
+describe('methodContent — Phase 2.1 (SPEC-P2.1 AC-7)', () => {
+  it('has valid page meta', () => {
+    expect(methodContent.meta.title).toBeTruthy()
+    expect(methodContent.meta.description).toBeTruthy()
+  })
+
+  it('has exactly 5 execution practices', () => {
+    expect(methodContent.executionPractices.practices).toHaveLength(5)
+  })
+
+  it('every practice has index, title, body, and tie', () => {
+    methodContent.executionPractices.practices.forEach((practice) => {
+      expect(practice.index).toBeTruthy()
+      expect(practice.title).toBeTruthy()
+      expect(practice.body).toBeTruthy()
+      expect(practice.tie).toBeTruthy()
+    })
+  })
+
+  it('practice bodies include Libro-verbatim key phrases', () => {
+    const bodies = methodContent.executionPractices.practices.map((p) => p.body).join(' ')
+    // FR-4.3 verbatim phrase from Libro Ch. 9 / Spec §5.3
+    expect(bodies).toContain('prototipo visual navegable')
+  })
+
+  it('has exactly 6 pipeline nodes', () => {
+    expect(methodContent.pipeline.nodes).toHaveLength(6)
+  })
+
+  it('every pipeline node has a label', () => {
+    methodContent.pipeline.nodes.forEach((node) => {
+      expect(node.label).toBeTruthy()
+    })
+  })
+
+  it('pipeline caption references FIG. 06', () => {
+    expect(methodContent.pipeline.caption).toContain('FIG. 06')
+  })
+
+  it('aiBuild has between 3 and 4 points', () => {
+    expect(methodContent.aiBuild.points.length).toBeGreaterThanOrEqual(3)
+    expect(methodContent.aiBuild.points.length).toBeLessThanOrEqual(4)
+  })
+
+  it('aiBuild lead is verbatim from Libro Ch. 7', () => {
+    expect(methodContent.aiBuild.lead).toContain('ingeniería asistida por agentes de IA')
+  })
+
+  it('contains no Russian language (AC-7 grep guard)', () => {
+    const allText = JSON.stringify(methodContent)
+    expect(allText).not.toMatch(/ruso|rusa|русский|russian/i)
+  })
+
+  it('finalCta email matches expected domain', () => {
+    expect(methodContent.finalCta.email).toMatch(/@escaladigitalventures\.com$/)
   })
 })

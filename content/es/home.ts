@@ -1,7 +1,14 @@
 import { clients } from '@/content/es/clients'
 import { sharedContent } from '@/content/es/shared'
+import type { HomePageDictionary } from '@/content/types'
 
 export const homeContent = {
+  meta: {
+    title: 'Escala Digital Ventures | Producto y tecnología',
+    description:
+      'Estudio de producto y tecnología que automatiza operaciones y construye plataformas digitales para empresas en crecimiento.',
+  },
+
   header: sharedContent.header,
 
   /**
@@ -185,10 +192,10 @@ export const homeContent = {
     // Assumption: placeholder address per spec §5.7 — confirm final value before go-live.
     email: 'hola@escaladigitalventures.com',
     location: 'Mataró · Barcelona',
-    languages: 'Trabajamos en español, inglés, catalán y ruso.',
+    languages: 'Trabajamos en español, inglés y catalán.',
   },
 
   footer: sharedContent.footer,
-} as const
+} as const satisfies HomePageDictionary
 
 export type HomeContent = typeof homeContent

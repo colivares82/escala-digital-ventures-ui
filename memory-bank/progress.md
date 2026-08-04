@@ -5,13 +5,14 @@
 | Feature | Status |
 |---------|--------|
 | Spanish home page (`/`) | Complete, approved |
-| Hero section with WordReveal H1 + system diagram | Complete |
-| ProblemSection with symptom list + diagram | Complete |
-| ServicesPreview (5 service lines) | Complete |
+| Hero section with WordReveal H1 + FIG.01 system diagram | Complete |
+| ProblemSection with symptom list + FIG.02 diagram | Complete |
+| ServicesPreview (5 service lines, editorial index) | Complete |
 | FrameworkSection — `PhaseCycle` scroll-driven ring (desktop) + static list (mobile/reduced-motion) | Complete |
-| ProofSection — 4 Readout figures + 2 ClientChips (MAGUPELL, BioZero) | Complete |
-| AllianceTeaser — constellation diagram | Complete |
+| ProofSection — 4 DAT readouts + 2 ClientChips (MAGUPELL, BioZero) | Complete |
+| AllianceTeaser — FIG.05 constellation diagram | Complete |
 | FinalCTA — ContactForm (browser-only validation, no API) | Complete |
+| ClaimsMarquee (ambre band, between hero and problem) | Complete |
 | SiteHeader (nav, locale switcher, Hablemos CTA) | Complete |
 | SiteFooter (claim, nav, legal, company, colivares.com mention) | Complete |
 | Design system: tokens, BEM classes, 3 typefaces, 5 palette colors | Complete |
@@ -28,32 +29,110 @@
 | 70% coverage threshold enforced by `@vitest/coverage-v8` | Complete |
 | `next build` clean — 3 static pages generated | Complete |
 | `docs/` taxonomy (ARCHITECTURE, BACKLOG, CHANGELOG, TRACEABILITY) | Complete |
-| `memory-bank/` — all six core files | Complete |
-| `TODO.md` superseded by `docs/BACKLOG.md` | Complete |
+| `docs/el-libro-de-escala-v2.1.md` — Libro v2.1 in repo | Complete |
+| `docs/escala-web-content-spec-v1.1.md` — Spec v1.1 in repo | Complete |
+| `PLAN.md` at repo root — phase tracking (Phase 0 done) | Complete |
+| `memory-bank/` — all six core files updated | Complete |
+| Russian removed from all codebase files | Complete |
 
-## What's left ⬜
+## What works ✅ — Phase 1 additions
 
+| Feature | Status |
+|---------|--------|
+| `lib/i18n/types.ts` — Locale, PageId, CaseSlug types | Complete |
+| `lib/i18n/routes.ts` — route map (10 pages × 3 locales); getPath/resolvePath/getAlternates | Complete |
+| `lib/i18n/dictionary.ts` — getDictionary(locale) typed bundle | Complete |
+| `lib/config.ts` — SITE_URL env-aware | Complete |
+| `content/types.ts` — page dictionary interfaces | Complete |
+| `content/data/cases.ts` — locale-aware case study data | Complete |
+| `content/es/` — all 10 page dictionaries (home full; stubs with meta for others) | Complete |
+| `content/en/*` + `content/ca/*` — re-exports with TODO(P5) markers | Complete |
+| `app/[[...path]]/page.tsx` — catch-all; home × 3 locales rendered; others 404 | Complete |
+| `app/sitemap.ts` — home × 3 locales with hreflang alternates | Complete |
+| `app/robots.ts` — allow `/`; disallow `/styleguide` | Complete |
+| `components/locale-switcher.tsx` — page-preserving, accessible, IBM Plex Mono | Complete |
+| `components/page-header.tsx` — `eyebrow`, `title`, `lead?`, `surface` | Complete |
+| `/styleguide` section 05 "Plantilla de página" (AC-8) | Complete (awaiting Carlos approval) |
+| `docs/adding-a-page.md` (AC-9) | Complete |
+| `specs/spec-phase1-i18n-architecture.md` in repo | Complete |
+| 252 tests; coverage ~93% statements; build clean | Complete |
+
+## What works ✅ — Phase 2.1 additions
+
+| Feature | Status |
+|---------|--------|
+| `/como-trabajamos` at all 3 locale slugs (ES/EN/CA) | Complete |
+| `MethodDictionary` full interface (types.ts) | Complete |
+| `content/es/method.ts` — verbatim Libro Ch. 7/9 copy | Complete |
+| `ExecutionPractices` — 5 sticky panels, mobile fallback | Complete |
+| `ExecutionPipelineFig` — FIG.06 provisional, isolated, swappable | Complete |
+| `AiBuildBlock` — sober, editorial guardrail enforced | Complete |
+| PhaseCycle: `sectionIndex` + optional `action` (no home regression) | Complete |
+| Header nav: "Cómo trabajamos" → true route; `aria-current="page"` | Complete |
+| Brand link: route-aware (home anchor on home, `/` on interior pages) | Complete |
+| Footer nav: "Cómo trabajamos" → true route | Complete |
+| BEM styles for all 3 new components + reduced-motion overrides | Complete |
+| `/styleguide` section 06: 3 new components | Complete |
+| 291 tests, 21 files — all passing (39 new tests added) | Complete |
+| `docs/adding-a-page.md` — A/B/C interior index convention | Complete |
+| `PLAN.md` Phase 2.1 marked ☑ | Complete |
+
+## What's left ⬜ (ordered by PLAN phases)
+
+### Phase 1 — i18n architecture
+| Feature | Priority | Status |
+|---------|----------|--------|
+| AC-2: Carlos visual parity check on `/` | P0 | Awaiting review |
+| AC-8: Carlos approves `/styleguide` sections 05+06 | P0 | Awaiting review |
+| AC-10: Lighthouse baseline (deferred — GCP not ready) | P2 | Deferred to Phase 7 |
+
+### Phase 2 — Interior pages
 | Feature | Priority | Backlog ID |
 |---------|----------|-----------|
-| Contact form API + email provider | P0 | CONTACT-01 |
-| EN/CA locale routing + translation | P0 | I18N-01 |
-| Per-page SEO metadata + OG + sitemap | P0 | SEO-01 |
-| Qué hacemos interior page | P1 | PAGE-01 |
-| Cómo trabajamos interior page | P1 | PAGE-02 |
+| ~~Cómo trabajamos `/como-trabajamos`~~ | ✅ Done | PAGE-02 |
+| Qué hacemos `/que-hacemos` | P1 | PAGE-01 |
 | Casos de éxito index + MAGUPELL + BioZero pages | P1 | PAGE-03 |
-| Modelo de alianza interior page | P1 | PAGE-04 |
-| Sobre Escala interior page | P1 | PAGE-05 |
-| Contacto dedicated page | P1 | PAGE-06 |
+| Modelo de alianza `/modelo-de-alianza` | P1 | PAGE-04 |
+| Sobre Escala `/sobre-escala` | P1 | PAGE-05 |
+
+### Phase 3 — Contact end-to-end
+| Feature | Priority | Backlog ID |
+|---------|----------|-----------|
+| Contact form API + email provider | P1 | CONTACT-01 |
+| Contacto dedicated page `/contacto` | P1 | PAGE-06 |
+
+### Phase 4 — Legal & analytics
+| Feature | Priority | Backlog ID |
+|---------|----------|-----------|
 | Aviso legal + Privacidad legal pages | P1 | PAGE-07 |
 | Cookieless analytics (Plausible) | P2 | ANALYTICS-01 |
+| 404 page + favicon + OG images | P2 | SEO-01 |
+
+### Phase 5 — EN & CA content
+| Feature | Priority | Backlog ID |
+|---------|----------|-----------|
+| Full EN + CA dictionaries (recrafted, not translated) | P2 | — |
+| hreflang QA across all pages | P2 | I18N-01 |
+
+### Phase 6 — Infra (blocked: GCP not ready)
+| Feature | Priority | Backlog ID |
+|---------|----------|-----------|
+| Dockerfile + Cloud Run dev + prod | P2 | — |
+| GitHub Actions CI/CD (lint + test + build + deploy) | P2 | — |
+
+### Phase 7 — Launch QA
+| Feature | Priority | Backlog ID |
+|---------|----------|-----------|
 | Lighthouse ≥95 validation | P2 | PERF-01 |
-| GCP Cloud Run deployment (dev + prod) | P2 | — |
-| GitHub Actions CI/CD | P2 | — |
+| AA + keyboard audit; real-device responsive pass | P2 | — |
+| DNS switch → production live | P2 | — |
 
 ## Known issues
 
 | Issue | Severity | Notes |
 |-------|----------|-------|
-| Header nav uses anchors, not true routes | Medium | Works for home; will break as interior pages deploy. Fix when first interior page is built. |
-| Contact form does not transmit | Medium | Expected v1 behavior. Top P0 item. |
+| Header nav: unbuilt pages still use home anchors | Low | /como-trabajamos → true route (Phase 2.1). Other pages link to home anchors (`/#que-hacemos`, etc.) until they ship. Follow-up action in BACKLOG. |
+| Contact form does not transmit | Medium | Expected v1 behavior. Phase 3 item. |
 | EN/CA locale content stubs only | Low | Expected; stubs warn against silent fallback. |
+| GCP / GitHub Actions not configured | Low | Blocked by GCP account. Phase 6. |
+| FIG.06 provisional visual | Low | `ExecutionPipelineFig` is fully isolated; Carlos will redesign. Only that file needs to change. |

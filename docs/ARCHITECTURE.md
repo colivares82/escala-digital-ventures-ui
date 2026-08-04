@@ -11,7 +11,7 @@
 | Concern | Choice | Reason |
 |---------|--------|--------|
 | Framework | **Next.js 16 (App Router)** | SSG for marketing site; SEO, OG images, `hreflang`, `sitemap.xml`. Standard stack uses Vite+React SPA, which doesn't cover static multi-locale routing. |
-| CSS | **Tailwind CSS 4 + custom CSS** | Design system uses bespoke BEM classes for the "instrumento de medida" identity. Tailwind is used for bridge tokens only (`@theme`). |
+| CSS | **Tailwind CSS 4 + custom CSS** | Design system uses bespoke BEM classes for the "Sistemas en movimiento" identity (spec v1.1 §3). Tailwind is used for bridge tokens only (`@theme`). |
 | Animation | **Lenis** (smooth scroll) | Progressive enhancement; disabled when `prefers-reduced-motion` is set. |
 | Testing | **Vitest + RTL** | Aligned with Escala standard; Jest not used because there is no NestJS server here. |
 | No shared/ | Content in `content/` | There is no client/server split; shared types stay in project root. |
@@ -66,7 +66,7 @@ escala-digital-ventures-ui/
 All page copy lives in typed `const` dictionaries under `content/es/`. Components receive content as props and never contain inline user-facing strings. This enables future locale switching without component changes.
 
 ### CSS strategy — BEM + Tailwind bridge
-The design system uses handcrafted BEM classes (`.phase-cycle__pin`, `.readout__trace`, etc.) for the bespoke "instrumento de medida" identity. Tailwind's `@theme` directive bridges Escala tokens (`--paper`, `--mar`, etc.) to Tailwind's expected CSS variable names. No Tailwind utility classes are used in components — only design token variables via CSS.
+The design system uses handcrafted BEM classes (`.phase-cycle__pin`, `.readout__trace`, etc.) for the bespoke "Sistemas en movimiento" identity (spec v1.1 §3). Tailwind's `@theme` directive bridges Escala tokens (`--paper`, `--mar`, etc.) to Tailwind's expected CSS variable names. No Tailwind utility classes are used in components — only design token variables via CSS.
 
 ### Motion — progressive enhancement
 All animations use CSS transitions triggered by `data-visible="true"` set from `IntersectionObserver`. Lenis smooth scroll wraps the page only when `prefers-reduced-motion` is not set. Constants live in `lib/motion-constants.ts`.

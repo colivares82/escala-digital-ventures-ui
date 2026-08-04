@@ -30,7 +30,17 @@ function ringPoint(index: number, count: number, radius = RADIUS) {
 export type PhaseCycleProps = {
   phases: readonly Phase[]
   title: string
-  action: string
+  /**
+   * Optional action link text (e.g. "Cómo trabajamos ↗").
+   * When omitted, no link is rendered — used on the method page where the ring
+   * IS the page body and linking to itself makes no sense. (FR-3.3)
+   */
+  action?: string
+  /**
+   * Optional numeric or letter section index. Defaults to "03" (home usage).
+   * Interior pages pass the letter index (e.g. "B"). (FR-2.2)
+   */
+  sectionIndex?: string
   /** Section eyebrow label (e.g. "EL CICLO DE CRECIMIENTO"). */
   sectionLabel: string
   /** One-line descriptor below the title (e.g. "DIEZ FASES · UN CICLO CONTINUO"). */
@@ -45,6 +55,7 @@ export function PhaseCycle({
   phases,
   title,
   action,
+  sectionIndex = '03',
   sectionLabel,
   lead,
   ariaLabel,
@@ -121,14 +132,16 @@ export function PhaseCycle({
         <header className="phase-cycle__header">
           <div className="phase-cycle__meta">
             <p className="section-index">
-              <span>03</span>
+              <span>{sectionIndex}</span>
               <span aria-hidden="true">/</span>
               <span>{sectionLabel}</span>
             </p>
-            <a className="text-link" href={ROUTES.METHOD}>
-              {action}
-              <span aria-hidden="true">↗</span>
-            </a>
+            {action && (
+              <a className="text-link" href={ROUTES.METHOD}>
+                {action}
+                <span aria-hidden="true">↗</span>
+              </a>
+            )}
           </div>
           <h2 className="phase-cycle__section-title">{title}</h2>
           <p className="phase-cycle__lead">{lead}</p>
@@ -214,16 +227,18 @@ export function PhaseCycle({
       {/* ── Mobile / reduced-motion fallback (shown via CSS when pin is hidden) ── */}
       <div className="phase-cycle__static-header">
         <p className="section-index">
-          <span>03</span>
+          <span>{sectionIndex}</span>
           <span aria-hidden="true">/</span>
           <span>{sectionLabel}</span>
         </p>
         <h2>{title}</h2>
         <p>{lead}</p>
-        <a className="text-link" href={ROUTES.METHOD}>
-          {action}
-          <span aria-hidden="true">↗</span>
-        </a>
+        {action && (
+          <a className="text-link" href={ROUTES.METHOD}>
+            {action}
+            <span aria-hidden="true">↗</span>
+          </a>
+        )}
       </div>
 
       <ol className="phase-cycle__static">

@@ -14,11 +14,13 @@ export const sharedContent = {
   header: {
     brand: 'ESCALA',
     nav: [
-      { label: 'Qué hacemos', href: '#que-hacemos' },
-      { label: 'Cómo trabajamos', href: '#metodo' },
-      { label: 'Casos de éxito', href: '#casos' },
-      { label: 'Modelo de alianza', href: '#alianza' },
-      { label: 'Sobre Escala', href: '#inicio' },
+      // Unbuilt pages: home anchor fallback until Phase 2.n ships each page.
+      { label: 'Qué hacemos', href: '/#que-hacemos', pageId: 'services' },
+      // Built pages: true route (Phase 2.1+).
+      { label: 'Cómo trabajamos', href: '/como-trabajamos', pageId: 'method' },
+      { label: 'Casos de éxito', href: '/#casos', pageId: 'cases' },
+      { label: 'Modelo de alianza', href: '/#alianza', pageId: 'alliance' },
+      { label: 'Sobre Escala', href: '/#inicio', pageId: 'about' },
     ],
     contact: 'Hablemos',
     locales: ['ES', 'EN', 'CA'],
@@ -34,10 +36,10 @@ export const sharedContent = {
     company: 'Escala Digital Ventures, S.L.U. · Mataró, Barcelona',
     direction: 'Dirección general: referencia en colivares.com',
     navigation: [
-      { label: 'Qué hacemos', href: '#que-hacemos' },
-      { label: 'Cómo trabajamos', href: '#metodo' },
-      { label: 'Casos de éxito', href: '#casos' },
-      { label: 'Modelo de alianza', href: '#alianza' },
+      { label: 'Qué hacemos', href: '/#que-hacemos' },
+      { label: 'Cómo trabajamos', href: '/como-trabajamos' },
+      { label: 'Casos de éxito', href: '/#casos' },
+      { label: 'Modelo de alianza', href: '/#alianza' },
     ],
     legal: [
       { label: 'Aviso legal', href: '/aviso-legal' },

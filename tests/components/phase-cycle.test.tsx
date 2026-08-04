@@ -16,6 +16,17 @@ const PROPS = {
   phasePrefix: homeContent.labels.phasePrefix,
 }
 
+// Regression props for the method page (no action, letter sectionIndex)
+const METHOD_PROPS = {
+  phases: homeContent.framework.phases,
+  title: 'Un método propio: el Escala Growth Framework',
+  sectionLabel: 'EL CICLO DE CRECIMIENTO',
+  sectionIndex: 'B',
+  lead: 'DIEZ FASES · UN CICLO CONTINUO DE MEJORA',
+  ariaLabel: 'Ciclo de crecimiento de diez fases',
+  phasePrefix: 'FASE',
+}
+
 describe('PhaseCycle', () => {
   it('renders the section heading', () => {
     render(<PhaseCycle {...PROPS} />)
@@ -104,5 +115,33 @@ describe('PhaseCycle', () => {
     await user.keyboard(' ')
 
     expect(fourthPhaseButton).toHaveAttribute('aria-current', 'step')
+  })
+
+  // ── Regression: sectionIndex + optional action (SPEC-P2.1 FR-3.3) ────────
+
+  it('defaults sectionIndex to "03" when not provided', () => {
+    render(<PhaseCycle {...PROPS} />)
+    // Both the pinned and static headers should show "03"
+    const indexes = screen.getAllByText('03')
+    expect(indexes.length).toBeGreaterThanOrEqual(1)
+  })
+
+  it('renders the custom sectionIndex letter when provided', () => {
+    render(<PhaseCycle {...METHOD_PROPS} />)
+    const indexes = screen.getAllByText('B')
+    expect(indexes.length).toBeGreaterThanOrEqual(1)
+  })
+
+  it('does not render an action link when action is omitted (method page self-link suppression)', () => {
+    render(<PhaseCycle {...METHOD_PROPS} />)
+    // No link should be present (action is undefined)
+    const links = screen.queryAllByRole('link')
+    expect(links).toHaveLength(0)
+  })
+
+  it('home page still renders action link when action is provided (no regression)', () => {
+    render(<PhaseCycle {...PROPS} />)
+    const links = screen.getAllByRole('link', { name: /Cómo trabajamos/ })
+    expect(links.length).toBeGreaterThanOrEqual(1)
   })
 })

@@ -11,6 +11,10 @@ Next.js App Router (SSG)
   └── content/es/           # typed content dictionaries (source of truth for all copy)
   └── lib/                  # constants, utilities
   └── tests/                # Vitest + RTL
+  └── docs/                 # ARCHITECTURE, BACKLOG, CHANGELOG, TRACEABILITY, Libro v2.1, Spec v1.1
+  └── specs/                # implementation specs; specs/mockups/ for wireframes
+  └── memory-bank/          # agent persistent context
+  └── PLAN.md               # phase tracking and backlog backbone (repo root)
 ```
 
 ## Component pattern
@@ -42,11 +46,26 @@ All copy in typed `as const` dictionaries:
 
 Adding a new interior page: add a new file under `content/es/`, add the page under `app/`, wire content as props. Zero changes to existing components.
 
+## i18n routing pattern (Phase 1 — SPEC-P1)
+
+Single catch-all route `app/[[...path]]/page.tsx`:
+- `resolvePath(segments)` → `RouteResolution | null` — O(1) lookup via pre-built reverse map
+- `dynamicParams = false` — unrecognized paths → 404; no runtime
+- `generateStaticParams` emits only BUILT pages (Option A); interior pages added as Phase 2 builds them
+- `generateMetadata` sets canonical + hreflang × 3 + x-default per resolved page
+- `getDictionary(locale)` returns typed `Dictionary` bundle; Phase 1 returns ES for all locales
+
+Adding a page: interface in `content/types.ts` + ES dict + EN/CA re-exports + route entry (if new) + component + `generateStaticParams` update. Full guide: `docs/adding-a-page.md`.
+
+Known limitation: `<html lang>` is `"es"` globally; EN/CA get correct `lang` on `<main>` instead. Phase 6 middleware will fix `<html lang>` properly.
+
 ## Constants pattern
 
-- **Routes:** `lib/routes.ts` — `ROUTES.*` and `ANCHORS.*`. Never use inline URL strings.
+- **Routes (ES anchors):** `lib/routes.ts` — `ROUTES.*` and `ANCHORS.*`. Home page uses these.
+- **Routes (i18n):** `lib/i18n/routes.ts` — `getPath`, `resolvePath`, `getAlternates`. All locale-aware routing uses this. Never hard-code localized slugs.
 - **Motion:** `lib/motion-constants.ts` — all timings, thresholds, media queries. Never use magic numbers.
 - **CSS tokens:** `--paper`, `--ink`, `--mar`, `--abisal`, `--ambre` in `:root`. Never use hex inline.
+- **Site URL:** `lib/config.ts` — `SITE_URL` (env-aware). Never hard-code the domain.
 
 ## Animation pattern
 
@@ -74,3 +93,10 @@ Vitest + React Testing Library:
 - Constants: `UPPER_SNAKE_CASE`
 - CSS: `.BEM__block--modifier`
 - Content keys: `camelCase`
+
+## Spec-driven development loop
+
+All implementation follows the spec-driven flow (per `.clinerules/agentic-workflow.md`):
+1. Spec first (English, lives in `specs/`) → approved by Carlos
+2. Wireframe if new UI (lives in `specs/mockups/`)
+3. Implement → test → update traceability → update memory bank
