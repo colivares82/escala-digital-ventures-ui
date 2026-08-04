@@ -1,8 +1,8 @@
 # escaladigitalventures.com — Website Content & Design Specification
 
-**Version:** 1.1 · August 2026
-**Supersedes:** v1.0 (Aug 2026). Changelog at the end.
-**Source of truth:** "El Libro de Escala v2.1" (knowledge base). This spec derives from it and is the single reference for building the website. All copy shown here is final ES master copy unless marked otherwise. EN and CA are derived translations (§7).
+**Version:** 1.1.1 · August 2026
+**Supersedes:** v1.1 (Aug 2026). Changelog at the end.
+**Source of truth:** "El Libro de Escala v2.2" (knowledge base — IP/ownership corrected). This spec derives from it and is the single reference for building the website. All copy shown here is final ES master copy unless marked otherwise. EN and CA are derived translations (§7).
 **How to use:** lives in `/docs` of the repo `escala-digital-ventures-ui`. Every development iteration starts from a numbered iteration spec that references this document. Nothing on the website may contradict this spec or the Libro de Escala.
 
 ---
@@ -133,7 +133,7 @@ Footer (paper) — per §4.1.
 ### 5.2 Qué hacemos `/que-hacemos`
 
 PageHeader H1 "Qué hacemos"; lead "No ofrecemos un catálogo de servicios: diseñamos cada colaboración alrededor de los objetivos de tu negocio. Estas son las cinco líneas que casi siempre se combinan dentro de una misma alianza." Then 5 ServiceSections (mono index; H2; problem paragraph; what-we-do paragraph — copy per v1.0/Libro Ch. 11, unchanged):
-1. Transformación digital y automatización de procesos · 2. Desarrollo de plataformas (includes ownership: "Tú eres propietario de tu plataforma, tu código y tus datos.") · 3. Automatización e IA aplicada · 4. CTO y Product Leadership fraccional · 5. Operación, soporte y evolución continua.
+1. Transformación digital y automatización de procesos · 2. Desarrollo de plataformas (ownership framing: "Una solución a medida de tu negocio; obtienes una licencia de uso indefinida y la propiedad de tus datos. La propiedad intelectual y el código son de Escala.") · 3. Automatización e IA aplicada · 4. CTO y Product Leadership fraccional · 5. Operación, soporte y evolución continua.
 Closing **IdealClientNote** — H2 "¿Encajamos?" (Libro Ch. 12) + CTA → contact. Small line-art inline diagrams per service allowed (FIG-kit style, "Fig." plates).
 
 ### 5.3 Cómo trabajamos `/como-trabajamos`
@@ -192,6 +192,7 @@ Blog/insights · newsletter · colivares.com link (text only until live) · dark
 ## Changelog v1.0 → v1.1
 
 1. §3 fully replaced: identity is the as-built "Sistemas en movimiento" (abisal/ambre #FFB703, FIG diagram kit, PhaseCycle ring, motion language, three type tokens) — supersedes "El instrumento de medida" (ScaleRule + calibre #E8590C).
+0. (v1.1.1) IP/ownership corrected sitewide: the client does NOT own the code. Escala retains intellectual property and source code; the client receives an indefinite, exclusive use licence over their platform, owns their data, and gets sector exclusivity. Source of truth pinned to Libro v2.2 (new Ch. 13 section "Propiedad intelectual y modelo de colaboración"). Service line 2 reworded; any "propietario de … código" phrasing removed.
 2. §5.1 home rewritten to the as-built 7-section structure: contact form in the home; client chips replace large case cards; DAT.04 = OPERATIVA; stair milestone "OPERATIVA REAL: CLIENTES · PROVEEDORES · GESTIÓN INTERNA"; ClaimsMarquee; section index map 00–06.
 3. **Russian removed everywhere** (Carlos does not speak Russian): languages are Spanish, English and Catalan on the site; "ES/EN/RU environments" corrected to ES/EN (§2); contact meta lines updated (§5.1/§5.7); §5.6 experience references ES/EN per Libro Ch. 4.
 4. §6 inventory updated to the as-built components; ScaleRule/PhasePanel retired.

@@ -1,10 +1,13 @@
 import type { Metadata } from 'next'
 import { AiBuildBlock } from '@/components/ai-build-block'
+import { AllianceConstellation } from '@/components/alliance-constellation'
+import { AlliancePlanes } from '@/components/alliance-planes'
 import { BrandHeader } from '@/components/brand-header'
 import { CapabilityGrid } from '@/components/capability-grid'
 import { CaseCard } from '@/components/case-card'
 import { ClaimsMarquee } from '@/components/claims-marquee'
 import { ClientChip } from '@/components/client-chip'
+import { CommitmentsBand } from '@/components/commitments-band'
 import { ContactForm } from '@/components/contact-form'
 import { DossierField } from '@/components/dossier-field'
 import { ExecutionPipelineFig } from '@/components/execution-pipeline-fig'
@@ -24,6 +27,7 @@ import { casesContent } from '@/content/es/cases'
 import { homeContent } from '@/content/es/home'
 import { methodContent } from '@/content/es/method'
 import { servicesContent } from '@/content/es/services'
+import { allianceContent } from '@/content/es/alliance'
 
 export const metadata: Metadata = {
   title: 'Style guide | Escala Digital Ventures',
@@ -393,6 +397,59 @@ export default function StyleGuidePage() {
           ))}
         </div>
       </section>
+
+      {/* ── Section 09: Phase 2.4 — Modelo de alianza (SPEC-P2.4 AC-9) ── */}
+      <section aria-label="Componentes Fase 2.4" style={{ borderTop: '2px solid var(--ambre)' }}>
+        <div className="page-shell" style={{ paddingBlock: '3rem' }}>
+          <SectionIndex index="09" label="MODELO DE ALIANZA — FASE 2.4" />
+          <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.65rem', letterSpacing: '0.1em', color: 'var(--mar)', marginBottom: '2rem' }}>
+            AllianceConstellation (compact + large) · AlliancePlanes · CommitmentsBand — SPEC-P2.4 AC-9.
+          </p>
+
+          {/* AllianceConstellation — compact instance (as on home, inside dark band) */}
+          <h2 style={{ fontFamily: 'var(--font-archivo)', fontWeight: 600, fontSize: '1.25rem', marginBottom: '1rem' }}>
+            AllianceConstellation — compact (280px, home)
+          </h2>
+        </div>
+
+        <div className="dark-surface" style={{ padding: '4rem 0', display: 'flex', justifyContent: 'center' }}>
+          <AllianceConstellation
+            seats={allianceContent.seats}
+            size="compact"
+            ariaLabel={allianceContent.whyFive.constellationAria}
+          />
+        </div>
+
+        <div className="page-shell" style={{ paddingBlock: '3rem' }}>
+          {/* AllianceConstellation — large instance (as on /modelo-de-alianza) */}
+          <h2 style={{ fontFamily: 'var(--font-archivo)', fontWeight: 600, fontSize: '1.25rem', marginBottom: '1rem', marginTop: '2rem' }}>
+            AllianceConstellation — large (420px, /modelo-de-alianza)
+          </h2>
+        </div>
+
+        <div className="dark-surface" style={{ padding: '4rem 0', display: 'flex', justifyContent: 'center' }}>
+          <AllianceConstellation
+            seats={allianceContent.seats}
+            size="large"
+            ariaLabel={allianceContent.whyFive.constellationAria}
+          />
+        </div>
+      </section>
+
+      {/* AlliancePlanes — full section */}
+      <AlliancePlanes
+        sectionEyebrow={allianceContent.planes.sectionEyebrow}
+        heading={allianceContent.planes.heading}
+        lead={allianceContent.planes.lead}
+        items={allianceContent.planes.items}
+      />
+
+      {/* CommitmentsBand — full section */}
+      <CommitmentsBand
+        sectionEyebrow={allianceContent.commitments.sectionEyebrow}
+        heading={allianceContent.commitments.heading}
+        items={allianceContent.commitments.items}
+      />
     </main>
   )
 }

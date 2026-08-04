@@ -175,9 +175,66 @@ export interface CaseDetailDictionary {
   readonly meta: PageMeta
 }
 
-/** Phase 1 stub — Phase 2 will add full content. */
+/** Phase 2.4 — full /modelo-de-alianza content. Spec: SPEC-P2.4 FR-8.1 */
+export interface AllianceSeat {
+  readonly name: string
+  readonly state: 'occupied' | 'free'
+}
+
+export interface AlliancePlane {
+  /** Zero-padded ordinal: "01", "02", "03" */
+  readonly index: string
+  readonly title: string
+  readonly body: string
+  /** Bottom mono depth line e.g. "ARQUITECTURA · CÓDIGO · OPERACIÓN" */
+  readonly depth: string
+}
+
+export interface AllianceCommitment {
+  /** Zero-padded ordinal: "01" … "05" */
+  readonly n: string
+  /** All-caps mono tag. Commitment 01 MUST be "A MEDIDA" (no code-ownership wording). */
+  readonly tag: string
+  readonly body: string
+}
+
 export interface AllianceDictionary {
   readonly meta: PageMeta
+  readonly pageHeader: {
+    readonly eyebrow: string
+    readonly title: string
+    readonly lead: string
+  }
+  readonly whyFive: {
+    readonly sectionEyebrow: string
+    readonly heading: string
+    readonly body: string
+    /** Aria-label for the SVG constellation figure. */
+    readonly constellationAria: string
+  }
+  /** Exactly 5 seats — enforced in tests/content/content-integrity.test.ts */
+  readonly seats: ReadonlyArray<AllianceSeat>
+  readonly planes: {
+    readonly sectionEyebrow: string
+    readonly heading: string
+    readonly lead: string
+    /** Exactly 3 planes. Length enforced in tests. */
+    readonly items: ReadonlyArray<AlliancePlane>
+  }
+  readonly commitments: {
+    readonly sectionEyebrow: string
+    readonly heading: string
+    /** Exactly 5 commitments. Length enforced in tests. Commitment[0].tag must be "A MEDIDA". */
+    readonly items: ReadonlyArray<AllianceCommitment>
+  }
+  readonly finalCta: {
+    readonly title: string
+    readonly body: string
+    readonly success: string
+    readonly email: string
+    readonly location: string
+    readonly languages: string
+  }
 }
 
 /** Phase 1 stub — Phase 2 will add full content. */

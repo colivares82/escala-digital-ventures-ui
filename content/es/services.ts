@@ -1,6 +1,6 @@
 /**
  * Qué hacemos — ES content dictionary (full Phase 2.2).
- * Copy authority: Libro v2.1 Ch. 11 (services) · Ch. 12 (ideal client) · Spec v1.1 §5.2 · SPEC-P2.2.
+ * Copy authority: Libro v2.2 Ch. 11 (services) · Ch. 12 (ideal client) · Ch. 13 (IP/ownership) · Spec v1.1.1 §5.2 · SPEC-P2.2 · SPEC-FIX-01.
  * Spec: SPEC-P2.2 FR-7.1
  */
 import type { ServicesDictionary } from '@/content/types'
@@ -39,7 +39,10 @@ export const servicesContent = {
       title: 'Desarrollo de plataformas',
       problem: 'El software genérico no encaja con tu realidad.',
       deliverable:
-        'Diseñamos y construimos aplicaciones web y plataformas a medida —no plantillas—, con usuarios y roles, dominio propio, correo transaccional, generación de documentos y facturación integrada. Arquitectura preparada para evolucionar durante años. Tú eres propietario de tu plataforma, tu código y tus datos.',
+        // §3.1 canonical wording — SPEC-FIX-01 / Libro v2.2 Ch. 13.
+        // Client gets: indefinite use licence + data ownership.
+        // Code and IP: belong to Escala.
+        'Diseñamos y construimos aplicaciones web y plataformas a medida —no plantillas—, con usuarios y roles, dominio propio, correo transaccional, generación de documentos y facturación integrada. Una solución construida a medida de tu negocio: obtienes una licencia de uso indefinida sobre tu plataforma y la propiedad de tus datos. La propiedad intelectual y el código son de Escala.',
       figVariant: 'platform',
       // Labels for FIG. 08 — ARQUITECTURA MODULAR (core + 5 modules)
       figLabels: ['PLATAFORMA', 'USUARIOS · ROLES', 'DOMINIO', 'CORREO', 'DOCUMENTOS', 'FACTURACIÓN'],

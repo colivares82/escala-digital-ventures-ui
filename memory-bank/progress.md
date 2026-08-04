@@ -123,6 +123,26 @@
 | 450 tests, 31 files — all passing (84 new tests added) | Complete |
 | `PLAN.md` Phase 2.3 marked ☑ | Complete |
 
+## What works ✅ — Phase 2.4 additions
+
+| Feature | Status |
+|---------|--------|
+| `/modelo-de-alianza` at all 3 locale slugs (ES/EN/CA) | Complete |
+| `AllianceDictionary` full interface + types (AllianceSeat, AlliancePlane, AllianceCommitment) | Complete |
+| `content/es/alliance.ts` — full ES copy; commitment 01 = "A MEDIDA" (§0 corrected) | Complete |
+| `AllianceConstellation` — parameterized (compact/large), pentagon geometry, draw-on-scroll animation | Complete |
+| `AlliancePlanes` — 3 columns, middle ambre highlight, PLANO labels, depth lines | Complete |
+| `CommitmentsBand` — 5 cells, ambre-dk tags (AA), ambre ticks | Complete |
+| `AlliancePage` compositor | Complete |
+| `generateStaticParams` +3; `BUILT_PAGES` + render branch | Complete |
+| Sitemap +1 page × 3 locales | Complete |
+| Nav + footer links → `/modelo-de-alianza` (was `/#alianza`) | Complete |
+| `FinalCTA` prop widened to `FinalCtaContent` structural interface | Complete |
+| Phase 2.4 BEM CSS + responsive ≤767px + reduced-motion | Complete |
+| `/styleguide` section 09 (both constellation sizes + planes + band) | Complete |
+| 518 tests, 35 files — all passing (68 new tests added) | Complete |
+| `PLAN.md` Phase 2.4 marked ☑ | Complete |
+
 ## What's left ⬜ (ordered by PLAN phases)
 
 ### Phase 1 — i18n architecture
@@ -137,8 +157,8 @@
 |---------|----------|-----------|
 | ~~Cómo trabajamos `/como-trabajamos`~~ | ✅ Done | PAGE-02 |
 | ~~Qué hacemos `/que-hacemos`~~ | ✅ Done | PAGE-01 |
-| Casos de éxito index + MAGUPELL + BioZero pages | P1 | PAGE-03 |
-| Modelo de alianza `/modelo-de-alianza` | P1 | PAGE-04 |
+| ~~Casos de éxito index + MAGUPELL + BioZero pages~~ | ✅ Done | PAGE-03 |
+| ~~Modelo de alianza `/modelo-de-alianza`~~ | ✅ Done | PAGE-04 |
 | Sobre Escala `/sobre-escala` | P1 | PAGE-05 |
 
 ### Phase 3 — Contact end-to-end
