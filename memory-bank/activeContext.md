@@ -1,60 +1,62 @@
 # Active Context
 
-_Last updated: April 2026 (Phase 2.1 completed)_
+_Last updated: April 2026 (Phase 2.3 completed)_
 
 ## Current state
 
-**Phase 2.1 complete.** `/como-trabajamos` is live at all 3 locale slugs. 291 tests, all passing. Build clean, TypeScript strict.
+**Phase 2.3 complete.** `/casos-de-exito` (index) + `/casos-de-exito/magupell` + `/casos-de-exito/biozero` are live at all 3 locale slugs. 450 tests, all passing. Build clean, TypeScript strict.
 
-## What was just done (Phase 2.1 — SPEC-P2.1)
+## What was just done (Phase 2.3 — SPEC-P2.3)
 
-1. **Content layer:**
-   - `content/types.ts` — `MethodDictionary` expanded from stub to full Phase 2.1 interface
-   - `content/es/method.ts` — full ES dictionary; verbatim Libro Ch. 7 (AiBuild lead), Ch. 9 (5 practices); spec v1.1 §5.3 lead; phases NOT duplicated (shared from `homeContent.framework.phases` per FR-3.2)
+1. **Spec filed:**
+   - `specs/spec-p2.3-casos-de-exito.md` — implementation spec (authored by Carlos/Claude, approved before build)
 
-2. **PhaseCycle prop-gating (FR-3.3):**
-   - `action` made optional — omit to suppress the self-link on the method page
-   - `sectionIndex` added as prop (default `"03"`) — interior pages pass the letter index (e.g. `"B"`)
-   - Fully backward-compatible: home renders identically, 16 PhaseCycle tests pass
+2. **Data model:**
+   - `content/data/cases.ts` — full `CaseStudy` type (mode, brand with `StaticImageData` logos, readouts, capabilities?, dossier fields, per-case meta, plate); `getCase(slug)` helper
+   - Logos at `app/assets/brand/*.png` — static import via `next/image` (build-time missing-file check; see DECISIONS.md)
+   - `content/types.ts` — `CasesDictionary` expanded with all index-page and dossier UI labels
 
-3. **Three new components:**
-   - `components/execution-practices.tsx` — 5 sticky panels; CSS-only, no JS; mobile/reduced-motion plain stack
-   - `components/execution-pipeline-fig.tsx` — FIG.06, **PROVISIONAL VISUAL** (Carlos will redesign); fully isolated; ambre pulse; reduced-motion static; sr-only accessible text
-   - `components/ai-build-block.tsx` — sober abisal block; Libro Ch. 7/9 only; 3–4 mono points; editorial guardrail; small inline diagram
+3. **Content layer:**
+   - `content/es/cases.ts` — full ES dictionary (pageHeader "A / CASOS DE ÉXITO", card labels, dossier navigation labels)
+   - EN/CA re-export ES with `TODO(P5)` markers (unchanged pattern)
 
-4. **Page assembly + routing:**
-   - `components/pages/method.tsx` — page compositor; all copy via props
-   - `generateStaticParams` extended: method × 3 locales
-   - `app/sitemap.ts` — `method` added to `BUILT_PAGES`
+4. **New components (6):**
+   - `components/readout-strip.tsx` — adaptive-column bordered grid (--readout-cols CSS var)
+   - `components/dossier-field.tsx` — two-column field row (ordinal num + key / body text)
+   - `components/capability-grid.tsx` — 3-up grid; null guard for MAGUPELL (no capabilities)
+   - `components/brand-header.tsx` — client logo (next/image) + sector + H1 + plate + visit link; placeholder when logo null
+   - `components/case-card.tsx` — index card with logo, eyebrow, name, subtitle, "ABRIR EXPEDIENTE ↗"
+   - `components/case-dossier.tsx` — single mode-aware template (data-forward: 4 readouts + 5 fields; capability-forward: 2 readouts + CapabilityGrid + 3 fields); next/back nav
 
-5. **Header nav → true routes (AC-11):**
-   - `content/es/shared.ts` — "Cómo trabajamos" nav href now `/como-trabajamos`; `pageId` added to nav items for active detection; unbuilt pages use home anchors as fallback
-   - `components/site-chrome.tsx` — active state via `aria-current="page"` on matching `pageId`; brand link uses `ROUTES.HOME` on interior pages
+5. **Page assembly + routing:**
+   - `components/pages/cases.tsx` — PageHeader → CaseCard grid (data-driven, sorted by order) → FinalCTA
+   - `generateStaticParams` extended: +9 entries (index × 3 + 2 details × 3)
+   - `generateMetadata` updated: caseDetail uses per-case `CaseStudy.meta`
+   - `app/sitemap.ts` — 3 new pages added
+   - Nav: "Casos de éxito" → true route `/casos-de-exito` (header + footer)
 
 6. **CSS + styleguide:**
-   - `app/globals.css` — BEM styles for all 3 new components; `.sr-only` utility; reduced-motion overrides; active nav style
-   - `app/styleguide/page.tsx` — section 06: ExecutionPractices (2 panels), ExecutionPipelineFig, AiBuildBlock
+   - `app/globals.css` — full Phase 2.3 BEM block; responsive ≤767px + ≤479px
+   - `app/styleguide/page.tsx` — section 08: all 6 new components incl. BrandHeader placeholder state
 
 7. **Tests + docs:**
-   - 39 new tests (23 component + 11 content-integrity + 4 PhaseCycle regression + 1 existing site-chrome)
-   - `docs/adding-a-page.md` — interior A/B/C letter index convention documented
+   - 84 new tests across 7 test files (450 total, 31 files)
+   - `PLAN.md` — Phase 2.3 marked ☑
    - `docs/CHANGELOG.md` updated
-   - `PLAN.md` — Phase 2.1 marked ☑
+   - `DECISIONS.md` — logo asset location rationale
 
 ## Known issues / open items
 
-- **FIG.06 provisional:** `ExecutionPipelineFig` internals are provisional. Carlos will redesign the visual. The component is isolated — only `execution-pipeline-fig.tsx` needs to change.
-- **Nav fallback for unbuilt pages:** Qué hacemos, Casos de éxito, Modelo de alianza, Sobre Escala still link to home anchors (`/#que-hacemos`, etc.) until their pages ship. Track in BACKLOG as follow-up action.
+- **ServiceFig figures DRAFT:** All five are coherent drafts. Carlos will refine each variant individually.
+- **IdealClientNote CTA interim:** Points to `#contacto` anchor until Phase 3 ships `/contacto`.
+- **FIG.06 provisional:** `ExecutionPipelineFig` internals are still provisional.
 - **EN/CA translations:** all locales serve ES fallback (Phase 5).
-- **FinalCTA on method page:** embedded ContactForm (Phase 3 will switch to `/contacto` link once that page ships).
-- **Lighthouse baseline:** deferred to Phase 7 (GCP not ready).
+- **Logo-display permission (BioZero):** pending Carlos confirmation before go-live (Phase 7 checklist). FR-3.6.
 
-## What comes next (Phase 2.2)
+## What comes next (Phase 2.4)
 
-**[PAGE-01]** `/que-hacemos` — spec from Claude first (English, MAGUPELL format), wireframe if needed, then build.
-- 5 service lines problem-first (Libro Ch. 11)
-- IdealClientNote section (Ch. 12)
-- FinalCTA
+**[PAGE-04]** `/modelo-de-alianza` — reuses constellation diagram; three planes + commitments (Libro Ch. 11–13).
+- Spec from Claude first (English), wireframe if needed, then build.
 
 ## Active decisions open
 
@@ -63,4 +65,5 @@ _Last updated: April 2026 (Phase 2.1 completed)_
 - **EN/CA copy:** professional translation + review pending. Phase 5.
 - **Real imagery:** case-study context images pending from clients.
 - **GCP account:** not ready. Phase 6 blocked.
-- **Nav upgrade for unbuilt pages:** when /que-hacemos ships, update its `pageId` and href in `shared.ts`.
+- **ServiceFig variants:** DRAFT VISUAL — Carlos will iterate one-by-one after review.
+- **Logo-display permission:** Carlos to confirm for MAGUPELL + BioZero before Phase 7 launch.

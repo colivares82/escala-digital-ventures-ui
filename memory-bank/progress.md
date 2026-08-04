@@ -77,6 +77,52 @@
 | `docs/adding-a-page.md` — A/B/C interior index convention | Complete |
 | `PLAN.md` Phase 2.1 marked ☑ | Complete |
 
+## What works ✅ — Phase 2.2 additions
+
+| Feature | Status |
+|---------|--------|
+| `/que-hacemos` at all 3 locale slugs (ES/EN/CA) | Complete |
+| `ServicesDictionary` full interface + `ServiceFigVariant` type (types.ts) | Complete |
+| `content/es/services.ts` — verbatim Libro Ch. 11/12 copy | Complete |
+| `ServiceFig` — ONE component, 5 isolated variants (FIG.07–11 DRAFT) | Complete |
+| `ServiceRow` — three-column grid, `--ambre-dk` problem line, mobile stack | Complete |
+| `IdealClientNote` — abisal band, Ch. 12 body, CTA interim `#contacto` | Complete |
+| `--ambre-dk` token (#b85c00) in `:root`; DECISIONS.md entry | Complete |
+| Header nav: "Qué hacemos" → true route `/que-hacemos` | Complete |
+| Footer nav: "Qué hacemos" → true route | Complete |
+| BEM styles + responsive + reduced-motion overrides | Complete |
+| `/styleguide` section 07: all 5 ServiceFig variants + ServiceRow + IdealClientNote | Complete |
+| 366 tests, 24 files — all passing (75 new tests added) | Complete |
+| `PLAN.md` Phase 2.2 marked ☑ | Complete |
+
+## What works ✅ — Phase 2.3 additions
+
+| Feature | Status |
+|---------|--------|
+| `/casos-de-exito` index at all 3 locale slugs (ES/EN/CA) | Complete |
+| `/casos-de-exito/magupell` at all 3 locale slugs | Complete |
+| `/casos-de-exito/biozero` at all 3 locale slugs | Complete |
+| `CaseStudy` full model (mode, brand + StaticImageData logo, readouts, capabilities?, fields, meta) | Complete |
+| `content/data/cases.ts` — `getCase(slug)` helper | Complete |
+| `CasesDictionary` interface extended (types.ts) | Complete |
+| `content/es/cases.ts` — full ES dictionary | Complete |
+| `ReadoutStrip` — adaptive columns (2 or 4) via CSS var | Complete |
+| `DossierField` — two-column case-file field | Complete |
+| `CapabilityGrid` — 3-up grid; null guard for data-forward | Complete |
+| `BrandHeader` — real logo (next/image) + placeholder state + visit link | Complete |
+| `CaseCard` — index-page card; `getPath` for locale-correct URL | Complete |
+| `CaseDossier` — single mode-aware template (data-forward / capability-forward) | Complete |
+| `CasesPage` — index compositor | Complete |
+| Real logos from `app/assets/brand/*.png` (static import, build-time check) | Complete |
+| Header nav: "Casos de éxito" → true route `/casos-de-exito` | Complete |
+| Footer nav: "Casos de éxito" → true route | Complete |
+| `generateStaticParams` +9 entries | Complete |
+| `generateMetadata` — per-case detail meta from `CaseStudy.meta` | Complete |
+| sitemap: 3 new page entries | Complete |
+| BEM CSS + responsive (≤767px / ≤479px) + styleguide section 08 | Complete |
+| 450 tests, 31 files — all passing (84 new tests added) | Complete |
+| `PLAN.md` Phase 2.3 marked ☑ | Complete |
+
 ## What's left ⬜ (ordered by PLAN phases)
 
 ### Phase 1 — i18n architecture
@@ -90,7 +136,7 @@
 | Feature | Priority | Backlog ID |
 |---------|----------|-----------|
 | ~~Cómo trabajamos `/como-trabajamos`~~ | ✅ Done | PAGE-02 |
-| Qué hacemos `/que-hacemos` | P1 | PAGE-01 |
+| ~~Qué hacemos `/que-hacemos`~~ | ✅ Done | PAGE-01 |
 | Casos de éxito index + MAGUPELL + BioZero pages | P1 | PAGE-03 |
 | Modelo de alianza `/modelo-de-alianza` | P1 | PAGE-04 |
 | Sobre Escala `/sobre-escala` | P1 | PAGE-05 |

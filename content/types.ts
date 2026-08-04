@@ -32,9 +32,49 @@ export interface HomePageDictionary {
   readonly [key: string]: unknown
 }
 
-/** Phase 1 stub — Phase 2 will add full content. */
+/**
+ * Phase 2.2 — full /que-hacemos content. Spec: SPEC-P2.2 FR-7.1
+ *
+ * Five service variants must match the ServiceFig variant union.
+ * Enforced at compile-time via `figVariant` below.
+ */
+export type ServiceFigVariant = 'capture' | 'platform' | 'ai' | 'product' | 'evolve'
+
 export interface ServicesDictionary {
   readonly meta: PageMeta
+  readonly pageHeader: {
+    readonly eyebrow: string
+    readonly title: string
+    readonly lead: string
+    /** Mono prefix for the problem line: "EL PROBLEMA" — separated so Phase 5 can translate */
+    readonly problemPrefix: string
+  }
+  /** Exactly 5 service entries. Length enforced in tests/content/content-integrity.test.ts */
+  readonly services: ReadonlyArray<{
+    readonly index: string
+    readonly title: string
+    readonly problem: string
+    readonly deliverable: string
+    readonly figVariant: ServiceFigVariant
+    /** Labels passed to ServiceFig for the variant's SVG nodes. */
+    readonly figLabels: ReadonlyArray<string>
+    /** Caption displayed below the figure: "FIG. XX — NAME" */
+    readonly figCaption: string
+  }>
+  readonly idealClient: {
+    readonly eyebrow: string
+    readonly title: string
+    readonly body: string
+    readonly cta: string
+  }
+  readonly finalCta: {
+    readonly title: string
+    readonly body: string
+    readonly success: string
+    readonly email: string
+    readonly location: string
+    readonly languages: string
+  }
 }
 
 /** Phase 2.1 — full Cómo trabajamos content. Spec: SPEC-P2.1 FR-8.1 */
@@ -106,12 +146,31 @@ export interface MethodDictionary {
   }
 }
 
-/** Phase 1 stub — Phase 2 will add full content. */
+/** Phase 2.3 — /casos-de-exito index page content. Spec: SPEC-P2.3 FR-6.1 */
 export interface CasesDictionary {
   readonly meta: PageMeta
+  readonly pageHeader: {
+    readonly eyebrow: string
+    readonly title: string
+    readonly lead: string
+  }
+  readonly card: {
+    /** Prefix for card eyebrow: "EXPEDIENTE" (zero-padded ordinal appended by component). */
+    readonly expedienteLabel: string
+    /** CTA label on index cards: "ABRIR EXPEDIENTE ↗" */
+    readonly openLabel: string
+  }
+  /** Label for the "visit site ↗" link in BrandHeader. */
+  readonly visitLabel: string
+  /** Section eyebrow above the capability grid: "CAPACIDADES ENTREGADAS". */
+  readonly capabilitiesLabel: string
+  /** Next-case nav label: "SIGUIENTE EXPEDIENTE ↓" */
+  readonly nextLabel: string
+  /** Back-to-index nav label: "VOLVER AL ÍNDICE ↑" */
+  readonly backLabel: string
 }
 
-/** Phase 1 stub — Phase 2 will add full content. */
+/** Phase 2.3 — detail-page meta lives in CaseStudy.meta (content/data/cases.ts). */
 export interface CaseDetailDictionary {
   readonly meta: PageMeta
 }
