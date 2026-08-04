@@ -6,6 +6,30 @@ All notable changes, newest first.
 
 ---
 
+## [Unreleased] — Phase 2.2: /que-hacemos
+
+Spec: `specs/spec-p2.2-que-hacemos.md` (SPEC-P2.2 v1.1) · Wireframe: `specs/mockups/wireframe-p2.2-que-hacemos-final.html`
+
+### Added
+- `content/types.ts` — `ServicesDictionary` interface + `ServiceFigVariant` type (Phase 2.2: pageHeader, services×5, idealClient, finalCta)
+- `content/es/services.ts` — full ES dictionary; verbatim from Libro v2.1 Ch. 11 (services) and Ch. 12 (ideal client); spec v1.1 §5.2 lead
+- `components/service-fig.tsx` — ONE parameterized SVG component with five isolated variant renderers (`capture`, `platform`, `ai`, `product`, `evolve`); FIG.07–11 DRAFT VISUAL; IntersectionObserver pulse-on-entry; reduced-motion static; sr-only caption; per-variant isolation enforced (AC-5)
+- `components/service-row.tsx` — three-column grid (64px index · 1fr text · 320px fig); `--ambre-dk` problem line; 1px ink-18% borders; mobile fig stacks below text
+- `components/ideal-client-note.tsx` — B / ¿Encajamos? section (abisal); Libro Ch. 12 verbatim; CTA → `#contacto` interim (BACKLOG: switch to `/contacto` when Phase 3 ships)
+- `components/pages/services.tsx` — page compositor: A·PageHeader → 5×ServiceRow → B·IdealClientNote → FinalCTA; staggered Reveal per row
+- `app/globals.css` — `--ambre-dk: #b85c00` token (AA on paper, registered in DECISIONS.md); BEM for `.service-row`, `.service-fig`, `.ideal-client`, `.service-rows`; reduced-motion overrides; mobile responsive ≤767px/≤639px
+- `DECISIONS.md` — `--ambre-dk` rationale (AA-safe dark amber on paper; pure `--ambre` does not pass AA on paper)
+- Tests: `tests/components/service-fig.test.tsx` (32 tests), `tests/components/service-row.test.tsx` (14 tests), `tests/components/ideal-client-note.test.tsx` (10 tests); `servicesContent` describe in `content-integrity.test.ts` (15 tests). Total: 366 tests, all passing.
+
+### Changed
+- `app/[[...path]]/page.tsx` — `generateStaticParams` + renderer updated for `services` × 3 locales (`/que-hacemos`, `/en/what-we-do`, `/ca/que-fem`)
+- `app/sitemap.ts` — `{ page: 'services' }` added to `BUILT_PAGES`
+- `content/es/shared.ts` — header nav "Qué hacemos" → true route `/que-hacemos`; footer nav "Qué hacemos" → true route
+- `app/styleguide/page.tsx` — section 07 added: all five ServiceFig variants grid + ServiceRow sample + IdealClientNote
+- `specs/spec-p2.2-que-hacemos.md` — implementation spec filed in repo
+
+---
+
 ## [Unreleased] — Phase 2.1: /como-trabajamos
 
 Spec: `specs/spec-p2.1-como-trabajamos.md` (SPEC-P2.1 v1.0) · Wireframe: `specs/mockups/wireframe-p2.1-como-trabajamos.html`

@@ -11,6 +11,7 @@ import {
 } from '@/components/home-sections'
 import { MotionRuntime } from '@/components/motion-runtime'
 import { MethodPage } from '@/components/pages/method'
+import { ServicesPage } from '@/components/pages/services'
 import { SiteFooter, SiteHeader } from '@/components/site-chrome'
 import { SITE_URL } from '@/lib/config'
 import { getDictionary } from '@/lib/i18n/dictionary'
@@ -39,6 +40,9 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
     { path: ['como-trabajamos'] },        // ES method
     { path: ['en', 'how-we-work'] },      // EN method
     { path: ['ca', 'com-treballem'] },    // CA method
+    { path: ['que-hacemos'] },            // ES services — SPEC-P2.2
+    { path: ['en', 'what-we-do'] },       // EN services
+    { path: ['ca', 'que-fem'] },          // CA services
   ]
 }
 
@@ -112,7 +116,7 @@ export default async function Page({
   const { home, shared } = dict
 
   // Pages not yet built → 404 until Phase 2.n adds them.
-  if (page !== 'home' && page !== 'method') notFound()
+  if (page !== 'home' && page !== 'method' && page !== 'services') notFound()
 
   return (
     <MotionRuntime>
@@ -132,6 +136,8 @@ export default async function Page({
       >
         {page === 'method' ? (
           <MethodPage dict={dict} />
+        ) : page === 'services' ? (
+          <ServicesPage dict={dict} locale={locale} />
         ) : (
           <>
             <Hero content={home.hero} claims={home.claims} />

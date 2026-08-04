@@ -1,60 +1,62 @@
 # Active Context
 
-_Last updated: April 2026 (Phase 2.1 completed)_
+_Last updated: April 2026 (Phase 2.2 completed)_
 
 ## Current state
 
-**Phase 2.1 complete.** `/como-trabajamos` is live at all 3 locale slugs. 291 tests, all passing. Build clean, TypeScript strict.
+**Phase 2.2 complete.** `/que-hacemos` is live at all 3 locale slugs. 366 tests, all passing. Build clean, TypeScript strict.
 
-## What was just done (Phase 2.1 — SPEC-P2.1)
+## What was just done (Phase 2.2 — SPEC-P2.2)
 
-1. **Content layer:**
-   - `content/types.ts` — `MethodDictionary` expanded from stub to full Phase 2.1 interface
-   - `content/es/method.ts` — full ES dictionary; verbatim Libro Ch. 7 (AiBuild lead), Ch. 9 (5 practices); spec v1.1 §5.3 lead; phases NOT duplicated (shared from `homeContent.framework.phases` per FR-3.2)
+1. **Spec filed:**
+   - `specs/spec-p2.2-que-hacemos.md` — implementation spec in repo (authored by Claude, approved by Carlos, spec-driven loop followed)
 
-2. **PhaseCycle prop-gating (FR-3.3):**
-   - `action` made optional — omit to suppress the self-link on the method page
-   - `sectionIndex` added as prop (default `"03"`) — interior pages pass the letter index (e.g. `"B"`)
-   - Fully backward-compatible: home renders identically, 16 PhaseCycle tests pass
+2. **Design token:**
+   - `--ambre-dk: #b85c00` added to `:root` in `globals.css` — AA-safe dark amber on `--paper`; used exclusively for the problem-line text in ServiceRow
+   - `DECISIONS.md` — rationale recorded (pure `--ambre` does NOT pass AA on paper)
 
-3. **Three new components:**
-   - `components/execution-practices.tsx` — 5 sticky panels; CSS-only, no JS; mobile/reduced-motion plain stack
-   - `components/execution-pipeline-fig.tsx` — FIG.06, **PROVISIONAL VISUAL** (Carlos will redesign); fully isolated; ambre pulse; reduced-motion static; sr-only accessible text
-   - `components/ai-build-block.tsx` — sober abisal block; Libro Ch. 7/9 only; 3–4 mono points; editorial guardrail; small inline diagram
+3. **Content layer:**
+   - `content/types.ts` — `ServicesDictionary` interface + `ServiceFigVariant` type union; `problemPrefix` for i18n-safe problem label
+   - `content/es/services.ts` — full ES dictionary verbatim from Libro v2.1 Ch. 11 (5 services) + Ch. 12 (ideal client); all five `figVariant`, `figLabels`, `figCaption` per wireframe FIG.07–11
+   - EN/CA re-exports already present and compile correctly
 
-4. **Page assembly + routing:**
-   - `components/pages/method.tsx` — page compositor; all copy via props
-   - `generateStaticParams` extended: method × 3 locales
-   - `app/sitemap.ts` — `method` added to `BUILT_PAGES`
+4. **New components:**
+   - `components/service-fig.tsx` — ONE parameterized component with five ISOLATED variant renderers (`capture`, `platform`, `ai`, `product`, `evolve`); FIG.07–11 DRAFT VISUAL; IntersectionObserver pulse-on-entry; reduced-motion → static (no animateMotion rendered); sr-only caption; changing one variant touches only its own function (AC-5)
+   - `components/service-row.tsx` — three-column grid (64px / 1fr / 320px), `--ambre-dk` problem line, 1px ink-18% borders, mobile stacks below
+   - `components/ideal-client-note.tsx` — abisal band, eyebrow B / ¿ENCAJAMOS?, Libro Ch. 12 body, CTA → `#contacto` interim (BACKLOG follow-up for Phase 3)
 
-5. **Header nav → true routes (AC-11):**
-   - `content/es/shared.ts` — "Cómo trabajamos" nav href now `/como-trabajamos`; `pageId` added to nav items for active detection; unbuilt pages use home anchors as fallback
-   - `components/site-chrome.tsx` — active state via `aria-current="page"` on matching `pageId`; brand link uses `ROUTES.HOME` on interior pages
+5. **Page assembly + routing:**
+   - `components/pages/services.tsx` — A·PageHeader → 5×ServiceRow (staggered Reveal) → B·IdealClientNote → FinalCTA
+   - `generateStaticParams` extended: services × 3 locales
+   - `app/sitemap.ts` — `services` added to `BUILT_PAGES`
 
-6. **CSS + styleguide:**
-   - `app/globals.css` — BEM styles for all 3 new components; `.sr-only` utility; reduced-motion overrides; active nav style
-   - `app/styleguide/page.tsx` — section 06: ExecutionPractices (2 panels), ExecutionPipelineFig, AiBuildBlock
+6. **Nav upgrade:**
+   - `content/es/shared.ts` — "Qué hacemos" in both header and footer nav → true route `/que-hacemos`; active state via existing `pageId` mechanism
 
-7. **Tests + docs:**
-   - 39 new tests (23 component + 11 content-integrity + 4 PhaseCycle regression + 1 existing site-chrome)
-   - `docs/adding-a-page.md` — interior A/B/C letter index convention documented
+7. **CSS + styleguide:**
+   - `app/globals.css` — BEM for `.service-row`, `.service-fig`, `.ideal-client`, `.service-rows`; stagger via `--row-index` CSS custom prop; responsive ≤767px/≤639px; reduced-motion overrides
+   - `app/styleguide/page.tsx` — section 07: all five ServiceFig variants grid + ServiceRow sample + IdealClientNote
+
+8. **Tests + docs:**
+   - 75 new tests (32 ServiceFig + 14 ServiceRow + 10 IdealClientNote + 15 content-integrity + 4 existing passing)
+   - Actually total: 366 tests (was 291 after Phase 2.1, +75 new)
+   - `PLAN.md` — Phase 2.2 marked ☑
    - `docs/CHANGELOG.md` updated
-   - `PLAN.md` — Phase 2.1 marked ☑
+   - `docs/BACKLOG.md` — BACKLOG item added for CTA follow-up + NAV-01 progress updated
 
 ## Known issues / open items
 
-- **FIG.06 provisional:** `ExecutionPipelineFig` internals are provisional. Carlos will redesign the visual. The component is isolated — only `execution-pipeline-fig.tsx` needs to change.
-- **Nav fallback for unbuilt pages:** Qué hacemos, Casos de éxito, Modelo de alianza, Sobre Escala still link to home anchors (`/#que-hacemos`, etc.) until their pages ship. Track in BACKLOG as follow-up action.
+- **ServiceFig figures DRAFT:** All five are coherent drafts reproducing the wireframe geometry. Carlos will refine each variant individually — changing one variant touches only its isolated render function.
+- **IdealClientNote CTA interim:** Points to `#contacto` anchor (FinalCTA on same page) until Phase 3 ships `/contacto`. BACKLOG item `PAGE-06-CTA` tracks this.
+- **FIG.06 provisional:** `ExecutionPipelineFig` internals are still provisional (Phase 2.1 open item).
+- **Nav fallback for unbuilt pages:** Casos de éxito, Modelo de alianza, Sobre Escala still link to home anchors until Phase 2.3/2.4/2.5 ship.
 - **EN/CA translations:** all locales serve ES fallback (Phase 5).
-- **FinalCTA on method page:** embedded ContactForm (Phase 3 will switch to `/contacto` link once that page ships).
-- **Lighthouse baseline:** deferred to Phase 7 (GCP not ready).
 
-## What comes next (Phase 2.2)
+## What comes next (Phase 2.3)
 
-**[PAGE-01]** `/que-hacemos` — spec from Claude first (English, MAGUPELL format), wireframe if needed, then build.
-- 5 service lines problem-first (Libro Ch. 11)
-- IdealClientNote section (Ch. 12)
-- FinalCTA
+**[PAGE-03]** `/casos-de-exito` — case study index + MAGUPELL + BioZero detail pages (data-driven template).
+- Spec from Claude first (English), wireframe if needed, then build.
+- Sources: Libro Ch. 14–16, spec v1.1 §5.4, `content/data/cases.ts`
 
 ## Active decisions open
 
@@ -63,4 +65,4 @@ _Last updated: April 2026 (Phase 2.1 completed)_
 - **EN/CA copy:** professional translation + review pending. Phase 5.
 - **Real imagery:** case-study context images pending from clients.
 - **GCP account:** not ready. Phase 6 blocked.
-- **Nav upgrade for unbuilt pages:** when /que-hacemos ships, update its `pageId` and href in `shared.ts`.
+- **ServiceFig variants:** DRAFT VISUAL — Carlos will iterate one-by-one after review.

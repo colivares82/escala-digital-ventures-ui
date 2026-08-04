@@ -35,9 +35,17 @@ Items ordered by PLAN.md phase. The first open item in the first open phase is a
 - HowWeBuild section (Libro Ch. 7)
 - FinalCTA
 
-### [NAV-01] Upgrade nav hrefs for unbuilt pages as they ship
-- Currently "Qué hacemos / Casos de éxito / Modelo de alianza / Sobre Escala" link to home anchors (`/#que-hacemos`, etc.) as fallback.
-- As each page ships in Phase 2.n: update its `href` in `content/es/shared.ts` header nav from the anchor to the true route.
+### ~~[NAV-01] Upgrade nav hrefs for unbuilt pages as they ship~~ (in progress)
+- ~~"Qué hacemos" → `/que-hacemos`~~ ✅ (Phase 2.2)
+- ~~"Cómo trabajamos" → `/como-trabajamos`~~ ✅ (Phase 2.1)
+- ⬜ "Casos de éxito" → `/casos-de-exito` — when Phase 2.3 ships
+- ⬜ "Modelo de alianza" → `/modelo-de-alianza` — when Phase 2.4 ships
+- ⬜ "Sobre Escala" → `/sobre-escala` — when Phase 2.5 ships
+
+### [PAGE-06-CTA] Switch IdealClientNote CTA to `/contacto` when Phase 3 ships
+- `components/ideal-client-note.tsx` currently passes `ctaHref="#contacto"` (interim anchor to FinalCTA on same page).
+- When Phase 3 (`/contacto`) is built, update `components/pages/services.tsx` to pass `ctaHref={getPath('contact', locale)}`.
+- **Dependency:** PAGE-06 (`/contacto` page) must ship before this follow-up.
 - No code changes needed to `SiteHeader` — the `pageId`-based active state already works once the href is a true route.
 - Follow-up from SPEC-P2.1 decision (agreed with Carlos, April 2026).
 
