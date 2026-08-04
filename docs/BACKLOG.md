@@ -6,25 +6,24 @@ Items ordered by PLAN.md phase. The first open item in the first open phase is a
 
 ---
 
-## Phase 1 — i18n architecture + interior page system
+## ~~Phase 1 — i18n architecture + interior page system~~ ✅ Done (March 2026)
 
-### [I18N-01] Locale routing — ES root, EN `/en`, CA `/ca`
-- Implement `app/[locale]/` segment routing following spec §4.1 slug map
-- Create `lib/i18n/routes.ts` with localized slug → canonical mapping
-- Add `hreflang` alternates + `x-default` (ES) to every page
-- LocaleSwitcher preserves current page across locales
-- Interior-page scaffolding: PageHeader component + section template, proven on a throwaway route
-- Professional translation review by Carlos before any non-ES locale is indexed
-- **Content status:** `content/en/index.ts` and `content/ca/index.ts` are stubs marked `pending-review`
-- **Exit criteria:** `/en` and `/ca` render home with ES fallback + correct hreflang; adding a page = dictionary + route entry only
+### ~~[I18N-01] Locale routing~~ ✅ Done
+- `lib/i18n/routes.ts` — full route map (10 pages × 3 locales per spec §4.1)
+- `app/[[...path]]/page.tsx` — catch-all SSG; `dynamicParams = false`; home×3 rendered in Phase 1
+- `LocaleSwitcher` — page-preserving, accessible, IBM Plex Mono
+- `PageHeader` component (both surfaces) + styleguide "Plantilla de página" (section 05)
+- `content/en/*` + `content/ca/*` — per-page re-exports; `TODO(P5)` markers; professional review deferred to Phase 5
+- `docs/adding-a-page.md` — adding a page = interface + ES dict + route entry + component
 
-### [SEO-01] Metadata per page
-- `title ≤ 60 chars`, `description ≤ 155 chars` per page per spec §7
-- OG image with identity (abisal background, claim in Archivo, ambre accent)
-- `sitemap.xml` with all locale alternates
-- `robots.txt` (index all except `/styleguide`)
-- Structured data: `Organization` + `ProfessionalService` on home; `BreadcrumbList` on inner pages
-- **Dependencies:** I18N-01 (pages must exist before sitemap)
+### [SEO-01] Remaining metadata tasks (Phase 1 delivered: meta, sitemap, robots)
+- ~~`title ≤ 60 chars`, `description ≤ 155 chars` — done; enforced by test (42 tests)~~ ✅
+- ~~`sitemap.xml` with locale alternates — done (`app/sitemap.ts`)~~ ✅
+- ~~`robots.txt` — done (`app/robots.ts`)~~ ✅
+- ~~`hreflang` + `x-default` — done in `generateMetadata`~~ ✅
+- ⬜ OG image with identity (abisal bg, Archivo claim, ambre accent) — Phase 4
+- ⬜ Structured data: `Organization` + `ProfessionalService` on home; `BreadcrumbList` on inner pages — Phase 7
+- **Dependencies (remaining):** interior pages must exist before per-page OG images make sense
 
 ---
 
