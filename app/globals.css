@@ -150,11 +150,23 @@ h1, h2, h3, h4, p {
 /* SITE HEADER                                                                   */
 /* ─────────────────────────────────────────────────────────────────────────── */
 .site-header {
-  position: absolute;
+  /* Fixed: content scrolls under the header. Solid abisal — no transparency. */
+  position: fixed;
   inset: 0 0 auto;
   z-index: 40;
   color: var(--paper);
+  background: var(--abisal);
   border-bottom: 1px solid var(--line-light);
+  /* Shadow starts invisible; appears on scroll to signal the floating layer. */
+  box-shadow: 0 0 0 0 transparent;
+  transition:
+    box-shadow 250ms ease-out,
+    border-color 250ms ease-out;
+}
+
+.site-header.is-scrolled {
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.3);
+  border-bottom-color: transparent;
 }
 
 .site-header__inner {
@@ -163,6 +175,13 @@ h1, h2, h3, h4, p {
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
+  /* Height transition: compact on scroll-down, full on scroll-up. */
+  transition: min-height 250ms ease-out;
+}
+
+/* 20% shorter when scrolling down (5rem → 4rem). */
+.site-header.is-compact .site-header__inner {
+  min-height: 4rem;
 }
 
 /* Logo mark */
@@ -1228,9 +1247,10 @@ h1, h2, h3, h4, p {
 
 .phase-cycle__pin {
   position: sticky;
-  top: 0;
-  height: 100svh;
-  min-height: 100svh;
+  /* Offset for the fixed header so the pinned ring doesn't slide under it. */
+  top: 5rem;
+  height: calc(100svh - 5rem);
+  min-height: calc(100svh - 5rem);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -1914,6 +1934,268 @@ h1, h2, h3, h4, p {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────── */
+/* PHASE 2.1 — /como-trabajamos components (SPEC-P2.1)                          */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* Utility: visually hidden but accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Active nav state (AC-11) */
+.site-header nav a[aria-current="page"] {
+  color: var(--ambre);
+  border-bottom: 1px solid var(--ambre);
+}
+
+/* ── ExecutionPractices (C) ── */
+.execution-practices {
+  /* Interior pages use tighter rhythm than the 8rem home standard. */
+  padding-block: 5rem;
+}
+.execution-practices__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+/* Tighter section-index margin inside compact sections */
+.execution-practices .section-index,
+.execution-pipeline .section-index,
+.ai-build .section-index {
+  margin-bottom: 1.5rem;
+}
+.execution-practices__title {
+  font: 600 var(--text-display-lg) / 1.05 var(--font-archivo);
+  font-stretch: 112%;
+  max-width: 18ch;
+  margin-bottom: 0.5rem;
+}
+.execution-practices__lead {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 60ch;
+  opacity: 0.8;
+  margin-bottom: 2rem;
+}
+/* Stacked sticky panels */
+.execution-practices__stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  /* Extra bottom padding so last panel can scroll fully clear */
+  padding-bottom: 2rem;
+}
+.practice-panel {
+  position: sticky;
+  /* top is set inline per panel; 80px + 16px × index */
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 2.4rem 2.6rem;
+  box-shadow: 0 -2px 0 rgb(0 0 0 / 0.02);
+}
+.practice-panel__index {
+  font: 500 0.75rem / 1 var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  color: var(--mar);
+  margin-bottom: 0.6rem;
+}
+.practice-panel__title {
+  font: 600 1.9rem / 1.1 var(--font-archivo);
+  font-stretch: 112%;
+  margin-bottom: 0.75rem;
+}
+.practice-panel__body {
+  line-height: 1.65;
+  max-width: 70ch;
+  opacity: 0.85;
+}
+.practice-panel__tie {
+  font: 400 0.7rem / 1 var(--font-ibm-plex-mono);
+  letter-spacing: 0.08em;
+  color: var(--ambre);
+  margin-top: 0.9rem;
+}
+
+/* ── ExecutionPipelineFig (D) ── */
+.execution-pipeline {
+  padding-block: 5rem;
+  /* Separator: D follows the abisal PhaseCycle (B) — adds visible boundary. */
+  border-top: 1px solid rgb(247 247 244 / 0.12);
+}
+.execution-pipeline__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.execution-pipeline__title {
+  font: 600 var(--text-display-lg) / 1.05 var(--font-archivo);
+  font-stretch: 112%;
+  max-width: 20ch;
+}
+.execution-pipeline__fig {
+  margin-top: 1.5rem;
+  overflow-x: auto;
+}
+.execution-pipeline__svg {
+  width: 100%;
+  min-width: 640px;
+  display: block;
+  overflow: visible;
+}
+.pipeline-spine {
+  stroke: rgb(247 247 244 / 0.5);
+  stroke-width: 1.5;
+}
+.pipeline-node__rect {
+  fill: none;
+  stroke: rgb(247 247 244 / 0.8);
+  stroke-width: 1;
+}
+.pipeline-node__label {
+  font: 500 10px / 1 var(--font-ibm-plex-mono);
+  fill: rgb(247 247 244 / 0.85);
+}
+.pipeline-return {
+  fill: none;
+  stroke: var(--ambre);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+  opacity: 0.7;
+}
+.pipeline-legend {
+  font: 400 9px / 1 var(--font-ibm-plex-mono);
+  fill: var(--ambre);
+}
+.pipeline-pulse {
+  fill: var(--ambre);
+}
+.execution-pipeline__caption {
+  font: 500 0.7rem / 1 var(--font-ibm-plex-mono);
+  letter-spacing: 0.12em;
+  color: rgb(247 247 244 / 0.55);
+  margin-top: 1rem;
+}
+/* Draw-on-entry: opacity fade */
+.execution-pipeline__fig {
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out);
+}
+.execution-pipeline__fig.is-visible {
+  opacity: 1;
+}
+
+/* ── AiBuildBlock (E) ── */
+.ai-build {
+  padding-block: 5rem;
+  /* Separator: E follows D (both abisal) — keeps the boundary visible. */
+  border-top: 1px solid rgb(247 247 244 / 0.12);
+}
+.ai-build__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.ai-build__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4vw;
+  align-items: start;
+}
+.ai-build__title {
+  font: 600 2.2rem / 1.1 var(--font-archivo);
+  font-stretch: 112%;
+  margin-bottom: 1rem;
+  /* Intentionally smaller than page H1 (--text-display-lg) per FR-6.1 */
+}
+.ai-build__lead {
+  color: rgb(247 247 244 / 0.85);
+  line-height: 1.7;
+  max-width: 52ch;
+  margin-bottom: 2rem;
+}
+.ai-build__points {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.ai-build__point {
+  font: 500 0.7rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  color: rgb(247 247 244 / 0.65);
+  padding-left: 0.9em;
+  position: relative;
+}
+.ai-build__point::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--ambre);
+}
+/* Small inline flow diagram */
+.ai-build__diagram {
+  border: 1px solid var(--line-light);
+  padding: 2rem 1.5rem;
+  border-radius: 2px;
+}
+.ai-diagram {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.ai-diagram__step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ai-diagram__label {
+  font: 500 0.65rem / 1.3 var(--font-ibm-plex-mono);
+  letter-spacing: 0.08em;
+  color: rgb(247 247 244 / 0.6);
+  border: 1px solid rgb(247 247 244 / 0.25);
+  padding: 0.3em 0.6em;
+  border-radius: 2px;
+}
+.ai-diagram__arrow {
+  font: 400 0.8rem / 1 var(--font-ibm-plex-mono);
+  color: var(--ambre);
+}
+
+/* ── Phase 2.1 responsive (mobile ≤767px) ── */
+@media (max-width: 767px) {
+  /* Practice panels: remove sticky stacking → plain vertical stack */
+  .practice-panel {
+    position: static !important;
+    top: auto !important;
+  }
+  .execution-practices__stack {
+    gap: 1rem;
+    padding-bottom: 0;
+  }
+  /* AI block: single column */
+  .ai-build__grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  /* Pipeline: horizontally scrollable */
+  .execution-pipeline__fig {
+    overflow-x: auto;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
 /* REDUCED MOTION — All animations degrade to instant/static states.            */
 /* ─────────────────────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
@@ -1969,5 +2251,26 @@ h1, h2, h3, h4, p {
   .phase-cycle__static-header h2 {
     margin: 0;
     font: 600 clamp(1.4rem, 4vw, 1.9rem) / 1.2 var(--font-archivo);
+  }
+
+  /* Site header — kill all transitions */
+  .site-header,
+  .site-header__inner {
+    transition: none;
+  }
+
+  /* Phase 2.1 — reduced motion overrides */
+  /* Practice panels: remove sticky stacking */
+  .practice-panel {
+    position: static !important;
+    top: auto !important;
+  }
+  /* Pipeline: show immediately, hide animated pulse */
+  .execution-pipeline__fig {
+    opacity: 1;
+    transition: none;
+  }
+  .pipeline-pulse {
+    display: none;
   }
 }

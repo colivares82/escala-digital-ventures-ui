@@ -16,14 +16,15 @@ type BuiltPageEntry = { page: PageId; params?: PageParams }
 
 /**
  * Phase 1: only home is built.
- * Phase 2: add { page: 'services' }, { page: 'method' }, etc.
+ * Phase 2.1: method added.
+ * Phase 2.n: add each page when its component ships.
  * Phase 2.3: add { page: 'caseDetail', params: { slug: 'magupell' } }, etc.
  */
 const BUILT_PAGES: BuiltPageEntry[] = [
   { page: 'home' },
+  { page: 'method' },      // Phase 2.1 — SPEC-P2.1
   // Phase 2 — uncomment as pages are built:
   // { page: 'services' },
-  // { page: 'method' },
   // { page: 'cases' },
   // { page: 'caseDetail', params: { slug: 'magupell' } },
   // { page: 'caseDetail', params: { slug: 'biozero' } },

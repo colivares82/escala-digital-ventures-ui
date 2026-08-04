@@ -57,20 +57,39 @@
 | `specs/spec-phase1-i18n-architecture.md` in repo | Complete |
 | 252 tests; coverage ~93% statements; build clean | Complete |
 
+## What works ✅ — Phase 2.1 additions
+
+| Feature | Status |
+|---------|--------|
+| `/como-trabajamos` at all 3 locale slugs (ES/EN/CA) | Complete |
+| `MethodDictionary` full interface (types.ts) | Complete |
+| `content/es/method.ts` — verbatim Libro Ch. 7/9 copy | Complete |
+| `ExecutionPractices` — 5 sticky panels, mobile fallback | Complete |
+| `ExecutionPipelineFig` — FIG.06 provisional, isolated, swappable | Complete |
+| `AiBuildBlock` — sober, editorial guardrail enforced | Complete |
+| PhaseCycle: `sectionIndex` + optional `action` (no home regression) | Complete |
+| Header nav: "Cómo trabajamos" → true route; `aria-current="page"` | Complete |
+| Brand link: route-aware (home anchor on home, `/` on interior pages) | Complete |
+| Footer nav: "Cómo trabajamos" → true route | Complete |
+| BEM styles for all 3 new components + reduced-motion overrides | Complete |
+| `/styleguide` section 06: 3 new components | Complete |
+| 291 tests, 21 files — all passing (39 new tests added) | Complete |
+| `docs/adding-a-page.md` — A/B/C interior index convention | Complete |
+| `PLAN.md` Phase 2.1 marked ☑ | Complete |
+
 ## What's left ⬜ (ordered by PLAN phases)
 
 ### Phase 1 — i18n architecture
 | Feature | Priority | Status |
 |---------|----------|--------|
 | AC-2: Carlos visual parity check on `/` | P0 | Awaiting review |
-| AC-8: Carlos approves `/styleguide` "Plantilla de página" | P0 | Awaiting review |
+| AC-8: Carlos approves `/styleguide` sections 05+06 | P0 | Awaiting review |
 | AC-10: Lighthouse baseline (deferred — GCP not ready) | P2 | Deferred to Phase 7 |
-| Phase 1 fully done pending Carlos reviews above | — | — |
 
 ### Phase 2 — Interior pages
 | Feature | Priority | Backlog ID |
 |---------|----------|-----------|
-| Cómo trabajamos `/como-trabajamos` | P1 | PAGE-02 |
+| ~~Cómo trabajamos `/como-trabajamos`~~ | ✅ Done | PAGE-02 |
 | Qué hacemos `/que-hacemos` | P1 | PAGE-01 |
 | Casos de éxito index + MAGUPELL + BioZero pages | P1 | PAGE-03 |
 | Modelo de alianza `/modelo-de-alianza` | P1 | PAGE-04 |
@@ -112,7 +131,8 @@
 
 | Issue | Severity | Notes |
 |-------|----------|-------|
-| Header nav uses anchors, not true routes | Medium | Works for home; will break as interior pages deploy. Fix when first interior page is built. |
+| Header nav: unbuilt pages still use home anchors | Low | /como-trabajamos → true route (Phase 2.1). Other pages link to home anchors (`/#que-hacemos`, etc.) until they ship. Follow-up action in BACKLOG. |
 | Contact form does not transmit | Medium | Expected v1 behavior. Phase 3 item. |
 | EN/CA locale content stubs only | Low | Expected; stubs warn against silent fallback. |
 | GCP / GitHub Actions not configured | Low | Blocked by GCP account. Phase 6. |
+| FIG.06 provisional visual | Low | `ExecutionPipelineFig` is fully isolated; Carlos will redesign. Only that file needs to change. |

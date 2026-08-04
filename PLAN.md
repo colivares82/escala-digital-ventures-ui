@@ -53,9 +53,10 @@ Status: ☑ done
 correct hreflang; adding a page = dictionary + route entry only. ✅
 
 ## PHASE 2 — Interior pages (one session each, this order)
-Status: ☐
-- ☐ 2.1 `/como-trabajamos` — reuses PhaseCycle; execution practice
-  (Libro Ch. 9) + "La IA también en cómo construimos" (Ch. 7).
+Status: ◐ in progress
+- ☑ 2.1 `/como-trabajamos` — PhaseCycle reused; ExecutionPractices (5 panels);
+  FIG.06 (provisional, isolated); AiBuildBlock (Ch. 7/9). All 3 locales built.
+  291 tests passing. SPEC-P2.1 AC all green.
 - ☐ 2.2 `/que-hacemos` — 5 service lines problem-first + "¿Encajamos?"
   (Ch. 11–12).
 - ☐ 2.3 `/casos-de-exito` + shared case template (data-driven) +
