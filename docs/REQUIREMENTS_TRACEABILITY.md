@@ -2,7 +2,7 @@
 
 > Cross-linked docs: [ARCHITECTURE](./ARCHITECTURE.md) · [BACKLOG](./BACKLOG.md) · [CHANGELOG](./CHANGELOG.md)
 
-Source: `escala-web-content-spec.md` (version 1.0, August 2026). Every requirement from the spec is listed here with its implementation status.
+Source: `docs/escala-web-content-spec-v1.1.md` (version 1.1, August 2026). Every requirement from the spec is listed here with its implementation status. Phase 1 completed March 2026 (see CHANGELOG.md).
 
 Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 
@@ -13,9 +13,9 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | ID | Requirement | Status | Notes |
 |----|-------------|--------|-------|
 | R-1.1 | Corporate website, not infinite landing; navigable URLs | ✅ | Next.js App Router with named routes |
-| R-1.2 | Languages: ES (default), EN, CA | 🚧 | ES done; EN/CA stubs in `content/`; routing not yet implemented (BACKLOG: I18N-01) |
+| R-1.2 | Languages: ES (default), EN, CA | ✅ | Routing + locale-switcher done (Phase 1). EN/CA serve ES fallback until Phase 5 translations. |
 | R-1.3 | Next.js App Router + TypeScript strict + Tailwind | ✅ | Exact stack in use |
-| R-1.4 | SSG for all pages | ⬜ | Default Next.js behavior; verify with `next build` when all pages exist |
+| R-1.4 | SSG for all pages | ✅ | `dynamicParams = false` + `generateStaticParams` enforces full SSG; verified with `npm run build` (all routes ○) |
 | R-1.5 | Google Cloud Run (dev + prod), CI/CD GitHub Actions | ⬜ | Not yet configured |
 | R-1.6 | Architecture allows `/insights` without restructuring | ✅ | App Router supports adding routes without touching existing ones |
 | R-1.7 | Editorial: never name former employers | ✅ | Copy uses anonymized formulas throughout |
@@ -53,10 +53,10 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 
 | ID | Requirement | Status | Notes |
 |----|-------------|--------|-------|
-| R-4.1 | All pages with localized routes per table | ⬜ | Only ES home exists; BACKLOG: I18N-01, PAGE-01→07 |
-| R-4.2 | Locale segment routing, single slug map in `lib/i18n/routes.ts` | ⬜ | File reserved; not yet implemented |
-| R-4.3 | `hreflang` alternates + `x-default` on every page | ⬜ | BACKLOG: SEO-01 |
-| R-4.4 | Locale switcher preserves current page | ⬜ | BACKLOG: I18N-01 |
+| R-4.1 | All pages with localized routes per table | 🚧 | Route map complete (10 pages × 3 locales); only home×3 rendered in Phase 1. Interior pages (Phase 2) use the same architecture. |
+| R-4.2 | Locale segment routing, single slug map in `lib/i18n/routes.ts` | ✅ | `lib/i18n/routes.ts` — full `ROUTE_MAP` per spec §4.1; `getPath`/`resolvePath`/`getAlternates`; tested (61 tests) |
+| R-4.3 | `hreflang` alternates + `x-default` on every page | ✅ | `generateMetadata` emits canonical + hreflang es/en/ca + x-default→ES on every rendered page; sitemap includes `alternates.languages` |
+| R-4.4 | Locale switcher preserves current page | ✅ | `LocaleSwitcher` built via `getAlternates(currentPage, params)`; `aria-current`; keyboard operable (SPEC-P1 FR-5) |
 | R-4.5 | Header nav: 5 items + Hablemos button + locale switcher | ✅ | `sharedContent.header.nav` (5 items) + contact CTA + ES/EN/CA |
 | R-4.6 | Footer: claim, nav, legal links, company line, colivares.com (no link) | ✅ | `sharedContent.footer` |
 | R-4.7 | All page copy in typed dictionaries; no hardcoded strings | ✅ | All copy in `content/es/`; no inline strings in components |
@@ -92,23 +92,23 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | R-6.4 | `Readout` — instrument-style figure with sparkline | ✅ | `readout.tsx` |
 | R-6.5 | `CaseStudyCard` — eyebrow, title, impact, readout row | ✅ | `client-chip.tsx` (simplified v1 version) |
 | R-6.6 | `SiteHeader` + `SiteFooter` | ✅ | `site-chrome.tsx` |
-| R-6.7 | `/styleguide` route (noindex) | ✅ | `app/styleguide/page.tsx` |
+| R-6.7 | `/styleguide` route (noindex) | ✅ | `app/styleguide/page.tsx`; Phase 1 added section 05 "Plantilla de página" — `PageHeader` both surfaces + FinalCTA (AC-8) |
 
 ## §7 — i18n content workflow
 
 | ID | Requirement | Status | Notes |
 |----|-------------|--------|-------|
-| R-7.1 | ES is master; EN/CA are professional-register translations | ✅ | ES master complete; EN/CA stubs with `pending-review` marker |
-| R-7.2 | Carlos reviews all EN/CA copy before launch | ⬜ | Pre-condition for I18N-01 |
-| R-7.3 | Localized metadata per page (title ≤60, desc ≤155) | ⬜ | BACKLOG: SEO-01 |
-| R-7.4 | `sitemap.xml` with all alternates | ⬜ | BACKLOG: SEO-01 |
-| R-7.5 | `robots.txt` | ⬜ | BACKLOG: SEO-01 |
+| R-7.1 | ES is master; EN/CA are professional-register translations | ✅ | ES master + all stubs complete; `content/en/*` and `content/ca/*` re-export ES with `TODO(P5)` markers |
+| R-7.2 | Carlos reviews all EN/CA copy before launch | ⬜ | Pre-condition for Phase 5 translations |
+| R-7.3 | Localized metadata per page (title ≤60, desc ≤155) | ✅ | `generateMetadata` per page in catch-all; limits enforced by `tests/lib/i18n/meta.test.ts` (42 tests) |
+| R-7.4 | `sitemap.xml` with all alternates | ✅ | `app/sitemap.ts` — built pages × locales with `alternates.languages`; extends as Phase 2 adds pages |
+| R-7.5 | `robots.txt` | ✅ | `app/robots.ts` — allow `/`; disallow `/styleguide`; references sitemap |
 
 ## §8 — SEO, analytics, performance
 
 | ID | Requirement | Status | Notes |
 |----|-------------|--------|-------|
-| R-8.1 | SSG for every page | ⬜ | Default Next.js; verify on full site build |
+| R-8.1 | SSG for every page | ✅ | `dynamicParams = false`; all rendered routes are `○ (Static)` in build output |
 | R-8.2 | OG image with identity | ⬜ | BACKLOG: SEO-01 |
 | R-8.3 | Structured data: `Organization` + `BreadcrumbList` | ⬜ | BACKLOG: SEO-01 |
 | R-8.4 | Cookieless analytics | ⬜ | BACKLOG: ANALYTICS-01 |
