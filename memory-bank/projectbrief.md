@@ -13,8 +13,8 @@ Corporate marketing website for Escala Digital Ventures. **Not** an app, **not**
 
 ## Spec sources of truth
 
-- **El Libro de Escala v2.1** → `docs/el-libro-de-escala-v2.1.md` — business knowledge base, copy authority
-- **Website Content & Design Spec v1.1** → `docs/escala-web-content-spec-v1.1.md` — product spec, design system, routes, i18n
+- **El Libro de Escala v2.2** → `docs/el-libro-de-escala-v2.2.md` — business knowledge base, copy authority (IP/ownership corrected in v2.2 per SPEC-FIX-01)
+- **Website Content & Design Spec v1.1.1** → `docs/escala-web-content-spec-v1.1.1.md` — product spec, design system, routes, i18n
 - **Development plan** → `PLAN.md` — phase tracking and backlog backbone
 - **Engineering standards** → `.clinerules/`
 

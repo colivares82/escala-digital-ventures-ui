@@ -10,6 +10,7 @@ import {
   ServicesPreview,
 } from '@/components/home-sections'
 import { MotionRuntime } from '@/components/motion-runtime'
+import { AlliancePage } from '@/components/pages/alliance'
 import { MethodPage } from '@/components/pages/method'
 import { ServicesPage } from '@/components/pages/services'
 import { CasesPage } from '@/components/pages/cases'
@@ -34,6 +35,7 @@ export const dynamicParams = false
  * Phase 2.1: method × 3 locales added.
  * Phase 2.2: services × 3 locales added.
  * Phase 2.3: cases index + 2 case details × 3 locales added.
+ * Phase 2.4: alliance × 3 locales added. Spec: SPEC-P2.4 FR-1.1
  * Spec: SPEC-P1 FR-2.2 · SPEC-P2.1 FR-1.1 · SPEC-P2.3 FR-1.1
  */
 export async function generateStaticParams(): Promise<RouteParams[]> {
@@ -56,6 +58,9 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
     { path: ['casos-de-exito', 'biozero'] },        // ES BioZero
     { path: ['en', 'case-studies', 'biozero'] },    // EN BioZero
     { path: ['ca', 'casos-dexit', 'biozero'] },     // CA BioZero
+    { path: ['modelo-de-alianza'] },                // ES alliance — SPEC-P2.4
+    { path: ['en', 'alliance-model'] },             // EN alliance
+    { path: ['ca', 'model-dalianca'] },             // CA alliance
   ]
 }
 
@@ -134,7 +139,7 @@ export default async function Page({
   const { home, shared } = dict
 
   // Pages not yet built → 404 until Phase 2.n adds them.
-  const BUILT_PAGES = ['home', 'method', 'services', 'cases', 'caseDetail'] as const
+  const BUILT_PAGES = ['home', 'method', 'services', 'cases', 'caseDetail', 'alliance'] as const
   if (!BUILT_PAGES.includes(page as (typeof BUILT_PAGES)[number])) notFound()
 
   // For caseDetail, resolve the case and 404 on unknown slug.
@@ -167,6 +172,8 @@ export default async function Page({
           <CasesPage dict={dict} locale={locale} />
         ) : page === 'caseDetail' && caseData ? (
           <CaseDossier caseStudy={caseData} dict={dict.cases} locale={locale} />
+        ) : page === 'alliance' ? (
+          <AlliancePage dict={dict} />
         ) : (
           <>
             <Hero content={home.hero} claims={home.claims} />

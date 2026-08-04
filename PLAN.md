@@ -8,8 +8,8 @@ A phase is DONE only when its acceptance criteria pass: TS strict clean,
 AA contrast, prefers-reduced-motion, responsive to 360px, all copy from
 `/content` dictionaries.
 
-**Sources of truth:** El Libro de Escala v2.1 (`docs/el-libro-de-escala-v2.1.md`) ·
-Website Content & Design Spec v1.1 (`docs/escala-web-content-spec-v1.1.md`) ·
+**Sources of truth:** El Libro de Escala v2.2 (`docs/el-libro-de-escala-v2.2.md`) ·
+Website Content & Design Spec v1.1.1 (`docs/escala-web-content-spec-v1.1.1.md`) ·
 `.clinerules` (engineering).
 
 **Status legend:** ☐ pending · ◐ in progress · ☑ done
@@ -63,8 +63,9 @@ Status: ◐ in progress
   MAGUPELL (data-forward) + BioZero (capability-forward). Real logos from
   `app/assets/brand/*.png`. 6 new components (CaseCard, BrandHeader,
   ReadoutStrip, DossierField, CapabilityGrid, CaseDossier). 450 tests. SPEC-P2.3.
-- ☐ 2.4 `/modelo-de-alianza` — reuses constellation; three planes +
-  commitments (Ch. 11–13).
+- ☑ 2.4 `/modelo-de-alianza` — AllianceConstellation (parameterized compact/large),
+  AlliancePlanes (3 cols, highlighted middle), CommitmentsBand (5 cells, A MEDIDA framing),
+  AlliancePage. 518 tests. SPEC-P2.4.
 - ☐ 2.5 `/sobre-escala` — DNA, values, manifesto (10 beliefs),
   anonymized experience, colivares.com text mention (Ch. 1–4).
 Each page ships with its own spec; new compositions (case template,
