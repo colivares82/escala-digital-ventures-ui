@@ -1,7 +1,7 @@
 # El Libro de Escala
 
 **Escala Digital Ventures — Base de conocimiento corporativa**
-**Versión:** 2.1 · Julio 2026 · Mataró, Barcelona · www.escaladigitalventures.com
+**Versión:** 2.2 · Agosto 2026 · Mataró, Barcelona · www.escaladigitalventures.com
 
 © 2026 Escala Digital Ventures, S.L.U. Todos los derechos reservados. Este documento y su contenido —textos, metodologías, marcos de trabajo (incluido el Escala Growth Framework), narrativa de marca y materiales derivados— son propiedad de Escala Digital Ventures, S.L.U. Queda prohibida su reproducción, distribución o comunicación pública, total o parcial, sin autorización expresa y por escrito de Escala Digital Ventures, S.L.U.
 
@@ -190,7 +190,7 @@ Cada decisión técnica evalúa su impacto futuro. La deuda técnica solo se ace
 
 ### El stack y la práctica de Escala
 
-En la práctica, esto se traduce en decisiones concretas: TypeScript de extremo a extremo, React en el frontend, NestJS en el backend, PostgreSQL como base de datos, despliegues contenedorizados en Google Cloud (región europea), integración y entrega continuas con GitHub Actions, entornos separados de desarrollo y producción, cobertura de pruebas automatizadas como norma, control de versiones visible en la propia aplicación y revisión de seguridad de credenciales e infraestructura. El cliente es propietario de su plataforma, su código y sus datos.
+En la práctica, esto se traduce en decisiones concretas: TypeScript de extremo a extremo, React en el frontend, NestJS en el backend, PostgreSQL como base de datos, despliegues contenedorizados en Google Cloud (región europea), integración y entrega continuas con GitHub Actions, entornos separados de desarrollo y producción, cobertura de pruebas automatizadas como norma, control de versiones visible en la propia aplicación y revisión de seguridad de credenciales e infraestructura. El cliente recibe una licencia de uso indefinida sobre su plataforma y es propietario de sus datos; la propiedad intelectual y el código fuente son de Escala (ver Cap. 13).
 
 ## Capítulo 7. Inteligencia Artificial y Automatización aplicada al Negocio
 
@@ -271,7 +271,7 @@ Escala no ofrece un catálogo tradicional de servicios: cada colaboración se di
 
 **Transformación digital y automatización de procesos.** Análisis de procesos, herramientas y flujos de trabajo para identificar oportunidades de simplificación, automatización y modernización: desde la captura del dato en origen hasta la facturación y el informe final.
 
-**Desarrollo de plataformas.** Diseño y construcción de aplicaciones web, plataformas empresariales, portales internos y soluciones SaaS a medida —no plantillas ni configuraciones sobre herramientas de terceros—, con gestión de usuarios y roles, dominios propios, correo transaccional, generación de documentos y facturación integrada, y una arquitectura preparada para evolucionar durante años.
+**Desarrollo de plataformas.** Diseño y construcción de aplicaciones web, plataformas empresariales, portales internos y soluciones SaaS a medida —no plantillas ni configuraciones sobre herramientas de terceros—, con gestión de usuarios y roles, dominios propios, correo transaccional, generación de documentos y facturación integrada, y una arquitectura preparada para evolucionar durante años. La solución se construye a medida de las necesidades reales del negocio; el cliente obtiene una licencia de uso indefinida y la propiedad de sus datos, mientras que la propiedad intelectual y el código son de Escala.
 
 **Automatización e IA aplicada.** Integración de modelos de lenguaje y de visión donde generan valor real y medible: reducción de tareas repetitivas, análisis de imágenes, mejora de la toma de decisiones, integración entre sistemas y aumento de productividad.
 
@@ -301,7 +301,15 @@ El requisito más importante no es el sector ni el tamaño: es la voluntad de es
 
 ## Capítulo 13. Compromisos de cada alianza
 
-Toda alianza de Escala se rige por los mismos compromisos: el cliente es propietario de su plataforma, su código y sus datos; cada funcionalidad se especifica y aprueba antes de construirse; la calidad se demuestra con pruebas automatizadas y estabilidad en producción, no con promesas; el soporte es continuo, trazable y transparente en su facturación; y la relación se mide por un único indicador final, que es el crecimiento y la eficiencia del negocio del cliente.
+Toda alianza de Escala se rige por los mismos compromisos: cada solución se construye a medida de las necesidades y oportunidades reales del negocio —no plantillas—; cada funcionalidad se especifica y aprueba antes de construirse; la calidad se demuestra con pruebas automatizadas y estabilidad en producción, no con promesas; el soporte es continuo, trazable y transparente en su facturación; y la relación se mide por un único indicador final, que es el crecimiento y la eficiencia del negocio del cliente.
+
+### Propiedad intelectual y modelo de colaboración
+
+Escala construye cada sistema a medida para su cliente, pero la propiedad intelectual y el código fuente —incluyendo diseño, arquitectura, patrones de desarrollo y soluciones de ingeniería— pertenecen a Escala y forman parte de su acervo profesional, protegido por la legislación de propiedad intelectual. El cliente recibe una licencia de uso exclusiva, intransferible y por tiempo indefinido para operar el sistema con la finalidad acordada, con usuarios ilimitados, y conserva la propiedad plena e inalienable de sus datos, que puede exportar en cualquier momento y que se le devuelven íntegros al terminar la relación.
+
+El modelo protege también al cliente: Escala se compromete a no reutilizar el sistema ni sus mejoras para competidores del cliente en su sector, garantizando así exclusividad sectorial. La licencia de uso sobrevive a la finalización del servicio de soporte —el cliente nunca se queda sin su herramienta—, y las obligaciones de confidencialidad y las restricciones sectoriales se mantienen tras el fin de la relación. Este equilibrio —Escala retiene su conocimiento y su código; el cliente gana una plataforma exclusiva, sus datos y continuidad garantizada— es la base de una alianza de largo plazo basada en la confianza.
+
+Ambas partes reconocen el valor estratégico del sistema y establecen un marco de mejora continua: el cliente puede solicitar mejoras en cualquier momento, cada una se estima y se acuerda antes de construirse, y cuando un sistema tiene potencial de escalar hacia una plataforma mayor, las partes exploran esa oportunidad de buena fe, con condiciones específicas de participación y beneficio mutuo.
 
 ---
 

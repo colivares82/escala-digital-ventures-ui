@@ -1,12 +1,31 @@
 # Active Context
 
-_Last updated: April 2026 (Phase 2.4 completed)_
+_Last updated: August 2026 (SPEC-FIX-01 completed; Phase 2.4 complete)_
 
 ## Current state
 
-**Phase 2.4 complete.** `/modelo-de-alianza` is live at all 3 locale slugs. 518 tests, all passing. Build clean, TypeScript strict. SPEC-P2.4 all ACs satisfied.
+**SPEC-FIX-01 complete.** IP / ownership wording corrected across all built work. 523 tests, all passing. Build clean, TypeScript strict. Sources of truth promoted to Libro v2.2 + spec v1.1.1. Sitewide ownership-wording grep = 0 violations. Guard active in CI.
 
-## What was just done (Phase 2.4 — SPEC-P2.4)
+## What was just done (SPEC-FIX-01 — IP / ownership correction)
+
+1. **Docs swapped:**
+   - `docs/el-libro-de-escala-v2.2.md` added (replaces v2.1, deleted)
+   - `docs/escala-web-content-spec-v1.1.1.md` added (replaces v1.1, deleted)
+   - `specs/spec-fix-ownership-ip.md` filed in repo
+   - `PLAN.md` + `memory-bank/projectbrief.md` source-of-truth refs → v2.2/v1.1.1
+
+2. **Copy fixed (1 hotspot):**
+   - `content/es/services.ts` service[1] deliverable: "propietario de … código" replaced with §3.1 canonical wording — "licencia de uso indefinida sobre tu plataforma … La propiedad intelectual y el código son de Escala."
+
+3. **Guard installed:**
+   - `tests/content/ownership-guard.test.ts` — 5 tests; scans `content/`, `components/`, `app/` for 4 FR-4 patterns; runs in `npm test`; AC-5 verified.
+
+4. **Standing rule:**
+   - `.clinerules/project-ownership-rule.md` — project-local rule (survives standards-package build); forbidden phrases + canonical wording for all future pages.
+
+5. **Docs updated:** CHANGELOG, DECISIONS.md (pending item marked resolved), PLAN.md refs.
+
+## What was previously done (Phase 2.4 — SPEC-P2.4)
 
 1. **Spec filed:**
    - `specs/spec-p2.4-modelo-de-alianza.md` — implementation spec + wireframe at `specs/mockups/wireframe-p2.4-modelo-de-alianza-final.html` (approved before build)
@@ -46,7 +65,6 @@ _Last updated: April 2026 (Phase 2.4 completed)_
 - **FIG.06 provisional:** `ExecutionPipelineFig` internals are still provisional.
 - **EN/CA translations:** all locales serve ES fallback (Phase 5).
 - **Logo-display permission (BioZero):** pending Carlos confirmation before go-live (Phase 7 checklist). FR-3.6.
-- **Ownership wording pending patch:** `content/es/services.ts` line 2 + `docs/el-libro-de-escala-v2.1.md` (Ch. 6, 13, 15, 19) + `docs/escala-web-content-spec-v1.1.md` (§2, §5.2, §5.4) still contain old "client owns code" wording. Scheduled for Phase 2.5 or dedicated patch. See `DECISIONS.md`.
 
 ## What comes next (Phase 2.5)
 
@@ -62,4 +80,3 @@ _Last updated: April 2026 (Phase 2.4 completed)_
 - **GCP account:** not ready. Phase 6 blocked.
 - **ServiceFig variants:** DRAFT VISUAL — Carlos will iterate one-by-one after review.
 - **Logo-display permission:** Carlos to confirm for MAGUPELL + BioZero before Phase 7 launch.
-- **Ownership wording:** Carlos to update Libro docs + services.ts (Phase 2.5 or standalone patch).

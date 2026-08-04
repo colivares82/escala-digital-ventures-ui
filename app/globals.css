@@ -1259,16 +1259,19 @@ h1, h2, h3, h4, p {
   justify-content: flex-start;
   gap: 0;
   padding: clamp(2rem, 5vh, 4.5rem) max(6vw, calc((100vw - 88rem) / 2));
+  /* Grid lines first (on top) → radial gradient last (underneath).
+   * CSS backgrounds paint first-listed layer topmost; the radial is opaque
+   * so it must come AFTER the grid to let the grid show through. */
   background-color: var(--abisal);
   background-image:
+    linear-gradient(rgb(247 247 244 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(247 247 244 / 0.05) 1px, transparent 1px),
     radial-gradient(
       ellipse at 60% 40%,
       var(--abisal) 0%,
       var(--abisal-gradient-end) 100%
-    ),
-    linear-gradient(rgb(247 247 244 / 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(247 247 244 / 0.05) 1px, transparent 1px);
-  background-size: auto, 3rem 3rem, 3rem 3rem;
+    );
+  background-size: 3rem 3rem, 3rem 3rem, auto;
 }
 
 .phase-cycle__header {
@@ -1518,15 +1521,16 @@ h1, h2, h3, h4, p {
   padding-block: 0;
   overflow: clip;
   background-color: var(--abisal);
+  /* Grid lines first (on top) → radial gradient last (underneath). */
   background-image:
+    linear-gradient(rgb(247 247 244 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(247 247 244 / 0.05) 1px, transparent 1px),
     radial-gradient(
       ellipse at 60% 40%,
       var(--abisal) 0%,
       var(--abisal-gradient-end) 100%
-    ),
-    linear-gradient(rgb(247 247 244 / 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(247 247 244 / 0.05) 1px, transparent 1px);
-  background-size: auto, 3rem 3rem, 3rem 3rem;
+    );
+  background-size: 3rem 3rem, 3rem 3rem, auto;
 }
 
 /* Inside framework-cycle, phase-cycle should not bleed to full viewport width */
@@ -2387,11 +2391,12 @@ h1, h2, h3, h4, p {
   position: relative;
   padding-block: 6rem;
   background: var(--abisal);
+  /* Grid lines first (on top) → radial gradient last (underneath). */
   background-image:
-    radial-gradient(ellipse at 60% 40%, var(--abisal), var(--abisal-gradient-end)),
     linear-gradient(rgb(247 247 244 / 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(247 247 244 / 0.05) 1px, transparent 1px);
-  background-size: auto, 3rem 3rem, 3rem 3rem;
+    linear-gradient(90deg, rgb(247 247 244 / 0.05) 1px, transparent 1px),
+    radial-gradient(ellipse at 60% 40%, var(--abisal), var(--abisal-gradient-end));
+  background-size: 3rem 3rem, 3rem 3rem, auto;
 }
 .ideal-client .section-index {
   margin-bottom: 1.5rem;
@@ -2954,7 +2959,12 @@ h1, h2, h3, h4, p {
 /* ── Section B: WhyFive + Constellation (abisal) ── */
 
 .alliance-why {
-  background: radial-gradient(ellipse at 50% 45%, var(--abisal), var(--abisal-gradient-end));
+  /* Grid lines first (on top) → radial gradient last (underneath). */
+  background:
+    linear-gradient(rgb(247 247 244 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(247 247 244 / 0.05) 1px, transparent 1px),
+    radial-gradient(ellipse at 50% 45%, var(--abisal), var(--abisal-gradient-end));
+  background-size: 3rem 3rem, 3rem 3rem, auto;
   padding: var(--space-section) 0;
 }
 
@@ -3011,7 +3021,12 @@ h1, h2, h3, h4, p {
 /* ── Section C: AlliancePlanes (abisal, continuation of dark band) ── */
 
 .alliance-planes {
-  background: radial-gradient(ellipse at 50% 45%, var(--abisal), var(--abisal-gradient-end));
+  /* Grid lines first (on top) → radial gradient last (underneath). */
+  background:
+    linear-gradient(rgb(247 247 244 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(247 247 244 / 0.05) 1px, transparent 1px),
+    radial-gradient(ellipse at 50% 45%, var(--abisal), var(--abisal-gradient-end));
+  background-size: 3rem 3rem, 3rem 3rem, auto;
   padding: var(--space-section) 0;
   border-top: 1px solid rgb(247 247 244 / 0.1);
 }

@@ -8,8 +8,8 @@ A phase is DONE only when its acceptance criteria pass: TS strict clean,
 AA contrast, prefers-reduced-motion, responsive to 360px, all copy from
 `/content` dictionaries.
 
-**Sources of truth:** El Libro de Escala v2.1 (`docs/el-libro-de-escala-v2.1.md`) ·
-Website Content & Design Spec v1.1 (`docs/escala-web-content-spec-v1.1.md`) ·
+**Sources of truth:** El Libro de Escala v2.2 (`docs/el-libro-de-escala-v2.2.md`) ·
+Website Content & Design Spec v1.1.1 (`docs/escala-web-content-spec-v1.1.1.md`) ·
 `.clinerules` (engineering).
 
 **Status legend:** ☐ pending · ◐ in progress · ☑ done

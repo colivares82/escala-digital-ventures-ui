@@ -6,6 +6,28 @@ All notable changes, newest first.
 
 ---
 
+## [Unreleased] — SPEC-FIX-01: IP / ownership correction
+
+Spec: `specs/spec-fix-ownership-ip.md` · Sources of truth promoted to Libro v2.2 + Spec v1.1.1.
+
+### Changed
+- `docs/el-libro-de-escala-v2.2.md` — added (replaces v2.1; corrects IP ownership model per MAGUPELL contract)
+- `docs/escala-web-content-spec-v1.1.1.md` — added (replaces v1.1; corrects ownership wording in §2, §5.2, §5.4)
+- `docs/el-libro-de-escala-v2.1.md` — **deleted** (superseded by v2.2)
+- `docs/escala-web-content-spec-v1.1.md` — **deleted** (superseded by v1.1.1)
+- `content/es/services.ts` service[1] deliverable — old: "Tú eres propietario de tu plataforma, tu código y tus datos." → new §3.1 canonical wording: "…obtienes una licencia de uso indefinida sobre tu plataforma y la propiedad de tus datos. La propiedad intelectual y el código son de Escala." (SPEC-FIX-01 §3.1 / Libro v2.2 Ch. 13)
+- `PLAN.md` — source-of-truth references → v2.2 / v1.1.1
+- `memory-bank/projectbrief.md` — source-of-truth references → v2.2 / v1.1.1
+
+### Added
+- `tests/content/ownership-guard.test.ts` — 5 tests; scans `content/`, `components/`, `app/` for 4 forbidden ownership patterns; fails on any match; AC-5 verified (deliberately inserted bad phrase → 2 failures → removed → clean)
+- `.clinerules/project-ownership-rule.md` — standing rule: client gets use licence + data ownership; code and IP are Escala's; forbidden phrases; canonical wording reference; survives standards build because it's project-local
+- `specs/spec-fix-ownership-ip.md` — spec filed in repo
+
+**Result:** 523 tests (36 files) · TS strict clean · grep FR-4 patterns = 0 matches across codebase.
+
+---
+
 ## [Unreleased] — Phase 2.4: /modelo-de-alianza
 
 Spec: `specs/spec-p2.4-modelo-de-alianza.md` (SPEC-P2.4 v1.0) · Wireframe: `specs/mockups/wireframe-p2.4-modelo-de-alianza-final.html` · Ownership §0: alliance page uses corrected framing; Libro/services.ts patch pending (DECISIONS.md).
