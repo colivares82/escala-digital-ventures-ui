@@ -57,8 +57,8 @@ Status: ◐ in progress
 - ☑ 2.1 `/como-trabajamos` — PhaseCycle reused; ExecutionPractices (5 panels);
   FIG.06 (provisional, isolated); AiBuildBlock (Ch. 7/9). All 3 locales built.
   291 tests passing. SPEC-P2.1 AC all green.
-- ☐ 2.2 `/que-hacemos` — 5 service lines problem-first + "¿Encajamos?"
-  (Ch. 11–12).
+- ☑ 2.2 `/que-hacemos` — 5 service lines problem-first + "¿Encajamos?"
+  (Ch. 11–12). ServiceFig × 5 variants, ServiceRow, IdealClientNote. 366 tests.
 - ☐ 2.3 `/casos-de-exito` + shared case template (data-driven) +
   MAGUPELL + BioZero (Ch. 14–16).
 - ☐ 2.4 `/modelo-de-alianza` — reuses constellation; three planes +

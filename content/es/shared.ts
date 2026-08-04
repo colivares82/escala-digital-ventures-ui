@@ -14,8 +14,8 @@ export const sharedContent = {
   header: {
     brand: 'ESCALA',
     nav: [
-      // Unbuilt pages: home anchor fallback until Phase 2.n ships each page.
-      { label: 'Qué hacemos', href: '/#que-hacemos', pageId: 'services' },
+      // Built pages: true route (Phase 2.2+).
+      { label: 'Qué hacemos', href: '/que-hacemos', pageId: 'services' },
       // Built pages: true route (Phase 2.1+).
       { label: 'Cómo trabajamos', href: '/como-trabajamos', pageId: 'method' },
       { label: 'Casos de éxito', href: '/#casos', pageId: 'cases' },
@@ -36,7 +36,7 @@ export const sharedContent = {
     company: 'Escala Digital Ventures, S.L.U. · Mataró, Barcelona',
     direction: 'Dirección general: referencia en colivares.com',
     navigation: [
-      { label: 'Qué hacemos', href: '/#que-hacemos' },
+      { label: 'Qué hacemos', href: '/que-hacemos' },
       { label: 'Cómo trabajamos', href: '/como-trabajamos' },
       { label: 'Casos de éxito', href: '/#casos' },
       { label: 'Modelo de alianza', href: '/#alianza' },

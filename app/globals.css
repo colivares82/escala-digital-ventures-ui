@@ -33,7 +33,8 @@
   --ink:    #16181d; /* near-black, cold undertone */
   --mar:    #0e3a5d; /* deep Mediterranean sea blue — links, buttons, active */
   --abisal: #0a2b45; /* darkest surface color */
-  --ambre:  #ffb703; /* instrument amber — ONLY for tick-marks, highlights, active */
+  --ambre:    #ffb703; /* instrument amber — ONLY for tick-marks, highlights, active */
+  --ambre-dk: #b85c00; /* dark amber — AA-safe on --paper; used ONLY for problem-line text on light surfaces (FR-3.3 SPEC-P2.2) */
 
   /*
    * Gradient end for the phase-cycle/framework-cycle backgrounds.
@@ -2272,5 +2273,191 @@ h1, h2, h3, h4, p {
   }
   .pipeline-pulse {
     display: none;
+  }
+
+  /* Phase 2.2 — reduced motion overrides */
+  /* Service fig: service-fig__pulse is only rendered when visible=true in React;
+     for reduced-motion the IntersectionObserver is skipped so visible stays false
+     and no animateMotion elements are rendered. No extra CSS needed.
+     Stagger delays removed — all rows appear immediately. */
+  .service-rows__reveal-wrap .reveal {
+    transition-delay: 0ms !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* PHASE 2.2 — /que-hacemos components (SPEC-P2.2)                             */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── service-rows section wrapper ── */
+.service-rows {
+  /* Continues directly below PageHeader; no extra top padding needed */
+  padding-bottom: 4rem;
+}
+.service-rows__list {
+  /* Rows contain their own borders */
+}
+
+/* Stagger entrance per row via --row-index CSS custom property (set inline on wrapper) */
+.service-rows__reveal-wrap .reveal {
+  transition-delay: calc(var(--row-index, 0) * 80ms);
+}
+
+/* ── ServiceRow — three-column grid ── */
+.service-row {
+  display: grid;
+  /* 64px index · flexible text · 320px figure */
+  grid-template-columns: 64px 1fr 320px;
+  gap: 44px;
+  align-items: center;
+  padding: 44px 0;
+  /* Top border: ink at 18% opacity */
+  border-top: 1px solid rgb(22 24 29 / 0.18);
+}
+.service-row--last {
+  border-bottom: 1px solid rgb(22 24 29 / 0.18);
+}
+
+/* Index: mono left column */
+.service-row__index {
+  font: 500 0.8rem / 1 var(--font-ibm-plex-mono);
+  color: var(--mar);
+  align-self: center;
+}
+
+/* Text block */
+.service-row__title {
+  font: 600 1.9rem / 1.1 var(--font-archivo);
+  font-stretch: 112%;
+  margin: 0 0 0.6rem;
+}
+.service-row__problem {
+  font: 400 0.75rem / 1.5 var(--font-ibm-plex-mono);
+  letter-spacing: 0.04em;
+  /* AA-safe dark amber on --paper. Token registered in DECISIONS.md (FR-3.3). */
+  color: var(--ambre-dk);
+  margin: 0 0 0.75rem;
+}
+.service-row__problem-prefix {
+  /* Inherits ambre-dk color from parent */
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+.service-row__deliverable {
+  margin: 0;
+  line-height: 1.6;
+  opacity: 0.85;
+  max-width: 52ch;
+}
+
+/* Figure column */
+.service-row__fig {
+  /* Vertically centered by the grid align-items: center */
+  min-width: 0;
+}
+
+/* ── ServiceFig — parameterized SVG figure ── */
+.service-fig {
+  margin: 0;
+}
+.service-fig__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+/* SVG text labels: mono 8.5px, fill --ink */
+.service-fig__svg text,
+.service-fig__label {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 8.5px;
+  fill: var(--ink);
+}
+/* Kit-grammar caption below the figure */
+.service-fig__caption {
+  margin: 8px 0 0;
+  font: 500 0.55rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.05em;
+  color: var(--mar);
+  text-align: center;
+}
+
+/* ── IdealClientNote — B / ¿Encajamos? (abisal) ── */
+.ideal-client {
+  position: relative;
+  padding-block: 6rem;
+  background: var(--abisal);
+  background-image:
+    radial-gradient(ellipse at 60% 40%, var(--abisal), var(--abisal-gradient-end)),
+    linear-gradient(rgb(247 247 244 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(247 247 244 / 0.05) 1px, transparent 1px);
+  background-size: auto, 3rem 3rem, 3rem 3rem;
+}
+.ideal-client .section-index {
+  margin-bottom: 1.5rem;
+}
+.ideal-client__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+.ideal-client__title {
+  margin: 0;
+  font: 600 clamp(2rem, 4vw, 3rem) / 1.05 var(--font-archivo);
+  font-stretch: 112%;
+  color: var(--paper);
+}
+.ideal-client__body {
+  margin: 0;
+  max-width: 60ch;
+  color: rgb(247 247 244 / 0.85);
+  line-height: 1.7;
+}
+.ideal-client__cta {
+  color: var(--paper);
+  text-decoration: none;
+  margin-top: 0.5rem;
+}
+.ideal-client__cta:focus-visible {
+  outline: 2px solid var(--ambre);
+  outline-offset: 4px;
+}
+
+/* ── Phase 2.2 responsive (mobile ≤767px) ── */
+@media (max-width: 767px) {
+  /* Service row: fig stacks below text, full-width */
+  .service-row {
+    grid-template-columns: 48px 1fr;
+    grid-template-rows: auto auto;
+    gap: 1.25rem;
+    padding: 2rem 0;
+  }
+  .service-row__fig {
+    /* Stack fig below text block at full width */
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+  .service-row__text {
+    /* Text spans remaining space next to index */
+    grid-column: 2;
+  }
+}
+
+/* ── Phase 2.2 responsive (mobile ≤639px) ── */
+@media (max-width: 639px) {
+  .service-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .service-row__index {
+    /* Index above title on smallest screens */
+    grid-column: 1;
+  }
+  .service-row__text {
+    grid-column: 1;
+  }
+  .service-row__title {
+    font-size: 1.5rem;
   }
 }

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WIREFRAME P2.2 FINAL — /que-hacemos (Opción A)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,500;112,600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#F7F7F4;--ink:#16181D;--mar:#0E3A5D;--abisal:#0A2B45;--abisal-deep:#082238;--ambre:#FFB703;--ambre-dk:#B85C00;
+    --display:'Archivo',system-ui,sans-serif;--body:'Instrument Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--body);background:var(--paper);color:var(--ink)}
+  .wf{background:#111;color:#eee;font-family:var(--mono);font-size:12px;padding:14px 32px;letter-spacing:.05em;position:sticky;top:0;z-index:99}
+  .wf b{color:var(--ambre)}
+  .note{font-family:var(--mono);font-size:11px;color:var(--ambre-dk);border-left:1px dashed var(--ambre-dk);padding-left:10px;margin:14px 6vw;max-width:700px;line-height:1.5}
+  .wrap{padding:64px 6vw}
+  .sec-idx{font-family:var(--mono);font-size:12px;letter-spacing:.15em}
+  .sec-idx .n{color:var(--ambre-dk)}
+  h1.page{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(2.5rem,5vw,4rem);line-height:1.05;margin:14px 0 18px;max-width:16ch}
+  .lead{font-size:19px;line-height:1.6;max-width:60ch;opacity:.8}
+  .svc{border-top:1px solid rgba(22,24,29,.18);padding:44px 0;display:grid;grid-template-columns:64px 1fr 320px;gap:44px;align-items:center}
+  .svc:last-of-type{border-bottom:1px solid rgba(22,24,29,.18)}
+  .svc .idx{font-family:var(--mono);font-size:13px;color:var(--mar)}
+  .svc h3{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:1.9rem;line-height:1.1;margin-bottom:10px}
+  .svc .prob{font-family:var(--mono);font-size:12px;color:var(--ambre-dk);letter-spacing:.03em;margin-bottom:12px}
+  .svc p{line-height:1.6;opacity:.85;max-width:52ch}
+  .figwrap{}
+  .figcap{font-family:var(--mono);font-size:9px;color:var(--mar);text-align:center;margin-top:8px;letter-spacing:.05em}
+  svg text{font-family:'IBM Plex Mono',monospace}
+  .nlabel{font-size:8.5px;fill:var(--ink)}
+  .ideal{background:radial-gradient(ellipse at 60% 40%,var(--abisal),var(--abisal-deep));color:var(--paper);position:relative;margin-top:40px}
+  .ideal::before{content:"";position:absolute;inset:0;opacity:.05;background-image:linear-gradient(#F7F7F4 1px,transparent 1px),linear-gradient(90deg,#F7F7F4 1px,transparent 1px);background-size:48px 48px}
+  .ideal h2{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(2rem,4vw,3rem);margin-bottom:14px}
+  .ideal p{color:rgba(247,247,244,.85);line-height:1.7;max-width:60ch}
+  .reuse{display:inline-block;font-family:var(--mono);font-size:10px;color:var(--ambre);border:1px solid var(--ambre);padding:2px 8px;border-radius:2px}
+</style>
+</head>
+<body>
+<div class="wf">WIREFRAME · <b>P2.2 FINAL</b> · /que-hacemos · Opción A (diagram-led) · 5 figuras coherentes con cada servicio · base para iterar</div>
+<div class="note">Las 5 figuras comparten el mismo lenguaje del kit (nodos + conectores + acento ámbar), pero cada una dice algo distinto y relacionado con su servicio. Son BORRADOR para que iteres una a una; el spec pedirá construirlas como UN componente parametrizado (ServiceFig con 5 variantes).</div>
+
+<section class="wrap">
+  <div class="sec-idx"><span class="n">A</span>&nbsp;/&nbsp;QU&Eacute; HACEMOS</div>
+  <h1 class="page">Qué hacemos</h1>
+  <p class="lead">No ofrecemos un catálogo de servicios: diseñamos cada colaboración alrededor de los objetivos de tu negocio. Estas son las cinco líneas que casi siempre se combinan dentro de una misma alianza.</p>
+</section>
+
+<section class="wrap" style="padding-top:0">
+
+  <!-- 01 · CAPTURA A INFORME : dato disperso (dashed) → proceso → salida ordenada -->
+  <div class="svc">
+    <div class="idx">01</div>
+    <div>
+      <h3>Transformación digital y automatización de procesos</h3>
+      <div class="prob">EL PROBLEMA · Procesos críticos que viven en hojas de cálculo y en la cabeza de las personas.</div>
+      <p>Analizamos procesos, herramientas y flujos para simplificar, automatizar y modernizar: desde la captura del dato en origen hasta la facturación y el informe final.</p>
+    </div>
+    <div class="figwrap">
+      <svg width="320" height="150" viewBox="0 0 320 150">
+        <!-- dashed inputs left -->
+        <g stroke="#16181D" stroke-width="1.5" fill="none" stroke-dasharray="4 3">
+          <path d="M60 35 C110 35 120 75 150 75"/>
+          <path d="M60 75 L150 75"/>
+          <path d="M60 115 C110 115 120 75 150 75"/>
+        </g>
+        <g fill="none" stroke="#16181D" stroke-width="1.5">
+          <rect x="18" y="26" width="42" height="18"/><rect x="18" y="66" width="42" height="18"/><rect x="18" y="106" width="42" height="18"/>
+          <circle cx="150" cy="75" r="9" stroke="#FFB703"/>
+          <!-- solid output ordered -->
+          <path d="M159 75 L230 75"/>
+          <rect x="230" y="46" width="72" height="18"/><rect x="230" y="86" width="72" height="18"/>
+          <path d="M266 64 L266 86"/>
+        </g>
+        <circle cx="195" cy="75" r="3" fill="#FFB703"/>
+        <g class="nlabel"><text x="22" y="38">HOJA</text><text x="22" y="78">CORREO</text><text x="22" y="118">DATO</text><text x="140" y="62">PROCESO</text><text x="236" y="58">INFORME</text><text x="234" y="98">FACTURA</text></g>
+      </svg>
+      <div class="figcap">FIG. 07 — CAPTURA A INFORME</div>
+    </div>
+  </div>
+
+  <!-- 02 · ARQUITECTURA MODULAR : módulos alrededor de un núcleo PLATAFORMA -->
+  <div class="svc">
+    <div class="idx">02</div>
+    <div>
+      <h3>Desarrollo de plataformas</h3>
+      <div class="prob">EL PROBLEMA · El software genérico no encaja con tu realidad.</div>
+      <p>Diseñamos y construimos aplicaciones web y plataformas a medida —no plantillas—, con usuarios y roles, dominio propio, correo transaccional, generación de documentos y facturación integrada. Tú eres propietario de tu plataforma, tu código y tus datos.</p>
+    </div>
+    <div class="figwrap">
+      <svg width="320" height="150" viewBox="0 0 320 150">
+        <g fill="none" stroke="#16181D" stroke-width="1.5">
+          <circle cx="160" cy="75" r="24" stroke="#FFB703"/>
+          <rect x="120" y="16" width="80" height="16"/>   <!-- top -->
+          <rect x="18" y="46" width="64" height="16"/>    <!-- left top -->
+          <rect x="238" y="46" width="64" height="16"/>   <!-- right top -->
+          <rect x="18" y="100" width="64" height="16"/>   <!-- left bot -->
+          <rect x="238" y="100" width="64" height="16"/>  <!-- right bot -->
+          <path d="M160 51 L160 32"/>
+          <path d="M140 66 L82 54"/><path d="M180 66 L238 54"/>
+          <path d="M140 86 L82 108"/><path d="M180 86 L238 108"/>
+        </g>
+        <g class="nlabel" text-anchor="middle"><text x="160" y="79">PLATAFORMA</text></g>
+        <g class="nlabel"><text x="126" y="27">USUARIOS · ROLES</text><text x="22" y="57">DOMINIO</text><text x="242" y="57">CORREO</text><text x="22" y="111">DOCUMENTOS</text><text x="242" y="111">FACTURACIÓN</text></g>
+      </svg>
+      <div class="figcap">FIG. 08 — ARQUITECTURA MODULAR</div>
+    </div>
+  </div>
+
+  <!-- 03 · IA EN EL PROCESO : línea de proceso con un punto de inserción IA (ámbar) -->
+  <div class="svc">
+    <div class="idx">03</div>
+    <div>
+      <h3>Automatización e IA aplicada</h3>
+      <div class="prob">EL PROBLEMA · Todo el mundo habla de IA; pocos la aplican con retorno.</div>
+      <p>Integramos modelos de lenguaje y de visión donde generan valor real y medible: menos tareas repetitivas, análisis de imágenes, mejores decisiones. IA aplicada con criterio: donde aporta, no donde adorna.</p>
+    </div>
+    <div class="figwrap">
+      <svg width="320" height="150" viewBox="0 0 320 150">
+        <g fill="none" stroke="#16181D" stroke-width="1.5">
+          <line x1="24" y1="95" x2="296" y2="95"/>
+          <rect x="24" y="86" width="42" height="18"/>
+          <rect x="120" y="86" width="42" height="18"/>
+          <rect x="230" y="86" width="42" height="18"/>
+          <!-- IA insertion node above the line -->
+          <circle cx="141" cy="45" r="16" stroke="#FFB703"/>
+          <path d="M141 61 L141 86" stroke="#FFB703" stroke-dasharray="3 3"/>
+        </g>
+        <circle cx="141" cy="95" r="3.5" fill="#FFB703"/>
+        <g class="nlabel" text-anchor="middle"><text x="141" y="49">IA</text></g>
+        <g class="nlabel"><text x="28" y="98">ENTRADA</text><text x="123" y="98">PROCESO</text><text x="236" y="98">DECISIÓN</text><text x="108" y="30" fill="#B85C00">DONDE APORTA</text></g>
+      </svg>
+      <div class="figcap">FIG. 09 — IA EN EL PROCESO</div>
+    </div>
+  </div>
+
+  <!-- 04 · DIRECCIÓN DE PRODUCTO : roadmap priorizado con un ítem destacado -->
+  <div class="svc">
+    <div class="idx">04</div>
+    <div>
+      <h3>CTO y Product Leadership fraccional</h3>
+      <div class="prob">EL PROBLEMA · Necesitas criterio directivo de producto y tecnología, sin contratar un perfil a tiempo completo.</div>
+      <p>Visión tecnológica, roadmap, especificación funcional, priorización, gestión de proveedores e iniciativas de innovación, con experiencia ejecutiva real.</p>
+    </div>
+    <div class="figwrap">
+      <svg width="320" height="150" viewBox="0 0 320 150">
+        <g fill="none" stroke="#16181D" stroke-width="1.5">
+          <line x1="24" y1="120" x2="296" y2="120"/>
+          <!-- ticks -->
+          <line x1="60" y1="114" x2="60" y2="126"/><line x1="120" y1="114" x2="120" y2="126"/>
+          <line x1="180" y1="114" x2="180" y2="126"/><line x1="240" y1="114" x2="240" y2="126"/>
+          <!-- prioritized bars ascending -->
+          <rect x="48" y="96" width="24" height="18"/>
+          <rect x="108" y="78" width="24" height="36"/>
+          <rect x="168" y="52" width="24" height="62" stroke="#FFB703"/>
+          <rect x="228" y="88" width="24" height="26"/>
+        </g>
+        <circle cx="180" cy="44" r="3.5" fill="#FFB703"/>
+        <g class="nlabel"><text x="150" y="38" fill="#B85C00">PRIORIDAD</text><text x="44" y="139">AHORA</text><text x="164" y="139">SIGUIENTE</text><text x="230" y="139">DESPUÉS</text></g>
+      </svg>
+      <div class="figcap">FIG. 10 — DIRECCIÓN DE PRODUCTO</div>
+    </div>
+  </div>
+
+  <!-- 05 · EVOLUCIÓN CONTINUA : mini bucle uso → feedback → mejora (eco del anillo) -->
+  <div class="svc">
+    <div class="idx">05</div>
+    <div>
+      <h3>Operación, soporte y evolución continua</h3>
+      <div class="prob">EL PROBLEMA · El software que no evoluciona, muere.</div>
+      <p>Mantenemos tu plataforma en producción, resolvemos incidencias y la mejoramos cada mes a partir del feedback real de tus usuarios. Con trazabilidad completa del trabajo realizado.</p>
+    </div>
+    <div class="figwrap">
+      <svg width="320" height="150" viewBox="0 0 320 150">
+        <g fill="none" stroke="#16181D" stroke-width="1.5">
+          <circle cx="160" cy="75" r="46"/>
+          <circle cx="160" cy="29" r="8" stroke="#FFB703"/>  <!-- top node -->
+          <circle cx="200" cy="98" r="8"/>
+          <circle cx="120" cy="98" r="8"/>
+        </g>
+        <!-- ambre progress arc -->
+        <path d="M160 29 A46 46 0 0 1 200 98" fill="none" stroke="#FFB703" stroke-width="2.5"/>
+        <g class="nlabel" text-anchor="middle"><text x="160" y="17">USO</text><text x="228" y="102">FEEDBACK</text><text x="92" y="102">MEJORA</text></g>
+      </svg>
+      <div class="figcap">FIG. 11 — EVOLUCIÓN CONTINUA</div>
+    </div>
+  </div>
+
+</section>
+
+<section class="wrap ideal">
+  <div class="sec-idx" style="color:rgba(247,247,244,.6)"><span class="n" style="color:var(--ambre)">B</span>&nbsp;/&nbsp;¿ENCAJAMOS?</div>
+  <h2 style="margin-top:14px">¿Encajamos?</h2>
+  <p>Trabajamos con negocios sólidos cuya operativa ha crecido más rápido que sus sistemas: empresas familiares y pymes consolidadas, negocios de nicho B2B y compañías que quieren incorporar IA con retorno real. El requisito más importante no es el sector ni el tamaño: es la voluntad de construir una relación de largo plazo.</p>
+  <div style="margin-top:24px"><span class="reuse">REUSE · FinalCTA debajo</span></div>
+</section>
+
+<div class="note" style="color:var(--ambre);border-color:var(--ambre)">Estas figuras son un punto de partida coherente. Iteración prevista: las afinarás una a una (etiquetas, énfasis, animación de entrada). El spec las define como ServiceFig(variant) para que cambiar una no toque las demás.</div>
+
+</body>
+</html>

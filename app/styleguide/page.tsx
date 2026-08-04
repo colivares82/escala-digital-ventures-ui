@@ -6,13 +6,17 @@ import { ContactForm } from '@/components/contact-form'
 import { ExecutionPipelineFig } from '@/components/execution-pipeline-fig'
 import { ExecutionPractices } from '@/components/execution-practices'
 import { FinalCTA } from '@/components/final-cta'
+import { IdealClientNote } from '@/components/ideal-client-note'
 import { PageHeader } from '@/components/page-header'
 import { Readout } from '@/components/readout'
 import { SectionIndex } from '@/components/section-index'
+import { ServiceFig } from '@/components/service-fig'
+import { ServiceRow } from '@/components/service-row'
 import { SystemDiagram } from '@/components/system-diagram'
 import { clients } from '@/content/es/clients'
 import { homeContent } from '@/content/es/home'
 import { methodContent } from '@/content/es/method'
+import { servicesContent } from '@/content/es/services'
 
 export const metadata: Metadata = {
   title: 'Style guide | Escala Digital Ventures',
@@ -226,6 +230,70 @@ export default function StyleGuidePage() {
           lead={methodContent.aiBuild.lead}
           points={methodContent.aiBuild.points}
           diagram={methodContent.aiBuild.diagram}
+        />
+      </section>
+
+      {/* ── Section 07: Phase 2.2 components (SPEC-P2.2 AC-8/AC-9) ── */}
+      <section aria-label="Componentes Fase 2.2" style={{ borderTop: '2px solid var(--ambre)' }}>
+        <div className="page-shell" style={{ paddingBlock: '3rem' }}>
+          <SectionIndex index="07" label="COMPONENTES FASE 2.2" />
+          <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.65rem', letterSpacing: '0.1em', color: 'var(--mar)', marginBottom: '2rem' }}>
+            ServiceFig (5 variantes) · ServiceRow (1 muestra) · IdealClientNote — SPEC-P2.2 AC-9.
+          </p>
+
+          {/* ServiceFig family — all five variants together for visual QA of coherence (AC-4) */}
+          <h2 style={{ fontFamily: 'var(--font-archivo)', fontWeight: 600, fontSize: '1.25rem', marginBottom: '1.5rem' }}>
+            ServiceFig — familia de cinco variantes
+          </h2>
+          <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.62rem', color: 'var(--mar)', marginBottom: '2rem' }}>
+            DRAFT VISUAL — iterated per service (PLAN 2.2). Cambiar una variante no afecta a las demás. AC-5.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
+            {servicesContent.services.map((svc) => (
+              <div key={svc.index} style={{ border: '1px solid var(--line)', padding: '1.5rem' }}>
+                <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.6rem', color: 'var(--mar)', marginBottom: '1rem', letterSpacing: '0.06em' }}>
+                  {svc.index} — {svc.figVariant.toUpperCase()}
+                </p>
+                <ServiceFig
+                  variant={svc.figVariant}
+                  labels={svc.figLabels}
+                  caption={svc.figCaption}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* ServiceRow — one sample (service 01) */}
+          <h2 style={{ fontFamily: 'var(--font-archivo)', fontWeight: 600, fontSize: '1.25rem', marginBottom: '1.5rem' }}>
+            ServiceRow — muestra (servicio 01)
+          </h2>
+          <div style={{ marginBottom: '4rem' }}>
+            <ServiceRow
+              index={servicesContent.services[0]!.index}
+              title={servicesContent.services[0]!.title}
+              problem={servicesContent.services[0]!.problem}
+              problemPrefix={servicesContent.pageHeader.problemPrefix}
+              deliverable={servicesContent.services[0]!.deliverable}
+              isLast
+              fig={
+                <ServiceFig
+                  variant={servicesContent.services[0]!.figVariant}
+                  labels={servicesContent.services[0]!.figLabels}
+                  caption={servicesContent.services[0]!.figCaption}
+                />
+              }
+            />
+          </div>
+        </div>
+
+        {/* IdealClientNote — abisal section sample */}
+        <IdealClientNote
+          eyebrow={servicesContent.idealClient.eyebrow}
+          sectionIndex="B"
+          title={servicesContent.idealClient.title}
+          body={servicesContent.idealClient.body}
+          cta={servicesContent.idealClient.cta}
+          ctaHref="#contacto"
         />
       </section>
     </main>

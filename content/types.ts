@@ -32,9 +32,49 @@ export interface HomePageDictionary {
   readonly [key: string]: unknown
 }
 
-/** Phase 1 stub — Phase 2 will add full content. */
+/**
+ * Phase 2.2 — full /que-hacemos content. Spec: SPEC-P2.2 FR-7.1
+ *
+ * Five service variants must match the ServiceFig variant union.
+ * Enforced at compile-time via `figVariant` below.
+ */
+export type ServiceFigVariant = 'capture' | 'platform' | 'ai' | 'product' | 'evolve'
+
 export interface ServicesDictionary {
   readonly meta: PageMeta
+  readonly pageHeader: {
+    readonly eyebrow: string
+    readonly title: string
+    readonly lead: string
+    /** Mono prefix for the problem line: "EL PROBLEMA" — separated so Phase 5 can translate */
+    readonly problemPrefix: string
+  }
+  /** Exactly 5 service entries. Length enforced in tests/content/content-integrity.test.ts */
+  readonly services: ReadonlyArray<{
+    readonly index: string
+    readonly title: string
+    readonly problem: string
+    readonly deliverable: string
+    readonly figVariant: ServiceFigVariant
+    /** Labels passed to ServiceFig for the variant's SVG nodes. */
+    readonly figLabels: ReadonlyArray<string>
+    /** Caption displayed below the figure: "FIG. XX — NAME" */
+    readonly figCaption: string
+  }>
+  readonly idealClient: {
+    readonly eyebrow: string
+    readonly title: string
+    readonly body: string
+    readonly cta: string
+  }
+  readonly finalCta: {
+    readonly title: string
+    readonly body: string
+    readonly success: string
+    readonly email: string
+    readonly location: string
+    readonly languages: string
+  }
 }
 
 /** Phase 2.1 — full Cómo trabajamos content. Spec: SPEC-P2.1 FR-8.1 */

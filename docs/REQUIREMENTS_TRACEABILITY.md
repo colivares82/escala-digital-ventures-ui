@@ -73,8 +73,8 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | R-5.1e | ProofSection: MAGUPELL readouts + 2 CaseStudyCards | ✅ | `Readout` ×4, `ClientChip` ×2 |
 | R-5.1f | AllianceTeaser: H2, body, constellation diagram | ✅ | |
 | R-5.1g | FinalCTA: H2, body, ContactForm | ✅ | |
-| R-5.2 | Qué hacemos `/que-hacemos` | ⬜ | BACKLOG: PAGE-01 |
-| R-5.3 | Cómo trabajamos `/como-trabajamos` | ⬜ | BACKLOG: PAGE-02 |
+| R-5.2 | Qué hacemos `/que-hacemos` | ✅ | SPEC-P2.2 — ServiceFig (5 variants), ServiceRow, IdealClientNote. All 3 locale slugs. 366 tests. |
+| R-5.3 | Cómo trabajamos `/como-trabajamos` | ✅ | SPEC-P2.1 — PhaseCycle reuse, ExecutionPractices (5), FIG.06 provisional, AiBuildBlock. All 3 locale slugs. |
 | R-5.4 | Casos de éxito index + MAGUPELL + BioZero | ⬜ | BACKLOG: PAGE-03 |
 | R-5.5 | Modelo de alianza `/modelo-de-alianza` | ⬜ | BACKLOG: PAGE-04 |
 | R-5.6 | Sobre Escala `/sobre-escala` | ⬜ | BACKLOG: PAGE-05 |

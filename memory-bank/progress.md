@@ -77,6 +77,24 @@
 | `docs/adding-a-page.md` — A/B/C interior index convention | Complete |
 | `PLAN.md` Phase 2.1 marked ☑ | Complete |
 
+## What works ✅ — Phase 2.2 additions
+
+| Feature | Status |
+|---------|--------|
+| `/que-hacemos` at all 3 locale slugs (ES/EN/CA) | Complete |
+| `ServicesDictionary` full interface + `ServiceFigVariant` type (types.ts) | Complete |
+| `content/es/services.ts` — verbatim Libro Ch. 11/12 copy | Complete |
+| `ServiceFig` — ONE component, 5 isolated variants (FIG.07–11 DRAFT) | Complete |
+| `ServiceRow` — three-column grid, `--ambre-dk` problem line, mobile stack | Complete |
+| `IdealClientNote` — abisal band, Ch. 12 body, CTA interim `#contacto` | Complete |
+| `--ambre-dk` token (#b85c00) in `:root`; DECISIONS.md entry | Complete |
+| Header nav: "Qué hacemos" → true route `/que-hacemos` | Complete |
+| Footer nav: "Qué hacemos" → true route | Complete |
+| BEM styles + responsive + reduced-motion overrides | Complete |
+| `/styleguide` section 07: all 5 ServiceFig variants + ServiceRow + IdealClientNote | Complete |
+| 366 tests, 24 files — all passing (75 new tests added) | Complete |
+| `PLAN.md` Phase 2.2 marked ☑ | Complete |
+
 ## What's left ⬜ (ordered by PLAN phases)
 
 ### Phase 1 — i18n architecture
@@ -90,7 +108,7 @@
 | Feature | Priority | Backlog ID |
 |---------|----------|-----------|
 | ~~Cómo trabajamos `/como-trabajamos`~~ | ✅ Done | PAGE-02 |
-| Qué hacemos `/que-hacemos` | P1 | PAGE-01 |
+| ~~Qué hacemos `/que-hacemos`~~ | ✅ Done | PAGE-01 |
 | Casos de éxito index + MAGUPELL + BioZero pages | P1 | PAGE-03 |
 | Modelo de alianza `/modelo-de-alianza` | P1 | PAGE-04 |
 | Sobre Escala `/sobre-escala` | P1 | PAGE-05 |
