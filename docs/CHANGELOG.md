@@ -6,6 +6,35 @@ All notable changes, newest first.
 
 ---
 
+## [Unreleased] — Phase 2.3: /casos-de-exito + /magupell + /biozero
+
+Spec: `specs/spec-p2.3-casos-de-exito.md` (SPEC-P2.3 v1.0) · Wireframe: `specs/mockups/wireframe-p2.3-casos-de-exito.html` · Logo permission: pending (Phase 7 checklist)
+
+### Added
+- `content/data/cases.ts` — full `CaseStudy` model (mode, brand with `StaticImageData` logos, readouts, capabilities, dossier fields, per-case meta); `getCase(slug)` helper; real logo imports from `app/assets/brand/*.png` via `next/image` static import (DECISIONS.md rationale)
+- `content/types.ts` — `CasesDictionary` interface extended with pageHeader, card labels, visitLabel, capabilitiesLabel, nextLabel, backLabel
+- `content/es/cases.ts` — full ES dictionary (pageHeader "A / CASOS DE ÉXITO", card UI labels, nav labels)
+- `components/readout-strip.tsx` — adaptive-column grid (--readout-cols CSS var); 2-col for BioZero, 4-col for MAGUPELL
+- `components/dossier-field.tsx` — two-column field row (big ordinal number + ambre-dk key / body text); 1px top rules
+- `components/capability-grid.tsx` — 3-up capability grid; renders null for empty array (MAGUPELL guard); editorial guardrail: capability-framed language only
+- `components/brand-header.tsx` — client logo (next/image) + sector eyebrow + H1 title + engineering plate + visit link (new tab, noopener noreferrer); dashed placeholder box when logo is null
+- `components/case-card.tsx` — index-page card (EXPEDIENTE eyebrow, logo, name, subtitle, "ABRIR EXPEDIENTE ↗" → getPath)
+- `components/case-dossier.tsx` — single mode-aware template (data-forward: ReadoutStrip×4 + 5 fields; capability-forward: ReadoutStrip×2 + CapabilityGrid + 3 fields); next/back nav; FinalCTA reused
+- `components/pages/cases.tsx` — index compositor: PageHeader → CaseCard grid + FinalCTA; sorted by `order`; data-driven (AC-4)
+- `app/globals.css` — Phase 2.3 BEM: `.cases-index-grid`, `.case-index-card`, `.dossier-page`, `.brand-header`, `.readout-strip`, `.capability-grid`, `.capability-card`, `.dossier-field`, `.dossier-nextcase`; responsive ≤767px + ≤479px
+- `app/styleguide/page.tsx` — section 08: CaseCard grid, BrandHeader (real + placeholder), ReadoutStrip (4-col + 2-col), CapabilityGrid, DossierField samples
+- `DECISIONS.md` — logo asset location rationale (app/assets/brand/ vs public/brand/)
+- Tests: `tests/content/cases-data.test.ts` (data integrity, mode invariants, meta limits, getCase, AC-10 guardrail, AC-4 extensibility — 30 tests); `tests/components/brand-header.test.tsx` (11); `tests/components/case-card.test.tsx` (11); `tests/components/readout-strip.test.tsx` (7); `tests/components/dossier-field.test.tsx` (7); `tests/components/capability-grid.test.tsx` (7); `tests/components/case-dossier.test.tsx` (21). Total: **450 tests, all passing**.
+
+### Changed
+- `content/data/cases.ts` — extended from Phase 1 stub to full dossier model (backward-compat: `clients.ts` adapter unchanged)
+- `app/[[...path]]/page.tsx` — `generateStaticParams` +9 entries (cases × 3 + 2 details × 3); renderer for `cases` + `caseDetail`; per-case `generateMetadata` uses `CaseStudy.meta`
+- `app/sitemap.ts` — `cases`, `caseDetail/magupell`, `caseDetail/biozero` added to `BUILT_PAGES`
+- `content/es/shared.ts` — header nav "Casos de éxito" → true route `/casos-de-exito`; footer nav updated
+- `PLAN.md` — Phase 2.3 marked ☑
+
+---
+
 ## [Unreleased] — Phase 2.2: /que-hacemos
 
 Spec: `specs/spec-p2.2-que-hacemos.md` (SPEC-P2.2 v1.1) · Wireframe: `specs/mockups/wireframe-p2.2-que-hacemos-final.html`

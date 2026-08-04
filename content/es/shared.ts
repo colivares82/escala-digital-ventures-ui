@@ -18,7 +18,7 @@ export const sharedContent = {
       { label: 'Qué hacemos', href: '/que-hacemos', pageId: 'services' },
       // Built pages: true route (Phase 2.1+).
       { label: 'Cómo trabajamos', href: '/como-trabajamos', pageId: 'method' },
-      { label: 'Casos de éxito', href: '/#casos', pageId: 'cases' },
+      { label: 'Casos de éxito', href: '/casos-de-exito', pageId: 'cases' },
       { label: 'Modelo de alianza', href: '/#alianza', pageId: 'alliance' },
       { label: 'Sobre Escala', href: '/#inicio', pageId: 'about' },
     ],
@@ -38,7 +38,7 @@ export const sharedContent = {
     navigation: [
       { label: 'Qué hacemos', href: '/que-hacemos' },
       { label: 'Cómo trabajamos', href: '/como-trabajamos' },
-      { label: 'Casos de éxito', href: '/#casos' },
+      { label: 'Casos de éxito', href: '/casos-de-exito' },
       { label: 'Modelo de alianza', href: '/#alianza' },
     ],
     legal: [

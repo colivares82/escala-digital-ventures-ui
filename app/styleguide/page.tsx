@@ -1,19 +1,26 @@
 import type { Metadata } from 'next'
 import { AiBuildBlock } from '@/components/ai-build-block'
+import { BrandHeader } from '@/components/brand-header'
+import { CapabilityGrid } from '@/components/capability-grid'
+import { CaseCard } from '@/components/case-card'
 import { ClaimsMarquee } from '@/components/claims-marquee'
 import { ClientChip } from '@/components/client-chip'
 import { ContactForm } from '@/components/contact-form'
+import { DossierField } from '@/components/dossier-field'
 import { ExecutionPipelineFig } from '@/components/execution-pipeline-fig'
 import { ExecutionPractices } from '@/components/execution-practices'
 import { FinalCTA } from '@/components/final-cta'
 import { IdealClientNote } from '@/components/ideal-client-note'
 import { PageHeader } from '@/components/page-header'
 import { Readout } from '@/components/readout'
+import { ReadoutStrip } from '@/components/readout-strip'
 import { SectionIndex } from '@/components/section-index'
 import { ServiceFig } from '@/components/service-fig'
 import { ServiceRow } from '@/components/service-row'
 import { SystemDiagram } from '@/components/system-diagram'
 import { clients } from '@/content/es/clients'
+import { cases } from '@/content/data/cases'
+import { casesContent } from '@/content/es/cases'
 import { homeContent } from '@/content/es/home'
 import { methodContent } from '@/content/es/method'
 import { servicesContent } from '@/content/es/services'
@@ -295,6 +302,96 @@ export default function StyleGuidePage() {
           cta={servicesContent.idealClient.cta}
           ctaHref="#contacto"
         />
+      </section>
+
+      {/* ── Section 08: Phase 2.3 — Casos de éxito (SPEC-P2.3 AC-8) ── */}
+      <section className="styleguide__section page-shell">
+        <SectionIndex index="08" label="CASOS DE ÉXITO — EXPEDIENTE TÉCNICO" />
+
+        {/* CaseCard index grid — both cases */}
+        <h2 style={{ fontFamily: 'var(--font-archivo)', fontWeight: 600, fontSize: '1.25rem', marginBottom: '1rem' }}>
+          CaseCard — índice de expedientes
+        </h2>
+        <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.65rem', color: 'var(--mar)', marginBottom: '2rem' }}>
+          Grid 2 columnas · data-driven · añadir un 3er caso solo requiere datos
+        </p>
+        <div className="cases-index-grid" style={{ marginBottom: '4rem' }}>
+          {[...cases].sort((a, b) => a.order - b.order).map((c) => (
+            <CaseCard
+              key={c.slug}
+              caseStudy={c}
+              locale="es"
+              expedienteLabel={casesContent.card.expedienteLabel}
+              openLabel={casesContent.card.openLabel}
+            />
+          ))}
+        </div>
+
+        {/* BrandHeader — real logo (MAGUPELL) */}
+        <h2 style={{ fontFamily: 'var(--font-archivo)', fontWeight: 600, fontSize: '1.25rem', marginBottom: '1rem' }}>
+          BrandHeader — con logo real (MAGUPELL)
+        </h2>
+        <div style={{ border: '1px solid var(--line)', padding: '2rem', marginBottom: '2rem' }}>
+          <BrandHeader
+            sector={cases[0]!.sector}
+            brand={cases[0]!.brand}
+            title={cases[0]!.content.es.title}
+            plate={cases[0]!.plate}
+            visitLabel={casesContent.visitLabel}
+          />
+        </div>
+
+        {/* BrandHeader — placeholder state (null logo) */}
+        <h2 style={{ fontFamily: 'var(--font-archivo)', fontWeight: 600, fontSize: '1.25rem', marginBottom: '1rem' }}>
+          BrandHeader — estado placeholder (logo nulo)
+        </h2>
+        <div style={{ border: '1px solid var(--line)', padding: '2rem', marginBottom: '3rem' }}>
+          <BrandHeader
+            sector="EXPEDIENTE 03 · SECTOR EJEMPLO"
+            brand={{ name: 'CLIENTE FUTURO', logo: null, url: 'https://ejemplo.com' }}
+            title="Placeholder para un futuro expediente"
+            plate="FIG. EXP-03\nESCALA · 2026"
+            visitLabel={casesContent.visitLabel}
+          />
+        </div>
+
+        {/* ReadoutStrip — 4 columns (data-forward) */}
+        <h2 style={{ fontFamily: 'var(--font-archivo)', fontWeight: 600, fontSize: '1.25rem', marginBottom: '0.5rem' }}>
+          ReadoutStrip — 4 columnas (data-forward, MAGUPELL)
+        </h2>
+        <ReadoutStrip readouts={cases[0]!.readouts} />
+
+        {/* ReadoutStrip — 2 columns (capability-forward) */}
+        <h2 style={{ fontFamily: 'var(--font-archivo)', fontWeight: 600, fontSize: '1.25rem', marginBottom: '0.5rem', marginTop: '3rem' }}>
+          ReadoutStrip — 2 columnas (capability-forward, BioZero)
+        </h2>
+        <ReadoutStrip readouts={cases[1]!.readouts} />
+
+        {/* CapabilityGrid */}
+        <h2 style={{ fontFamily: 'var(--font-archivo)', fontWeight: 600, fontSize: '1.25rem', marginBottom: '0.5rem', marginTop: '3rem' }}>
+          CapabilityGrid — BioZero (3 capacidades)
+        </h2>
+        {cases[1]!.capabilities && (
+          <CapabilityGrid
+            sectionLabel={casesContent.capabilitiesLabel}
+            capabilities={cases[1]!.capabilities}
+          />
+        )}
+
+        {/* DossierField samples */}
+        <h2 style={{ fontFamily: 'var(--font-archivo)', fontWeight: 600, fontSize: '1.25rem', marginBottom: '0.5rem', marginTop: '3rem' }}>
+          DossierField — campos de expediente
+        </h2>
+        <div style={{ marginBottom: '4rem' }}>
+          {cases[0]!.fields.map((field, idx) => (
+            <DossierField
+              key={field.key}
+              num={String(idx + 1).padStart(2, '0')}
+              fieldKey={field.key}
+              body={field.body}
+            />
+          ))}
+        </div>
       </section>
     </main>
   )
