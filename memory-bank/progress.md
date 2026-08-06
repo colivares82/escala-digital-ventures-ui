@@ -143,6 +143,28 @@
 | 518 tests, 35 files — all passing (68 new tests added) | Complete |
 | `PLAN.md` Phase 2.4 marked ☑ | Complete |
 
+## What works ✅ — Phase 2.5 additions
+
+| Feature | Status |
+|---------|--------|
+| `/sobre-escala` at all 3 locale slugs (ES/EN/CA) | Complete |
+| `ExpertiseFigVariant` type + `AboutDictionary` full interface (types.ts) | Complete |
+| `content/es/about.ts` — full ES copy; Libro Ch. 1/3/4; anonymized per Ch. 19 | Complete |
+| `GridBackground` — reusable abisal grid overlay primitive (cross-cutting) | Complete |
+| `CeremonialHeader` — oversized H1, mono kicker, brand-document tone | Complete |
+| `DnaBlock` — 2-col mission/vision + ambre pull-quote | Complete |
+| `ValuesList` — 5 numbered editorial rows with top rules | Complete |
+| `ExpertiseGrid` — 3×2 abisal grid + 6 micro-fig SVG variants + tone divider | Complete |
+| `Manifesto` — 10 strata plates, ambre bar scaleY reveal, staggered 60ms/plate | Complete |
+| `AboutPage` compositor | Complete |
+| `generateStaticParams` +3; `BUILT_PAGES` + render branch | Complete |
+| Sitemap +1 page × 3 locales | Complete |
+| Nav + footer link "Sobre Escala" → `/sobre-escala` (was `/#inicio`) | Complete |
+| Phase 2.5 BEM CSS + responsive ≤767/479px + reduced-motion | Complete |
+| `/styleguide` section 10 (GridBackground options + CeremonialHeader + ValuesList + ExpertiseGrid + Manifesto) | Complete |
+| 596 tests, 42 files — all passing (78 new tests added) | Complete |
+| `PLAN.md` Phase 2.5 marked ☑ | Complete |
+
 ## What's left ⬜ (ordered by PLAN phases)
 
 ### Phase 1 — i18n architecture
@@ -159,7 +181,7 @@
 | ~~Qué hacemos `/que-hacemos`~~ | ✅ Done | PAGE-01 |
 | ~~Casos de éxito index + MAGUPELL + BioZero pages~~ | ✅ Done | PAGE-03 |
 | ~~Modelo de alianza `/modelo-de-alianza`~~ | ✅ Done | PAGE-04 |
-| Sobre Escala `/sobre-escala` | P1 | PAGE-05 |
+| ~~Sobre Escala `/sobre-escala`~~ | ✅ Done | PAGE-05 |
 
 ### Phase 3 — Contact end-to-end
 | Feature | Priority | Backlog ID |

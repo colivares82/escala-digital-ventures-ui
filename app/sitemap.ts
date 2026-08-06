@@ -28,8 +28,8 @@ const BUILT_PAGES: BuiltPageEntry[] = [
   { page: 'caseDetail', params: { slug: 'magupell' } }, // Phase 2.3
   { page: 'caseDetail', params: { slug: 'biozero' } },  // Phase 2.3
   { page: 'alliance' },                                  // Phase 2.4 — SPEC-P2.4
+  { page: 'about' },                                     // Phase 2.5 — SPEC-P2.5
   // Phase 2 — uncomment as pages are built:
-  // { page: 'about' },
   // { page: 'contact' },
   // { page: 'legal' },
   // { page: 'privacy' },

@@ -6,6 +6,42 @@ All notable changes, newest first.
 
 ---
 
+## [Unreleased] — Phase 2.5: /sobre-escala (SPEC-P2.5)
+
+Spec: `specs/spec-p2.5-sobre-escala.md` · Wireframe: `specs/mockups/wireframe-p2.5-sobre-escala.html` (approved)
+
+### Added
+- `components/grid-background.tsx` — **new cross-cutting primitive**. Reusable abisal engineering-grid overlay (absolutely positioned, `pointer-events:none`). Props: `cellSize` (default `3rem`), `lineOpacity` (default `0.05`), `radialGradient` (default `true`). Documented in `/styleguide` section 10. Existing abisal sections left as-is with `// TODO: migrate` (FR-6.3 option; see DECISIONS.md).
+- `components/ceremonial-header.tsx` — oversized H1 (`clamp(3rem,7vw,6rem)`, Archivo 600), mono kicker, generous padding. Deliberately NOT `PageHeader` — this page is a brand/identity document.
+- `components/dna-block.tsx` — 2-col mission/vision (Libro Ch. 1) + ambre-bordered pull-quote ("¿dentro de diez años?").
+- `components/values-list.tsx` — five numbered editorial rows (3-col grid, 1px top rules).
+- `components/expertise-grid.tsx` — 3×2 abisal grid + 6 inline micro-fig SVG variants (`fullstack/hub/bars/nodes/signal/insertion`) + tone-shift divider. Uses `GridBackground`. Anonymized per Libro Ch. 19.
+- `components/manifesto.tsx` — 10 strata plates (ghost number / belief / meta); ambre left bar reveals `scaleY 0→1` on scroll entry via `IntersectionObserver`, staggered 60ms/plate. Reduced-motion: bars full static. Uses `GridBackground`.
+- `components/pages/about.tsx` — page compositor (A→E + FinalCTA).
+- `content/types.ts` — `AboutDictionary` full interface (replaces stub) + `ExpertiseFigVariant` type.
+- `content/es/about.ts` — full ES content (Libro Ch. 1/3/4); anonymized (Ch. 19: no employer names); MIT cert allowed; no code-ownership wording; 10 beliefs verbatim from Ch. 3.
+- `tests/components/grid-background.test.tsx` — 7 tests
+- `tests/components/ceremonial-header.test.tsx` — 6 tests
+- `tests/components/values-list.test.tsx` — 6 tests
+- `tests/components/expertise-grid.test.tsx` — 10 tests (includes anonymization guard)
+- `tests/components/manifesto.test.tsx` — 12 tests (colivares plain-text guard, stagger delay, IO reveal)
+- `tests/content/about-content.test.ts` — 32 tests (values=5, areas=6, beliefs=10, figVariants, meta limits, ownership guard, Russian guard, nav routing)
+- `/styleguide` section 10: GridBackground options demo + CeremonialHeader + ValuesList + ExpertiseGrid + Manifesto
+
+### Changed
+- `content/es/shared.ts` — nav "Sobre Escala" href: `/#inicio` → `/sobre-escala` (AC-10)
+- `app/[[...path]]/page.tsx` — `generateStaticParams` +3 entries; `BUILT_PAGES` adds `'about'`; `page === 'about'` render branch
+- `app/sitemap.ts` — `{ page: 'about' }` added
+- `app/globals.css` — Phase 2.5 BEM block (`.grid-bg`, `.grid-bg--radial`, `.ceremonial-header`, `.dna-block`, `.values-list`, `.expertise-section`, `.expertise-grid`, `.manifesto` + responsive + reduced-motion)
+- `app/styleguide/page.tsx` — section 10 added; new component imports
+- `DECISIONS.md` — Phase 2.5 section (grid opacity 0.05, TODO-not-migrate, IO test behavior)
+- `PLAN.md` — Phase 2.5 marked ☑
+- Memory Bank (`activeContext.md`, `progress.md`) updated
+
+**Result:** 596 tests (42 files) · TS strict clean · build clean · all SPEC-P2.5 ACs met.
+
+---
+
 ## [Unreleased] — SPEC-FIX-01: IP / ownership correction
 
 Spec: `specs/spec-fix-ownership-ip.md` · Sources of truth promoted to Libro v2.2 + Spec v1.1.1.

@@ -1,62 +1,47 @@
 # Active Context
 
-_Last updated: August 2026 (SPEC-FIX-01 completed; Phase 2.4 complete)_
+_Last updated: August 2026 (Phase 2.5 complete — SPEC-P2.5 /sobre-escala)_
 
 ## Current state
 
-**SPEC-FIX-01 complete.** IP / ownership wording corrected across all built work. 523 tests, all passing. Build clean, TypeScript strict. Sources of truth promoted to Libro v2.2 + spec v1.1.1. Sitewide ownership-wording grep = 0 violations. Guard active in CI.
+**Phase 2.5 complete.** `/sobre-escala` page built and passing. 596 tests, all green. Build clean, TypeScript strict clean. 7 new components + 1 cross-cutting primitive (`GridBackground`). All SPEC-P2.5 acceptance criteria met. Spec filed at `specs/spec-p2.5-sobre-escala.md`.
 
-## What was just done (SPEC-FIX-01 — IP / ownership correction)
-
-1. **Docs swapped:**
-   - `docs/el-libro-de-escala-v2.2.md` added (replaces v2.1, deleted)
-   - `docs/escala-web-content-spec-v1.1.1.md` added (replaces v1.1, deleted)
-   - `specs/spec-fix-ownership-ip.md` filed in repo
-   - `PLAN.md` + `memory-bank/projectbrief.md` source-of-truth refs → v2.2/v1.1.1
-
-2. **Copy fixed (1 hotspot):**
-   - `content/es/services.ts` service[1] deliverable: "propietario de … código" replaced with §3.1 canonical wording — "licencia de uso indefinida sobre tu plataforma … La propiedad intelectual y el código son de Escala."
-
-3. **Guard installed:**
-   - `tests/content/ownership-guard.test.ts` — 5 tests; scans `content/`, `components/`, `app/` for 4 FR-4 patterns; runs in `npm test`; AC-5 verified.
-
-4. **Standing rule:**
-   - `.clinerules/project-ownership-rule.md` — project-local rule (survives standards-package build); forbidden phrases + canonical wording for all future pages.
-
-5. **Docs updated:** CHANGELOG, DECISIONS.md (pending item marked resolved), PLAN.md refs.
-
-## What was previously done (Phase 2.4 — SPEC-P2.4)
+## What was just done (Phase 2.5 — SPEC-P2.5)
 
 1. **Spec filed:**
-   - `specs/spec-p2.4-modelo-de-alianza.md` — implementation spec + wireframe at `specs/mockups/wireframe-p2.4-modelo-de-alianza-final.html` (approved before build)
+   - `specs/spec-p2.5-sobre-escala.md` — implementation spec + approved wireframe at `specs/mockups/wireframe-p2.5-sobre-escala.html`.
 
 2. **Type contracts:**
-   - `content/types.ts` — `AllianceDictionary` full interface (was stub); +`AllianceSeat`, `AlliancePlane`, `AllianceCommitment` types
+   - `content/types.ts` — `AboutDictionary` full interface (was stub); + `ExpertiseFigVariant` type (6 variants)
 
 3. **Content layer:**
-   - `content/es/alliance.ts` — full ES copy (Libro Ch. 11–13); commitment 01 = "A MEDIDA" corrected §0 framing; no code-ownership wording
-   - `content/es/shared.ts` — nav + footer "Modelo de alianza" → `/modelo-de-alianza` (was `/#alianza`)
+   - `content/es/about.ts` — full ES copy (Libro Ch. 1/3/4, anonymized per Ch. 19); MIT cert named; no code-ownership wording
+   - `content/es/shared.ts` — nav "Sobre Escala" → `/sobre-escala` true route (was `/#inicio`)
 
-4. **New components (3):**
-   - `components/alliance-constellation.tsx` — parameterized `size: 'compact' | 'large'`; regular pentagon geometry (−90°, every 72°); occupied = solid + ambre pulse; free = dashed + reduced opacity; draw-on-scroll via `[data-visible="true"]` ancestor + `--ac-delay` CSS stagger; reduced-motion static
-   - `components/alliance-planes.tsx` — three columns (abisal); middle ambre highlight; PLANO labels + Archivo H3 + body + depth mono; mobile stack
-   - `components/commitments-band.tsx` — 5-cell horizontal band (paper); mono number (mar) + mono tag (ambre-dk AA) + body + ambre tick; mobile stack
+4. **New components (7 + 1 primitive):**
+   - `components/grid-background.tsx` — reusable abisal engineering-grid overlay; cross-cutting primitive for all dark sections. Props: `cellSize`, `lineOpacity`, `radialGradient`. Documented in `/styleguide` section 10.
+   - `components/ceremonial-header.tsx` — oversized H1 (clamp 3rem–6rem), mono kicker, brand-document tone; deliberately NOT `PageHeader`
+   - `components/dna-block.tsx` — 2-col mission/vision + ambre-bordered pull-quote
+   - `components/values-list.tsx` — 5 numbered editorial rows with top rules
+   - `components/expertise-grid.tsx` — 3×2 abisal grid, 6 micro-fig SVG variants (fullstack/hub/bars/nodes/signal/insertion), tone-shift divider; includes `GridBackground`
+   - `components/manifesto.tsx` — 10 strata plates; ambre left bar scaleY 0→1 on scroll entry (IntersectionObserver, staggered 60ms/plate); reduced-motion: bars full static; includes `GridBackground`
+   - `components/pages/about.tsx` — page compositor
 
-5. **Page assembly + routing:**
-   - `components/pages/alliance.tsx` — PageHeader → WhyFive+Constellation → AlliancePlanes → CommitmentsBand → FinalCTA
-   - `generateStaticParams` +3 entries; `alliance` added to `BUILT_PAGES`; render branch
-   - `app/sitemap.ts` — alliance × 3 locales
-   - `components/final-cta.tsx` — prop widened from `typeof homeContent.finalCta` to `FinalCtaContent` interface (enables any page finalCta)
+5. **Page routing + wiring:**
+   - `generateStaticParams` +3 entries (sobre-escala, en/about-escala, ca/sobre-escala)
+   - `BUILT_PAGES` includes 'about'; render branch added
+   - `app/sitemap.ts` — about × 3 locales
+   - BEM CSS block in `globals.css` (all Phase 2.5 components + responsive ≤767/479px + reduced-motion)
 
-6. **CSS + styleguide:**
-   - `app/globals.css` — full Phase 2.4 BEM block; constellation animation (`ac-*` classes, `[data-visible]` trigger, `prefers-reduced-motion`); responsive ≤767px
-   - `app/styleguide/page.tsx` — section 09: constellation compact + large, AlliancePlanes, CommitmentsBand
-
-7. **Tests + docs:**
-   - 68 new tests across 4 test files/extensions (518 total, 35 files)
-   - `PLAN.md` — Phase 2.4 marked ☑
+6. **Tests + docs:**
+   - 78 new tests across 5 test files (596 total, 42 files)
+   - `PLAN.md` — Phase 2.5 marked ☑
+   - `DECISIONS.md` — Phase 2.5 section added (grid opacity, TODO-not-migrate, IO test behavior)
    - `docs/CHANGELOG.md` updated
-   - `DECISIONS.md` — constellation extraction, FinalCTA typing, ownership wording status
+
+## What was previously done (SPEC-FIX-01 + Phase 2.4 — SPEC-P2.4)
+
+See previous activeContext archived in CHANGELOG.md.
 
 ## Known issues / open items
 
@@ -65,11 +50,13 @@ _Last updated: August 2026 (SPEC-FIX-01 completed; Phase 2.4 complete)_
 - **FIG.06 provisional:** `ExecutionPipelineFig` internals are still provisional.
 - **EN/CA translations:** all locales serve ES fallback (Phase 5).
 - **Logo-display permission (BioZero):** pending Carlos confirmation before go-live (Phase 7 checklist). FR-3.6.
+- **GridBackground migration:** 5 existing abisal sections still hand-roll the grid pattern; TODO comments in `globals.css`. Low-risk future refactor.
 
-## What comes next (Phase 2.5)
+## What comes next (Phase 3)
 
-**[PAGE-05]** `/sobre-escala` — DNA, values, manifesto (10 beliefs), anonymized experience trajectory, colivares.com text mention (Libro Ch. 1–4).
-- Spec from Claude first (English), wireframe if needed, then build.
+**[PAGE-06]** `/contacto` — dedicated contact page reusing `ContactForm`.
+**[CONTACT-01]** Contact form API + email provider (backend connection).
+- Email address: `hola@escaladigitalventures.com` — confirm final address before connecting.
 
 ## Active decisions open
 

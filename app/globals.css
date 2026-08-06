@@ -22,7 +22,7 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────── */
-/* DESIGN TOKENS  (spec §3.3)                                                   */
+/* DESIGN TOKENS  (spec §3.3)                                                  */
 /* Four named palette values + derived neutrals. Never use hex values inline.  */
 /* ─────────────────────────────────────────────────────────────────────────── */
 :root {
@@ -3237,5 +3237,515 @@ h1, h2, h3, h4, p {
   .commitments-band__cell {
     min-height: auto;
     border-bottom: 0.5px solid rgb(22 24 29 / 0.14);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* PHASE 2.5 — /sobre-escala (SPEC-P2.5)                                      */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── GridBackground — cross-cutting abisal engineering-grid overlay ── */
+/*
+ * Reusable primitive: absolutely positioned, pointer-events:none.
+ * Parent section MUST be position:relative. Content siblings MUST be
+ * position:relative to stack above this element in the same context.
+ * Spec: SPEC-P2.5 FR-6
+ *
+ * Props via CSS custom properties:
+ *   --gb-cell     : grid cell size (default 3rem)
+ *   --gb-opacity  : grid line opacity (default 0.05)
+ *
+ * NOTE: existing abisal sections hand-roll this pattern.
+ * // TODO: migrate existing sections to <GridBackground /> in a future pass.
+ */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgb(247 247 244 / var(--gb-opacity, 0.05)) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(247 247 244 / var(--gb-opacity, 0.05)) 1px, transparent 1px);
+  background-size:
+    var(--gb-cell, 3rem) var(--gb-cell, 3rem),
+    var(--gb-cell, 3rem) var(--gb-cell, 3rem);
+}
+
+.grid-bg--radial {
+  background-image:
+    linear-gradient(rgb(247 247 244 / var(--gb-opacity, 0.05)) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(247 247 244 / var(--gb-opacity, 0.05)) 1px, transparent 1px),
+    radial-gradient(ellipse at 50% 40%, var(--abisal) 0%, var(--abisal-gradient-end) 100%);
+  background-size:
+    var(--gb-cell, 3rem) var(--gb-cell, 3rem),
+    var(--gb-cell, 3rem) var(--gb-cell, 3rem),
+    auto;
+}
+
+/* ── A · CeremonialHeader (paper) — SPEC-P2.5 FR-2 ── */
+
+.ceremonial-header {
+  background: var(--paper);
+  padding: 6rem 0 5rem;
+}
+
+.ceremonial-header__inner {
+  /* inherits page-shell padding */
+}
+
+.ceremonial-header__kicker {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--ambre-dk);
+  text-transform: uppercase;
+  margin-bottom: 1.375rem;
+}
+
+.ceremonial-header__h1 {
+  font-family: var(--font-archivo);
+  font-weight: 600;
+  font-size: clamp(3rem, 7vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  max-width: 18ch;
+  margin: 0 0 1.5rem;
+  /* Ensure no overflow at 360px — clamp handles it */
+  overflow-wrap: break-word;
+}
+
+.ceremonial-header__sub {
+  font-size: 1.375rem;
+  line-height: 1.5;
+  max-width: 60ch;
+  color: var(--ink);
+  opacity: 0.85;
+}
+
+/* ── B · DnaBlock (paper) — SPEC-P2.5 FR-3 ── */
+
+.dna-block {
+  background: var(--paper);
+  padding: 4rem 0 5rem;
+}
+
+.dna-block__inner {
+  /* page-shell */
+}
+
+.dna-block__eyebrow {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  color: var(--ambre-dk);
+  margin-bottom: 1.5rem;
+}
+
+.dna-block__eyebrow .n {
+  color: var(--ambre-dk);
+}
+
+.dna-block__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+
+.dna-block__text {
+  /* left column */
+}
+
+.dna-block__para {
+  line-height: 1.7;
+  color: var(--ink);
+  opacity: 0.88;
+  margin-bottom: 0.875rem;
+}
+
+.dna-block__para strong {
+  font-weight: 600;
+  opacity: 1;
+}
+
+.dna-block__quote {
+  font-family: var(--font-archivo);
+  font-weight: 500;
+  font-size: 1.9rem;
+  line-height: 1.25;
+  color: var(--ink);
+  border-left: 2px solid var(--ambre);
+  padding-left: 1.5rem;
+  margin: 0;
+  /* quotes are semantic — no redundant quotation marks from CSS */
+  quotes: none;
+}
+
+/* ── C · ValuesList (paper) — SPEC-P2.5 FR-4 ── */
+
+.values-list {
+  background: var(--paper);
+  padding: 0 0 5rem;
+}
+
+.values-list__inner {
+  /* page-shell */
+}
+
+.values-list__eyebrow {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  color: var(--ambre-dk);
+  margin-bottom: 0.25rem;
+}
+
+.values-list__rows {
+  margin-top: 1rem;
+}
+
+.values-list__row {
+  display: grid;
+  grid-template-columns: 60px 260px 1fr;
+  gap: 1.5rem;
+  padding: 1.375rem 0;
+  border-top: 1px solid var(--line);
+  align-items: baseline;
+}
+
+.values-list__n {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.75rem;
+  color: var(--mar);
+  letter-spacing: 0.04em;
+}
+
+.values-list__title {
+  font-family: var(--font-archivo);
+  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 0;
+}
+
+.values-list__body {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--ink);
+  opacity: 0.85;
+  margin: 0;
+}
+
+/* ── D · ExpertiseGrid (abisal) — SPEC-P2.5 FR-5 ── */
+
+.expertise-section {
+  position: relative; /* anchor for GridBackground */
+  background-color: var(--abisal);
+  padding: 0 0 5rem;
+}
+
+/* Content layer sits above GridBackground (z-index: 0) */
+.expertise-section__inner {
+  position: relative;
+  z-index: 1;
+  padding-top: 4rem;
+}
+
+/* Tone-shift divider */
+.expertise-section__divider {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.3em;
+  color: rgb(247 247 244 / 0.5);
+  text-align: center;
+  padding: 1rem 0 2.5rem;
+}
+
+.expertise-section__eyebrow {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  color: var(--ambre);
+  margin-bottom: 0.75rem;
+}
+
+.expertise-section__heading {
+  font-family: var(--font-archivo);
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.08;
+  color: var(--paper);
+  margin: 0 0 1rem;
+}
+
+.expertise-section__lead {
+  font-size: 1.1875rem;
+  line-height: 1.6;
+  color: rgb(247 247 244 / 0.85);
+  max-width: 68ch;
+  margin-bottom: 2rem;
+}
+
+/* 3×2 grid — gap IS the 1px separator (bg colour shows through) */
+.expertise-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background-color: rgb(247 247 244 / 0.15);
+  border: 1px solid rgb(247 247 244 / 0.15);
+  margin-top: 1.5rem;
+}
+
+.expertise-grid__area {
+  background: var(--abisal);
+  padding: 1.625rem 1.5rem;
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+}
+
+.expertise-grid__area-label {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  color: var(--ambre);
+}
+
+.expertise-grid__area-title {
+  font-family: var(--font-archivo);
+  font-weight: 600;
+  font-size: 1.15rem;
+  line-height: 1.2;
+  color: var(--paper);
+  margin: 0.75rem 0 0.5rem;
+}
+
+.expertise-grid__area-body {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgb(247 247 244 / 0.8);
+  margin: 0;
+  flex: 1;
+}
+
+.expertise-grid__area-fig {
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+.expertise-grid__fig-svg {
+  display: block;
+}
+
+/* ── E · Manifesto (abisal) — SPEC-P2.5 FR-7 ── */
+
+.manifesto {
+  position: relative; /* anchor for GridBackground */
+  background-color: var(--abisal);
+}
+
+/* Content layer sits above GridBackground */
+.manifesto__inner {
+  position: relative;
+  z-index: 1;
+  padding-block: 5rem;
+}
+
+.manifesto__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.manifesto__eyebrow {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  color: var(--ambre);
+  margin-bottom: 0.75rem;
+}
+
+.manifesto__heading {
+  font-family: var(--font-archivo);
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.08;
+  color: var(--paper);
+  margin: 0;
+}
+
+.manifesto__lead {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  color: rgb(247 247 244 / 0.5);
+  text-align: right;
+}
+
+/* Stacked strata plates */
+.manifesto__plates {
+  margin-top: 1.25rem;
+}
+
+.manifesto__plate {
+  display: grid;
+  grid-template-columns: 120px 1fr 60px;
+  align-items: center;
+  gap: 1.75rem;
+  border: 1px solid rgb(247 247 244 / 0.18);
+  border-bottom: none;
+  padding: 1.5rem 1.75rem;
+  position: relative;
+  /* Hover background tint (wireframe) + staggered scroll entrance */
+  transition:
+    background var(--motion-fast) ease,
+    opacity 0.4s ease-out var(--man-delay, 0ms),
+    transform 0.4s ease-out var(--man-delay, 0ms);
+  /* Scroll entrance start state: hidden, slight upward offset */
+  opacity: 0;
+  transform: translateY(0.4rem);
+}
+
+.manifesto__plate:last-child {
+  border-bottom: 1px solid rgb(247 247 244 / 0.18);
+}
+
+.manifesto__plate:hover {
+  background: rgb(255 183 3 / 0.04);
+}
+
+/* Plate entrance: reveal once when .manifesto__plates enters viewport */
+[data-visible="true"] .manifesto__plate {
+  opacity: 1;
+  transform: none;
+}
+
+/*
+ * Ambre left bar — grows on plate HOVER (wireframe definition).
+ * Transition timing matches wireframe `.plate .bar { transition: transform .3s }`.
+ * NOT scroll-driven — the bar is interactive feedback, not a reveal.
+ */
+.manifesto__bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--ambre);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.3s;
+}
+
+.manifesto__plate:hover .manifesto__bar {
+  transform: scaleY(1);
+}
+
+/* Ghost number */
+.manifesto__num {
+  font-family: var(--font-archivo);
+  font-weight: 600;
+  font-size: 2.6rem;
+  line-height: 1;
+  color: rgb(247 247 244 / 0.25);
+  /* Purely decorative — real label is the belief text */
+}
+
+/* Belief paragraph */
+.manifesto__belief {
+  font-size: 1.05rem;
+  line-height: 1.4;
+  color: var(--paper);
+  margin: 0;
+}
+
+/* Right meta */
+.manifesto__meta {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  color: var(--ambre);
+  text-align: right;
+}
+
+/* colivares.com attribution line — plain text, NOT a link */
+.manifesto__colv {
+  font-family: var(--font-ibm-plex-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  color: rgb(247 247 244 / 0.7);
+  border-top: 1px solid rgb(247 247 244 / 0.15);
+  padding-top: 1.375rem;
+  margin-top: 1.875rem;
+}
+
+/* ── Phase 2.5 responsive (≤767px) ── */
+@media (max-width: 767px) {
+  /* DnaBlock: stack columns */
+  .dna-block__grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  /* ValuesList: compact rows */
+  .values-list__row {
+    grid-template-columns: 40px 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.5rem 1rem;
+  }
+
+  .values-list__body {
+    grid-column: 2;
+  }
+
+  /* ExpertiseGrid: 2 columns on tablet, 1 on mobile */
+  .expertise-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Manifesto plates: 2-col (num + text), hide meta */
+  .manifesto__plate {
+    grid-template-columns: 60px 1fr;
+  }
+
+  .manifesto__meta {
+    display: none;
+  }
+}
+
+@media (max-width: 479px) {
+  /* Smallest screens: single-column expertise grid */
+  .expertise-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Phase 2.5 reduced-motion ── */
+@media (prefers-reduced-motion: reduce) {
+  /*
+   * Manifesto plates: visible immediately (no entrance fade/slide).
+   * Component also sets data-visible="true" immediately for reduced-motion,
+   * so the [data-visible="true"] rule also applies; belt-and-suspenders here.
+   */
+  .manifesto__plate,
+  [data-visible="true"] .manifesto__plate {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /*
+   * Bars: shown full (scaleY 1) as static content — hover unavailable.
+   * No transition (hover :hover still scaleY(1) so no flash).
+   */
+  .manifesto__bar {
+    transform: scaleY(1) !important;
+    transition: none !important;
   }
 }
