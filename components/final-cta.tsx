@@ -5,13 +5,15 @@
  * LEFT: eyebrow + H2 + lead + affinity filter + meta
  * RIGHT: FICHA DE CONTACTO formcard + trust line
  *
- * Single source: ContactSection (mode="section") reads from contactContent.
- * Zero per-page configuration needed — just <FinalCTA />.
+ * Single source: ContactSection (mode="section") reads from dict.contact + dict.shared.
+ * dict + locale must be passed from the page compositor (SPEC-P5 FR-5).
  */
 import { ContactSection } from '@/components/contact-section'
+import type { Dictionary } from '@/lib/i18n/dictionary'
+import type { Locale } from '@/lib/i18n/types'
 
-export function FinalCTA() {
-  return <ContactSection mode="section" />
+export function FinalCTA({ dict, locale }: { dict: Dictionary; locale: Locale }) {
+  return <ContactSection dict={dict} locale={locale} mode="section" />
 }
 
 /**

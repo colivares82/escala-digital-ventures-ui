@@ -5,14 +5,18 @@
  *   - FinalCTA (home / all interior pages) → variant="section"
  *   - /contacto dossier form            → variant="dossier" (shows header + ref line)
  *
- * All copy from sharedContent.contactForm — zero literals in this file.
+ * copy comes from the locale-aware shared.contactForm dictionary (SPEC-P5 FR-5).
  * Spec: SPEC-P2.6 FR-5.1
  */
 'use client'
 
-import { sharedContent } from '@/content/es/shared'
+import type { sharedContent } from '@/content/es/shared'
+
+type ContactFormCopy = typeof sharedContent.contactForm
 
 export interface ContactSuccessProps {
+  /** Locale-aware contactForm copy from shared dictionary. */
+  copy: ContactFormCopy
   /** Layout variant. 'dossier' shows the MENSAJE ENVIADO header bar. */
   variant?: 'section' | 'dossier'
   /** Optional ref text for dossier variant — e.g. "ESCALA · REF. CONTACTO" */
@@ -22,12 +26,11 @@ export interface ContactSuccessProps {
 }
 
 export function ContactSuccess({
+  copy,
   variant = 'section',
   dossierRef,
   onResend,
 }: ContactSuccessProps) {
-  const copy = sharedContent.contactForm
-
   return (
     <div
       className={`contact-success contact-success--${variant}`}

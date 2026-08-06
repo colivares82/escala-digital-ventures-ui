@@ -52,7 +52,7 @@ export function CasesPage({ dict, locale }: CasesPageProps) {
       </section>
 
       {/* FinalCTA — reused (SPEC-P2.3 FR-5) */}
-      <FinalCTA />
+      <FinalCTA dict={dict} locale={locale} />
     </>
   )
 }

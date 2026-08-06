@@ -216,11 +216,15 @@
 | Cookieless analytics | — | 🚫 Dropped (Carlos decision) |
 | 404 page + favicon + OG images | P2 | ✅ Done (SPEC-P4) |
 
-### Phase 5 — EN & CA content
-| Feature | Priority | Backlog ID |
-|---------|----------|-----------|
-| Full EN + CA dictionaries (recrafted, not translated) | P2 | — |
-| hreflang QA across all pages | P2 | I18N-01 |
+### Phase 5 — EN & CA content ☑ COMPLETE
+| Feature | Priority | Status |
+|---------|----------|--------|
+| Full EN + CA dictionaries (recrafted, not translated) | P2 | ✅ Done (SPEC-P5) |
+| Coverage guard (no silent fallback) | P2 | ✅ Done (SPEC-P5) |
+| Localized 404 | P2 | ✅ Done (SPEC-P5) |
+| hreflang QA across all pages | P2 | ✅ Done (SPEC-P5) |
+| `docs/i18n-glossary.md` + `docs/i18n-qa.md` | P2 | ✅ Done (SPEC-P5) |
+| Carlos register review (AC-9) | P0 | ⬜ Pending Carlos |
 
 ### Phase 6 — Infra (blocked: GCP not ready)
 | Feature | Priority | Backlog ID |

@@ -55,9 +55,9 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    // lang="es" is the default locale (ES content is the only populated locale in Phase 1).
-    // Phase 6 (middleware) will dynamically set the correct lang per request for EN/CA.
-    // Interior pages additionally set lang on <main> for EN/CA (see [[...path]]/page.tsx).
+    // lang="es" is the default locale (ES is served at root with no prefix).
+    // Phase 5: interior pages set lang on <main> for EN/CA (see [[...path]]/page.tsx).
+    // Phase 6 (middleware) will dynamically set the correct lang on <html> per request.
     <html
       className={`${archivo.variable} ${instrumentSans.variable} ${ibmPlexMono.variable} bg-background`}
       lang="es"

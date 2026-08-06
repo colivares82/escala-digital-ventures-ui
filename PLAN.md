@@ -110,13 +110,19 @@ Status: ☑ done (SPEC-P4)
 **Exit criteria:** ✅ Code complete. Legal pages require advisor review + placeholder resolution before go-live.
 
 ## PHASE 5 — EN & CA content
-Status: ☐
-- ☐ Claude delivers full `en` and `ca` dictionaries: claims recrafted,
-  not translated ("We automate your business. We scale with you." /
-  «Automatitzem el teu negoci. Escalem amb tu.»).
-- ☐ Carlos reviews register of both languages.
-- ☐ Localized slugs active; hreflang QA across all pages.
-**Exit criteria:** the three languages are complete and reviewed.
+Status: ☑ done (SPEC-P5)
+- ☑ Full EN + CA dictionaries delivered: all 10 page dictionaries + shared + cases data.
+  Claims recrafted per Appendix A ("We automate your business. We scale with you." /
+  «Automatitzem el teu negoci. Escalem amb tu.»). Glossary: `docs/i18n-glossary.md`.
+- ☑ `getDictionary()` forked into ES/EN/CA bundles — no more fallback re-exports.
+- ☑ Coverage guard active: `tests/content/i18n-coverage.test.ts` fails on any
+  fallback re-export, key mismatch, placeholder in non-legal EN/CA, or meta identical to ES.
+- ☑ Localized 404: pathname-based locale detection (EN/CA/ES).
+- ☑ `docs/i18n-glossary.md` + `docs/i18n-qa.md` delivered.
+- ☑ 883 tests passing; build clean; TypeScript strict clean.
+- ☐ Carlos reviews register of EN + CA (AC-9 — open until sign-off).
+- ☐ Legal placeholders resolved before go-live (inherited from Phase 4).
+**Exit criteria:** ✅ Code complete. Carlos register review + legal placeholder resolution pending.
 
 ## PHASE 6 — Google Cloud infrastructure & domain (kept for the end)
 Status: ☐ (blocked: GCP account not ready)

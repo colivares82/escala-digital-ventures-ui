@@ -4,23 +4,43 @@
  * Uses the abisal surface + GridBackground + kit micro-diagram (dashed path
  * INICIO → lost node "?") per the approved wireframe.
  *
- * Locale: defaults to ES — not-found.tsx cannot resolve locale in App Router
- * (no params available). Copy lives in content/es/shared.ts notFound block.
+ * Locale: detected from pathname prefix (/en → EN, /ca → CA, else ES).
+ * This is a client component so it can read window.location.pathname.
+ * Falls back to ES if pathname is unavailable (SSR).
  *
  * noindex: Next.js automatically adds noindex to not-found pages (AC-6).
  * Reduced-motion: all elements are static (no animation classes). (AC-6)
  * AA contrast: ambre on abisal passes AA for large text; paper on abisal passes AA.
  *
- * Spec: SPEC-P4 FR-5
+ * Spec: SPEC-P4 FR-5 · SPEC-P5 FR-6.1
  */
 
-import Link from 'next/link'
-import { GridBackground } from '@/components/grid-background'
-import { sharedContent } from '@/content/es/shared'
+'use client'
 
-const { notFound: nf } = sharedContent
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { GridBackground } from '@/components/grid-background'
+import { sharedContent as sharedEs } from '@/content/es/shared'
+import { sharedContent as sharedEn } from '@/content/en/shared'
+import { sharedContent as sharedCa } from '@/content/ca/shared'
+
+function getNotFoundContent(pathname: string | null) {
+  if (pathname?.startsWith('/en')) return sharedEn.notFound
+  if (pathname?.startsWith('/ca')) return sharedCa.notFound
+  return sharedEs.notFound
+}
+
+function getHomeHref(pathname: string | null): string {
+  if (pathname?.startsWith('/en')) return '/en'
+  if (pathname?.startsWith('/ca')) return '/ca'
+  return '/'
+}
 
 export default function NotFound() {
+  const pathname = usePathname()
+  const nf = getNotFoundContent(pathname)
+  const homeHref = getHomeHref(pathname)
+
   return (
     <div className="not-found">
       <GridBackground />
@@ -75,7 +95,7 @@ export default function NotFound() {
         </svg>
 
         <p className="not-found__body">{nf.body}</p>
-        <Link className="not-found__cta" href="/">
+        <Link className="not-found__cta" href={homeHref}>
           {nf.ctaLabel}
         </Link>
       </div>

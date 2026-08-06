@@ -3,6 +3,7 @@
  * Sections: A·PageHeader (paper) → B·PhaseCycle (abisal) → C·ExecutionPractices (paper)
  *            → D·ExecutionPipelineFig (abisal) → E·AiBuildBlock (abisal) → FinalCTA.
  * All copy from content dictionary via props (zero literals in JSX).
+ * Phases shared from dict.home.framework.phases — no duplication (FR-3.2).
  * Spec: SPEC-P2.1
  */
 
@@ -12,13 +13,14 @@ import { ExecutionPractices } from '@/components/execution-practices'
 import { FinalCTA } from '@/components/final-cta'
 import { PageHeader } from '@/components/page-header'
 import { PhaseCycle } from '@/components/phase-cycle'
-import { homeContent } from '@/content/es/home'
+import { getPath } from '@/lib/i18n/routes'
 import type { Dictionary } from '@/lib/i18n/dictionary'
+import type { Locale } from '@/lib/i18n/types'
 
-export function MethodPage({ dict }: { dict: Dictionary }) {
+export function MethodPage({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   const { method } = dict
-  // Phases shared from homeContent.framework.phases — no duplication (FR-3.2)
-  const phases = homeContent.framework.phases
+  // Phases shared from dict.home.framework.phases — no duplication (FR-3.2)
+  const phases = dict.home.framework.phases
 
   return (
     <>
@@ -75,8 +77,7 @@ export function MethodPage({ dict }: { dict: Dictionary }) {
         diagram={method.aiBuild.diagram}
       />
 
-      {/* FinalCTA — reused, embedded ContactForm (Phase 3 will switch to /contacto link) */}
-      <FinalCTA />
+      <FinalCTA dict={dict} locale={locale} />
     </>
   )
 }

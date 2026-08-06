@@ -1,4 +1,8 @@
-import { homeContent } from '@/content/es/home'
+/**
+ * Home page section components.
+ * All labels, diagrams, and claims come from the locale-aware dictionary via props.
+ * No direct ES content imports — SPEC-P5 FR-5.
+ */
 import { ClaimsMarquee } from '@/components/claims-marquee'
 import { ClientChip } from '@/components/client-chip'
 import { FinalCTA } from '@/components/final-cta'
@@ -8,16 +12,27 @@ import { SectionIndex } from '@/components/section-index'
 import { SystemDiagram } from '@/components/system-diagram'
 import { Reveal, WordReveal } from '@/components/motion-runtime'
 import { ANCHORS, ROUTES } from '@/lib/routes'
+import { getPath } from '@/lib/i18n/routes'
+import type { homeContent as homeContentType } from '@/content/es/home'
+import type { Dictionary } from '@/lib/i18n/dictionary'
+import type { Locale } from '@/lib/i18n/types'
+
+type HomeLabels = typeof homeContentType.labels
+type HomeDiagrams = typeof homeContentType.diagrams
 
 export function Hero({
   content,
   claims,
+  labels,
+  diagrams,
+  claimsAriaLabel,
 }: {
-  content: typeof homeContent.hero
-  claims: typeof homeContent.claims
+  content: typeof homeContentType.hero
+  claims: typeof homeContentType.claims
+  labels: HomeLabels
+  diagrams: HomeDiagrams
+  claimsAriaLabel: string
 }) {
-  const { labels, diagrams } = homeContent
-
   return (
     <>
       <section className="hero dark-surface" id="inicio">
@@ -46,18 +61,20 @@ export function Hero({
         </div>
       </section>
 
-      <ClaimsMarquee claims={claims} />
+      <ClaimsMarquee claims={claims} ariaLabel={claimsAriaLabel} />
     </>
   )
 }
 
 export function ProblemSection({
   content,
+  labels,
+  diagrams,
 }: {
-  content: typeof homeContent.problem
+  content: typeof homeContentType.problem
+  labels: HomeLabels
+  diagrams: HomeDiagrams
 }) {
-  const { labels, diagrams } = homeContent
-
   return (
     <section className="section section--light" id="problema">
       <div className="page-shell">
@@ -98,11 +115,13 @@ export function ProblemSection({
 
 export function ServicesPreview({
   content,
+  labels,
+  servicesHref,
 }: {
-  content: typeof homeContent.services
+  content: typeof homeContentType.services
+  labels: HomeLabels
+  servicesHref: string
 }) {
-  const { labels } = homeContent
-
   return (
     <section className="section section--light services" id="que-hacemos">
       <div className="page-shell">
@@ -110,7 +129,7 @@ export function ServicesPreview({
 
         <div className="split-heading">
           <WordReveal text={content.title} />
-          <a className="text-link text-link--dark" href={ROUTES.SERVICES}>
+          <a className="text-link text-link--dark" href={servicesHref}>
             {content.action}
             <span aria-hidden="true">↗</span>
           </a>
@@ -133,11 +152,13 @@ export function ServicesPreview({
 
 export function FrameworkSection({
   content,
+  labels,
+  methodHref,
 }: {
-  content: typeof homeContent.framework
+  content: typeof homeContentType.framework
+  labels: HomeLabels
+  methodHref: string
 }) {
-  const { labels } = homeContent
-
   return (
     <section
       className="section section--dark dark-surface framework-cycle"
@@ -151,6 +172,7 @@ export function FrameworkSection({
         lead={labels.frameworkLead}
         ariaLabel={labels.frameworkAria}
         phasePrefix={labels.phasePrefix}
+        methodHref={methodHref}
       />
     </section>
   )
@@ -158,11 +180,13 @@ export function FrameworkSection({
 
 export function ProofSection({
   content,
+  labels,
+  diagrams,
 }: {
-  content: typeof homeContent.proof
+  content: typeof homeContentType.proof
+  labels: HomeLabels
+  diagrams: HomeDiagrams
 }) {
-  const { labels, diagrams } = homeContent
-
   return (
     <section className="section section--light proof" id="casos">
       <div className="page-shell">
@@ -202,11 +226,15 @@ export function ProofSection({
 
 export function AllianceTeaser({
   content,
+  labels,
+  diagrams,
+  allianceHref,
 }: {
-  content: typeof homeContent.alliance
+  content: typeof homeContentType.alliance
+  labels: HomeLabels
+  diagrams: HomeDiagrams
+  allianceHref: string
 }) {
-  const { labels, diagrams } = homeContent
-
   return (
     <section
       className="section section--dark alliance dark-surface"
@@ -219,7 +247,7 @@ export function AllianceTeaser({
           <WordReveal text={content.title} />
           <div>
             <p className="lead-copy">{content.body}</p>
-            <a className="primary-link" href={ROUTES.ALLIANCE}>
+            <a className="primary-link" href={allianceHref}>
               {content.action}
               <span aria-hidden="true">↗</span>
             </a>
