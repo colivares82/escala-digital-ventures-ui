@@ -339,12 +339,96 @@ export interface ContactDictionary {
   readonly trustLine: string
 }
 
-/** Phase 1 stub — Phase 2 will add full content. */
-export interface LegalDictionary {
-  readonly meta: PageMeta
+// ---------------------------------------------------------------------------
+// Phase 4 — Legal pages (SPEC-P4 FR-7.1)
+// ---------------------------------------------------------------------------
+
+/**
+ * A key-value row for registry/identification data in legal sections.
+ * Rendered in mono font with a mar-colored key column.
+ */
+export interface LegalKvRow {
+  readonly key: string
+  readonly value: string
 }
 
-/** Phase 1 stub — Phase 2 will add full content. */
+/**
+ * A single section in a legal document.
+ * `id` is the stable anchor id (e.g. "titular", "objeto").
+ * `index` is the display ordinal (e.g. "01").
+ * `name` is the short mono nav label (e.g. "TITULAR").
+ * `title` is the H2 heading.
+ * `body` is the prose paragraph(s) — may contain {{PLACEHOLDER}} tokens.
+ * `kv` is an optional array of key-value rows (for registry data in section 01).
+ */
+export interface LegalSection {
+  readonly id: string
+  readonly index: string
+  readonly name: string
+  readonly title: string
+  readonly body: string
+  readonly kv?: ReadonlyArray<LegalKvRow>
+}
+
+/**
+ * Phase 4 — full /aviso-legal content. Spec: SPEC-P4 FR-2, FR-7.1
+ * 5 sections per LSSI-CE requirements.
+ * Unconfirmed data uses {{PLACEHOLDER}} tokens — see FR-4.
+ */
+export interface LegalDictionary {
+  readonly meta: PageMeta
+  readonly header: {
+    /** Mono eyebrow: "· AVISO LEGAL" */
+    readonly eyebrow: string
+    /** Page H1 */
+    readonly h1: string
+    /** Label prefix: "ÚLTIMA ACTUALIZACIÓN ·" */
+    readonly updatedLabel: string
+    /** Date value — use {{FECHA_ACTUALIZACION}} until confirmed */
+    readonly updatedDate: string
+  }
+  /** Label for the sticky anchor nav: "EN ESTA PÁGINA" */
+  readonly anchorLabel: string
+  /** Exactly 5 sections. Length enforced in tests. */
+  readonly sections: ReadonlyArray<LegalSection>
+}
+
+/**
+ * Phase 4 — full /privacidad content. Spec: SPEC-P4 FR-3, FR-7.1
+ * 6 sections per RGPD requirements.
+ * Unconfirmed data uses {{PLACEHOLDER}} tokens — see FR-4.
+ */
 export interface PrivacyDictionary {
   readonly meta: PageMeta
+  readonly header: {
+    /** Mono eyebrow: "· PRIVACIDAD" */
+    readonly eyebrow: string
+    /** Page H1 */
+    readonly h1: string
+    /** Label prefix: "ÚLTIMA ACTUALIZACIÓN ·" */
+    readonly updatedLabel: string
+    /** Date value — use {{FECHA_ACTUALIZACION}} until confirmed */
+    readonly updatedDate: string
+  }
+  /** Label for the sticky anchor nav: "EN ESTA PÁGINA" */
+  readonly anchorLabel: string
+  /** Exactly 6 sections. Length enforced in tests. */
+  readonly sections: ReadonlyArray<LegalSection>
+}
+
+/**
+ * Phase 4 — 404 not-found copy block. Spec: SPEC-P4 FR-5.
+ * Lives in shared content so it can be accessed without locale resolution.
+ */
+export interface NotFoundContent {
+  /** Mono code line: "ERROR 404 · RUTA NO ENCONTRADA" */
+  readonly code: string
+  /** Page H1: "Fuera del sistema." */
+  readonly h1: string
+  /** Body paragraph */
+  readonly body: string
+  /** CTA button label: "VOLVER AL INICIO ↗" */
+  readonly ctaLabel: string
+  /** Aria-label for the kit micro-diagram SVG */
+  readonly diagramAria: string
 }

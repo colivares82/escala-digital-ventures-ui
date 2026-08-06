@@ -2,7 +2,7 @@
 
 > Cross-linked docs: [ARCHITECTURE](./ARCHITECTURE.md) · [BACKLOG](./BACKLOG.md) · [CHANGELOG](./CHANGELOG.md)
 
-Source: `docs/escala-web-content-spec-v1.1.md` (version 1.1, August 2026). Every requirement from the spec is listed here with its implementation status. Phase 1 completed March 2026 (see CHANGELOG.md).
+Source: `docs/escala-web-content-spec-v1.1.1.md` (version 1.1.1, August 2026). Every requirement from the spec is listed here with its implementation status.
 
 Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 
@@ -30,7 +30,7 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | R-2.1 | 9 approved key claims — use verbatim in ES | ✅ | Claims 1–4 in `sharedContent.claims` marquee; remainder in page copy |
 | R-2.2 | MAGUPELL proof points: 100+ reqs, 200+ tests, live Jul 2026, invoicing | ✅ | Readouts in `homeContent.proof.figures` |
 | R-2.3 | BioZero: v1 delivered, AI vision, clinical records, gamification | ✅ | In `content/es/clients.ts` |
-| R-2.4 | 20+ years experience, MIT certification (anonymized) | ⬜ | Referenced in spec §5.6; Sobre Escala page not yet built |
+| R-2.4 | 20+ years experience, MIT certification (anonymized) | ✅ | Referenced in `/sobre-escala` (Phase 2.5) — anonymized per Libro Ch. 19 |
 
 ## §3 — Visual identity
 
@@ -53,12 +53,12 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 
 | ID | Requirement | Status | Notes |
 |----|-------------|--------|-------|
-| R-4.1 | All pages with localized routes per table | 🚧 | Route map complete (10 pages × 3 locales); only home×3 rendered in Phase 1. Interior pages (Phase 2) use the same architecture. |
+| R-4.1 | All pages with localized routes per table | ✅ | Route map complete (10 pages × 3 locales); all pages rendered Phase 1–4. |
 | R-4.2 | Locale segment routing, single slug map in `lib/i18n/routes.ts` | ✅ | `lib/i18n/routes.ts` — full `ROUTE_MAP` per spec §4.1; `getPath`/`resolvePath`/`getAlternates`; tested (61 tests) |
 | R-4.3 | `hreflang` alternates + `x-default` on every page | ✅ | `generateMetadata` emits canonical + hreflang es/en/ca + x-default→ES on every rendered page; sitemap includes `alternates.languages` |
 | R-4.4 | Locale switcher preserves current page | ✅ | `LocaleSwitcher` built via `getAlternates(currentPage, params)`; `aria-current`; keyboard operable (SPEC-P1 FR-5) |
 | R-4.5 | Header nav: 5 items + Hablemos button + locale switcher | ✅ | `sharedContent.header.nav` (5 items) + contact CTA + ES/EN/CA |
-| R-4.6 | Footer: claim, nav, legal links, company line, colivares.com (no link) | ✅ | `sharedContent.footer` |
+| R-4.6 | Footer: claim, nav, legal links, company line, colivares.com (no link) | ✅ | `sharedContent.footer` — legal links now resolve to real pages (Phase 4) |
 | R-4.7 | All page copy in typed dictionaries; no hardcoded strings | ✅ | All copy in `content/es/`; no inline strings in components |
 
 ## §5 — Page-by-page
@@ -75,12 +75,13 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | R-5.1g | FinalCTA: H2, body, ContactForm | ✅ | |
 | R-5.2 | Qué hacemos `/que-hacemos` | ✅ | SPEC-P2.2 — ServiceFig (5 variants), ServiceRow, IdealClientNote. All 3 locale slugs. 366 tests. |
 | R-5.3 | Cómo trabajamos `/como-trabajamos` | ✅ | SPEC-P2.1 — PhaseCycle reuse, ExecutionPractices (5), FIG.06 provisional, AiBuildBlock. All 3 locale slugs. |
-| R-5.4 | Casos de éxito index + MAGUPELL + BioZero | ⬜ | BACKLOG: PAGE-03 |
-| R-5.5 | Modelo de alianza `/modelo-de-alianza` | ⬜ | BACKLOG: PAGE-04 |
-| R-5.6 | Sobre Escala `/sobre-escala` | ⬜ | BACKLOG: PAGE-05 |
-| R-5.7 | Contacto `/contacto` — form + API | ⬜ | BACKLOG: CONTACT-01 + PAGE-06 |
-| R-5.8 | Aviso legal, Privacidad | ⬜ | BACKLOG: PAGE-07 |
-| R-5.8a | Cookieless analytics (no cookie banner needed) | ⬜ | BACKLOG: ANALYTICS-01 |
+| R-5.4 | Casos de éxito index + MAGUPELL + BioZero | ✅ | SPEC-P2.3 — CaseCard, BrandHeader, ReadoutStrip, DossierField, CapabilityGrid, CaseDossier. All 3 locale slugs. |
+| R-5.5 | Modelo de alianza `/modelo-de-alianza` | ✅ | SPEC-P2.4 — AllianceConstellation, AlliancePlanes, CommitmentsBand. All 3 locale slugs. |
+| R-5.6 | Sobre Escala `/sobre-escala` | ✅ | SPEC-P2.5 — CeremonialHeader, DnaBlock, ValuesList, ExpertiseGrid, Manifesto. All 3 locale slugs. |
+| R-5.7 | Contacto `/contacto` — form + API | ✅ | SPEC-P2.6 — ContactForm (dossier variant), ContactSuccess, API route, rate limit, honeypot. All 3 locale slugs. |
+| R-5.8 | Aviso legal `/aviso-legal`, Privacidad `/privacidad` | ✅ | SPEC-P4 — LegalDoc + AnchorNav, 5/6 LSSI-CE/RGPD sections, placeholders for unconfirmed data. All 3 locale slugs. |
+| R-5.8a | Cookieless analytics (no cookie banner needed) | 🚫 | SPEC-P4 §0: Carlos decided no analytics. No banner needed. ANALYTICS-01 dropped. |
+| R-5.9 | 404 page — identity-branded | ✅ | SPEC-P4 FR-5 — `app/not-found.tsx`: abisal + GridBackground + kit micro-diagram + «Fuera del sistema.» |
 
 ## §6 — Design system
 
@@ -92,7 +93,7 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | R-6.4 | `Readout` — instrument-style figure with sparkline | ✅ | `readout.tsx` |
 | R-6.5 | `CaseStudyCard` — eyebrow, title, impact, readout row | ✅ | `client-chip.tsx` (simplified v1 version) |
 | R-6.6 | `SiteHeader` + `SiteFooter` | ✅ | `site-chrome.tsx` |
-| R-6.7 | `/styleguide` route (noindex) | ✅ | `app/styleguide/page.tsx`; Phase 1 added section 05 "Plantilla de página" — `PageHeader` both surfaces + FinalCTA (AC-8) |
+| R-6.7 | `/styleguide` route (noindex) | ✅ | `app/styleguide/page.tsx`; Phase 4 added section 11 "Legal Doc" — LegalDoc + AnchorNav |
 
 ## §7 — i18n content workflow
 
@@ -101,7 +102,7 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | R-7.1 | ES is master; EN/CA are professional-register translations | ✅ | ES master + all stubs complete; `content/en/*` and `content/ca/*` re-export ES with `TODO(P5)` markers |
 | R-7.2 | Carlos reviews all EN/CA copy before launch | ⬜ | Pre-condition for Phase 5 translations |
 | R-7.3 | Localized metadata per page (title ≤60, desc ≤155) | ✅ | `generateMetadata` per page in catch-all; limits enforced by `tests/lib/i18n/meta.test.ts` (42 tests) |
-| R-7.4 | `sitemap.xml` with all alternates | ✅ | `app/sitemap.ts` — built pages × locales with `alternates.languages`; extends as Phase 2 adds pages |
+| R-7.4 | `sitemap.xml` with all alternates | ✅ | `app/sitemap.ts` — all built pages × locales with `alternates.languages`; legal pages included (Phase 4) |
 | R-7.5 | `robots.txt` | ✅ | `app/robots.ts` — allow `/`; disallow `/styleguide`; references sitemap |
 
 ## §8 — SEO, analytics, performance
@@ -109,8 +110,9 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | ID | Requirement | Status | Notes |
 |----|-------------|--------|-------|
 | R-8.1 | SSG for every page | ✅ | `dynamicParams = false`; all rendered routes are `○ (Static)` in build output |
-| R-8.2 | OG image with identity | ⬜ | BACKLOG: SEO-01 |
-| R-8.3 | Structured data: `Organization` + `BreadcrumbList` | ⬜ | BACKLOG: SEO-01 |
-| R-8.4 | Cookieless analytics | ⬜ | BACKLOG: ANALYTICS-01 |
-| R-8.5 | Lighthouse ≥ 95 all categories | ⬜ | BACKLOG: PERF-01 |
+| R-8.2 | OG image with identity | ✅ | SPEC-P4 FR-6.2 — `app/opengraph-image.tsx`: abisal background, grid motif, claim in Archivo, ambre accent (1200×630). `metadataBase` set in `layout.tsx`. |
+| R-8.3 | Structured data: `Organization` + `BreadcrumbList` | ⬜ | BACKLOG: SEO-01 (Phase 7) |
+| R-8.4 | Cookieless analytics | 🚫 | Dropped by Carlos decision (SPEC-P4 §0). No analytics, no banner. |
+| R-8.5 | Lighthouse ≥ 95 all categories | ⬜ | BACKLOG: PERF-01 (Phase 7) |
 | R-8.6 | Fonts self-hosted, zero third-party scripts | ✅ | `next/font` for all 3 typefaces |
+| R-8.7 | Favicon set | ✅ | SPEC-P4 FR-6.1 — `app/icon.svg` (squares logomark, draft — Carlos to approve before launch) |

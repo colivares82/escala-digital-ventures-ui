@@ -35,6 +35,14 @@ export const metadata: Metadata = {
   },
   description:
     'Estudio de producto y tecnología que automatiza operaciones y construye plataformas digitales.',
+  /**
+   * metadataBase is required for Next.js to resolve absolute OG image URLs.
+   * Falls back to localhost in dev; NEXT_PUBLIC_SITE_URL is set in production.
+   * Spec: SPEC-P4 FR-6.2
+   */
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
+  ),
 }
 
 export const viewport: Viewport = {

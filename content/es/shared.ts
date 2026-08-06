@@ -90,6 +90,17 @@ export const sharedContent = {
       consent: 'Necesitamos tu consentimiento para responderte.',
     },
   },
+  /**
+   * Phase 4 — 404 not-found copy. Spec: SPEC-P4 FR-5.
+   * Defaults to ES; not-found.tsx cannot resolve locale in App Router.
+   */
+  notFound: {
+    code: 'ERROR 404 · RUTA NO ENCONTRADA',
+    h1: 'Fuera del sistema.',
+    body: 'La página que buscas no existe o se ha movido. Volvamos a un lugar conocido.',
+    ctaLabel: 'VOLVER AL INICIO ↗',
+    diagramAria: 'Diagrama de ruta interrumpida: nodo INICIO conectado por línea discontinua a un nodo perdido marcado con interrogación',
+  },
 } as const
 
 export type SharedContent = typeof sharedContent

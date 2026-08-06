@@ -98,14 +98,16 @@ Status: ☑ (folded into Phase 2.6)
 **Exit criteria:** ✅ Code complete. One env-flip from live delivery (Phase 6).
 
 ## PHASE 4 — Legal & analytics
-Status: ☐
-- ☐ `/aviso-legal` (LSSI-CE: company data, CIF, registry — Carlos
-  provides; Claude drafts).
-- ☐ `/privacidad` (RGPD: controller, purpose, legal basis, retention,
-  rights).
-- ☐ Cookieless analytics (no banner needed).
-- ☐ 404 page with the identity, favicon, OG images.
-**Exit criteria:** legally publishable in Spain.
+Status: ☑ done (SPEC-P4)
+- ☑ `/aviso-legal` (LSSI-CE: 5 sections, placeholders for unconfirmed data — Carlos to fill before go-live).
+- ☑ `/privacidad` (RGPD: 6 sections, no-tracking-cookies statement, AEPD reference).
+- ☑ Cookieless analytics — **DROPPED** (Carlos's decision: no analytics, no banner needed).
+- ☑ 404 page with the identity (abisal + GridBackground + kit micro-diagram + «Fuera del sistema.»).
+- ☑ Favicon set (`app/icon.svg` — draft, Carlos to approve before launch).
+- ☑ OG image (`app/opengraph-image.tsx` — 1200×630, abisal + claim + ambre).
+- ☑ Placeholder guard (`lib/placeholders.ts` + tests).
+- ☑ Footer legal links + RGPD consent link now resolve to real pages.
+**Exit criteria:** ✅ Code complete. Legal pages require advisor review + placeholder resolution before go-live.
 
 ## PHASE 5 — EN & CA content
 Status: ☐

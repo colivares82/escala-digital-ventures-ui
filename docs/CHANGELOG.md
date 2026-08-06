@@ -6,6 +6,46 @@ All notable changes, newest first.
 
 ---
 
+## [Unreleased] — Phase 4: Legal pages, 404, favicon & OG (SPEC-P4)
+
+Spec: `specs/spec-p4-legal-analytics.md` · Wireframe: `specs/mockups/wireframe-p4-legal-final.html` (approved)
+
+**LEGAL DISCLAIMER:** Legal copy drafted from MAGUPELL contract + LSSI-CE/RGPD. Not legal advice. A qualified advisor must review before go-live.
+
+### Added
+- `content/es/legal.ts` — full LSSI-CE aviso legal (5 sections: Titular, Objeto, Propiedad intelectual, Responsabilidad, Legislación). Unconfirmed data uses `{{PLACEHOLDER}}` tokens. No physical address. IP section states code/contents are Escala's (consistent with SPEC-FIX-01).
+- `content/es/privacy.ts` — full RGPD privacy policy (6 sections: Responsable, Datos y finalidad, Base legal, Conservación, Destinatarios, Tus derechos). Explicit no-tracking-cookies statement. AEPD reference.
+- `content/es/shared.ts` — `notFound` block added (code, h1, body, ctaLabel, diagramAria).
+- `content/types.ts` — `LegalDictionary` + `PrivacyDictionary` full interfaces (replaced Phase 1 stubs). New: `LegalSection`, `LegalKvRow`, `NotFoundContent` types.
+- `components/anchor-nav.tsx` — sticky side navigation for legal pages. IntersectionObserver active-section highlight (debounced to avoid thrash). Keyboard operable. `'use client'`.
+- `components/legal-doc.tsx` — shared two-column layout (sticky 230px anchor + ≤70ch reading column). Renders `{{PLACEHOLDER}}` tokens with ambre highlight (dev warning, FR-4.2). Mobile: top índice list replaces sticky aside.
+- `components/pages/legal.tsx` — /aviso-legal page compositor.
+- `components/pages/privacy.tsx` — /privacidad page compositor.
+- `app/not-found.tsx` — identity-branded 404: abisal + GridBackground + kit micro-diagram (dashed path INICIO → ambre "?" node) + «Fuera del sistema.» + home CTA. Reduced-motion static. noindex (Next.js auto).
+- `app/icon.svg` — squares logomark favicon (draft — Carlos to approve before launch). Brand tokens: abisal bg, paper/ambre squares.
+- `app/opengraph-image.tsx` — generic site-wide OG image (1200×630). Abisal background, grid motif, claim in Archivo, ambre accent. Edge runtime.
+- `app/layout.tsx` — `metadataBase` added (resolves OG image URLs; falls back to localhost in dev).
+- `lib/placeholders.ts` — `collectPlaceholders()` + `hasPlaceholder()` utilities for detecting unresolved `{{...}}` tokens.
+- `tests/content/legal-content.test.ts` — 23 tests: 5/6 sections, required IDs, meta limits, no-cookies statement, AEPD reference, placeholder detection, address guard.
+- `tests/components/legal-doc.test.tsx` — 9 tests: H1, eyebrow, sections, KV rows, placeholder highlight, mobile nav.
+- `tests/components/anchor-nav.test.tsx` — 8 tests: aria-label, links, active state, click behavior.
+- `tests/components/not-found.test.tsx` — 5 tests: error code, H1, body, CTA href, SVG aria-label.
+
+### Changed
+- `app/[[...path]]/page.tsx` — `LegalPage` + `PrivacyPage` imports; `BUILT_PAGES` + `generateStaticParams` + render branches for 'legal' + 'privacy' × 3 locales each.
+- `app/sitemap.ts` — `{ page: 'legal' }` + `{ page: 'privacy' }` added (indexable per FR-6.3).
+- `app/globals.css` — Phase 4 CSS blocks added: `.legal-doc` two-column layout, `.anchor-nav` sticky nav, `.legal-doc__placeholder` ambre highlight, `.not-found` identity-branded 404.
+- `app/styleguide/page.tsx` — section 11 "LEGAL DOC — FASE 4" added: AnchorNav demo + LegalDoc (/aviso-legal) + LegalDoc (/privacidad).
+- `docs/REQUIREMENTS_TRACEABILITY.md` — R-4.1, R-4.6, R-5.4–R-5.9, R-8.2, R-8.4, R-8.7 updated to ✅/🚫.
+
+### Decisions
+- **No analytics** (Carlos's choice) → no third-party cookies → no cookie banner. ANALYTICS-01 dropped.
+- **No physical address** (Carlos's choice). LSSI-CE satisfied with company name + NIF + email.
+- **Favicon artwork is a draft** — Carlos to review and replace with final approved logomark before launch.
+- **Placeholders not publishable** — `{{FECHA_ACTUALIZACION}}`, `{{REGISTRO_MERCANTIL}}`, `{{NIF_B88767520}}`, `{{JURISDICCION}}`, `{{REGION_EU_GOOGLE_CLOUD}}` must be resolved before go-live.
+
+---
+
 ## [Unreleased] — Phase 2.6 + 2.7: /contacto + contact backend + link audit (SPEC-P2.6)
 
 Spec: `specs/spec-p2.6-contacto-y-link-audit.md` · Wireframe: `specs/mockups/wireframe-p2.6-contacto-final.html` (approved)

@@ -13,7 +13,9 @@ import { MotionRuntime } from '@/components/motion-runtime'
 import { AboutPage } from '@/components/pages/about'
 import { AlliancePage } from '@/components/pages/alliance'
 import { ContactPage } from '@/components/pages/contact'
+import { LegalPage } from '@/components/pages/legal'
 import { MethodPage } from '@/components/pages/method'
+import { PrivacyPage } from '@/components/pages/privacy'
 import { ServicesPage } from '@/components/pages/services'
 import { CasesPage } from '@/components/pages/cases'
 import { CaseDossier } from '@/components/case-dossier'
@@ -70,6 +72,12 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
     { path: ['contacto'] },                         // ES contact — SPEC-P2.6
     { path: ['en', 'contact'] },                    // EN contact
     { path: ['ca', 'contacte'] },                   // CA contact
+    { path: ['aviso-legal'] },                      // ES legal — SPEC-P4
+    { path: ['en', 'legal-notice'] },               // EN legal
+    { path: ['ca', 'avis-legal'] },                 // CA legal
+    { path: ['privacidad'] },                       // ES privacy — SPEC-P4
+    { path: ['en', 'privacy'] },                    // EN privacy
+    { path: ['ca', 'privacitat'] },                 // CA privacy
   ]
 }
 
@@ -150,7 +158,8 @@ export default async function Page({
   // Pages not yet built → 404 until Phase 2.n adds them.
   // Phase 2.5: 'about' added — SPEC-P2.5 FR-1.1
   // Phase 2.6: 'contact' added — SPEC-P2.6 FR-1.1
-  const BUILT_PAGES = ['home', 'method', 'services', 'cases', 'caseDetail', 'alliance', 'about', 'contact'] as const
+  // Phase 4: 'legal' + 'privacy' added — SPEC-P4 FR-1.1
+  const BUILT_PAGES = ['home', 'method', 'services', 'cases', 'caseDetail', 'alliance', 'about', 'contact', 'legal', 'privacy'] as const
   if (!BUILT_PAGES.includes(page as (typeof BUILT_PAGES)[number])) notFound()
 
   // For caseDetail, resolve the case and 404 on unknown slug.
@@ -189,6 +198,10 @@ export default async function Page({
           <AboutPage dict={dict} />
         ) : page === 'contact' ? (
           <ContactPage dict={dict} />
+        ) : page === 'legal' ? (
+          <LegalPage dict={dict} />
+        ) : page === 'privacy' ? (
+          <PrivacyPage dict={dict} />
         ) : (
           <>
             <Hero content={home.hero} claims={home.claims} />
