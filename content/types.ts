@@ -237,9 +237,95 @@ export interface AllianceDictionary {
   }
 }
 
-/** Phase 1 stub — Phase 2 will add full content. */
+/**
+ * Phase 2.5 — full /sobre-escala content. Spec: SPEC-P2.5 FR-9.1
+ *
+ * Six areas must match ExpertiseFigVariant; ten beliefs from Libro Ch. 3.
+ * All lengths enforced in tests/content/about-content.test.ts.
+ */
+export type ExpertiseFigVariant =
+  | 'fullstack'
+  | 'hub'
+  | 'bars'
+  | 'nodes'
+  | 'signal'
+  | 'insertion'
+
 export interface AboutDictionary {
   readonly meta: PageMeta
+  readonly ceremonial: {
+    /** Mono kicker above the H1: "A · SOBRE ESCALA · ESTUDIO DE PRODUCTO Y TECNOLOGÍA" */
+    readonly kicker: string
+    /** Page H1 — oversized, clamp(3rem,7vw,6rem). Exactly one H1 on this page. */
+    readonly h1: string
+    /** Sub-paragraph ≤60ch, ~22px */
+    readonly sub: string
+  }
+  readonly dna: {
+    /** Section eyebrow: "B / NUESTRO ADN" */
+    readonly sectionEyebrow: string
+    /** Bold label for the mission paragraph: "Misión." */
+    readonly missionLabel: string
+    /** Mission paragraph verbatim from Libro Ch. 1 */
+    readonly mission: string
+    /** Bold label for the vision paragraph: "Visión." */
+    readonly visionLabel: string
+    /** Vision paragraph verbatim from Libro Ch. 1 */
+    readonly vision: string
+    /** Pull-quote (Archivo, ambre left border): the ten-year question. */
+    readonly quote: string
+  }
+  readonly values: {
+    /** Section eyebrow: "C / VALORES" */
+    readonly sectionEyebrow: string
+    /** Exactly 5 values from Libro Ch. 1. Length enforced in tests. */
+    readonly items: ReadonlyArray<{
+      /** Zero-padded ordinal: "01"–"05" */
+      readonly n: string
+      readonly title: string
+      readonly body: string
+    }>
+  }
+  /** Tone-shift divider text: "— — — DE LA IDENTIDAD A LA EXPERIENCIA — — —" */
+  readonly divider: string
+  readonly expertise: {
+    /** Section eyebrow: "D / LA EXPERIENCIA DETRÁS DE ESCALA" */
+    readonly sectionEyebrow: string
+    readonly heading: string
+    readonly lead: string
+    /**
+     * Exactly 6 areas. Length enforced in tests.
+     * Anonymized per Libro Ch. 19 — no former-employer names.
+     */
+    readonly areas: ReadonlyArray<{
+      readonly index: string
+      readonly title: string
+      readonly body: string
+      readonly figVariant: ExpertiseFigVariant
+    }>
+  }
+  readonly manifesto: {
+    /** Section eyebrow: "E / EL MANIFIESTO" */
+    readonly sectionEyebrow: string
+    readonly heading: string
+    /** Mono lead: "DIEZ CREENCIAS · UNA FORMA DE ENTENDER LA TECNOLOGÍA" */
+    readonly lead: string
+    /** Exactly 10 beliefs verbatim from Libro Ch. 3. Length enforced in tests. */
+    readonly beliefs: ReadonlyArray<string>
+  }
+  /**
+   * Mono plain-text line about colivares.com — NOT a link until that site is live.
+   * // TODO: linkify colivares.com when live (projectbrief.md non-goal)
+   */
+  readonly colivaresLine: string
+  readonly finalCta: {
+    readonly title: string
+    readonly body: string
+    readonly success: string
+    readonly email: string
+    readonly location: string
+    readonly languages: string
+  }
 }
 
 /** Phase 1 stub — Phase 2 will add full content. */

@@ -21,7 +21,8 @@ export const sharedContent = {
       { label: 'Casos de éxito', href: '/casos-de-exito', pageId: 'cases' },
       // Phase 2.4: true route (SPEC-P2.4 FR-1.1 / AC-10).
       { label: 'Modelo de alianza', href: '/modelo-de-alianza', pageId: 'alliance' },
-      { label: 'Sobre Escala', href: '/#inicio', pageId: 'about' },
+      // Phase 2.5: true route — SPEC-P2.5 FR-1.1 / AC-10
+      { label: 'Sobre Escala', href: '/sobre-escala', pageId: 'about' },
     ],
     contact: 'Hablemos',
     locales: ['ES', 'EN', 'CA'],
