@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WIREFRAME P2.5 — /sobre-escala</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,500;112,600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#F7F7F4;--ink:#16181D;--mar:#0E3A5D;--abisal:#0A2B45;--abisal-deep:#082238;--ambre:#FFB703;--ambre-dk:#B85C00;
+    --display:'Archivo',system-ui,sans-serif;--body:'Instrument Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--body);background:var(--paper);color:var(--ink)}
+  .mono{font-family:var(--mono)}
+  .wf{background:#111;color:#eee;font-family:var(--mono);font-size:12px;padding:14px 32px;letter-spacing:.05em;position:sticky;top:0;z-index:99}
+  .wf b{color:var(--ambre)}
+  .note{font-family:var(--mono);font-size:11px;color:var(--ambre-dk);border-left:1px dashed var(--ambre-dk);padding-left:10px;margin:14px 6vw;max-width:720px;line-height:1.5}
+  .note.d{color:var(--ambre);border-color:var(--ambre)}
+  .wrap{padding:64px 6vw}
+  .abisal{background:radial-gradient(ellipse at 50% 40%,var(--abisal),var(--abisal-deep));color:var(--paper);position:relative}
+  .abisal::before{content:"";position:absolute;inset:0;opacity:.05;background-image:linear-gradient(#F7F7F4 1px,transparent 1px),linear-gradient(90deg,#F7F7F4 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+  .sec-idx{font-family:var(--mono);font-size:12px;letter-spacing:.15em}
+  .sec-idx .n{color:var(--ambre-dk)}
+  .abisal .sec-idx .n{color:var(--ambre)}
+  h1.page{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(2.5rem,5vw,4rem);line-height:1.05;margin:14px 0 18px;max-width:16ch}
+  .lead{font-size:19px;line-height:1.6;max-width:62ch;opacity:.85}
+  h2.sec{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(2rem,4vw,3rem);line-height:1.08;margin:6px 0 14px}
+  svg text{font-family:'IBM Plex Mono',monospace}
+  .reuse{display:inline-block;font-family:var(--mono);font-size:10px;color:var(--ambre);border:1px solid var(--ambre);padding:2px 8px;border-radius:2px}
+
+  /* CEREMONIAL header — editorial, oversized, generous */
+  .cer{padding:96px 6vw 80px}
+  .cer .kick{font-family:var(--mono);font-size:12px;color:var(--ambre-dk);letter-spacing:.2em}
+  .cer h1{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(3rem,7vw,6rem);line-height:1;margin:22px 0;letter-spacing:-.01em}
+  .cer .sub{font-size:22px;line-height:1.5;max-width:60ch;opacity:.85}
+
+  /* DNA + ten-year question — a pull quote */
+  .dna{display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:start}
+  .quote{font-family:var(--display);font-stretch:112%;font-weight:500;font-size:1.9rem;line-height:1.25;border-left:2px solid var(--ambre);padding-left:24px}
+  .dna p{line-height:1.7;opacity:.88;margin-bottom:14px}
+
+  /* VALUES — five, editorial numbered rows */
+  .values{margin-top:20px}
+  .val{display:grid;grid-template-columns:60px 260px 1fr;gap:24px;padding:22px 0;border-top:1px solid rgba(22,24,29,.14);align-items:baseline}
+  .val .vn{font-family:var(--mono);font-size:12px;color:var(--mar)}
+  .val h3{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:1.3rem}
+  .val p{opacity:.85;line-height:1.55;font-size:.95rem}
+
+  /* ===== transition to TECHNICAL ===== */
+  .divider{text-align:center;font-family:var(--mono);font-size:11px;color:rgba(247,247,244,.5);letter-spacing:.3em;padding:18px 0}
+
+  /* EXPERIENCE — 6-area grid in kit language */
+  .areas{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(247,247,244,.15);border:1px solid rgba(247,247,244,.15);margin-top:24px}
+  .area{background:var(--abisal);padding:26px 24px;min-height:190px;display:flex;flex-direction:column}
+  .area .an{font-family:var(--mono);font-size:10px;color:var(--ambre);letter-spacing:.1em}
+  .area h4{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:1.15rem;margin:12px 0 8px}
+  .area p{font-size:.85rem;line-height:1.5;color:rgba(247,247,244,.8)}
+  .area .fig{margin-top:auto;padding-top:12px}
+
+  /* MANIFESTO — NEW design: 10 plates as a vertical "core sample" / stacked strata */
+  .manifesto{padding:80px 6vw}
+  .man-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:8px}
+  .plate{display:grid;grid-template-columns:120px 1fr 60px;align-items:center;gap:28px;
+         border:1px solid rgba(247,247,244,.18);border-bottom:none;padding:24px 28px;position:relative;
+         transition:background .2s}
+  .plate:last-child{border-bottom:1px solid rgba(247,247,244,.18)}
+  .plate:hover{background:rgba(255,183,3,.04)}
+  .plate .pn{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:2.6rem;color:rgba(247,247,244,.25);line-height:1}
+  .plate .pt{font-size:1.05rem;line-height:1.4}
+  .plate .pmeta{font-family:var(--mono);font-size:10px;color:var(--ambre);text-align:right;letter-spacing:.08em}
+  .plate .bar{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ambre);transform:scaleY(0);transform-origin:top;transition:transform .3s}
+  .plate:hover .bar{transform:scaleY(1)}
+
+  /* colivares line */
+  .colv{font-family:var(--mono);font-size:12px;color:rgba(247,247,244,.7);letter-spacing:.03em;margin-top:30px;border-top:1px solid rgba(247,247,244,.15);padding-top:22px}
+
+  .cta{background:radial-gradient(ellipse at 50% 40%,var(--abisal),var(--abisal-deep));color:var(--paper);position:relative}
+  .cta h2{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(2rem,4vw,3rem)}
+</style>
+</head>
+<body>
+<div class="wf">WIREFRAME · <b>P2.5</b> · /sobre-escala · TONO MIXTO: ceremonial arriba → técnico abajo · manifiesto en láminas 01-10 (diseño nuevo: estratos)</div>
+
+<!-- A · CEREMONIAL HEADER (paper, editorial, oversized) -->
+<section class="cer">
+  <div class="kick">A · SOBRE ESCALA · ESTUDIO DE PRODUCTO Y TECNOLOGÍA</div>
+  <h1>Construimos<br>capacidades,<br>no aplicaciones.</h1>
+  <p class="sub">Escala Digital Ventures, S.L.U. es un estudio de producto y tecnología con sede en Mataró (Barcelona), constituido en 2026. Existimos para que un número reducido de empresas crezca mediante tecnología entendida como estrategia de negocio.</p>
+  <div class="note" style="margin-left:0">Cabecera CEREMONIAL: tipografía enorme (hasta 6rem), mucho aire, tono de documento de marca. Distinta del PageHeader estándar de las otras páginas — aquí la página se presenta como manifiesto, no como ficha.</div>
+</section>
+
+<!-- B · ADN + pregunta de los 10 años (paper) -->
+<section class="wrap">
+  <div class="sec-idx"><span class="n">B</span>&nbsp;/&nbsp;NUESTRO ADN</div>
+  <div class="dna" style="margin-top:22px">
+    <div>
+      <p><strong>Misión.</strong> Automatizar sistemas y procesos de negocio, fomentar la escalabilidad y la eficiencia, y hacerlo a través de alianzas de crecimiento en las que acompañamos a cada cliente de la mano — a nivel técnico, estratégico y visionario.</p>
+      <p><strong>Visión.</strong> Ser el socio tecnológico de referencia de un grupo selecto de empresas, actuando como su departamento externo de tecnología, innovación y producto, y participando en su crecimiento como si fuera parte del propio negocio.</p>
+    </div>
+    <div class="quote">«Cada decisión debe responder a una pregunta: ¿seguirá aportando valor dentro de diez años?»</div>
+  </div>
+</section>
+
+<!-- C · VALORES (paper, editorial rows) -->
+<section class="wrap" style="padding-top:0">
+  <div class="sec-idx"><span class="n">C</span>&nbsp;/&nbsp;VALORES</div>
+  <div class="values">
+    <div class="val"><div class="vn">01</div><h3>Compromiso de socio</h3><p>No entregamos un proyecto y desaparecemos: nos quedamos, operamos, mejoramos y evolucionamos el producto junto al cliente.</p></div>
+    <div class="val"><div class="vn">02</div><h3>Excelencia de ingeniería</h3><p>Código probado, arquitectura sólida, despliegues automatizados y estándares propios reutilizables. La estabilidad en producción es un requisito de entrada.</p></div>
+    <div class="val"><div class="vn">03</div><h3>Producto antes que tecnología</h3><p>Pensamos primero en el problema, el usuario y el retorno, y después en la herramienta.</p></div>
+    <div class="val"><div class="vn">04</div><h3>Transparencia radical</h3><p>Especificaciones antes de construir, alcance claro, comunicación honesta y facturación trazable.</p></div>
+    <div class="val"><div class="vn">05</div><h3>Velocidad con criterio</h3><p>Metodología dirigida por especificaciones y flujo asistido por IA: la velocidad de equipos mucho mayores, sin sacrificar control.</p></div>
+  </div>
+</section>
+
+<!-- ===== TECHNICAL ZONE begins (abisal) ===== -->
+<section class="wrap abisal">
+  <div class="divider">— — —  DE LA IDENTIDAD A LA EXPERIENCIA  — — —</div>
+  <div class="sec-idx"><span class="n">D</span>&nbsp;/&nbsp;LA EXPERIENCIA DETR&Aacute;S DE ESCALA</div>
+  <h2 class="sec" style="margin-top:12px">Más de dos décadas, seis disciplinas</h2>
+  <p class="lead">La experiencia que sustenta a Escala abarca más de veinte años construyendo y dirigiendo plataformas de software empresarial de alcance global — soluciones utilizadas por decenas de miles de empresas en más de cien países. Lo relevante no es la cronología, sino el resultado: seis disciplinas operando juntas.</p>
+
+  <div class="areas">
+    <div class="area"><div class="an">ÁREA · 01</div><h4>Ingeniería full-stack</h4><p>Frontend, backend, datos, cloud, seguridad, pruebas y automatización de despliegues. Diseñar y también ejecutar.</p>
+      <div class="fig"><svg width="80" height="30"><g stroke="#F7F7F4" stroke-width="1.2" fill="none"><rect x="2" y="8" width="14" height="14"/><rect x="24" y="8" width="14" height="14"/><rect x="46" y="8" width="14" height="14"/><line x1="16" y1="15" x2="24" y2="15"/><line x1="38" y1="15" x2="46" y2="15"/></g><circle cx="67" cy="15" r="3" fill="#FFB703"/></svg></div></div>
+    <div class="area"><div class="an">ÁREA · 02</div><h4>Arquitectura de plataformas</h4><p>Sistemas modulares, escalables y extensibles pensados para durar años: APIs claras, observabilidad, evolución sin rediseños.</p>
+      <div class="fig"><svg width="80" height="30"><g stroke="#F7F7F4" stroke-width="1.2" fill="none"><circle cx="40" cy="15" r="7"/><line x1="40" y1="8" x2="40" y2="2"/><line x1="46" y1="12" x2="60" y2="6"/><line x1="46" y1="18" x2="60" y2="24"/><line x1="34" y1="12" x2="20" y2="6"/><line x1="34" y1="18" x2="20" y2="24"/></g></svg></div></div>
+    <div class="area"><div class="an">ÁREA · 03</div><h4>Dirección de producto</h4><p>Visión, estrategia, roadmap, priorización por impacto, especificación funcional y alineación negocio-ingeniería-UX.</p>
+      <div class="fig"><svg width="80" height="30"><g stroke="#F7F7F4" stroke-width="1.2" fill="none"><line x1="4" y1="26" x2="76" y2="26"/><rect x="10" y="16" width="8" height="10"/><rect x="28" y="10" width="8" height="16"/><rect x="46" y="4" width="8" height="22" stroke="#FFB703"/><rect x="64" y="14" width="8" height="12"/></g></svg></div></div>
+    <div class="area"><div class="an">ÁREA · 04</div><h4>Liderazgo y transformación</h4><p>Años dirigiendo equipos multidisciplinares y transformando organizaciones técnicas en organizaciones orientadas a producto.</p>
+      <div class="fig"><svg width="80" height="30"><g stroke="#F7F7F4" stroke-width="1.2" fill="none"><circle cx="20" cy="15" r="5"/><circle cx="40" cy="15" r="5"/><circle cx="60" cy="15" r="5"/><line x1="25" y1="15" x2="35" y2="15"/><line x1="45" y1="15" x2="55" y2="15"/></g></svg></div></div>
+    <div class="area"><div class="an">ÁREA · 05</div><h4>Developer experience</h4><p>Tooling, testing e integración continua: la disciplina de hacer que construir, desplegar y mantener sea rápido y fiable.</p>
+      <div class="fig"><svg width="80" height="30"><g stroke="#F7F7F4" stroke-width="1.2" fill="none"><path d="M6 15 L26 15 L32 8 L44 22 L50 15 L74 15"/></g><circle cx="32" cy="8" r="2.5" fill="#FFB703"/></svg></div></div>
+    <div class="area"><div class="an">ÁREA · 06</div><h4>IA aplicada y cloud-native</h4><p>Plataformas modernas, cloud-native y AI-first, con formación específica en diseño de productos de IA (certificación del MIT).</p>
+      <div class="fig"><svg width="80" height="30"><g stroke="#F7F7F4" stroke-width="1.2" fill="none"><line x1="8" y1="22" x2="72" y2="22"/><circle cx="40" cy="9" r="6" stroke="#FFB703"/><line x1="40" y1="15" x2="40" y2="22" stroke="#FFB703" stroke-dasharray="2 2"/></g></svg></div></div>
+  </div>
+  <div class="note d" style="margin-left:0">Rejilla de 6 áreas en el kit de diagramas: cada área con su micro-FIG. ANONIMIZADA (Cap. 19): jamás nombra empleadores anteriores, solo "plataformas de alcance global". Zona técnica = fiel al resto del sitio.</div>
+</section>
+
+<!-- E · MANIFIESTO — NEW design: estratos / core sample (abisal) -->
+<section class="abisal manifesto">
+  <div class="man-head">
+    <div>
+      <div class="sec-idx"><span class="n">E</span>&nbsp;/&nbsp;EL MANIFIESTO</div>
+      <h2 class="sec" style="margin-top:12px">El Manifiesto de Escala</h2>
+    </div>
+    <div class="mono" style="font-size:11px;color:rgba(247,247,244,.5)">DIEZ CREENCIAS · UNA FORMA DE ENTENDER LA TECNOLOGÍA</div>
+  </div>
+  <div class="note d" style="margin-left:0">DISEÑO NUEVO para el manifiesto: 10 "láminas" apiladas como estratos de un testigo geológico (core sample) — número grande fantasma a la izquierda, creencia en el centro, meta a la derecha; barra ámbar que crece al pasar por cada una. No es la lista editorial de "Qué hacemos" ni las tarjetas de otros sitios.</div>
+  <div style="margin-top:20px">
+    <div class="plate"><div class="bar"></div><div class="pn">01</div><div class="pt">La tecnología solo tiene sentido cuando mejora la vida de las personas y el funcionamiento de las empresas.</div><div class="pmeta">CREENCIA 01/10</div></div>
+    <div class="plate"><div class="bar"></div><div class="pn">02</div><div class="pt">El software es un activo estratégico, no un gasto.</div><div class="pmeta">02/10</div></div>
+    <div class="plate"><div class="bar"></div><div class="pn">03</div><div class="pt">La simplicidad es una de las formas más avanzadas de ingeniería.</div><div class="pmeta">03/10</div></div>
+    <div class="plate"><div class="bar"></div><div class="pn">04</div><div class="pt">Negocio, producto y tecnología forman una única disciplina.</div><div class="pmeta">04/10</div></div>
+    <div class="plate"><div class="bar"></div><div class="pn">05</div><div class="pt">La automatización libera el potencial humano para tareas de mayor valor.</div><div class="pmeta">05/10</div></div>
+    <div class="plate"><div class="bar"></div><div class="pn">06</div><div class="pt">La inteligencia artificial debe amplificar las capacidades de las personas, no sustituirlas.</div><div class="pmeta">06/10</div></div>
+    <div class="plate"><div class="bar"></div><div class="pn">07</div><div class="pt">La calidad no es negociable: las decisiones técnicas de hoy determinan el éxito de mañana.</div><div class="pmeta">07/10</div></div>
+    <div class="plate"><div class="bar"></div><div class="pn">08</div><div class="pt">Creemos en relaciones de largo plazo basadas en confianza, transparencia y compromiso.</div><div class="pmeta">08/10</div></div>
+    <div class="plate"><div class="bar"></div><div class="pn">09</div><div class="pt">El aprendizaje continuo es imprescindible para mantener una ventaja competitiva.</div><div class="pmeta">09/10</div></div>
+    <div class="plate"><div class="bar"></div><div class="pn">10</div><div class="pt">El verdadero éxito consiste en ayudar a nuestros clientes a crecer de forma sostenible.</div><div class="pmeta">10/10</div></div>
+  </div>
+
+  <div class="colv">DIRECCIÓN GENERAL · La trayectoria completa de nuestro Director General está disponible como referencia pública en colivares.com <span style="color:var(--ambre-dk)">(texto plano, SIN enlace hasta que el sitio esté publicado — Cap. 19)</span></div>
+</section>
+
+<!-- CTA -->
+<section class="wrap cta">
+  <span class="reuse">REUSE · FinalCTA</span>
+  <h2 style="margin-top:14px">Hablemos de tu negocio.</h2>
+  <p class="lead" style="color:rgba(247,247,244,.85)">Cuéntanos qué frena tu crecimiento. Escuchamos antes de proponer.</p>
+</section>
+
+<div class="note" style="color:var(--ambre);border-color:var(--ambre)">Progresión de tono: A/B/C ceremoniales en papel (documento de marca, tipografía grande, aire) → D/E técnicos en abisal (rejilla de áreas + manifiesto en estratos). La página "desciende" de la identidad a la ingeniería. Propiedad: sin afirmaciones de código del cliente (modelo corregido). Experiencia anonimizada.</div>
+
+</body>
+</html>

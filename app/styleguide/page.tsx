@@ -27,6 +27,12 @@ import { casesContent } from '@/content/es/cases'
 import { homeContent } from '@/content/es/home'
 import { methodContent } from '@/content/es/method'
 import { servicesContent } from '@/content/es/services'
+import { CeremonialHeader } from '@/components/ceremonial-header'
+import { ExpertiseGrid } from '@/components/expertise-grid'
+import { GridBackground } from '@/components/grid-background'
+import { Manifesto } from '@/components/manifesto'
+import { ValuesList } from '@/components/values-list'
+import { aboutContent } from '@/content/es/about'
 import { allianceContent } from '@/content/es/alliance'
 
 export const metadata: Metadata = {
@@ -450,6 +456,100 @@ export default function StyleGuidePage() {
         heading={allianceContent.commitments.heading}
         items={allianceContent.commitments.items}
       />
+
+      {/* ── Section 10: Phase 2.5 — Sobre Escala (SPEC-P2.5 AC-10) ── */}
+      <section aria-label="Componentes Fase 2.5" style={{ borderTop: '2px solid var(--ambre)' }}>
+        <div className="page-shell" style={{ paddingBlock: '3rem' }}>
+          <SectionIndex index="10" label="SOBRE ESCALA — FASE 2.5" />
+          <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.65rem', letterSpacing: '0.1em', color: 'var(--mar)', marginBottom: '2rem' }}>
+            CeremonialHeader · ValuesList · GridBackground · ExpertiseGrid (6 micro-figs) · Manifesto — SPEC-P2.5 AC-10.
+          </p>
+        </div>
+
+        {/* CeremonialHeader — oversized H1, brand-document tone */}
+        <div style={{ borderBottom: '1px solid var(--line)', marginBottom: '3rem' }}>
+          <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.65rem', color: 'var(--mar)', padding: '0 max(1.5rem, calc((100vw - 88rem) / 2)) 1rem' }}>
+            CeremonialHeader — NOT the standard PageHeader (deliberate: brand-document tone)
+          </p>
+          <CeremonialHeader
+            kicker={aboutContent.ceremonial.kicker}
+            h1={aboutContent.ceremonial.h1}
+            sub={aboutContent.ceremonial.sub}
+          />
+        </div>
+
+        {/* ValuesList — five editorial rows */}
+        <div className="page-shell" style={{ paddingBottom: '1rem' }}>
+          <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.65rem', color: 'var(--mar)', marginBottom: '1rem' }}>
+            ValuesList — cinco filas editoriales numeradas
+          </p>
+        </div>
+        <ValuesList
+          sectionEyebrow={aboutContent.values.sectionEyebrow}
+          items={aboutContent.values.items}
+        />
+
+        {/* GridBackground — options demo (abisal band) */}
+        <div
+          style={{
+            position: 'relative',
+            background: 'var(--abisal)',
+            padding: '3rem max(1.5rem, calc((100vw - 88rem) / 2))',
+            marginTop: '2rem',
+          }}
+        >
+          <GridBackground />
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.65rem', color: 'var(--ambre)', marginBottom: '0.5rem', letterSpacing: '0.1em' }}>
+              GridBackground — default (cellSize=3rem, lineOpacity=0.05, radialGradient=true)
+            </p>
+            <p style={{ color: 'var(--paper)', opacity: 0.7, margin: 0 }}>
+              Reusable abisal grid overlay. Place as first child of position:relative section.
+            </p>
+          </div>
+        </div>
+        <div
+          style={{
+            position: 'relative',
+            background: 'var(--abisal)',
+            padding: '3rem max(1.5rem, calc((100vw - 88rem) / 2))',
+            marginTop: '1px',
+          }}
+        >
+          <GridBackground cellSize="6rem" lineOpacity={0.08} radialGradient={false} />
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.65rem', color: 'var(--ambre)', marginBottom: '0.5rem', letterSpacing: '0.1em' }}>
+              GridBackground — cellSize=6rem, lineOpacity=0.08, radialGradient=false
+            </p>
+            <p style={{ color: 'var(--paper)', opacity: 0.7, margin: 0 }}>
+              Larger cells, higher opacity, no radial gradient.
+            </p>
+          </div>
+        </div>
+
+        {/* ExpertiseGrid — full 6-area grid with micro-figs */}
+        <ExpertiseGrid
+          sectionEyebrow={aboutContent.expertise.sectionEyebrow}
+          heading={aboutContent.expertise.heading}
+          lead={aboutContent.expertise.lead}
+          areas={aboutContent.expertise.areas}
+          divider={aboutContent.divider}
+        />
+
+        {/* Manifesto — 10 strata plates (3 plates shown for styleguide brevity) */}
+        <div className="page-shell" style={{ paddingTop: '3rem' }}>
+          <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.65rem', color: 'var(--mar)', marginBottom: '1rem' }}>
+            Manifesto — 10 láminas estrato con barra ámbar. Aquí se muestran todas las 10.
+          </p>
+        </div>
+        <Manifesto
+          sectionEyebrow={aboutContent.manifesto.sectionEyebrow}
+          heading={aboutContent.manifesto.heading}
+          lead={aboutContent.manifesto.lead}
+          beliefs={aboutContent.manifesto.beliefs}
+          colivaresLine={aboutContent.colivaresLine}
+        />
+      </section>
     </main>
   )
 }
