@@ -4045,3 +4045,291 @@ h1, h2, h3, h4, p {
     font-size: clamp(2rem, 8vw, 2.6rem);
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* PHASE 4 — LEGAL DOC (SPEC-P4 FR-1)                                          */
+/* Two-column layout: sticky side anchor + ≤70ch reading column.               */
+/* Wireframe: specs/mockups/wireframe-p4-legal-final.html                       */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* Outer wrapper — paper surface, top padding for fixed header */
+.legal-doc {
+  background: var(--paper);
+  color: var(--ink);
+  padding-top: 5rem; /* clear fixed header */
+}
+
+/* Mobile-only top índice — shown below 768px, hidden on desktop */
+.legal-doc__mobile-index {
+  padding: 1.5rem max(1.5rem, var(--space-page));
+  border-bottom: 1px solid var(--line);
+}
+
+.legal-doc__mobile-index-label {
+  font: 500 0.625rem / 1 var(--font-ibm-plex-mono);
+  letter-spacing: 0.12em;
+  color: var(--ambre-dk);
+  margin: 0 0 0.75rem;
+}
+
+.legal-doc__mobile-index ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+}
+
+.legal-doc__mobile-index-link {
+  font: 400 0.6875rem / 1.8 var(--font-ibm-plex-mono);
+  color: var(--mar);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+
+.legal-doc__mobile-index-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* Two-column grid: 230px anchor + 1fr content */
+.legal-doc__grid {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  gap: 3.75rem;
+  align-items: start;
+  padding: 4rem max(1.5rem, var(--space-page));
+  max-width: 88rem;
+  margin-inline: auto;
+}
+
+/* Sticky aside — desktop only */
+.legal-doc__aside {
+  position: sticky;
+  top: 5.5rem; /* below fixed header */
+}
+
+/* ── AnchorNav ── */
+.anchor-nav {
+  /* no additional wrapper styles needed */
+}
+
+.anchor-nav__label {
+  font: 500 0.625rem / 1 var(--font-ibm-plex-mono);
+  letter-spacing: 0.12em;
+  color: var(--ambre-dk);
+  margin: 0 0 0.875rem;
+}
+
+.anchor-nav__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.anchor-nav__link {
+  display: block;
+  font: 400 0.6875rem / 1 var(--font-ibm-plex-mono);
+  color: rgba(22, 24, 29, 0.7);
+  text-decoration: none;
+  padding: 0.4375rem 0 0.4375rem 0.875rem;
+  border-left: 2px solid rgba(22, 24, 29, 0.12);
+  letter-spacing: 0.06em;
+  transition: color var(--motion-fast) var(--ease-out),
+              border-color var(--motion-fast) var(--ease-out);
+}
+
+.anchor-nav__link:hover,
+.anchor-nav__link--active {
+  color: var(--ink);
+  border-left-color: var(--ambre);
+}
+
+/* ── Document header ── */
+.legal-doc__header {
+  margin-bottom: 2.125rem;
+}
+
+.legal-doc__eyebrow {
+  font: 500 0.6875rem / 1 var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  color: var(--ambre-dk);
+  margin: 0 0 0.875rem;
+}
+
+.legal-doc__h1 {
+  font: 600 clamp(2.2rem, 4vw, 3.2rem) / 1.05 var(--font-archivo);
+  font-stretch: 112%;
+  color: var(--ink);
+  margin: 0 0 0.625rem;
+}
+
+.legal-doc__updated {
+  font: 400 0.6875rem / 1 var(--font-ibm-plex-mono);
+  color: rgba(22, 24, 29, 0.55);
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+/* ── Sections ── */
+.legal-doc__section {
+  padding-bottom: 2.125rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 2.125rem;
+}
+
+.legal-doc__section:last-child {
+  border-bottom: none;
+}
+
+.legal-doc__section-num {
+  display: block;
+  font: 500 0.6875rem / 1 var(--font-ibm-plex-mono);
+  color: var(--ambre-dk);
+  letter-spacing: 0.08em;
+  margin-bottom: 0.75rem;
+}
+
+.legal-doc__section-title {
+  font: 600 1.4rem / 1.2 var(--font-archivo);
+  font-stretch: 112%;
+  color: var(--ink);
+  margin: 0 0 0.375rem;
+}
+
+.legal-doc__body {
+  font: 400 1rem / 1.7 var(--font-instrument-sans);
+  color: rgba(22, 24, 29, 0.9);
+  max-width: 70ch;
+  margin: 0 0 0.75rem;
+}
+
+/* ── KV rows (registry data) ── */
+.legal-doc__kv {
+  margin: 0.75rem 0 0;
+}
+
+.legal-doc__kv-row {
+  display: flex;
+  gap: 0.5rem;
+  font: 400 0.75rem / 2 var(--font-ibm-plex-mono);
+  color: var(--ink);
+}
+
+.legal-doc__kv-key {
+  color: var(--mar);
+  min-width: 10.625rem;
+  flex-shrink: 0;
+}
+
+.legal-doc__kv-value {
+  margin: 0;
+}
+
+/* ── Placeholder highlight (dev warning — FR-4.2) ── */
+.legal-doc__placeholder {
+  background: rgba(255, 183, 3, 0.18);
+  padding: 0 0.25rem;
+  border-radius: 2px;
+  font-style: normal;
+  /* Visible in dev; Carlos must replace all {{...}} before go-live */
+}
+
+/* ── Phase 4 responsive (≤767px) ── */
+@media (max-width: 767px) {
+  .legal-doc__grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-top: 0;
+  }
+
+  /* Hide sticky aside on mobile — mobile-index takes over */
+  .legal-doc__aside {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  /* Hide mobile index on desktop — aside takes over */
+  .legal-doc__mobile-index {
+    display: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* PHASE 4 — 404 NOT FOUND (SPEC-P4 FR-5)                                      */
+/* Identity-branded: abisal + GridBackground + kit micro-diagram.               */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+.not-found {
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% 40%, var(--abisal), var(--abisal-gradient-end));
+  color: var(--paper);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.not-found__inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 0 max(1.5rem, var(--space-page));
+  max-width: 46ch;
+  margin-inline: auto;
+}
+
+.not-found__code {
+  font: 500 0.75rem / 1 var(--font-ibm-plex-mono);
+  color: var(--ambre);
+  letter-spacing: 0.2em;
+  margin: 0 0 1.125rem;
+}
+
+.not-found__h1 {
+  font: 600 clamp(3rem, 9vw, 7rem) / 1 var(--font-archivo);
+  font-stretch: 112%;
+  color: var(--paper);
+  margin: 0 0 1.125rem;
+}
+
+.not-found__diagram {
+  margin: 0.625rem auto 0;
+  display: block;
+}
+
+.not-found__body {
+  font: 400 1.1875rem / 1.6 var(--font-instrument-sans);
+  color: rgba(247, 247, 244, 0.85);
+  margin: 1.5rem auto 1.875rem;
+}
+
+.not-found__cta {
+  display: inline-block;
+  border: 1px solid var(--ambre);
+  color: var(--paper);
+  font: 500 0.8125rem / 1 var(--font-ibm-plex-mono);
+  padding: 1rem 1.75rem;
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  transition: background var(--motion-fast) var(--ease-out),
+              color var(--motion-fast) var(--ease-out);
+}
+
+.not-found__cta:hover {
+  background: var(--ambre);
+  color: var(--ink);
+}
+
+/* Reduced-motion: all elements are static — no animation classes used */
+@media (prefers-reduced-motion: reduce) {
+  .not-found__cta {
+    transition: none;
+  }
+}

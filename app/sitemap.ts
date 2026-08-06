@@ -30,9 +30,8 @@ const BUILT_PAGES: BuiltPageEntry[] = [
   { page: 'alliance' },                                  // Phase 2.4 — SPEC-P2.4
   { page: 'about' },                                     // Phase 2.5 — SPEC-P2.5
   { page: 'contact' },                                   // Phase 2.6 — SPEC-P2.6
-  // Phase 4 — uncomment when legal pages are built:
-  // { page: 'legal' },
-  // { page: 'privacy' },
+  { page: 'legal' },                                     // Phase 4 — SPEC-P4 (indexable per FR-6.3)
+  { page: 'privacy' },                                   // Phase 4 — SPEC-P4 (indexable per FR-6.3)
 ]
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -209,12 +209,12 @@
 | ~~Contact form API + email provider~~ | ✅ Done | CONTACT-01 |
 | ~~Contacto dedicated page `/contacto`~~ | ✅ Done | PAGE-06 |
 
-### Phase 4 — Legal & analytics
-| Feature | Priority | Backlog ID |
-|---------|----------|-----------|
-| Aviso legal + Privacidad legal pages | P1 | PAGE-07 |
-| Cookieless analytics (Plausible) | P2 | ANALYTICS-01 |
-| 404 page + favicon + OG images | P2 | SEO-01 |
+### Phase 4 — Legal & analytics ☑ COMPLETE
+| Feature | Priority | Status |
+|---------|----------|--------|
+| Aviso legal + Privacidad legal pages | P1 | ✅ Done (SPEC-P4) |
+| Cookieless analytics | — | 🚫 Dropped (Carlos decision) |
+| 404 page + favicon + OG images | P2 | ✅ Done (SPEC-P4) |
 
 ### Phase 5 — EN & CA content
 | Feature | Priority | Backlog ID |
@@ -246,4 +246,6 @@
 | FIG.06 provisional visual | Low | `ExecutionPipelineFig` is fully isolated; Carlos will redesign. Only that file needs to change. |
 | ServiceFig figures DRAFT | Low | All five are coherent drafts. Carlos will refine each variant individually. |
 | Logo-display permission (BioZero) | Low | Pending Carlos confirmation before go-live (Phase 7 checklist). FR-3.6. |
-| Legal links 404 | Low | /aviso-legal + /privacidad links present and correct; pages not built until Phase 4. |
+| Legal placeholders unresolved | Medium | `{{FECHA_ACTUALIZACION}}`, `{{REGISTRO_MERCANTIL}}`, `{{NIF_B88767520}}`, `{{JURISDICCION}}`, `{{REGION_EU_GOOGLE_CLOUD}}` — Carlos must fill before go-live. Visible as ambre highlights in dev. |
+| Legal advisor review required | Medium | Legal copy drafted from MAGUPELL contract + LSSI-CE/RGPD. Not legal advice. Advisor must review before go-live. |
+| Favicon artwork is a draft | Low | `app/icon.svg` — Carlos to review and replace with final approved logomark before launch. |
