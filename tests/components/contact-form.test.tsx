@@ -2,6 +2,7 @@
  * ContactForm tests — SPEC-P2.6 FR-2, FR-5, FR-6
  *
  * Phase 2.6 upgrade: form now POSTs to /api/contact.
+ * Phase 5: copy and privacyHref are now required props.
  * fetch is mocked globally for each API-path test.
  */
 import { render, screen, waitFor } from '@testing-library/react'
@@ -11,8 +12,11 @@ import { ContactForm } from '@/components/contact-form'
 import { sharedContent } from '@/content/es/shared'
 
 const copy = sharedContent.contactForm
+const PRIVACY_HREF = '/privacidad'
 
 const DEFAULT_PROPS = {
+  copy,
+  privacyHref: PRIVACY_HREF,
   email: 'hola@escaladigitalventures.com',
 }
 

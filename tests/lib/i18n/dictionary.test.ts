@@ -42,14 +42,18 @@ describe('getDictionary', () => {
     })
   })
 
-  it('Phase 1: all locales return the same ES content bundle', () => {
-    // EN and CA re-export ES content — all three are the same object in Phase 1
+  it('Phase 5: EN and CA return their own localized bundles (different from ES)', () => {
+    // Phase 5: EN and CA have real translations — they must differ from ES
     const es = getDictionary('es')
     const en = getDictionary('en')
     const ca = getDictionary('ca')
-    // Same home title (ES content for all locales in Phase 1)
-    expect(en.home.meta.title).toBe(es.home.meta.title)
-    expect(ca.home.meta.title).toBe(es.home.meta.title)
+    // EN and CA home titles must differ from ES
+    expect(en.home.meta.title).not.toBe(es.home.meta.title)
+    expect(ca.home.meta.title).not.toBe(es.home.meta.title)
+    // Bundles are distinct objects
+    expect(en).not.toBe(es)
+    expect(ca).not.toBe(es)
+    expect(en).not.toBe(ca)
   })
 
   it('shared dictionary has accessibility labels', () => {

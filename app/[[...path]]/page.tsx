@@ -103,10 +103,12 @@ export async function generateMetadata({
       case 'method':     return dict.method.meta
       case 'cases':      return dict.cases.meta
       case 'caseDetail': {
-        // Per-case meta from CaseStudy.meta (SPEC-P2.3 FR-6.2)
+        // Per-case meta from CaseStudy.metaByLocale (SPEC-P2.3 FR-6.2 / SPEC-P5)
         const slug = pageParams?.slug
         const caseData = slug ? getCase(slug) : null
-        return caseData?.meta ?? dict.cases.meta
+        // Use locale-keyed meta if available, fall back to ES meta
+        const localeMeta = caseData?.metaByLocale?.[locale]
+        return localeMeta ?? caseData?.meta ?? dict.cases.meta
       }
       case 'alliance':   return dict.alliance.meta
       case 'about':      return dict.about.meta
@@ -167,6 +169,11 @@ export default async function Page({
     page === 'caseDetail' && pageParams?.slug ? getCase(pageParams.slug) : null
   if (page === 'caseDetail' && !caseData) notFound()
 
+  // Locale-aware hrefs for home section links
+  const methodHref = getPath('method', locale)
+  const servicesHref = getPath('services', locale)
+  const allianceHref = getPath('alliance', locale)
+
   return (
     <MotionRuntime>
       <a className="skip-link" href="#contenido">
@@ -174,6 +181,7 @@ export default async function Page({
       </a>
       <SiteHeader
         content={home.header}
+        accessibility={shared.accessibility}
         currentPage={page}
         locale={locale}
         pageParams={pageParams}
@@ -185,36 +193,63 @@ export default async function Page({
         lang={locale !== 'es' ? locale : undefined}
       >
         {page === 'method' ? (
-          <MethodPage dict={dict} />
+          <MethodPage dict={dict} locale={locale} />
         ) : page === 'services' ? (
           <ServicesPage dict={dict} locale={locale} />
         ) : page === 'cases' ? (
           <CasesPage dict={dict} locale={locale} />
         ) : page === 'caseDetail' && caseData ? (
-          <CaseDossier caseStudy={caseData} dict={dict.cases} locale={locale} />
+          <CaseDossier caseStudy={caseData} dict={dict.cases} locale={locale} fullDict={dict} />
         ) : page === 'alliance' ? (
-          <AlliancePage dict={dict} />
+          <AlliancePage dict={dict} locale={locale} />
         ) : page === 'about' ? (
-          <AboutPage dict={dict} />
+          <AboutPage dict={dict} locale={locale} />
         ) : page === 'contact' ? (
-          <ContactPage dict={dict} />
+          <ContactPage dict={dict} locale={locale} />
         ) : page === 'legal' ? (
           <LegalPage dict={dict} />
         ) : page === 'privacy' ? (
           <PrivacyPage dict={dict} />
         ) : (
           <>
-            <Hero content={home.hero} claims={home.claims} />
-            <ProblemSection content={home.problem} />
-            <ServicesPreview content={home.services} />
-            <FrameworkSection content={home.framework} />
-            <ProofSection content={home.proof} />
-            <AllianceTeaser content={home.alliance} />
-            <FinalCTA />
+            <Hero
+              content={home.hero}
+              claims={home.claims}
+              labels={home.labels}
+              diagrams={home.diagrams}
+              claimsAriaLabel={shared.accessibility.keyMessages}
+            />
+            <ProblemSection
+              content={home.problem}
+              labels={home.labels}
+              diagrams={home.diagrams}
+            />
+            <ServicesPreview
+              content={home.services}
+              labels={home.labels}
+              servicesHref={servicesHref}
+            />
+            <FrameworkSection
+              content={home.framework}
+              labels={home.labels}
+              methodHref={methodHref}
+            />
+            <ProofSection
+              content={home.proof}
+              labels={home.labels}
+              diagrams={home.diagrams}
+            />
+            <AllianceTeaser
+              content={home.alliance}
+              labels={home.labels}
+              diagrams={home.diagrams}
+              allianceHref={allianceHref}
+            />
+            <FinalCTA dict={dict} locale={locale} />
           </>
         )}
       </main>
-      <SiteFooter content={home.footer} />
+      <SiteFooter content={home.footer} accessibility={shared.accessibility} />
     </MotionRuntime>
   )
 }

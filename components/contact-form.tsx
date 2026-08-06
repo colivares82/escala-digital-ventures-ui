@@ -5,22 +5,16 @@
  *   'section'  (default) — home / interior pages via FinalCTA, existing look.
  *   'dossier'            — /contacto page, ficha-de-expediente framing.
  *
- * Behaviour shared across both variants:
- *   - Client-side validation with inline errors (aria-describedby, aria-invalid)
- *   - Hidden honeypot field (silent server-side reject on fill)
- *   - POST to /api/contact on valid submit
- *   - Loading state: button disabled, label → ENVIANDO…
- *   - Success: form replaced in-place by ContactSuccess card
- *   - API error: form stays populated + error message with mailto fallback
- *
+ * copy and privacyHref come from the locale-aware dictionary (SPEC-P5 FR-5).
  * Spec: SPEC-P2.6 FR-2, FR-3, FR-5, FR-6
  */
 'use client'
 
 import { useState, type FormEvent } from 'react'
 import { ContactSuccess } from '@/components/contact-success'
-import { sharedContent } from '@/content/es/shared'
-import { ROUTES } from '@/lib/routes'
+import type { sharedContent } from '@/content/es/shared'
+
+type ContactFormCopy = typeof sharedContent.contactForm
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -29,6 +23,10 @@ type Errors = Partial<Record<ContactField, string>>
 type FormState = 'idle' | 'loading' | 'success' | 'apiError'
 
 export type ContactFormProps = {
+  /** Locale-aware contactForm copy from shared dictionary. */
+  copy: ContactFormCopy
+  /** Locale-aware href for the privacy policy link. */
+  privacyHref: string
   /** Public display email — shown in fallback links. Never the internal Gmail. */
   email: string
   /** Layout variant (default: 'section'). */
@@ -48,14 +46,14 @@ export type ContactFormProps = {
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export function ContactForm({
+  copy,
+  privacyHref,
   email,
   variant = 'section',
   dossierTitle,
   dossierRef,
   initialState = 'default',
 }: ContactFormProps) {
-  const copy = sharedContent.contactForm
-
   const seededErrors: Errors =
     initialState === 'error'
       ? {
@@ -80,6 +78,7 @@ export function ContactForm({
   if (formState === 'success') {
     return (
       <ContactSuccess
+        copy={copy}
         variant={variant}
         dossierRef={dossierRef}
         onResend={resetForm}
@@ -196,7 +195,7 @@ export function ContactForm({
         />
         <label htmlFor="contact-consent">
           {copy.consentPrefix}{' '}
-          <a href={ROUTES.PRIVACY}>{copy.privacyLabel}</a>.
+          <a href={privacyHref}>{copy.privacyLabel}</a>.
         </label>
         {errors.consent && (
           <span className="contact-error" id="contact-consent-error">

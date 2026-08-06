@@ -9,22 +9,28 @@
  *   mode="page"    — standalone full-viewport page (used by ContactPage)
  *   mode="section" — embedded section at the end of interior pages (used by FinalCTA)
  *
- * All copy from contactContent (content/es/contact.ts) — zero literals.
+ * All copy from dict.contact + dict.shared — locale-aware (SPEC-P5 FR-5).
  */
 'use client'
 
 import { ContactForm } from '@/components/contact-form'
-import { contactContent } from '@/content/es/contact'
+import { getPath } from '@/lib/i18n/routes'
+import type { Dictionary } from '@/lib/i18n/dictionary'
+import type { Locale } from '@/lib/i18n/types'
 
 interface ContactSectionProps {
+  dict: Dictionary
+  locale: Locale
   mode?: 'page' | 'section'
 }
 
-export function ContactSection({ mode = 'section' }: ContactSectionProps) {
+export function ContactSection({ dict, locale, mode = 'section' }: ContactSectionProps) {
   const { pageHeader, affinityFilter, directMeta, dossierHeader, trustLine } =
-    contactContent
+    dict.contact
+  const contactFormCopy = dict.shared.contactForm
 
   const isPage = mode === 'page'
+  const privacyHref = getPath('privacy', locale)
 
   return (
     <div
@@ -92,6 +98,8 @@ export function ContactSection({ mode = 'section' }: ContactSectionProps) {
         <div className="contact-page__right">
           <div className="contact-page__formcard">
             <ContactForm
+              copy={contactFormCopy}
+              privacyHref={privacyHref}
               email={directMeta.email}
               variant="dossier"
               dossierTitle={dossierHeader.title}

@@ -25,7 +25,8 @@ import { clients } from '@/content/es/clients'
 import { cases } from '@/content/data/cases'
 import { casesContent } from '@/content/es/cases'
 import { homeContent } from '@/content/es/home'
- import { sharedContent } from '@/content/es/shared'
+import { sharedContent } from '@/content/es/shared'
+import { getDictionary } from '@/lib/i18n/dictionary'
 import { methodContent } from '@/content/es/method'
 import { servicesContent } from '@/content/es/services'
 import { CeremonialHeader } from '@/components/ceremonial-header'
@@ -53,6 +54,8 @@ const COLOR_SWATCHES = [
   ['Ámbar', 'var(--ambre)'],
 ] as const
 
+const esDict = getDictionary('es')
+
 export default function StyleGuidePage() {
   const { proof, claims } = homeContent
 
@@ -68,7 +71,7 @@ export default function StyleGuidePage() {
         </div>
       </header>
 
-      <ClaimsMarquee claims={claims} />
+      <ClaimsMarquee claims={claims} ariaLabel={sharedContent.accessibility.keyMessages} />
 
       <section className="styleguide__section page-shell">
         <SectionIndex index="01" label="TOKENS" />
@@ -150,19 +153,21 @@ export default function StyleGuidePage() {
           <div className="styleguide__forms">
             <div>
               <h2>Por defecto</h2>
-              <ContactForm email={sharedContent.finalCta.email} />
+              <ContactForm copy={sharedContent.contactForm} privacyHref="/privacidad" email={sharedContent.finalCta.email} />
             </div>
             <div>
               <h2>Error</h2>
-              <ContactForm email={sharedContent.finalCta.email} initialState="error" />
+              <ContactForm copy={sharedContent.contactForm} privacyHref="/privacidad" email={sharedContent.finalCta.email} initialState="error" />
             </div>
             <div>
               <h2>Confirmación</h2>
-              <ContactForm email={sharedContent.finalCta.email} initialState="success" />
+              <ContactForm copy={sharedContent.contactForm} privacyHref="/privacidad" email={sharedContent.finalCta.email} initialState="success" />
             </div>
             <div>
               <h2>Dossier (confirmación)</h2>
               <ContactForm
+                copy={sharedContent.contactForm}
+                privacyHref="/privacidad"
                 email={sharedContent.finalCta.email}
                 variant="dossier"
                 dossierRef="ESCALA · REF. CONTACTO"
@@ -201,7 +206,7 @@ export default function StyleGuidePage() {
         </section>
 
         {/* FinalCTA on paper surface for reference */}
-        <FinalCTA />
+        <FinalCTA dict={esDict} locale="es" />
 
         {/* PageHeader — surface: abisal */}
         <PageHeader
