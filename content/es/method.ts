@@ -107,17 +107,6 @@ export const methodContent = {
       'PRODUCCIÓN',
     ],
   },
-
-  finalCta: {
-    title: 'Hablemos de tu negocio.',
-    body: 'Cuéntanos qué frena tu crecimiento. Escuchamos antes de proponer.',
-    success:
-      'Recibido. Te responderemos personalmente en un plazo de dos días laborables.',
-    // Assumption: placeholder address per spec §5.7 — confirm final value before go-live.
-    email: 'hola@escaladigitalventures.com',
-    location: 'Mataró · Barcelona',
-    languages: 'Trabajamos en español, inglés y catalán.',
-  },
 } as const satisfies MethodDictionary
 
 export type MethodContent = typeof methodContent

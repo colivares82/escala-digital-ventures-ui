@@ -1,45 +1,45 @@
 import { render, screen } from '@testing-library/react'
 import { FinalCTA } from '@/components/final-cta'
-import { homeContent } from '@/content/es/home'
+import { contactContent } from '@/content/es/contact'
 
-const { finalCta } = homeContent
+const { pageHeader, directMeta, affinityFilter } = contactContent
 
 describe('FinalCTA', () => {
   it('renders the section with the contacto DOM id', () => {
-    render(<FinalCTA content={finalCta} />)
+    render(<FinalCTA />)
     expect(document.getElementById('contacto')).toBeInTheDocument()
   })
 
   it('renders the heading with the CTA title', () => {
-    render(<FinalCTA content={finalCta} />)
+    render(<FinalCTA />)
     const heading = screen.getByRole('heading', { level: 2 })
-    expect(heading).toHaveAttribute('aria-label', finalCta.title)
+    expect(heading).toHaveTextContent(pageHeader.h1)
   })
 
-  it('renders the body copy', () => {
-    render(<FinalCTA content={finalCta} />)
-    expect(screen.getByText(finalCta.body)).toBeInTheDocument()
+  it('renders the lead copy', () => {
+    render(<FinalCTA />)
+    expect(screen.getByText(pageHeader.lead)).toBeInTheDocument()
   })
 
-  it('renders the contact form submit button', () => {
-    render(<FinalCTA content={finalCta} />)
-    expect(screen.getByRole('button', { name: /Enviar/i })).toBeInTheDocument()
+  it('renders the contact form ENVIAR MENSAJE button', () => {
+    render(<FinalCTA />)
+    expect(screen.getByRole('button', { name: /ENVIAR MENSAJE/i })).toBeInTheDocument()
   })
 
-  it('renders the email link in the address', () => {
-    render(<FinalCTA content={finalCta} />)
+  it('renders the email link in the meta', () => {
+    render(<FinalCTA />)
     expect(
-      screen.getByRole('link', { name: finalCta.email }),
-    ).toHaveAttribute('href', `mailto:${finalCta.email}`)
+      screen.getByRole('link', { name: directMeta.email }),
+    ).toHaveAttribute('href', `mailto:${directMeta.email}`)
   })
 
-  it('renders the location', () => {
-    render(<FinalCTA content={finalCta} />)
-    expect(screen.getByText(finalCta.location)).toBeInTheDocument()
+  it('renders the affinity filter heading', () => {
+    render(<FinalCTA />)
+    expect(screen.getByText(affinityFilter.heading)).toBeInTheDocument()
   })
 
-  it('renders the languages line', () => {
-    render(<FinalCTA content={finalCta} />)
-    expect(screen.getByText(finalCta.languages)).toBeInTheDocument()
+  it('renders the FICHA DE CONTACTO dossier header', () => {
+    render(<FinalCTA />)
+    expect(screen.getByText(contactContent.dossierHeader.title)).toBeInTheDocument()
   })
 })

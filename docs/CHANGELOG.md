@@ -6,6 +6,39 @@ All notable changes, newest first.
 
 ---
 
+## [Unreleased] — Phase 2.6 + 2.7: /contacto + contact backend + link audit (SPEC-P2.6)
+
+Spec: `specs/spec-p2.6-contacto-y-link-audit.md` · Wireframe: `specs/mockups/wireframe-p2.6-contacto-final.html` (approved)
+
+**Phase 2 COMPLETE — all interior pages shipped. Phase 3 backend folded into 2.6.**
+
+### Added
+- `components/contact-success.tsx` — **new reusable confirmation card**. Props: `variant` (section/dossier), `dossierRef`, `onResend`. Renders ambre SVG check-circle, "Mensaje enviado." H2, body copy, "ENVIAR OTRO MENSAJE ↺" resend action. Used by both FinalCTA (section) and /contacto (dossier).
+- `components/pages/contact.tsx` — /contacto page compositor. Full-viewport two-column immersive layout: LEFT (editorial invitation + affinity filter × 3 + mono directMeta block) · RIGHT (ContactForm dossier variant). No GridBackground (plain abisal + radial gradient). No FinalCTA (page IS the CTA).
+- `app/api/contact/route.ts` — POST handler. Node.js runtime. Per-IP in-memory rate limit (5/min, configurable). Honeypot silent-200. Server-side validation (fields, email, ≥20-char message, consent, honeypot). Dispatches via `lib/email.ts`.
+- `lib/email.ts` — provider abstraction. `sendContactNotification(payload)` via Resend (native fetch, no npm dep). DRY_RUN mode when no API key. reply-to = visitor email (Carlos replies directly). Phase 6: domain flip = env change only.
+- `.env.example` — documents all 7 contact env vars (EMAIL_PROVIDER, EMAIL_API_KEY, CONTACT_TO, CONTACT_FROM, CONTACT_SUBJECT_PREFIX, RATE_LIMIT_PER_MIN, EMAIL_DRY_RUN).
+- `content/es/contact.ts` — full contact dictionary (pageHeader, affinityFilter × 3, directMeta, dossierHeader, trustLine).
+- `content/types.ts` — `ContactDictionary` full interface (replaced Phase 1 stub).
+- `docs/link-audit.md` — full link audit report: every nav/footer/section/CTA link × 3 locales × status.
+- `tests/components/contact-form.test.tsx` — 18 tests (updated for API fetch, loading, success, error, resend, honeypot, dossier variant).
+- `tests/components/contact-success.test.tsx` — 9 new tests (section/dossier variants, resend callback, SVG aria-hidden).
+- `tests/content/contact-content.test.ts` — 16 new tests (meta lengths, affinity 3 items, Gmail leak guard, public email location).
+
+### Changed
+- `components/contact-form.tsx` — **upgraded** (not replaced). New: `variant` prop (section/dossier), `dossierTitle`/`dossierRef` props, hidden honeypot field, `fetch` → `/api/contact`, loading/success/apiError state machine, `ContactSuccess` on success, API error message on failure (form populated). Removed: `success` prop (copy now in `sharedContent`). `initialState` still works for testing/styleguide.
+- `content/es/shared.ts` — `contactForm` extended with new keys: `sendLabel`, `sending`, `successHeader`, `successRef`, `successH2`, `successBody`, `successResend`, `errorApiPrefix`, `errorApiSuffix`.
+- `components/final-cta.tsx` — removed `success` prop from `<ContactForm>` call (copy now in sharedContent). No behavior change.
+- `components/site-chrome.tsx` — «Hablemos» CTA changed from `ANCHORS.CONTACTO` (#contacto) to `ROUTES.CONTACT` (/contacto). **Link audit fix.**
+- `components/pages/services.tsx` — `IdealClientNote` `ctaHref` changed from `"#contacto"` to `ROUTES.CONTACT`. **Link audit fix.**
+- `app/[[...path]]/page.tsx` — `ContactPage` import, `BUILT_PAGES` + `generateStaticParams` + render branch added for 'contact' × 3 locales.
+- `app/sitemap.ts` — `{ page: 'contact' }` added.
+- `app/globals.css` — Phase 2.6 CSS block added: `.contact-page` two-column immersive layout, `.contact-form--dossier` header, `.contact-form__dossier-head/title/ref`, `.contact-success` variants (section/dossier), `.contact-api-error`, `.contact-hp`, `button[disabled]`.
+- `app/styleguide/page.tsx` — section 04 updated: removed `success` prop, added dossier confirmation demo.
+- `tests/content/ownership-guard.test.ts` — Gmail leak guard added (SPEC-P2.6 AC-5).
+
+---
+
 ## [Unreleased] — Phase 2.5: /sobre-escala (SPEC-P2.5)
 
 Spec: `specs/spec-p2.5-sobre-escala.md` · Wireframe: `specs/mockups/wireframe-p2.5-sobre-escala.html` (approved)

@@ -161,15 +161,14 @@ describe('aboutContent — SPEC-P2.5', () => {
   // ── FinalCTA ──────────────────────────────────────────────────────────────
 
   it('finalCta email matches expected domain', () => {
-    expect(aboutContent.finalCta.email).toMatch(/@escaladigitalventures\.com$/)
+    expect(sharedContent.finalCta.email).toMatch(/@escaladigitalventures\.com$/)
   })
 
   it('finalCta has all required fields', () => {
-    expect(aboutContent.finalCta.title).toBeTruthy()
-    expect(aboutContent.finalCta.body).toBeTruthy()
-    expect(aboutContent.finalCta.success).toBeTruthy()
-    expect(aboutContent.finalCta.location).toBeTruthy()
-    expect(aboutContent.finalCta.languages).toBeTruthy()
+    expect(sharedContent.finalCta.title).toBeTruthy()
+    expect(sharedContent.finalCta.body).toBeTruthy()
+    expect(sharedContent.finalCta.location).toBeTruthy()
+    expect(sharedContent.finalCta.languages).toBeTruthy()
   })
 
   // ── Ownership guard (SPEC-FIX-01) ─────────────────────────────────────────

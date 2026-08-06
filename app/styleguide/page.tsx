@@ -25,6 +25,7 @@ import { clients } from '@/content/es/clients'
 import { cases } from '@/content/data/cases'
 import { casesContent } from '@/content/es/cases'
 import { homeContent } from '@/content/es/home'
+ import { sharedContent } from '@/content/es/shared'
 import { methodContent } from '@/content/es/method'
 import { servicesContent } from '@/content/es/services'
 import { CeremonialHeader } from '@/components/ceremonial-header'
@@ -49,7 +50,7 @@ const COLOR_SWATCHES = [
 ] as const
 
 export default function StyleGuidePage() {
-  const { proof, claims, finalCta } = homeContent
+  const { proof, claims } = homeContent
 
   return (
     <main className="styleguide">
@@ -145,24 +146,22 @@ export default function StyleGuidePage() {
           <div className="styleguide__forms">
             <div>
               <h2>Por defecto</h2>
-              <ContactForm
-                email={finalCta.email}
-                success={finalCta.success}
-              />
+              <ContactForm email={sharedContent.finalCta.email} />
             </div>
             <div>
               <h2>Error</h2>
-              <ContactForm
-                email={finalCta.email}
-                success={finalCta.success}
-                initialState="error"
-              />
+              <ContactForm email={sharedContent.finalCta.email} initialState="error" />
             </div>
             <div>
               <h2>Confirmación</h2>
+              <ContactForm email={sharedContent.finalCta.email} initialState="success" />
+            </div>
+            <div>
+              <h2>Dossier (confirmación)</h2>
               <ContactForm
-                email={finalCta.email}
-                success={finalCta.success}
+                email={sharedContent.finalCta.email}
+                variant="dossier"
+                dossierRef="ESCALA · REF. CONTACTO"
                 initialState="success"
               />
             </div>
@@ -198,7 +197,7 @@ export default function StyleGuidePage() {
         </section>
 
         {/* FinalCTA on paper surface for reference */}
-        <FinalCTA content={finalCta} />
+        <FinalCTA />
 
         {/* PageHeader — surface: abisal */}
         <PageHeader

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WIREFRAME P2.6 — /contacto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,500;112,600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#F7F7F4;--ink:#16181D;--mar:#0E3A5D;--abisal:#0A2B45;--abisal-deep:#082238;--ambre:#FFB703;--ambre-dk:#B85C00;
+    --display:'Archivo',system-ui,sans-serif;--body:'Instrument Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--body);background:var(--abisal);color:var(--paper)}
+  .mono{font-family:var(--mono)}
+  .wf{background:#111;color:#eee;font-family:var(--mono);font-size:12px;padding:14px 32px;letter-spacing:.05em;position:sticky;top:0;z-index:99}
+  .wf b{color:var(--ambre)}
+  .note{font-family:var(--mono);font-size:11px;color:var(--ambre);border-left:1px dashed var(--ambre);padding-left:10px;margin:16px 6vw;max-width:720px;line-height:1.5}
+
+  .page{min-height:100vh;background:radial-gradient(ellipse at 30% 30%,var(--abisal),var(--abisal-deep));position:relative;overflow:hidden}
+
+  .grid2{display:grid;grid-template-columns:0.9fr 1.1fr;min-height:100vh;position:relative;z-index:1}
+
+  /* LEFT — editorial column, the "invitation" */
+  .left{padding:8vh 4vw 8vh 6vw;display:flex;flex-direction:column;justify-content:center;gap:34px;border-right:1px solid rgba(247,247,244,.12)}
+  .sec-idx{font-family:var(--mono);font-size:12px;letter-spacing:.15em}
+  .sec-idx .n{color:var(--ambre)}
+  .left h1{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(2.6rem,5vw,4.4rem);line-height:1.02;margin:26px 0 20px}
+  .left .sub{font-size:19px;line-height:1.6;color:rgba(247,247,244,.85);max-width:44ch}
+  /* filter/affinity note — this page filters partners */
+  .filter{margin-top:0;border-top:1px solid rgba(247,247,244,.15);padding-top:22px}
+  .filter .ft{font-family:var(--mono);font-size:10px;color:var(--ambre);letter-spacing:.1em;margin-bottom:12px}
+  .filter ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .filter li{font-family:var(--mono);font-size:12px;color:rgba(247,247,244,.8);display:flex;gap:10px}
+  .filter li::before{content:"—";color:var(--ambre)}
+  .meta{margin-top:0;font-family:var(--mono);font-size:11px;color:rgba(247,247,244,.6);line-height:1.8;letter-spacing:.03em}
+  .meta .k{color:var(--ambre-dk)}
+
+  /* RIGHT — the form as a "ficha de expediente" */
+  .right{padding:8vh 6vw 8vh 4vw;display:flex;flex-direction:column;justify-content:center}
+  .formcard{border:1px solid rgba(247,247,244,.2);background:rgba(10,43,69,.4);padding:40px 40px 34px}
+  .formcard .fh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid rgba(247,247,244,.15);padding-bottom:14px;margin-bottom:26px}
+  .formcard .fh .ft{font-family:var(--mono);font-size:11px;color:var(--ambre);letter-spacing:.1em}
+  .formcard .fh .fp{font-family:var(--mono);font-size:10px;color:rgba(247,247,244,.5)}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .field{margin-bottom:20px}
+  .field label{display:block;font-family:var(--mono);font-size:11px;color:rgba(247,247,244,.7);letter-spacing:.05em;margin-bottom:8px}
+  .field input,.field textarea{width:100%;background:transparent;border:1px solid rgba(247,247,244,.3);color:var(--paper);padding:12px 14px;font-family:var(--body);font-size:15px;border-radius:2px}
+  .field textarea{min-height:120px;resize:vertical}
+  .consent{display:flex;gap:12px;align-items:flex-start;margin:8px 0 24px}
+  .consent input{margin-top:3px}
+  .consent label{font-family:var(--mono);font-size:11px;color:rgba(247,247,244,.7);line-height:1.5}
+  .consent a{color:var(--ambre)}
+  .submit{width:100%;border:1px solid var(--ambre);background:transparent;color:var(--paper);font-family:var(--mono);font-size:13px;letter-spacing:.05em;padding:18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+  .submit:hover{background:rgba(255,183,3,.08)}
+  .hp{position:absolute;left:-9999px}
+  .status{font-family:var(--mono);font-size:10px;color:rgba(247,247,244,.45);margin-top:14px;letter-spacing:.05em}
+
+  /* SUCCESS STATE — replaces the form card after submit */
+  .successcard{border:1px solid var(--ambre);background:rgba(255,183,3,.05);padding:48px 40px;display:flex;flex-direction:column;gap:22px}
+  .successcard .sh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid rgba(247,247,244,.15);padding-bottom:14px}
+  .successcard .sh .ft{font-family:var(--mono);font-size:11px;color:var(--ambre);letter-spacing:.1em}
+  .successcard .sh .fp{font-family:var(--mono);font-size:10px;color:rgba(247,247,244,.5)}
+  .success-mark{display:flex;align-items:center;gap:16px}
+  .success-mark svg{flex:0 0 auto}
+  .successcard h2{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:1.9rem;line-height:1.1}
+  .successcard p{font-size:15px;line-height:1.6;color:rgba(247,247,244,.85);max-width:46ch}
+  .successcard .again{font-family:var(--mono);font-size:11px;color:var(--ambre);letter-spacing:.05em;border-bottom:1px solid var(--ambre);width:fit-content;padding-bottom:3px;cursor:pointer;margin-top:6px}
+  .toggle{position:fixed;right:20px;bottom:20px;z-index:100;font-family:var(--mono);font-size:11px;background:var(--ambre);color:var(--ink);border:none;padding:10px 16px;cursor:pointer;border-radius:2px}
+</style>
+</head>
+<body>
+<div class="wf">WIREFRAME · <b>P2.6</b> /contacto · layout NUEVO: dos columnas a pantalla completa (invitación + ficha-formulario) · sin FinalCTA (la página ES el CTA)</div>
+<div class="note">Distinto de la home (allí el form es una sección): aquí es una página inmersiva a 100vh en abisal, partida — izquierda editorial que FILTRA por afinidad, derecha el formulario como "ficha de expediente". Sin fondo de grilla en esta página. Sin espacio muerto: ambas columnas centradas verticalmente y equilibradas a 100vh. El correo interno (Gmail) nunca se muestra; la web enseña hola@escaladigitalventures.com.</div>
+
+<div class="page">
+  <div class="grid2">
+
+    <!-- LEFT: invitation + affinity filter -->
+    <div class="left">
+      <div>
+        <div class="sec-idx"><span class="n">A</span>&nbsp;/&nbsp;CONVERSACIÓN</div>
+        <h1>Hablemos de tu negocio.</h1>
+        <p class="sub">Escuchamos antes de proponer. Cuéntanos qué frena tu crecimiento y te diremos, con honestidad, si podemos ayudarte — y si encajamos como socios.</p>
+
+        <div class="filter">
+          <div class="ft">TRABAJAMOS MEJOR CON</div>
+          <ul>
+            <li>Negocios sólidos cuya operativa creció más rápido que sus sistemas.</li>
+            <li>Empresas de nicho B2B con flujos que ningún software genérico cubre.</li>
+            <li>Quien busca un socio de largo plazo, no un proveedor puntual.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="meta">
+        <div><span class="k">CORREO ·</span> hola@escaladigitalventures.com</div>
+        <div><span class="k">SEDE ·</span> Mataró · Barcelona</div>
+        <div><span class="k">IDIOMAS ·</span> Español · Inglés · Catalán</div>
+        <div><span class="k">RESPUESTA ·</span> En 2 días laborables, personalmente</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: the form as a dossier ficha -->
+    <div class="right">
+      <div class="formcard" id="formcard">
+        <div class="fh">
+          <div class="ft">FICHA DE CONTACTO</div>
+          <div class="fp">ESCALA · REF. CONTACTO</div>
+        </div>
+
+        <div class="row">
+          <div class="field"><label>NOMBRE</label><input type="text" placeholder=""></div>
+          <div class="field"><label>EMPRESA</label><input type="text" placeholder=""></div>
+        </div>
+        <div class="field"><label>EMAIL</label><input type="email" placeholder=""></div>
+        <div class="field"><label>¿QUÉ FRENA TU CRECIMIENTO?</label><textarea placeholder=""></textarea></div>
+
+        <input class="hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="website">
+
+        <div class="consent">
+          <input type="checkbox" id="rgpd">
+          <label for="rgpd">Acepto el tratamiento de mis datos conforme a la <a href="#">política de privacidad</a>.</label>
+        </div>
+
+        <button class="submit" onclick="showSuccess()">ENVIAR MENSAJE <span>↗</span></button>
+        <div class="status">CONEXIÓN SEGURA · TUS DATOS SE ALMACENAN EN LA UE · SIN CESIÓN A TERCEROS</div>
+      </div>
+
+      <!-- SUCCESS STATE (hidden until submit) -->
+      <div class="successcard" id="successcard" style="display:none">
+        <div class="sh"><div class="ft">MENSAJE ENVIADO</div><div class="fp">ESCALA · REF. CONTACTO</div></div>
+        <div class="success-mark">
+          <svg width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="none" stroke="#FFB703" stroke-width="1.5"/><path d="M15 24 L21 30 L34 17" fill="none" stroke="#FFB703" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h2>Mensaje enviado.</h2>
+        </div>
+        <p>Recibido. Te responderemos personalmente en un plazo de dos días laborables.</p>
+        <div class="again" onclick="showForm()">ENVIAR OTRO MENSAJE ↺</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="note" style="color:var(--ambre);border-color:var(--ambre)">Notas de diseño: (1) NO lleva FinalCTA — la página entera es el CTA. (2) La columna izquierda "filtra" (afinidad, Cap. 12/18): quien no encaja se autodescarta, quien encaja se reconoce. (3) El honeypot está oculto fuera de pantalla. (4) Al enviar, la ficha se REEMPLAZA por la confirmación "Mensaje enviado" (marca ámbar + texto + opción de enviar otro). Usa el botón inferior derecho del wireframe para verlo. El estado de error mostraría el fallback a hola@escaladigitalventures.com. (5) Reutiliza el ContactForm de la home, aquí presentado como ficha. Buzón interno = Gmail (solo servidor), jamás visible.</div>
+
+<button class="toggle" onclick="showSuccess()">▶ Ver estado ENVIADO</button>
+<script>
+function showSuccess(){document.getElementById('formcard').style.display='none';document.getElementById('successcard').style.display='flex';}
+function showForm(){document.getElementById('successcard').style.display='none';document.getElementById('formcard').style.display='block';}
+</script>
+</body>
+</html>

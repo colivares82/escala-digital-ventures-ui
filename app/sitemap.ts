@@ -29,8 +29,8 @@ const BUILT_PAGES: BuiltPageEntry[] = [
   { page: 'caseDetail', params: { slug: 'biozero' } },  // Phase 2.3
   { page: 'alliance' },                                  // Phase 2.4 — SPEC-P2.4
   { page: 'about' },                                     // Phase 2.5 — SPEC-P2.5
-  // Phase 2 — uncomment as pages are built:
-  // { page: 'contact' },
+  { page: 'contact' },                                   // Phase 2.6 — SPEC-P2.6
+  // Phase 4 — uncomment when legal pages are built:
   // { page: 'legal' },
   // { page: 'privacy' },
 ]

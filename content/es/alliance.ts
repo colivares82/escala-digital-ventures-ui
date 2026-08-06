@@ -97,15 +97,6 @@ export const allianceContent = {
       },
     ],
   },
-
-  finalCta: {
-    title: 'Hablemos de tu negocio.',
-    body: 'Cuéntanos qué frena tu crecimiento. Escuchamos antes de proponer.',
-    success: 'Gracias. Te respondemos en menos de 48 horas.',
-    email: 'hola@escaladigitalventures.com',
-    location: 'Mataró, Barcelona — Europa',
-    languages: 'Español · Inglés · Catalán',
-  },
 } as const satisfies AllianceDictionary
 
 export type AllianceContent = typeof allianceContent

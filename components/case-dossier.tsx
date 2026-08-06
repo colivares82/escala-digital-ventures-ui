@@ -18,7 +18,6 @@ import type { Locale } from '@/lib/i18n/types'
 import { cases } from '@/content/data/cases'
 import type { CaseStudy } from '@/content/data/cases'
 import type { CasesDictionary } from '@/content/types'
-import { homeContent } from '@/content/es/home'
 
 interface CaseDossierProps {
   caseStudy: CaseStudy
@@ -102,7 +101,7 @@ export function CaseDossier({ caseStudy, dict, locale }: CaseDossierProps) {
       </section>
 
       {/* F · FinalCTA — reused (SPEC-P2.3 FR-5) */}
-      <FinalCTA content={homeContent.finalCta} />
+      <FinalCTA />
     </>
   )
 }

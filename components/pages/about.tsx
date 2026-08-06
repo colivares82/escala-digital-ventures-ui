@@ -33,7 +33,6 @@ export function AboutPage({ dict }: { dict: Dictionary }) {
     expertise,
     manifesto,
     colivaresLine,
-    finalCta,
   } = about
 
   return (
@@ -81,7 +80,7 @@ export function AboutPage({ dict }: { dict: Dictionary }) {
       />
 
       {/* FinalCTA — reused (abisal) */}
-      <FinalCTA content={finalCta} />
+      <FinalCTA />
     </>
   )
 }

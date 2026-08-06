@@ -76,7 +76,7 @@ export function MethodPage({ dict }: { dict: Dictionary }) {
       />
 
       {/* FinalCTA — reused, embedded ContactForm (Phase 3 will switch to /contacto link) */}
-      <FinalCTA content={method.finalCta} />
+      <FinalCTA />
     </>
   )
 }

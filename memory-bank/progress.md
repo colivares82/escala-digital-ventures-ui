@@ -143,6 +143,26 @@
 | 518 tests, 35 files — all passing (68 new tests added) | Complete |
 | `PLAN.md` Phase 2.4 marked ☑ | Complete |
 
+## What works ✅ — Phase 2.6 additions (+ Phase 2.7 link audit)
+
+| Feature | Status |
+|---------|--------|
+| `/contacto` at all 3 locale slugs (ES/EN/CA) | Complete |
+| `ContactDictionary` full interface + `contactContent` ES dict | Complete |
+| `ContactForm` upgraded: variant prop, honeypot, fetch, loading/success/apiError | Complete |
+| `ContactSuccess` reusable confirmation card (section/dossier variants) | Complete |
+| `FinalCTA` home parity — same backend, same success card | Complete |
+| `app/api/contact/route.ts` — POST, rate limit, honeypot, validation | Complete |
+| `lib/email.ts` — Resend abstraction, DRY_RUN, reply-to = visitor | Complete |
+| `.env.example` — all 7 env vars documented | Complete |
+| `generateStaticParams` +3; `BUILT_PAGES` + render branch | Complete |
+| Sitemap +1 page × 3 locales | Complete |
+| Link audit: «Hablemos» → /contacto; IdealClientNote → /contacto | Complete |
+| `docs/link-audit.md` produced | Complete |
+| Phase 2.6 CSS (contact-page, dossier form, success variants) | Complete |
+| 630 tests, 44 files — all passing (+34 new tests) | Complete |
+| `PLAN.md` Phase 2 + 2.6 + 2.7 marked ☑ | Complete |
+
 ## What works ✅ — Phase 2.5 additions
 
 | Feature | Status |
@@ -183,11 +203,11 @@
 | ~~Modelo de alianza `/modelo-de-alianza`~~ | ✅ Done | PAGE-04 |
 | ~~Sobre Escala `/sobre-escala`~~ | ✅ Done | PAGE-05 |
 
-### Phase 3 — Contact end-to-end
+### Phase 3 — Contact end-to-end (folded into Phase 2.6)
 | Feature | Priority | Backlog ID |
 |---------|----------|-----------|
-| Contact form API + email provider | P1 | CONTACT-01 |
-| Contacto dedicated page `/contacto` | P1 | PAGE-06 |
+| ~~Contact form API + email provider~~ | ✅ Done | CONTACT-01 |
+| ~~Contacto dedicated page `/contacto`~~ | ✅ Done | PAGE-06 |
 
 ### Phase 4 — Legal & analytics
 | Feature | Priority | Backlog ID |
@@ -219,8 +239,11 @@
 
 | Issue | Severity | Notes |
 |-------|----------|-------|
-| Header nav: unbuilt pages still use home anchors | Low | /como-trabajamos → true route (Phase 2.1). Other pages link to home anchors (`/#que-hacemos`, etc.) until they ship. Follow-up action in BACKLOG. |
-| Contact form does not transmit | Medium | Expected v1 behavior. Phase 3 item. |
-| EN/CA locale content stubs only | Low | Expected; stubs warn against silent fallback. |
+| Contact form — real email delivery inactive | Low | DRY_RUN active (no API key). Phase 6: set EMAIL_API_KEY + verified CONTACT_FROM — zero code change needed. |
+| Contact rate limit ephemeral | Low | In-memory rate limit resets on Cloud Run cold-start. TODO(P6): swap to Redis/Upstash. |
+| EN/CA locale content stubs only | Low | Expected; stubs warn against silent fallback. Phase 5. |
 | GCP / GitHub Actions not configured | Low | Blocked by GCP account. Phase 6. |
 | FIG.06 provisional visual | Low | `ExecutionPipelineFig` is fully isolated; Carlos will redesign. Only that file needs to change. |
+| ServiceFig figures DRAFT | Low | All five are coherent drafts. Carlos will refine each variant individually. |
+| Logo-display permission (BioZero) | Low | Pending Carlos confirmation before go-live (Phase 7 checklist). FR-3.6. |
+| Legal links 404 | Low | /aviso-legal + /privacidad links present and correct; pages not built until Phase 4. |

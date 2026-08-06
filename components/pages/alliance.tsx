@@ -22,7 +22,7 @@ import type { Dictionary } from '@/lib/i18n/dictionary'
 
 export function AlliancePage({ dict }: { dict: Dictionary }) {
   const { alliance } = dict
-  const { pageHeader, whyFive, seats, planes, commitments, finalCta } = alliance
+  const { pageHeader, whyFive, seats, planes, commitments } = alliance
 
   return (
     <>
@@ -79,7 +79,7 @@ export function AlliancePage({ dict }: { dict: Dictionary }) {
       />
 
       {/* FinalCTA — reused (abisal) */}
-      <FinalCTA content={finalCta} />
+      <FinalCTA />
     </>
   )
 }
