@@ -184,17 +184,6 @@ export const homeContent = {
     action: 'Conoce el modelo de alianza',
   },
 
-  finalCta: {
-    title: 'Hablemos de tu negocio.',
-    body: 'Cuéntanos qué frena tu crecimiento. Escuchamos antes de proponer.',
-    success:
-      'Recibido. Te responderemos personalmente en un plazo de dos días laborables.',
-    // Assumption: placeholder address per spec §5.7 — confirm final value before go-live.
-    email: 'hola@escaladigitalventures.com',
-    location: 'Mataró · Barcelona',
-    languages: 'Trabajamos en español, inglés y catalán.',
-  },
-
   footer: sharedContent.footer,
 } as const satisfies HomePageDictionary
 

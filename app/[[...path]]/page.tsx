@@ -12,6 +12,7 @@ import {
 import { MotionRuntime } from '@/components/motion-runtime'
 import { AboutPage } from '@/components/pages/about'
 import { AlliancePage } from '@/components/pages/alliance'
+import { ContactPage } from '@/components/pages/contact'
 import { MethodPage } from '@/components/pages/method'
 import { ServicesPage } from '@/components/pages/services'
 import { CasesPage } from '@/components/pages/cases'
@@ -66,6 +67,9 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
     { path: ['sobre-escala'] },                     // ES about — SPEC-P2.5
     { path: ['en', 'about-escala'] },               // EN about
     { path: ['ca', 'sobre-escala'] },               // CA about
+    { path: ['contacto'] },                         // ES contact — SPEC-P2.6
+    { path: ['en', 'contact'] },                    // EN contact
+    { path: ['ca', 'contacte'] },                   // CA contact
   ]
 }
 
@@ -145,7 +149,8 @@ export default async function Page({
 
   // Pages not yet built → 404 until Phase 2.n adds them.
   // Phase 2.5: 'about' added — SPEC-P2.5 FR-1.1
-  const BUILT_PAGES = ['home', 'method', 'services', 'cases', 'caseDetail', 'alliance', 'about'] as const
+  // Phase 2.6: 'contact' added — SPEC-P2.6 FR-1.1
+  const BUILT_PAGES = ['home', 'method', 'services', 'cases', 'caseDetail', 'alliance', 'about', 'contact'] as const
   if (!BUILT_PAGES.includes(page as (typeof BUILT_PAGES)[number])) notFound()
 
   // For caseDetail, resolve the case and 404 on unknown slug.
@@ -182,6 +187,8 @@ export default async function Page({
           <AlliancePage dict={dict} />
         ) : page === 'about' ? (
           <AboutPage dict={dict} />
+        ) : page === 'contact' ? (
+          <ContactPage dict={dict} />
         ) : (
           <>
             <Hero content={home.hero} claims={home.claims} />
@@ -190,7 +197,7 @@ export default async function Page({
             <FrameworkSection content={home.framework} />
             <ProofSection content={home.proof} />
             <AllianceTeaser content={home.alliance} />
-            <FinalCTA content={home.finalCta} />
+            <FinalCTA />
           </>
         )}
       </main>

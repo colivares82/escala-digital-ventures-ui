@@ -1163,6 +1163,18 @@ h1, h2, h3, h4, p {
   color: var(--abisal);
   outline: none;
 }
+.contact-form button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+/* Honeypot — off-screen, never visible to the user */
+.contact-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
 .contact-fallback {
   grid-column: 1 / -1;
   margin: 0;
@@ -1182,24 +1194,97 @@ h1, h2, h3, h4, p {
   font: normal 500 0.6rem / 1.5 var(--font-ibm-plex-mono);
   text-transform: uppercase;
 }
+/* ContactSuccess — base + variant rules (SPEC-P2.6 FR-5.1) */
+/* Used by FinalCTA (section) and /contacto dossier form. */
 .contact-success {
-  min-height: 25rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+}
+
+/* Section variant — inside FinalCTA dark column */
+.contact-success--section {
+  min-height: 25rem;
+  gap: 1.25rem;
   padding: 2rem;
   border: 1px solid rgb(247 247 244 / 0.65);
   border-radius: 2px;
+  justify-content: center;
 }
-.contact-success span {
+
+/* Dossier variant — inside /contacto formcard */
+.contact-success--dossier {
+  gap: 1.375rem;
+  border: 1px solid var(--ambre);
+  background: rgb(255 183 3 / 0.05);
+  padding: 2rem 2rem 1.75rem;
+}
+
+/* Dossier header bar */
+.contact-success__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid rgb(247 247 244 / 0.15);
+  padding-bottom: 0.875rem;
+}
+
+.contact-success__title {
+  font: 500 0.6875rem var(--font-ibm-plex-mono);
   color: var(--ambre);
-  font: 500 0.62rem var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
 }
-.contact-success p {
-  max-width: 24rem;
+
+.contact-success__ref {
+  font: 500 0.625rem var(--font-ibm-plex-mono);
+  color: rgb(247 247 244 / 0.5);
+}
+
+/* Section variant label */
+.contact-success__label {
+  font: 500 0.62rem var(--font-ibm-plex-mono);
+  color: var(--ambre);
+  letter-spacing: 0.08em;
+}
+
+/* Check-circle + H2 row */
+.contact-success__mark {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.contact-success__h2 {
+  font: 600 clamp(1.5rem, 2.5vw, 1.9rem) / 1.1 var(--font-archivo);
   margin: 0;
-  font: 600 clamp(2rem, 3vw, 3.5rem) / 1.05 var(--font-archivo);
-  letter-spacing: -0.04em;
+}
+
+/* Body copy — body-sized, NOT display */
+.contact-success__body {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: rgb(247 247 244 / 0.85);
+  max-width: 46ch;
+  margin: 0;
+}
+
+/* Resend action */
+.contact-success__resend {
+  font: 500 0.6875rem var(--font-ibm-plex-mono);
+  color: var(--ambre);
+  letter-spacing: 0.05em;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--ambre);
+  padding-bottom: 0.2em;
+  cursor: pointer;
+  align-self: flex-start;
+  margin-top: 0.25rem;
+}
+
+.contact-success__resend:hover,
+.contact-success__resend:focus-visible {
+  opacity: 0.8;
+  outline: none;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────── */
@@ -3747,5 +3832,216 @@ h1, h2, h3, h4, p {
   .manifesto__bar {
     transform: scaleY(1) !important;
     transition: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* PHASE 2.6 — /contacto page (SPEC-P2.6)                                    */
+/* Two-column immersive layout — NO GridBackground, plain abisal + gradient   */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+.contact-page {
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 30% 30%, var(--abisal), var(--abisal-gradient-end));
+  color: var(--paper);
+  /* Push content below fixed header (page mode) */
+  padding-top: 5rem;
+}
+
+/* Section mode — embedded at end of interior pages; no header offset needed */
+.contact-page--section {
+  min-height: 100svh;
+  padding-top: 0;
+}
+
+.contact-page__grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  /*
+   * grid-template-rows: 1fr is required so the single row
+   * fills the min-height — without it, min-height enlarges
+   * the container but leaves the row track at content height,
+   * breaking justify-content: center on the flex columns.
+   */
+  grid-template-rows: 1fr;
+  min-height: calc(100vh - 5rem);
+}
+
+/* LEFT — invitation + affinity filter + meta */
+.contact-page__left {
+  padding: 6vh max(2rem, 4vw) 6vh max(1.5rem, calc((100vw - 88rem) / 2 + 1.5rem));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  border-right: 1px solid rgb(247 247 244 / 0.12);
+}
+
+.contact-page__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.contact-page__eyebrow {
+  font: 500 0.65rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.15em;
+  color: var(--ambre);
+  margin: 0;
+}
+
+.contact-page__h1 {
+  font-family: var(--font-archivo);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 5vw, 4.4rem);
+  line-height: 1.02;
+  margin: 0.5rem 0 0;
+}
+
+.contact-page__lead {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgb(247 247 244 / 0.85);
+  max-width: 44ch;
+  margin: 0.5rem 0 0;
+}
+
+/* Affinity filter */
+.contact-page__filter {
+  border-top: 1px solid rgb(247 247 244 / 0.15);
+  padding-top: 1.375rem;
+}
+
+.contact-page__filter-heading {
+  font: 500 0.625rem var(--font-ibm-plex-mono);
+  color: var(--ambre);
+  letter-spacing: 0.1em;
+  margin: 0 0 0.75rem;
+}
+
+.contact-page__filter-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.contact-page__filter-list li {
+  font: 500 0.75rem / 1.5 var(--font-ibm-plex-mono);
+  color: rgb(247 247 244 / 0.8);
+  display: flex;
+  gap: 0.625rem;
+}
+
+.contact-page__filter-list li::before {
+  content: "—";
+  color: var(--ambre);
+  flex-shrink: 0;
+}
+
+/* Mono meta block — public address only */
+.contact-page__meta {
+  font: 500 0.6875rem / 1.8 var(--font-ibm-plex-mono);
+  color: rgb(247 247 244 / 0.6);
+  letter-spacing: 0.03em;
+  font-style: normal;
+}
+
+.contact-page__meta a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.contact-page__meta a:hover,
+.contact-page__meta a:focus-visible {
+  color: var(--paper);
+  outline: none;
+}
+
+.contact-page__meta-key {
+  color: var(--ambre-dk);
+}
+
+/* RIGHT — dossier form */
+.contact-page__right {
+  padding: 6vh max(1.5rem, calc((100vw - 88rem) / 2 + 1.5rem)) 6vh max(2rem, 4vw);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.contact-page__formcard {
+  border: 1px solid rgb(247 247 244 / 0.2);
+  background: rgb(10 43 69 / 0.4);
+  padding: 2.5rem 2.5rem 2rem;
+}
+
+/* Trust micro-line below submit button */
+.contact-page__trust {
+  font: 500 0.5625rem var(--font-ibm-plex-mono);
+  color: rgb(247 247 244 / 0.45);
+  letter-spacing: 0.05em;
+  margin: 0.875rem 0 0;
+  text-align: center;
+}
+
+/* Dossier form header (inside form grid) */
+.contact-form__dossier-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid rgb(247 247 244 / 0.15);
+  padding-bottom: 0.875rem;
+  margin-bottom: 1.625rem;
+  grid-column: 1 / -1;
+}
+
+.contact-form__dossier-title {
+  font: 500 0.6875rem var(--font-ibm-plex-mono);
+  color: var(--ambre);
+  letter-spacing: 0.1em;
+}
+
+.contact-form__dossier-ref {
+  font: 500 0.625rem var(--font-ibm-plex-mono);
+  color: rgb(247 247 244 / 0.5);
+}
+
+/* API error message */
+.contact-api-error {
+  margin: 0;
+  font: 500 0.6875rem / 1.6 var(--font-ibm-plex-mono);
+  color: var(--ambre);
+}
+
+.contact-api-error a {
+  color: var(--ambre);
+  text-underline-offset: 0.2em;
+}
+
+/* ── Phase 2.6 responsive (≤767px) ── */
+@media (max-width: 767px) {
+  .contact-page__grid {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .contact-page__left {
+    border-right: none;
+    border-bottom: 1px solid rgb(247 247 244 / 0.12);
+    padding: 4rem max(1.5rem, calc((100vw - 88rem) / 2));
+  }
+  .contact-page__right {
+    padding: 3rem max(1.5rem, calc((100vw - 88rem) / 2)) 5rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .contact-page__formcard {
+    padding: 1.5rem 1.25rem;
+  }
+  .contact-page__h1 {
+    font-size: clamp(2rem, 8vw, 2.6rem);
   }
 }

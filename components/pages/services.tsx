@@ -14,10 +14,11 @@ import { ServiceRow } from '@/components/service-row'
 import { Reveal } from '@/components/motion-runtime'
 import type { Dictionary } from '@/lib/i18n/dictionary'
 import type { Locale } from '@/lib/i18n/types'
+import { ROUTES } from '@/lib/routes'
 
 export function ServicesPage({ dict, locale: _locale }: { dict: Dictionary; locale: Locale }) {
   const { services } = dict
-  const { pageHeader, idealClient, finalCta } = services
+  const { pageHeader, idealClient } = services
 
   return (
     <>
@@ -72,12 +73,12 @@ export function ServicesPage({ dict, locale: _locale }: { dict: Dictionary; loca
         title={idealClient.title}
         body={idealClient.body}
         cta={idealClient.cta}
-        // Interim anchor until Phase 3 ships /contacto (PAGE-06). See BACKLOG.
-        ctaHref="#contacto"
+        // Phase 2.6: link to /contacto page (SPEC-P2.6 FR-8.1)
+        ctaHref={ROUTES.CONTACT}
       />
 
       {/* FinalCTA — reused component (abisal) */}
-      <FinalCTA content={finalCta} />
+      <FinalCTA />
     </>
   )
 }

@@ -67,14 +67,6 @@ export interface ServicesDictionary {
     readonly body: string
     readonly cta: string
   }
-  readonly finalCta: {
-    readonly title: string
-    readonly body: string
-    readonly success: string
-    readonly email: string
-    readonly location: string
-    readonly languages: string
-  }
 }
 
 /** Phase 2.1 — full Cómo trabajamos content. Spec: SPEC-P2.1 FR-8.1 */
@@ -135,14 +127,6 @@ export interface MethodDictionary {
     readonly points: ReadonlyArray<string>
     /** Small inline diagram labels (left → right). */
     readonly diagram: ReadonlyArray<string>
-  }
-  readonly finalCta: {
-    readonly title: string
-    readonly body: string
-    readonly success: string
-    readonly email: string
-    readonly location: string
-    readonly languages: string
   }
 }
 
@@ -227,14 +211,6 @@ export interface AllianceDictionary {
     /** Exactly 5 commitments. Length enforced in tests. Commitment[0].tag must be "A MEDIDA". */
     readonly items: ReadonlyArray<AllianceCommitment>
   }
-  readonly finalCta: {
-    readonly title: string
-    readonly body: string
-    readonly success: string
-    readonly email: string
-    readonly location: string
-    readonly languages: string
-  }
 }
 
 /**
@@ -318,19 +294,49 @@ export interface AboutDictionary {
    * // TODO: linkify colivares.com when live (projectbrief.md non-goal)
    */
   readonly colivaresLine: string
-  readonly finalCta: {
-    readonly title: string
-    readonly body: string
-    readonly success: string
-    readonly email: string
-    readonly location: string
-    readonly languages: string
-  }
 }
 
-/** Phase 1 stub — Phase 2 will add full content. */
+/**
+ * Phase 2.6 — full /contacto content. Spec: SPEC-P2.6 FR-7.1
+ *
+ * Gmail address lives ONLY in server env — never in this dictionary.
+ * Public address (hola@escaladigitalventures.com) appears in directMeta.email only.
+ */
 export interface ContactDictionary {
   readonly meta: PageMeta
+  readonly pageHeader: {
+    /** Mono eyebrow: "A / CONVERSACIÓN" */
+    readonly eyebrow: string
+    /** Page H1 */
+    readonly h1: string
+    /** Lead paragraph from spec §5.7 / Libro Ch. 18 */
+    readonly lead: string
+  }
+  readonly affinityFilter: {
+    /** All-caps mono heading: "TRABAJAMOS MEJOR CON" */
+    readonly heading: string
+    /** Exactly 3 lines from Libro Ch. 12/18. Length enforced in tests. */
+    readonly items: ReadonlyArray<string>
+  }
+  readonly directMeta: {
+    readonly emailLabel: string
+    /** Public display address only — NEVER the internal Gmail. */
+    readonly email: string
+    readonly locationLabel: string
+    readonly location: string
+    readonly languagesLabel: string
+    readonly languages: string
+    readonly responseLabel: string
+    readonly response: string
+  }
+  readonly dossierHeader: {
+    /** "FICHA DE CONTACTO" */
+    readonly title: string
+    /** "ESCALA · REF. CONTACTO" */
+    readonly ref: string
+  }
+  /** Mono trust micro-line under the submit button. */
+  readonly trustLine: string
 }
 
 /** Phase 1 stub — Phase 2 will add full content. */

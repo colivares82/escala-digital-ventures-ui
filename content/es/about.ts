@@ -137,15 +137,6 @@ export const aboutContent = {
   // TODO: linkify colivares.com when live.
   colivaresLine:
     'DIRECCIÓN GENERAL · La trayectoria completa de nuestro Director General está disponible como referencia pública en colivares.com',
-
-  finalCta: {
-    title: 'Hablemos de tu negocio.',
-    body: 'Cuéntanos qué frena tu crecimiento. Escuchamos antes de proponer.',
-    success: 'Mensaje recibido. Te respondemos en menos de 24 horas.',
-    email: 'hola@escaladigitalventures.com',
-    location: 'Mataró, Barcelona — remoto en toda España y Europa',
-    languages: 'Español · Catalán · Inglés',
-  },
 } as const satisfies AboutDictionary
 
 export type AboutContent = typeof aboutContent

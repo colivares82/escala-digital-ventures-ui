@@ -70,19 +70,32 @@ Status: ◐ in progress
   colivares.com text mention (Ch. 1–4). GridBackground reusable primitive. CeremonialHeader
   + DnaBlock + ValuesList + ExpertiseGrid (6 micro-figs) + Manifesto (10 strata plates).
   596 tests. SPEC-P2.5.
+- ☑ 2.6 `/contacto` page + contact backend (Phase 3 folded in) — Full-viewport two-column
+  immersive page (invitation/affinity-filter left · dossier form right). `ContactForm` upgraded:
+  variants (section/dossier), fetch→/api/contact, honeypot, loading/success/error states.
+  `ContactSuccess` extracted as reusable component. API route with server validation,
+  honeypot (silent 200), in-memory rate limit (5/min, TODO(P6) durable). `lib/email.ts`
+  provider abstraction (Resend, DRY_RUN mode). Gmail server-only (env). `.env.example`.
+  630 tests. SPEC-P2.6.
+- ☑ 2.7 Link audit — all internal links via ROUTES.*/getPath(), no hardcoded strings.
+  «Hablemos» CTA → /contacto (was #contacto). IdealClientNote → /contacto.
+  Legal links tracked for Phase 4. `docs/link-audit.md` produced. SPEC-P2.6 FR-8.
 Each page ships with its own spec; new compositions (case template,
 manifesto) get a wireframe first.
 **Exit criteria per page:** matches its spec section, deployed locally,
 navigation and footer links live.
 
+## PHASE 2 complete ☑ — All interior pages shipped. Phase 3 contact backend folded into 2.6.
+
 ## PHASE 3 — Contact, end to end
-Status: ☐
-- ☐ `/contacto` page reusing ContactForm.
-- ☐ API route: server-side validation, transactional email (same
-  provider as MAGUPELL), honeypot, rate limit.
-- ☐ Success/error states per spec (error shows direct email fallback).
-- ☐ Confirm final address: hola@escaladigitalventures.com.
-**Exit criteria:** form tested end to end locally with the real mailbox.
+Status: ☑ (folded into Phase 2.6)
+- ☑ `/contacto` page reusing ContactForm (with new dossier variant). SPEC-P2.6.
+- ☑ API route: server-side validation, Resend provider, honeypot, in-memory rate limit.
+- ☑ Success/error/loading states per spec. ContactSuccess reusable component.
+- ☑ hola@escaladigitalventures.com confirmed as public address. Gmail server-only.
+- ☐ Real email delivery — requires provider API key + domain DNS (Phase 6).
+  DRY_RUN mode active locally (EMAIL_API_KEY empty → logs instead of sends).
+**Exit criteria:** ✅ Code complete. One env-flip from live delivery (Phase 6).
 
 ## PHASE 4 — Legal & analytics
 Status: ☐

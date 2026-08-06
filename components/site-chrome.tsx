@@ -127,7 +127,8 @@ export function SiteHeader({
             locale={locale}
             pageParams={pageParams}
           />
-          <a className="header-cta" href={ANCHORS.CONTACTO}>
+          {/* Phase 2.6: link to /contacto page (was #contacto anchor — SPEC-P2.6 FR-8.1) */}
+          <a className="header-cta" href={ROUTES.CONTACT}>
             {content.contact}
           </a>
         </div>

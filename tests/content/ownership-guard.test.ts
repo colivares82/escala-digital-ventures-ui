@@ -29,6 +29,14 @@ const FORBIDDEN_PATTERNS = [
 ]
 
 // ---------------------------------------------------------------------------
+// Gmail leak guard — SPEC-P2.6 AC-5
+// The internal recipient address must NEVER appear in client-side code.
+// It lives only in server env (CONTACT_TO) and .env.example at repo root.
+// Scan includes .env.example exclusion: that file is root-level, not in these dirs.
+// ---------------------------------------------------------------------------
+const GMAIL_ADDRESS = 'carlos.olivares.ve@gmail.com'
+
+// ---------------------------------------------------------------------------
 // File extensions to check (skip binaries, lockfiles, generated dirs)
 // ---------------------------------------------------------------------------
 const CHECKED_EXTENSIONS = new Set(['.ts', '.tsx', '.md'])
@@ -102,4 +110,24 @@ describe('Ownership guard — SPEC-FIX-01 FR-4', () => {
       expect(violations, `Ownership violations found:\n${violations.join('\n')}`).toHaveLength(0)
     })
   }
+
+  // ── Gmail leak guard (SPEC-P2.6 AC-5) ──────────────────────────────────
+  it(`no file in content/, components/, or app/ contains the internal Gmail address (AC-5)`, () => {
+    const violations: string[] = []
+    for (const filePath of filePaths) {
+      const fileContent = readFileSync(filePath, 'utf-8')
+      if (fileContent.includes(GMAIL_ADDRESS)) {
+        const lines = fileContent.split('\n')
+        lines.forEach((line, idx) => {
+          if (line.includes(GMAIL_ADDRESS)) {
+            violations.push(`  ${filePath}:${idx + 1}  →  ${line.trim()}`)
+          }
+        })
+      }
+    }
+    expect(
+      violations,
+      `Gmail address found in client-visible files (must stay server-only):\n${violations.join('\n')}`,
+    ).toHaveLength(0)
+  })
 })

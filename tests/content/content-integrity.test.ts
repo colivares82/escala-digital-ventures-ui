@@ -62,7 +62,7 @@ describe('homeContent', () => {
     expect(homeContent.framework).toBeTruthy()
     expect(homeContent.proof).toBeTruthy()
     expect(homeContent.alliance).toBeTruthy()
-    expect(homeContent.finalCta).toBeTruthy()
+    expect(sharedContent.finalCta).toBeTruthy()
   })
 
   it('has exactly 10 Escala Growth Framework phases', () => {
@@ -96,7 +96,7 @@ describe('homeContent', () => {
   })
 
   it('finalCta email matches expected placeholder domain', () => {
-    expect(homeContent.finalCta.email).toMatch(/@escaladigitalventures\.com$/)
+    expect(sharedContent.finalCta.email).toMatch(/@escaladigitalventures\.com$/)
   })
 
   it('has all required label keys', () => {
@@ -191,7 +191,7 @@ describe('methodContent — Phase 2.1 (SPEC-P2.1 AC-7)', () => {
   })
 
   it('finalCta email matches expected domain', () => {
-    expect(methodContent.finalCta.email).toMatch(/@escaladigitalventures\.com$/)
+    expect(sharedContent.finalCta.email).toMatch(/@escaladigitalventures\.com$/)
   })
 })
 
@@ -273,7 +273,7 @@ describe('servicesContent — Phase 2.2 (SPEC-P2.2 AC-7)', () => {
   })
 
   it('finalCta email matches expected domain', () => {
-    expect(servicesContent.finalCta.email).toMatch(/@escaladigitalventures\.com$/)
+    expect(sharedContent.finalCta.email).toMatch(/@escaladigitalventures\.com$/)
   })
 
   it('contains no Russian language (AC-7 grep guard)', () => {
@@ -389,16 +389,15 @@ describe('allianceContent — Phase 2.4 (SPEC-P2.4 AC-7)', () => {
   })
 
   it('has finalCta with all required fields', () => {
-    expect(allianceContent.finalCta.title).toBeTruthy()
-    expect(allianceContent.finalCta.body).toBeTruthy()
-    expect(allianceContent.finalCta.success).toBeTruthy()
-    expect(allianceContent.finalCta.email).toBeTruthy()
-    expect(allianceContent.finalCta.location).toBeTruthy()
-    expect(allianceContent.finalCta.languages).toBeTruthy()
+    expect(sharedContent.finalCta.title).toBeTruthy()
+    expect(sharedContent.finalCta.body).toBeTruthy()
+    expect(sharedContent.finalCta.email).toBeTruthy()
+    expect(sharedContent.finalCta.location).toBeTruthy()
+    expect(sharedContent.finalCta.languages).toBeTruthy()
   })
 
   it('finalCta email matches expected domain', () => {
-    expect(allianceContent.finalCta.email).toMatch(/@escaladigitalventures\.com$/)
+    expect(sharedContent.finalCta.email).toMatch(/@escaladigitalventures\.com$/)
   })
 
   it('contains no Russian language (AC-7 grep guard)', () => {
