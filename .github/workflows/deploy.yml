@@ -181,14 +181,14 @@ jobs:
             --image "${{ needs.build.outputs.image_tag }}" \
             --region ${{ vars.GCP_REGION }} \
             --platform managed \
-            --no-allow-unauthenticated \
+            --allow-unauthenticated \
             --min-instances 0 \
             --max-instances 4 \
             --cpu 1 \
             --memory 512Mi \
             --concurrency 80 \
             --cpu-throttling \
-            --set-env-vars "NODE_ENV=production,EMAIL_DRY_RUN=false" \
+            --set-env-vars "NODE_ENV=production,EMAIL_DRY_RUN=true" \
             --set-secrets "CONTACT_TO=CONTACT_TO:latest,CONTACT_FROM=CONTACT_FROM:latest,EMAIL_API_KEY=EMAIL_API_KEY:latest" \
             --quiet
 
