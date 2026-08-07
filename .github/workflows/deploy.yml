@@ -2,46 +2,39 @@
 # Escala Digital Ventures — CI/CD Pipeline
 # SPEC-P6 FR-3 · AC-2 · AC-3 · AC-4 · AC-11
 #
-# Triggers:
-#   push to main  → CI (lint + typecheck + test) → build image → deploy dev
-#   workflow_dispatch (manual) → deploy prod (requires "production" environment approval)
+# Branch flow:
+#   push to dev   → CI (lint + typecheck + test) → build image → deploy DEV
+#   push to main  → CI (lint + typecheck + test) → build image → deploy PROD
+#   workflow_dispatch → manual trigger (choose target)
 #
 # Auth: Workload Identity Federation (keyless — no SA JSON keys in secrets)
 #
 # GitHub Variables to set (Settings → Secrets and variables → Actions → Variables):
-#   GCP_PROJECT_ID          e.g. escala-web
+#   GCP_PROJECT_ID          escala-dv-web
 #   GCP_REGION              europe-west1
-#   AR_REPO                 escala-web-docker   (Artifact Registry repo name)
+#   AR_REPO                 escala-web-docker
 #   CLOUD_RUN_SERVICE_DEV   escala-web-dev
 #   CLOUD_RUN_SERVICE_PROD  escala-web-prod
-#   WIF_PROVIDER            projects/<NUM>/locations/global/workloadIdentityPools/<POOL>/providers/<PROVIDER>
-#   WIF_SERVICE_ACCOUNT     escala-deployer@<PROJECT>.iam.gserviceaccount.com
-#
-# GitHub Secrets to set (Settings → Secrets and variables → Actions → Secrets):
-#   (none — auth is keyless via WIF; app secrets live in Secret Manager, not here)
-#
-# GitHub Environment to create (Settings → Environments):
-#   Name: "production"
-#   Required reviewers: carlos.olivares.ve@gmail.com
-#   This gates the prod deploy step.
+#   WIF_PROVIDER            projects/228491148700/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+#   WIF_SERVICE_ACCOUNT     escala-deployer@escala-dv-web.iam.gserviceaccount.com
 # ─────────────────────────────────────────────────────────────────────────────
 
 name: CI / Deploy
 
 on:
   push:
-    branches: [main]
+    branches: [dev, main]
   workflow_dispatch:
     inputs:
-      deploy_prod:
-        description: 'Deploy to production (requires environment approval)'
+      target:
+        description: 'Deploy target'
         required: true
-        default: 'false'
+        default: 'dev'
         type: choice
-        options: ['true', 'false']
+        options: ['dev', 'prod']
 
 env:
-  # Derived image tag: europe-west1-docker.pkg.dev/<PROJECT>/<REPO>/escala-web:<SHA>
+  # Image path in Artifact Registry
   IMAGE: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/${{ vars.AR_REPO }}/escala-web
 
 jobs:
@@ -58,7 +51,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Lint
         run: npm run lint
@@ -104,23 +97,23 @@ jobs:
           TAG="${{ env.IMAGE }}:${{ github.sha }}"
           echo "image_tag=${TAG}" >> "$GITHUB_OUTPUT"
 
-      - name: Build Docker image
+      - name: Build Docker image (linux/amd64 for Cloud Run)
         run: |
-          docker build \
+          docker buildx build \
+            --platform linux/amd64 \
             --build-arg NEXT_PUBLIC_SITE_URL=https://escaladigitalventures.com \
             --tag "${{ steps.meta.outputs.image_tag }}" \
             --tag "${{ env.IMAGE }}:latest" \
+            --push \
             .
 
-      - name: Push to Artifact Registry
-        run: |
-          docker push "${{ steps.meta.outputs.image_tag }}"
-          docker push "${{ env.IMAGE }}:latest"
-
-  # ── 3. Deploy dev (auto on every push to main) ─────────────────────────────
+  # ── 3. Deploy dev (on push to dev branch) ──────────────────────────────────
   deploy-dev:
     name: Deploy → dev
     needs: build
+    if: |
+      github.ref == 'refs/heads/dev' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'dev')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -149,7 +142,7 @@ jobs:
             --memory 512Mi \
             --concurrency 80 \
             --cpu-throttling \
-            --set-env-vars "NODE_ENV=production,EMAIL_DRY_RUN=true" \
+            --set-env-vars "NODE_ENV=production,EMAIL_DRY_RUN=true,NEXT_PUBLIC_NOINDEX=true" \
             --set-secrets "CONTACT_TO=CONTACT_TO:latest,CONTACT_FROM=CONTACT_FROM:latest,EMAIL_API_KEY=EMAIL_API_KEY:latest" \
             --quiet
 
@@ -158,17 +151,16 @@ jobs:
           URL=$(gcloud run services describe ${{ vars.CLOUD_RUN_SERVICE_DEV }} \
             --region ${{ vars.GCP_REGION }} \
             --format 'value(status.url)')
-          echo "Dev URL: ${URL}"
+          echo "✅ Dev URL: ${URL}"
 
-  # ── 4. Deploy prod (manual approval via GitHub Environment) ────────────────
+  # ── 4. Deploy prod (on push to main branch) ────────────────────────────────
   deploy-prod:
     name: Deploy → prod
     needs: build
-    # Only runs on manual dispatch with deploy_prod=true, OR can be triggered
-    # separately. The "production" environment requires manual approval.
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.deploy_prod == 'true'
+    if: |
+      github.ref == 'refs/heads/main' ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'prod')
     runs-on: ubuntu-latest
-    environment: production   # ← GitHub Environment gate (requires reviewer approval)
     permissions:
       contents: read
       id-token: write
@@ -205,4 +197,4 @@ jobs:
           URL=$(gcloud run services describe ${{ vars.CLOUD_RUN_SERVICE_PROD }} \
             --region ${{ vars.GCP_REGION }} \
             --format 'value(status.url)')
-          echo "Prod URL: ${URL}"
+          echo "✅ Prod URL: ${URL}"
