@@ -226,19 +226,24 @@
 | `docs/i18n-glossary.md` + `docs/i18n-qa.md` | P2 | ✅ Done (SPEC-P5) |
 | Carlos register review (AC-9) | P0 | ⬜ Pending Carlos |
 
-### Phase 6 — Infra (code complete; GCP bootstrap pending Carlos)
+### Phase 6 — Infra ☑ COMPLETE
 | Feature | Priority | Status |
 |---------|----------|--------|
-| Dockerfile + standalone output | P2 | ✅ Done (SPEC-P6) |
+| Dockerfile + standalone output (linux/amd64) | P2 | ✅ Done (SPEC-P6) |
 | `.dockerignore` + `next.config.mjs` standalone + noindex | P2 | ✅ Done (SPEC-P6) |
-| GitHub Actions CI/CD (lint + test + build + deploy) | P2 | ✅ Done (SPEC-P6) |
+| GitHub Actions CI/CD (dev→dev, main→prod, WIF keyless) | P2 | ✅ Done (SPEC-P6) |
 | `docs/infra-runbook.md` + `docs/infra-decisions.md` | P2 | ✅ Done (SPEC-P6) |
-| GCP bootstrap (Carlos): project, billing, APIs, AR | P2 | ⬜ Awaiting Carlos |
-| Deployer SA + WIF keyless auth | P2 | ⬜ Awaiting Carlos |
-| Secret Manager secrets | P2 | ⬜ Awaiting Carlos |
-| dev + prod Cloud Run services deployed | P2 | ⬜ Awaiting Carlos |
-| Domain mapping + budget alert | P2 | ⬜ Awaiting Carlos |
-| Resend + Workspace + DNS (email) | P2 | ⬜ Deferred |
+| GCP project `escala-dv-web`, billing, APIs, AR EU | P2 | ✅ Done (SPEC-P6) |
+| Deployer SA + WIF keyless auth | P2 | ✅ Done (SPEC-P6) |
+| Secret Manager: CONTACT_TO, CONTACT_FROM, EMAIL_API_KEY | P2 | ✅ Done (SPEC-P6) |
+| dev service live (public, noindex, DRY_RUN) | P2 | ✅ Done (SPEC-P6) |
+| prod service live (public, DRY_RUN until Resend ready) | P2 | ✅ Done (SPEC-P6) |
+| Domain mapping prepared (DNS not switched) | P2 | ✅ Done (SPEC-P6) |
+| Budget alert €10/month | P2 | ✅ Done (SPEC-P6) |
+| `next-env.d.ts` committed (CI tsc fix) | P2 | ✅ Done (SPEC-P6) |
+| Resend account + email verification | P2 | ⬜ Deferred (Phase 7) |
+| Google Workspace MX + DNS records | P2 | ⬜ Deferred (Phase 7) |
+| DNS switch to Cloud Run (go-live) | P2 | ⬜ Phase 7 |
 
 ### Phase 7 — Launch QA
 | Feature | Priority | Backlog ID |
