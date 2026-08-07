@@ -1,0 +1,208 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Escala Digital Ventures — CI/CD Pipeline
+# SPEC-P6 FR-3 · AC-2 · AC-3 · AC-4 · AC-11
+#
+# Triggers:
+#   push to main  → CI (lint + typecheck + test) → build image → deploy dev
+#   workflow_dispatch (manual) → deploy prod (requires "production" environment approval)
+#
+# Auth: Workload Identity Federation (keyless — no SA JSON keys in secrets)
+#
+# GitHub Variables to set (Settings → Secrets and variables → Actions → Variables):
+#   GCP_PROJECT_ID          e.g. escala-web
+#   GCP_REGION              europe-west1
+#   AR_REPO                 escala-web-docker   (Artifact Registry repo name)
+#   CLOUD_RUN_SERVICE_DEV   escala-web-dev
+#   CLOUD_RUN_SERVICE_PROD  escala-web-prod
+#   WIF_PROVIDER            projects/<NUM>/locations/global/workloadIdentityPools/<POOL>/providers/<PROVIDER>
+#   WIF_SERVICE_ACCOUNT     escala-deployer@<PROJECT>.iam.gserviceaccount.com
+#
+# GitHub Secrets to set (Settings → Secrets and variables → Actions → Secrets):
+#   (none — auth is keyless via WIF; app secrets live in Secret Manager, not here)
+#
+# GitHub Environment to create (Settings → Environments):
+#   Name: "production"
+#   Required reviewers: carlos.olivares.ve@gmail.com
+#   This gates the prod deploy step.
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: CI / Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      deploy_prod:
+        description: 'Deploy to production (requires environment approval)'
+        required: true
+        default: 'false'
+        type: choice
+        options: ['true', 'false']
+
+env:
+  # Derived image tag: europe-west1-docker.pkg.dev/<PROJECT>/<REPO>/escala-web:<SHA>
+  IMAGE: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/${{ vars.AR_REPO }}/escala-web
+
+jobs:
+  # ── 1. CI: lint + typecheck + test ─────────────────────────────────────────
+  ci:
+    name: CI (lint · typecheck · test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
+      - name: Tests + coverage (gate ≥70%)
+        # Runs Vitest with coverage — fails if below threshold (AC-11)
+        # Also runs the i18n coverage guard and placeholder guard (part of the test suite)
+        run: npm run test:coverage
+
+  # ── 2. Build & push image ──────────────────────────────────────────────────
+  build:
+    name: Build & push image
+    needs: ci
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write   # Required for Workload Identity Federation
+
+    outputs:
+      image_tag: ${{ steps.meta.outputs.image_tag }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud (keyless WIF)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ vars.GCP_REGION }}-docker.pkg.dev --quiet
+
+      - name: Compute image tag
+        id: meta
+        run: |
+          TAG="${{ env.IMAGE }}:${{ github.sha }}"
+          echo "image_tag=${TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            --build-arg NEXT_PUBLIC_SITE_URL=https://escaladigitalventures.com \
+            --tag "${{ steps.meta.outputs.image_tag }}" \
+            --tag "${{ env.IMAGE }}:latest" \
+            .
+
+      - name: Push to Artifact Registry
+        run: |
+          docker push "${{ steps.meta.outputs.image_tag }}"
+          docker push "${{ env.IMAGE }}:latest"
+
+  # ── 3. Deploy dev (auto on every push to main) ─────────────────────────────
+  deploy-dev:
+    name: Deploy → dev
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Authenticate to Google Cloud (keyless WIF)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy to Cloud Run (dev)
+        run: |
+          gcloud run deploy ${{ vars.CLOUD_RUN_SERVICE_DEV }} \
+            --image "${{ needs.build.outputs.image_tag }}" \
+            --region ${{ vars.GCP_REGION }} \
+            --platform managed \
+            --no-allow-unauthenticated \
+            --min-instances 0 \
+            --max-instances 2 \
+            --cpu 1 \
+            --memory 512Mi \
+            --concurrency 80 \
+            --cpu-throttling \
+            --set-env-vars "NODE_ENV=production,EMAIL_DRY_RUN=true" \
+            --set-secrets "CONTACT_TO=CONTACT_TO:latest,CONTACT_FROM=CONTACT_FROM:latest,EMAIL_API_KEY=EMAIL_API_KEY:latest" \
+            --quiet
+
+      - name: Print dev URL
+        run: |
+          URL=$(gcloud run services describe ${{ vars.CLOUD_RUN_SERVICE_DEV }} \
+            --region ${{ vars.GCP_REGION }} \
+            --format 'value(status.url)')
+          echo "Dev URL: ${URL}"
+
+  # ── 4. Deploy prod (manual approval via GitHub Environment) ────────────────
+  deploy-prod:
+    name: Deploy → prod
+    needs: build
+    # Only runs on manual dispatch with deploy_prod=true, OR can be triggered
+    # separately. The "production" environment requires manual approval.
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.deploy_prod == 'true'
+    runs-on: ubuntu-latest
+    environment: production   # ← GitHub Environment gate (requires reviewer approval)
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Authenticate to Google Cloud (keyless WIF)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy to Cloud Run (prod)
+        run: |
+          gcloud run deploy ${{ vars.CLOUD_RUN_SERVICE_PROD }} \
+            --image "${{ needs.build.outputs.image_tag }}" \
+            --region ${{ vars.GCP_REGION }} \
+            --platform managed \
+            --no-allow-unauthenticated \
+            --min-instances 0 \
+            --max-instances 4 \
+            --cpu 1 \
+            --memory 512Mi \
+            --concurrency 80 \
+            --cpu-throttling \
+            --set-env-vars "NODE_ENV=production,EMAIL_DRY_RUN=false" \
+            --set-secrets "CONTACT_TO=CONTACT_TO:latest,CONTACT_FROM=CONTACT_FROM:latest,EMAIL_API_KEY=EMAIL_API_KEY:latest" \
+            --quiet
+
+      - name: Print prod URL
+        run: |
+          URL=$(gcloud run services describe ${{ vars.CLOUD_RUN_SERVICE_PROD }} \
+            --region ${{ vars.GCP_REGION }} \
+            --format 'value(status.url)')
+          echo "Prod URL: ${URL}"

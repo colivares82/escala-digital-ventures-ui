@@ -16,7 +16,7 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | R-1.2 | Languages: ES (default), EN, CA | ✅ | Routing + locale-switcher done (Phase 1). EN/CA serve ES fallback until Phase 5 translations. |
 | R-1.3 | Next.js App Router + TypeScript strict + Tailwind | ✅ | Exact stack in use |
 | R-1.4 | SSG for all pages | ✅ | `dynamicParams = false` + `generateStaticParams` enforces full SSG; verified with `npm run build` (all routes ○) |
-| R-1.5 | Google Cloud Run (dev + prod), CI/CD GitHub Actions | ⬜ | Not yet configured |
+| R-1.5 | Google Cloud Run (dev + prod), CI/CD GitHub Actions | ✅ | SPEC-P6 — Dockerfile, GitHub Actions CI/CD, Cloud Run services (dev+prod), WIF keyless auth, Secret Manager. Runbook: `docs/infra-runbook.md`. GCP bootstrap requires Carlos to run the interactive steps. |
 | R-1.6 | Architecture allows `/insights` without restructuring | ✅ | App Router supports adding routes without touching existing ones |
 | R-1.7 | Editorial: never name former employers | ✅ | Copy uses anonymized formulas throughout |
 | R-1.8 | Founder trajectory not on this site | ✅ | Footer mentions `colivares.com` as plain text, no `<a>` |

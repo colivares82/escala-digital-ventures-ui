@@ -125,16 +125,24 @@ Status: ☑ done (SPEC-P5)
 **Exit criteria:** ✅ Code complete. Carlos register review + legal placeholder resolution pending.
 
 ## PHASE 6 — Google Cloud infrastructure & domain (kept for the end)
-Status: ☐ (blocked: GCP account not ready)
-- ☐ Dockerfile (`output: "standalone"`).
-- ☐ Cloud Run services `dev` + `prod`, European region.
-- ☐ GitHub Actions: lint + test + build → deploy dev → manual approval
-  → prod. (Note: branch workflow for dev/main will be configured when
-  GCP is ready; branches can be created now without the cloud target.)
-- ☐ `dev.escaladigitalventures.com` protected (IAP or basic auth).
-- ☐ Domain mapping for prod prepared (DNS not switched yet).
+Status: ◐ in progress (code complete; GCP bootstrap requires Carlos)
+- ☑ Dockerfile (`output: "standalone"`, multi-stage, non-root, PORT 8080).
+- ☑ `.dockerignore` — lean build context, no secrets.
+- ☑ `next.config.mjs` — `output: "standalone"` + `X-Robots-Tag: noindex` for dev env.
+- ☑ `.github/workflows/deploy.yml` — CI (lint + typecheck + test:coverage ≥70%) → build image → push to Artifact Registry → auto-deploy dev → manual-approval prod (GitHub Environment "production").
+- ☑ `docs/infra-runbook.md` — step-by-step interactive setup (13 steps, every Carlos-input point marked).
+- ☑ `docs/infra-decisions.md` — 12 architecture decisions with rationale.
+- ☑ `.env.example` — `NEXT_PUBLIC_NOINDEX` documented.
+- ☐ GCP bootstrap (Carlos): gcloud auth login, create project `escala-web`, link billing, enable APIs, create Artifact Registry EU repo + cleanup policy. (Runbook Step 0–3)
+- ☐ Deployer SA + WIF keyless auth (Carlos). (Runbook Step 4–5)
+- ☐ Secret Manager secrets: CONTACT_TO, CONTACT_FROM, EMAIL_API_KEY placeholder. (Runbook Step 6)
+- ☐ First manual deploy of dev service + GitHub Actions variables + "production" environment. (Runbook Step 7–8)
+- ☐ Prod service deploy + domain mapping prepared (DNS not switched). (Runbook Step 9–10)
+- ☐ Budget alert €10/month. (Runbook Step 12)
+- ☐ Resend account + domain verification + email test (deferred). (Runbook Step 13)
+- ☐ Google Workspace MX + DNS records at GoDaddy (deferred). (Runbook Step 11)
 **Exit criteria:** push to main reaches dev automatically; prod deploys
-only on approval.
+only on approval. (Code complete — awaiting Carlos GCP bootstrap.)
 
 ## PHASE 7 — Launch QA & go-live
 Status: ☐

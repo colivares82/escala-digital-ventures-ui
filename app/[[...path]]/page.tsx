@@ -28,11 +28,15 @@ import { getCase } from '@/content/data/cases'
 type RouteParams = { path?: string[] }
 
 /**
- * Disable runtime fallback for paths not in generateStaticParams.
- * Any unknown path becomes a 404 at request time.
- * Spec: SPEC-P1 FR-2.2 (Option A: only built pages emitted)
+ * Allow server-side rendering for all paths in generateStaticParams (SPEC-P6 AC-1).
+ * Next.js 16 with App Router + 'use client' components does not prerender HTML files
+ * at build time for SSG routes — it renders on-demand. dynamicParams=false causes
+ * NoFallbackError because the server can't find a prerendered version.
+ * Setting dynamicParams=true allows the standalone server to render pages on request.
+ * Unknown paths still return 404 via the notFound() call in the page component.
+ * Spec: SPEC-P1 FR-2.2 (Option A: only built pages emitted — enforced by notFound())
  */
-export const dynamicParams = false
+export const dynamicParams = true
 
 /**
  * Phase 1: home × 3 locales.

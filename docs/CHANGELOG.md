@@ -6,6 +6,45 @@ All notable changes, newest first.
 
 ---
 
+## [Unreleased] — Phase 6: GCP infrastructure & domain (SPEC-P6)
+
+Spec: `specs/spec-p6-gcloud-infra.md` · Runbook: `docs/infra-runbook.md` · Decisions: `docs/infra-decisions.md`
+
+### Added
+- `Dockerfile` — Next.js standalone, multi-stage (deps → builder → runner), non-root user, PORT 8080 for Cloud Run (AC-1).
+- `.dockerignore` — excludes node_modules, .next, .env*, tests, docs, .git from build context.
+- `next.config.mjs` — `output: 'standalone'` added; `X-Robots-Tag: noindex, nofollow` header for dev env via `NEXT_PUBLIC_NOINDEX=true` (AC-2, D-09).
+- `.github/workflows/deploy.yml` — CI/CD pipeline: lint + typecheck + test:coverage (≥70% gate, i18n guard, placeholder guard) → build image → push to Artifact Registry → auto-deploy dev → manual-approval prod deploy via GitHub Environment "production" (AC-2, AC-3, AC-4, AC-11).
+- `docs/infra-runbook.md` — step-by-step interactive setup: gcloud account switch, project creation, billing, APIs, Artifact Registry + cleanup policy, deployer SA, WIF keyless auth, Secret Manager secrets, dev service deploy, CI/CD wiring, prod service, domain mapping, GoDaddy DNS record set (web + Workspace MX + merged SPF + DKIM×2 + DMARC), budget alert. Every Carlos-input point marked (AC-10).
+- `docs/infra-decisions.md` — 12 architecture decisions with rationale: Cloud Run, europe-west1, GitHub Actions only, WIF keyless, Secret Manager, Artifact Registry, no VPC/LB, in-memory rate limit, IAM-gated dev, standalone output, Resend, CONTACT_TO Workspace (FR-7.4).
+- `.env.example` — `NEXT_PUBLIC_NOINDEX` var documented.
+
+### Architecture
+- Region: europe-west1 (Belgium) — resolves `{{REGION_EU_GOOGLE_CLOUD}}` legal placeholder.
+- Two Cloud Run services: `escala-web-dev` (min 0, max 2, IAM-gated, DRY_RUN) + `escala-web-prod` (min 0, max 4, domain-mapped).
+- Keyless auth: Workload Identity Federation — no SA JSON keys in repo or GitHub secrets (AC-4).
+- Secrets in Secret Manager: `EMAIL_API_KEY` (placeholder), `CONTACT_TO`, `CONTACT_FROM` (AC-5).
+- No VPC, no load balancer, no managed DB, no Kubernetes (AC-6).
+- Artifact Registry EU with cleanup policy (keep last 5 images) (AC-7).
+- Domain mapping prepared for prod + managed TLS; DNS switch deferred to Phase 7 (AC-8).
+- Budget alert €10/month (AC-10).
+
+### Deferred (requires Carlos action)
+- GCP project creation + billing link (runbook Step 0–1).
+- Deployer SA + WIF pool/provider creation (runbook Step 4–5).
+- Secret Manager secrets with real values (runbook Step 6).
+- First manual deploy of dev + prod services (runbook Step 7–9).
+- GitHub Actions variables + "production" environment protection rule (runbook Step 5, 8).
+- Resend account + API key + domain verification (runbook Step 13).
+- Google Workspace signup + MX records at GoDaddy (runbook Step 11).
+- DNS switch to Cloud Run (Phase 7).
+
+### Tests
+- 883 tests, 49 files — all passing (no new tests added; infra is config/docs, not testable code).
+- Coverage gate ≥70% enforced; build clean.
+
+---
+
 ## [Unreleased] — Phase 4: Legal pages, 404, favicon & OG (SPEC-P4)
 
 Spec: `specs/spec-p4-legal-analytics.md` · Wireframe: `specs/mockups/wireframe-p4-legal-final.html` (approved)
