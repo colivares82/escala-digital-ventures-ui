@@ -6,6 +6,118 @@ All notable changes, newest first.
 
 ---
 
+## [Unreleased] — Phase 6: GCP infrastructure & domain (SPEC-P6)
+
+Spec: `specs/spec-p6-gcloud-infra.md` · Runbook: `docs/infra-runbook.md` · Decisions: `docs/infra-decisions.md`
+
+### Added
+- `Dockerfile` — Next.js standalone, multi-stage (deps → builder → runner), non-root user, PORT 8080 for Cloud Run (AC-1).
+- `.dockerignore` — excludes node_modules, .next, .env*, tests, docs, .git from build context.
+- `next.config.mjs` — `output: 'standalone'` added; `X-Robots-Tag: noindex, nofollow` header for dev env via `NEXT_PUBLIC_NOINDEX=true` (AC-2, D-09).
+- `.github/workflows/deploy.yml` — CI/CD pipeline: lint + typecheck + test:coverage (≥70% gate, i18n guard, placeholder guard) → build image → push to Artifact Registry → auto-deploy dev → manual-approval prod deploy via GitHub Environment "production" (AC-2, AC-3, AC-4, AC-11).
+- `docs/infra-runbook.md` — step-by-step interactive setup: gcloud account switch, project creation, billing, APIs, Artifact Registry + cleanup policy, deployer SA, WIF keyless auth, Secret Manager secrets, dev service deploy, CI/CD wiring, prod service, domain mapping, GoDaddy DNS record set (web + Workspace MX + merged SPF + DKIM×2 + DMARC), budget alert. Every Carlos-input point marked (AC-10).
+- `docs/infra-decisions.md` — 12 architecture decisions with rationale: Cloud Run, europe-west1, GitHub Actions only, WIF keyless, Secret Manager, Artifact Registry, no VPC/LB, in-memory rate limit, IAM-gated dev, standalone output, Resend, CONTACT_TO Workspace (FR-7.4).
+- `.env.example` — `NEXT_PUBLIC_NOINDEX` var documented.
+
+### Architecture
+- Region: europe-west1 (Belgium) — resolves `{{REGION_EU_GOOGLE_CLOUD}}` legal placeholder.
+- Two Cloud Run services: `escala-web-dev` (min 0, max 2, IAM-gated, DRY_RUN) + `escala-web-prod` (min 0, max 4, domain-mapped).
+- Keyless auth: Workload Identity Federation — no SA JSON keys in repo or GitHub secrets (AC-4).
+- Secrets in Secret Manager: `EMAIL_API_KEY` (placeholder), `CONTACT_TO`, `CONTACT_FROM` (AC-5).
+- No VPC, no load balancer, no managed DB, no Kubernetes (AC-6).
+- Artifact Registry EU with cleanup policy (keep last 5 images) (AC-7).
+- Domain mapping prepared for prod + managed TLS; DNS switch deferred to Phase 7 (AC-8).
+- Budget alert €10/month (AC-10).
+
+### Deferred (requires Carlos action)
+- GCP project creation + billing link (runbook Step 0–1).
+- Deployer SA + WIF pool/provider creation (runbook Step 4–5).
+- Secret Manager secrets with real values (runbook Step 6).
+- First manual deploy of dev + prod services (runbook Step 7–9).
+- GitHub Actions variables + "production" environment protection rule (runbook Step 5, 8).
+- Resend account + API key + domain verification (runbook Step 13).
+- Google Workspace signup + MX records at GoDaddy (runbook Step 11).
+- DNS switch to Cloud Run (Phase 7).
+
+### Tests
+- 883 tests, 49 files — all passing (no new tests added; infra is config/docs, not testable code).
+- Coverage gate ≥70% enforced; build clean.
+
+---
+
+## [Unreleased] — Phase 4: Legal pages, 404, favicon & OG (SPEC-P4)
+
+Spec: `specs/spec-p4-legal-analytics.md` · Wireframe: `specs/mockups/wireframe-p4-legal-final.html` (approved)
+
+**LEGAL DISCLAIMER:** Legal copy drafted from MAGUPELL contract + LSSI-CE/RGPD. Not legal advice. A qualified advisor must review before go-live.
+
+### Added
+- `content/es/legal.ts` — full LSSI-CE aviso legal (5 sections: Titular, Objeto, Propiedad intelectual, Responsabilidad, Legislación). Unconfirmed data uses `{{PLACEHOLDER}}` tokens. No physical address. IP section states code/contents are Escala's (consistent with SPEC-FIX-01).
+- `content/es/privacy.ts` — full RGPD privacy policy (6 sections: Responsable, Datos y finalidad, Base legal, Conservación, Destinatarios, Tus derechos). Explicit no-tracking-cookies statement. AEPD reference.
+- `content/es/shared.ts` — `notFound` block added (code, h1, body, ctaLabel, diagramAria).
+- `content/types.ts` — `LegalDictionary` + `PrivacyDictionary` full interfaces (replaced Phase 1 stubs). New: `LegalSection`, `LegalKvRow`, `NotFoundContent` types.
+- `components/anchor-nav.tsx` — sticky side navigation for legal pages. IntersectionObserver active-section highlight (debounced to avoid thrash). Keyboard operable. `'use client'`.
+- `components/legal-doc.tsx` — shared two-column layout (sticky 230px anchor + ≤70ch reading column). Renders `{{PLACEHOLDER}}` tokens with ambre highlight (dev warning, FR-4.2). Mobile: top índice list replaces sticky aside.
+- `components/pages/legal.tsx` — /aviso-legal page compositor.
+- `components/pages/privacy.tsx` — /privacidad page compositor.
+- `app/not-found.tsx` — identity-branded 404: abisal + GridBackground + kit micro-diagram (dashed path INICIO → ambre "?" node) + «Fuera del sistema.» + home CTA. Reduced-motion static. noindex (Next.js auto).
+- `app/icon.svg` — squares logomark favicon (draft — Carlos to approve before launch). Brand tokens: abisal bg, paper/ambre squares.
+- `app/opengraph-image.tsx` — generic site-wide OG image (1200×630). Abisal background, grid motif, claim in Archivo, ambre accent. Edge runtime.
+- `app/layout.tsx` — `metadataBase` added (resolves OG image URLs; falls back to localhost in dev).
+- `lib/placeholders.ts` — `collectPlaceholders()` + `hasPlaceholder()` utilities for detecting unresolved `{{...}}` tokens.
+- `tests/content/legal-content.test.ts` — 23 tests: 5/6 sections, required IDs, meta limits, no-cookies statement, AEPD reference, placeholder detection, address guard.
+- `tests/components/legal-doc.test.tsx` — 9 tests: H1, eyebrow, sections, KV rows, placeholder highlight, mobile nav.
+- `tests/components/anchor-nav.test.tsx` — 8 tests: aria-label, links, active state, click behavior.
+- `tests/components/not-found.test.tsx` — 5 tests: error code, H1, body, CTA href, SVG aria-label.
+
+### Changed
+- `app/[[...path]]/page.tsx` — `LegalPage` + `PrivacyPage` imports; `BUILT_PAGES` + `generateStaticParams` + render branches for 'legal' + 'privacy' × 3 locales each.
+- `app/sitemap.ts` — `{ page: 'legal' }` + `{ page: 'privacy' }` added (indexable per FR-6.3).
+- `app/globals.css` — Phase 4 CSS blocks added: `.legal-doc` two-column layout, `.anchor-nav` sticky nav, `.legal-doc__placeholder` ambre highlight, `.not-found` identity-branded 404.
+- `app/styleguide/page.tsx` — section 11 "LEGAL DOC — FASE 4" added: AnchorNav demo + LegalDoc (/aviso-legal) + LegalDoc (/privacidad).
+- `docs/REQUIREMENTS_TRACEABILITY.md` — R-4.1, R-4.6, R-5.4–R-5.9, R-8.2, R-8.4, R-8.7 updated to ✅/🚫.
+
+### Decisions
+- **No analytics** (Carlos's choice) → no third-party cookies → no cookie banner. ANALYTICS-01 dropped.
+- **No physical address** (Carlos's choice). LSSI-CE satisfied with company name + NIF + email.
+- **Favicon artwork is a draft** — Carlos to review and replace with final approved logomark before launch.
+- **Placeholders not publishable** — `{{FECHA_ACTUALIZACION}}`, `{{REGISTRO_MERCANTIL}}`, `{{NIF_B88767520}}`, `{{JURISDICCION}}`, `{{REGION_EU_GOOGLE_CLOUD}}` must be resolved before go-live.
+
+---
+
+## [Unreleased] — Phase 2.6 + 2.7: /contacto + contact backend + link audit (SPEC-P2.6)
+
+Spec: `specs/spec-p2.6-contacto-y-link-audit.md` · Wireframe: `specs/mockups/wireframe-p2.6-contacto-final.html` (approved)
+
+**Phase 2 COMPLETE — all interior pages shipped. Phase 3 backend folded into 2.6.**
+
+### Added
+- `components/contact-success.tsx` — **new reusable confirmation card**. Props: `variant` (section/dossier), `dossierRef`, `onResend`. Renders ambre SVG check-circle, "Mensaje enviado." H2, body copy, "ENVIAR OTRO MENSAJE ↺" resend action. Used by both FinalCTA (section) and /contacto (dossier).
+- `components/pages/contact.tsx` — /contacto page compositor. Full-viewport two-column immersive layout: LEFT (editorial invitation + affinity filter × 3 + mono directMeta block) · RIGHT (ContactForm dossier variant). No GridBackground (plain abisal + radial gradient). No FinalCTA (page IS the CTA).
+- `app/api/contact/route.ts` — POST handler. Node.js runtime. Per-IP in-memory rate limit (5/min, configurable). Honeypot silent-200. Server-side validation (fields, email, ≥20-char message, consent, honeypot). Dispatches via `lib/email.ts`.
+- `lib/email.ts` — provider abstraction. `sendContactNotification(payload)` via Resend (native fetch, no npm dep). DRY_RUN mode when no API key. reply-to = visitor email (Carlos replies directly). Phase 6: domain flip = env change only.
+- `.env.example` — documents all 7 contact env vars (EMAIL_PROVIDER, EMAIL_API_KEY, CONTACT_TO, CONTACT_FROM, CONTACT_SUBJECT_PREFIX, RATE_LIMIT_PER_MIN, EMAIL_DRY_RUN).
+- `content/es/contact.ts` — full contact dictionary (pageHeader, affinityFilter × 3, directMeta, dossierHeader, trustLine).
+- `content/types.ts` — `ContactDictionary` full interface (replaced Phase 1 stub).
+- `docs/link-audit.md` — full link audit report: every nav/footer/section/CTA link × 3 locales × status.
+- `tests/components/contact-form.test.tsx` — 18 tests (updated for API fetch, loading, success, error, resend, honeypot, dossier variant).
+- `tests/components/contact-success.test.tsx` — 9 new tests (section/dossier variants, resend callback, SVG aria-hidden).
+- `tests/content/contact-content.test.ts` — 16 new tests (meta lengths, affinity 3 items, Gmail leak guard, public email location).
+
+### Changed
+- `components/contact-form.tsx` — **upgraded** (not replaced). New: `variant` prop (section/dossier), `dossierTitle`/`dossierRef` props, hidden honeypot field, `fetch` → `/api/contact`, loading/success/apiError state machine, `ContactSuccess` on success, API error message on failure (form populated). Removed: `success` prop (copy now in `sharedContent`). `initialState` still works for testing/styleguide.
+- `content/es/shared.ts` — `contactForm` extended with new keys: `sendLabel`, `sending`, `successHeader`, `successRef`, `successH2`, `successBody`, `successResend`, `errorApiPrefix`, `errorApiSuffix`.
+- `components/final-cta.tsx` — removed `success` prop from `<ContactForm>` call (copy now in sharedContent). No behavior change.
+- `components/site-chrome.tsx` — «Hablemos» CTA changed from `ANCHORS.CONTACTO` (#contacto) to `ROUTES.CONTACT` (/contacto). **Link audit fix.**
+- `components/pages/services.tsx` — `IdealClientNote` `ctaHref` changed from `"#contacto"` to `ROUTES.CONTACT`. **Link audit fix.**
+- `app/[[...path]]/page.tsx` — `ContactPage` import, `BUILT_PAGES` + `generateStaticParams` + render branch added for 'contact' × 3 locales.
+- `app/sitemap.ts` — `{ page: 'contact' }` added.
+- `app/globals.css` — Phase 2.6 CSS block added: `.contact-page` two-column immersive layout, `.contact-form--dossier` header, `.contact-form__dossier-head/title/ref`, `.contact-success` variants (section/dossier), `.contact-api-error`, `.contact-hp`, `button[disabled]`.
+- `app/styleguide/page.tsx` — section 04 updated: removed `success` prop, added dossier confirmation demo.
+- `tests/content/ownership-guard.test.ts` — Gmail leak guard added (SPEC-P2.6 AC-5).
+
+---
+
 ## [Unreleased] — Phase 2.5: /sobre-escala (SPEC-P2.5)
 
 Spec: `specs/spec-p2.5-sobre-escala.md` · Wireframe: `specs/mockups/wireframe-p2.5-sobre-escala.html` (approved)

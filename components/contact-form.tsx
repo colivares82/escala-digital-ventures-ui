@@ -1,25 +1,59 @@
+/**
+ * ContactForm — reusable form used on every page via FinalCTA and /contacto.
+ *
+ * Variants:
+ *   'section'  (default) — home / interior pages via FinalCTA, existing look.
+ *   'dossier'            — /contacto page, ficha-de-expediente framing.
+ *
+ * copy and privacyHref come from the locale-aware dictionary (SPEC-P5 FR-5).
+ * Spec: SPEC-P2.6 FR-2, FR-3, FR-5, FR-6
+ */
 'use client'
 
 import { useState, type FormEvent } from 'react'
-import { sharedContent } from '@/content/es/shared'
-import { ROUTES } from '@/lib/routes'
+import { ContactSuccess } from '@/components/contact-success'
+import type { sharedContent } from '@/content/es/shared'
+
+type ContactFormCopy = typeof sharedContent.contactForm
+
+// ─── Types ────────────────────────────────────────────────────────────────────
 
 type ContactField = 'name' | 'company' | 'email' | 'blocker' | 'consent'
 type Errors = Partial<Record<ContactField, string>>
+type FormState = 'idle' | 'loading' | 'success' | 'apiError'
 
-type ContactFormProps = {
+export type ContactFormProps = {
+  /** Locale-aware contactForm copy from shared dictionary. */
+  copy: ContactFormCopy
+  /** Locale-aware href for the privacy policy link. */
+  privacyHref: string
+  /** Public display email — shown in fallback links. Never the internal Gmail. */
   email: string
-  success: string
+  /** Layout variant (default: 'section'). */
+  variant?: 'section' | 'dossier'
+  /** Dossier header title — e.g. "FICHA DE CONTACTO". Only in 'dossier' variant. */
+  dossierTitle?: string
+  /** Dossier header ref text — e.g. "ESCALA · REF. CONTACTO". Only in 'dossier' variant. */
+  dossierRef?: string
+  /**
+   * Seed initial state — for testing / styleguide demos only.
+   * 'error': pre-fills all validation errors (form in idle with errors).
+   * 'success': renders success card immediately (skips API call).
+   */
   initialState?: 'default' | 'error' | 'success'
 }
 
+// ─── Main component ───────────────────────────────────────────────────────────
+
 export function ContactForm({
+  copy,
+  privacyHref,
   email,
-  success,
+  variant = 'section',
+  dossierTitle,
+  dossierRef,
   initialState = 'default',
 }: ContactFormProps) {
-  const copy = sharedContent.contactForm
-
   const seededErrors: Errors =
     initialState === 'error'
       ? {
@@ -32,66 +66,98 @@ export function ContactForm({
       : {}
 
   const [errors, setErrors] = useState<Errors>(seededErrors)
-  const [submitted, setSubmitted] = useState(initialState === 'success')
+  const [formState, setFormState] = useState<FormState>(
+    initialState === 'success' ? 'success' : 'idle',
+  )
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function resetForm() {
+    setErrors({})
+    setFormState('idle')
+  }
+
+  if (formState === 'success') {
+    return (
+      <ContactSuccess
+        copy={copy}
+        variant={variant}
+        dossierRef={dossierRef}
+        onResend={resetForm}
+      />
+    )
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
+
+    // ── Client-side validation ──────────────────────────────────────────────
     const nextErrors: Errors = {}
     const emailValue = String(data.get('email') ?? '').trim()
 
-    if (!String(data.get('name') ?? '').trim()) {
-      nextErrors.name = copy.errors.name
-    }
-    if (!String(data.get('company') ?? '').trim()) {
-      nextErrors.company = copy.errors.company
-    }
+    if (!String(data.get('name') ?? '').trim()) nextErrors.name = copy.errors.name
+    if (!String(data.get('company') ?? '').trim()) nextErrors.company = copy.errors.company
     if (!emailValue) {
       nextErrors.email = copy.errors.emailRequired
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
       nextErrors.email = copy.errors.emailInvalid
     }
-    if (!String(data.get('blocker') ?? '').trim()) {
+    if (String(data.get('blocker') ?? '').trim().length < 20)
       nextErrors.blocker = copy.errors.blocker
-    }
-    if (data.get('consent') !== 'on') {
-      nextErrors.consent = copy.errors.consent
-    }
+    if (data.get('consent') !== 'on') nextErrors.consent = copy.errors.consent
 
     setErrors(nextErrors)
-    if (!Object.keys(nextErrors).length) setSubmitted(true)
+    if (Object.keys(nextErrors).length > 0) return
+
+    // ── API submission ──────────────────────────────────────────────────────
+    setFormState('loading')
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: String(data.get('name')).trim(),
+          company: String(data.get('company')).trim(),
+          email: emailValue,
+          blocker: String(data.get('blocker')).trim(),
+          consent: true,
+          website: data.get('website') ?? '', // honeypot — always empty on legit submit
+        }),
+      })
+      setFormState(res.ok ? 'success' : 'apiError')
+    } catch {
+      setFormState('apiError')
+    }
   }
 
-  if (submitted) {
-    return (
-      <div className="contact-success" role="status" tabIndex={-1}>
-        <span>{copy.successLabel}</span>
-        <p>{success}</p>
-      </div>
-    )
-  }
+  const isLoading = formState === 'loading'
+  const isApiError = formState === 'apiError'
+  const submitLabel = isLoading
+    ? copy.sending
+    : variant === 'dossier'
+      ? copy.sendLabel
+      : copy.submit
 
   return (
-    <form className="contact-form" onSubmit={handleSubmit} noValidate>
-      <ContactInput
-        id="contact-name"
-        name="name"
-        label={copy.fields.name}
-        error={errors.name}
-      />
-      <ContactInput
-        id="contact-company"
-        name="company"
-        label={copy.fields.company}
-        error={errors.company}
-      />
-      <ContactInput
-        id="contact-email"
-        name="email"
-        label={copy.fields.email}
-        type="email"
-        error={errors.email}
-      />
+    <form
+      className={`contact-form contact-form--${variant}`}
+      onSubmit={handleSubmit}
+      noValidate
+    >
+      {/* Dossier variant header — title + ref from content props, no literals here */}
+      {variant === 'dossier' && (dossierTitle ?? dossierRef) && (
+        <div className="contact-form__dossier-head">
+          {dossierTitle && (
+            <span className="contact-form__dossier-title">{dossierTitle}</span>
+          )}
+          {dossierRef && (
+            <span className="contact-form__dossier-ref">{dossierRef}</span>
+          )}
+        </div>
+      )}
+
+      <ContactInput id="contact-name" name="name" label={copy.fields.name} error={errors.name} />
+      <ContactInput id="contact-company" name="company" label={copy.fields.company} error={errors.company} />
+      <ContactInput id="contact-email" name="email" label={copy.fields.email} type="email" error={errors.email} />
 
       <div className="contact-field contact-field--wide">
         <label htmlFor="contact-blocker">{copy.fields.blocker}</label>
@@ -109,6 +175,16 @@ export function ContactForm({
         )}
       </div>
 
+      {/* Honeypot — visually hidden, aria-hidden; must stay empty on legit submit */}
+      <input
+        type="text"
+        name="website"
+        className="contact-hp"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+      />
+
       <div className="contact-consent contact-field--wide">
         <input
           id="contact-consent"
@@ -119,7 +195,7 @@ export function ContactForm({
         />
         <label htmlFor="contact-consent">
           {copy.consentPrefix}{' '}
-          <a href={ROUTES.PRIVACY}>{copy.privacyLabel}</a>.
+          <a href={privacyHref}>{copy.privacyLabel}</a>.
         </label>
         {errors.consent && (
           <span className="contact-error" id="contact-consent-error">
@@ -128,11 +204,21 @@ export function ContactForm({
         )}
       </div>
 
-      <button type="submit">
-        {copy.submit} <span aria-hidden="true">↗</span>
+      <button type="submit" disabled={isLoading}>
+        {submitLabel} <span aria-hidden="true">↗</span>
       </button>
 
-      {Object.keys(errors).length > 0 && (
+      {/* API error — form stays populated; public email shown as fallback */}
+      {isApiError && (
+        <p className="contact-api-error contact-field--wide">
+          {copy.errorApiPrefix}{' '}
+          <a href={`mailto:${email}`}>{email}</a>{' '}
+          {copy.errorApiSuffix}
+        </p>
+      )}
+
+      {/* Validation error fallback */}
+      {Object.keys(errors).length > 0 && !isApiError && (
         <p className="contact-fallback">
           {copy.fallback}{' '}
           <a href={`mailto:${email}`}>{email}</a>
@@ -141,6 +227,8 @@ export function ContactForm({
     </form>
   )
 }
+
+// ─── Sub-component ────────────────────────────────────────────────────────────
 
 function ContactInput({
   id,

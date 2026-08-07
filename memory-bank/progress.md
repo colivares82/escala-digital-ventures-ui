@@ -143,6 +143,26 @@
 | 518 tests, 35 files — all passing (68 new tests added) | Complete |
 | `PLAN.md` Phase 2.4 marked ☑ | Complete |
 
+## What works ✅ — Phase 2.6 additions (+ Phase 2.7 link audit)
+
+| Feature | Status |
+|---------|--------|
+| `/contacto` at all 3 locale slugs (ES/EN/CA) | Complete |
+| `ContactDictionary` full interface + `contactContent` ES dict | Complete |
+| `ContactForm` upgraded: variant prop, honeypot, fetch, loading/success/apiError | Complete |
+| `ContactSuccess` reusable confirmation card (section/dossier variants) | Complete |
+| `FinalCTA` home parity — same backend, same success card | Complete |
+| `app/api/contact/route.ts` — POST, rate limit, honeypot, validation | Complete |
+| `lib/email.ts` — Resend abstraction, DRY_RUN, reply-to = visitor | Complete |
+| `.env.example` — all 7 env vars documented | Complete |
+| `generateStaticParams` +3; `BUILT_PAGES` + render branch | Complete |
+| Sitemap +1 page × 3 locales | Complete |
+| Link audit: «Hablemos» → /contacto; IdealClientNote → /contacto | Complete |
+| `docs/link-audit.md` produced | Complete |
+| Phase 2.6 CSS (contact-page, dossier form, success variants) | Complete |
+| 630 tests, 44 files — all passing (+34 new tests) | Complete |
+| `PLAN.md` Phase 2 + 2.6 + 2.7 marked ☑ | Complete |
+
 ## What works ✅ — Phase 2.5 additions
 
 | Feature | Status |
@@ -183,30 +203,42 @@
 | ~~Modelo de alianza `/modelo-de-alianza`~~ | ✅ Done | PAGE-04 |
 | ~~Sobre Escala `/sobre-escala`~~ | ✅ Done | PAGE-05 |
 
-### Phase 3 — Contact end-to-end
+### Phase 3 — Contact end-to-end (folded into Phase 2.6)
 | Feature | Priority | Backlog ID |
 |---------|----------|-----------|
-| Contact form API + email provider | P1 | CONTACT-01 |
-| Contacto dedicated page `/contacto` | P1 | PAGE-06 |
+| ~~Contact form API + email provider~~ | ✅ Done | CONTACT-01 |
+| ~~Contacto dedicated page `/contacto`~~ | ✅ Done | PAGE-06 |
 
-### Phase 4 — Legal & analytics
-| Feature | Priority | Backlog ID |
-|---------|----------|-----------|
-| Aviso legal + Privacidad legal pages | P1 | PAGE-07 |
-| Cookieless analytics (Plausible) | P2 | ANALYTICS-01 |
-| 404 page + favicon + OG images | P2 | SEO-01 |
+### Phase 4 — Legal & analytics ☑ COMPLETE
+| Feature | Priority | Status |
+|---------|----------|--------|
+| Aviso legal + Privacidad legal pages | P1 | ✅ Done (SPEC-P4) |
+| Cookieless analytics | — | 🚫 Dropped (Carlos decision) |
+| 404 page + favicon + OG images | P2 | ✅ Done (SPEC-P4) |
 
-### Phase 5 — EN & CA content
-| Feature | Priority | Backlog ID |
-|---------|----------|-----------|
-| Full EN + CA dictionaries (recrafted, not translated) | P2 | — |
-| hreflang QA across all pages | P2 | I18N-01 |
+### Phase 5 — EN & CA content ☑ COMPLETE
+| Feature | Priority | Status |
+|---------|----------|--------|
+| Full EN + CA dictionaries (recrafted, not translated) | P2 | ✅ Done (SPEC-P5) |
+| Coverage guard (no silent fallback) | P2 | ✅ Done (SPEC-P5) |
+| Localized 404 | P2 | ✅ Done (SPEC-P5) |
+| hreflang QA across all pages | P2 | ✅ Done (SPEC-P5) |
+| `docs/i18n-glossary.md` + `docs/i18n-qa.md` | P2 | ✅ Done (SPEC-P5) |
+| Carlos register review (AC-9) | P0 | ⬜ Pending Carlos |
 
-### Phase 6 — Infra (blocked: GCP not ready)
-| Feature | Priority | Backlog ID |
-|---------|----------|-----------|
-| Dockerfile + Cloud Run dev + prod | P2 | — |
-| GitHub Actions CI/CD (lint + test + build + deploy) | P2 | — |
+### Phase 6 — Infra (code complete; GCP bootstrap pending Carlos)
+| Feature | Priority | Status |
+|---------|----------|--------|
+| Dockerfile + standalone output | P2 | ✅ Done (SPEC-P6) |
+| `.dockerignore` + `next.config.mjs` standalone + noindex | P2 | ✅ Done (SPEC-P6) |
+| GitHub Actions CI/CD (lint + test + build + deploy) | P2 | ✅ Done (SPEC-P6) |
+| `docs/infra-runbook.md` + `docs/infra-decisions.md` | P2 | ✅ Done (SPEC-P6) |
+| GCP bootstrap (Carlos): project, billing, APIs, AR | P2 | ⬜ Awaiting Carlos |
+| Deployer SA + WIF keyless auth | P2 | ⬜ Awaiting Carlos |
+| Secret Manager secrets | P2 | ⬜ Awaiting Carlos |
+| dev + prod Cloud Run services deployed | P2 | ⬜ Awaiting Carlos |
+| Domain mapping + budget alert | P2 | ⬜ Awaiting Carlos |
+| Resend + Workspace + DNS (email) | P2 | ⬜ Deferred |
 
 ### Phase 7 — Launch QA
 | Feature | Priority | Backlog ID |
@@ -219,8 +251,13 @@
 
 | Issue | Severity | Notes |
 |-------|----------|-------|
-| Header nav: unbuilt pages still use home anchors | Low | /como-trabajamos → true route (Phase 2.1). Other pages link to home anchors (`/#que-hacemos`, etc.) until they ship. Follow-up action in BACKLOG. |
-| Contact form does not transmit | Medium | Expected v1 behavior. Phase 3 item. |
-| EN/CA locale content stubs only | Low | Expected; stubs warn against silent fallback. |
+| Contact form — real email delivery inactive | Low | DRY_RUN active (no API key). Phase 6: set EMAIL_API_KEY + verified CONTACT_FROM — zero code change needed. |
+| Contact rate limit ephemeral | Low | In-memory rate limit resets on Cloud Run cold-start. TODO(P6): swap to Redis/Upstash. |
+| EN/CA locale content stubs only | Low | Expected; stubs warn against silent fallback. Phase 5. |
 | GCP / GitHub Actions not configured | Low | Blocked by GCP account. Phase 6. |
 | FIG.06 provisional visual | Low | `ExecutionPipelineFig` is fully isolated; Carlos will redesign. Only that file needs to change. |
+| ServiceFig figures DRAFT | Low | All five are coherent drafts. Carlos will refine each variant individually. |
+| Logo-display permission (BioZero) | Low | Pending Carlos confirmation before go-live (Phase 7 checklist). FR-3.6. |
+| Legal placeholders unresolved | Medium | `{{FECHA_ACTUALIZACION}}`, `{{REGISTRO_MERCANTIL}}`, `{{NIF_B88767520}}`, `{{JURISDICCION}}`, `{{REGION_EU_GOOGLE_CLOUD}}` — Carlos must fill before go-live. Visible as ambre highlights in dev. |
+| Legal advisor review required | Medium | Legal copy drafted from MAGUPELL contract + LSSI-CE/RGPD. Not legal advice. Advisor must review before go-live. |
+| Favicon artwork is a draft | Low | `app/icon.svg` — Carlos to review and replace with final approved logomark before launch. |

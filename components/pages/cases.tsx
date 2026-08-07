@@ -11,7 +11,6 @@ import { PageHeader } from '@/components/page-header'
 import { cases } from '@/content/data/cases'
 import type { Dictionary } from '@/lib/i18n/dictionary'
 import type { Locale } from '@/lib/i18n/types'
-import { homeContent } from '@/content/es/home'
 
 interface CasesPageProps {
   dict: Dictionary
@@ -53,7 +52,7 @@ export function CasesPage({ dict, locale }: CasesPageProps) {
       </section>
 
       {/* FinalCTA — reused (SPEC-P2.3 FR-5) */}
-      <FinalCTA content={homeContent.finalCta} />
+      <FinalCTA dict={dict} locale={locale} />
     </>
   )
 }

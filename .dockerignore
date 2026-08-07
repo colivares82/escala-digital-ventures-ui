@@ -1,0 +1,46 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# .dockerignore — Escala Digital Ventures
+# Keeps the build context lean; secrets and dev artifacts never enter the image
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Dependencies (reinstalled inside the image)
+node_modules
+
+# Next.js build output (rebuilt inside the image)
+.next
+
+# Local env files — NEVER bake secrets into the image
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+
+# Git
+.git
+.gitignore
+
+# Editor / OS
+.DS_Store
+.vscode
+*.swp
+*.swo
+
+# Tests (not needed at runtime)
+tests
+vitest.config.ts
+coverage
+
+# Docs (not needed at runtime)
+docs
+specs
+memory-bank
+
+# CI
+.github
+
+# Misc
+README.md
+TODO.md
+DECISIONS.md
+PLAN.md

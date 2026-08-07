@@ -49,6 +49,11 @@ export type PhaseCycleProps = {
   ariaLabel: string
   /** Prefix for the phase eyebrow counter (e.g. "FASE"). */
   phasePrefix: string
+  /**
+   * Locale-aware href for the "How we work" action link.
+   * Defaults to the ES route for backward compat; pass getPath('method', locale) from callers.
+   */
+  methodHref?: string
 }
 
 export function PhaseCycle({
@@ -60,6 +65,7 @@ export function PhaseCycle({
   lead,
   ariaLabel,
   phasePrefix,
+  methodHref = ROUTES.METHOD,
 }: PhaseCycleProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
@@ -137,7 +143,7 @@ export function PhaseCycle({
               <span>{sectionLabel}</span>
             </p>
             {action && (
-              <a className="text-link" href={ROUTES.METHOD}>
+              <a className="text-link" href={methodHref}>
                 {action}
                 <span aria-hidden="true">↗</span>
               </a>
@@ -234,7 +240,7 @@ export function PhaseCycle({
         <h2>{title}</h2>
         <p>{lead}</p>
         {action && (
-          <a className="text-link" href={ROUTES.METHOD}>
+          <a className="text-link" href={methodHref}>
             {action}
             <span aria-hidden="true">↗</span>
           </a>

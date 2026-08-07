@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WIREFRAME P4 — legal + 404</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,500;112,600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#F7F7F4;--ink:#16181D;--mar:#0E3A5D;--abisal:#0A2B45;--abisal-deep:#082238;--ambre:#FFB703;--ambre-dk:#B85C00;
+    --display:'Archivo',system-ui,sans-serif;--body:'Instrument Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--body);background:var(--paper);color:var(--ink)}
+  .mono{font-family:var(--mono)}
+  .wf{background:#111;color:#eee;font-family:var(--mono);font-size:12px;padding:14px 32px;letter-spacing:.05em;position:sticky;top:0;z-index:99}
+  .wf b{color:var(--ambre)}
+  .bar{background:var(--mar);color:var(--paper);font-family:var(--mono);font-size:13px;padding:16px 6vw;letter-spacing:.08em}
+  .bar .t{color:var(--ambre)}
+  .bar small{display:block;opacity:.7;font-size:11px;margin-top:6px;letter-spacing:0;text-transform:none}
+  .note{font-family:var(--mono);font-size:11px;color:var(--ambre-dk);border-left:1px dashed var(--ambre-dk);padding-left:10px;margin:14px 6vw;max-width:730px;line-height:1.5}
+
+  /* LEGAL doc layout: sticky side anchor + readable column */
+  .legal{padding:64px 6vw;display:grid;grid-template-columns:230px 1fr;gap:60px;align-items:start}
+  .sec-idx{font-family:var(--mono);font-size:12px;letter-spacing:.15em}
+  .sec-idx .n{color:var(--ambre-dk)}
+  .legal h1{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(2.2rem,4vw,3.2rem);line-height:1.05;margin:14px 0 10px}
+  .legal .updated{font-family:var(--mono);font-size:11px;color:rgba(22,24,29,.55);letter-spacing:.05em}
+  /* side anchor */
+  .anchor{position:sticky;top:90px}
+  .anchor .al{font-family:var(--mono);font-size:10px;color:var(--mar);letter-spacing:.1em;margin-bottom:14px}
+  .anchor ul{list-style:none;display:flex;flex-direction:column;gap:2px}
+  .anchor li a{display:block;font-family:var(--mono);font-size:12px;color:rgba(22,24,29,.7);text-decoration:none;padding:7px 0 7px 14px;border-left:2px solid rgba(22,24,29,.12)}
+  .anchor li a.active,.anchor li a:hover{color:var(--ink);border-left-color:var(--ambre)}
+  /* body */
+  .doc section{padding-bottom:34px;border-bottom:1px solid rgba(22,24,29,.1);margin-bottom:34px}
+  .doc h2{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:1.4rem;margin-bottom:6px}
+  .doc .sn{font-family:var(--mono);font-size:11px;color:var(--ambre-dk);letter-spacing:.08em;margin-bottom:12px;display:block}
+  .doc p{line-height:1.7;max-width:70ch;margin-bottom:12px;opacity:.9}
+  .doc .kv{font-family:var(--mono);font-size:12px;line-height:2;color:var(--ink)}
+  .doc .kv .k{color:var(--mar);display:inline-block;min-width:170px}
+  .redact{background:rgba(255,183,3,.18);padding:0 4px;border-radius:2px}
+
+  /* 404 */
+  .nf{min-height:100vh;background:radial-gradient(ellipse at 50% 40%,var(--abisal),var(--abisal-deep));color:var(--paper);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .nf::before{content:"";position:absolute;inset:0;opacity:.05;background-image:linear-gradient(#F7F7F4 1px,transparent 1px),linear-gradient(90deg,#F7F7F4 1px,transparent 1px);background-size:48px 48px}
+  .nf .inner{position:relative;z-index:1;text-align:center;padding:0 6vw}
+  .nf .code{font-family:var(--mono);font-size:12px;color:var(--ambre);letter-spacing:.2em}
+  .nf h1{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(3rem,9vw,7rem);line-height:1;margin:18px 0}
+  .nf p{font-size:19px;line-height:1.6;color:rgba(247,247,244,.85);max-width:46ch;margin:0 auto 30px}
+  .nf .home{display:inline-block;border:1px solid var(--ambre);color:var(--paper);font-family:var(--mono);font-size:13px;padding:16px 28px;text-decoration:none}
+  .nf svg{margin:10px auto 0;display:block}
+</style>
+</head>
+<body>
+<div class="wf">WIREFRAME · <b>P4</b> · legal (doc sobrio + ancla lateral) · SIN analítica · 404 con identidad · <b class="mono" style="color:#FFB703">◆ = dato registral a confirmar</b></div>
+
+<!-- ============ /aviso-legal ============ -->
+<div class="bar"><span class="t">PÁGINA 1/3</span> · /aviso-legal · DOCUMENTO LEGAL SOBRIO
+  <small>Ancla lateral pegajosa (secciones) + columna de lectura ≤70ch. Datos registrales del contrato MAGUPELL — SIN dirección física. CONFIRMAR los marcados.</small>
+</div>
+<div class="legal">
+  <div class="anchor">
+    <div class="al">EN ESTA PÁGINA</div>
+    <ul>
+      <li><a href="#" class="active">01 · Titular</a></li>
+      <li><a href="#">02 · Objeto</a></li>
+      <li><a href="#">03 · Propiedad intelectual</a></li>
+      <li><a href="#">04 · Responsabilidad</a></li>
+      <li><a href="#">05 · Legislación y jurisdicción</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="sec-idx"><span class="n">·</span>&nbsp;AVISO LEGAL</div>
+    <h1>Aviso legal</h1>
+    <div class="updated">ÚLTIMA ACTUALIZACIÓN · <span class="redact">◆ FECHA</span></div>
+    <div class="doc" style="margin-top:34px">
+      <section>
+        <span class="sn">01 · TITULAR</span>
+        <h2>Titular del sitio web</h2>
+        <p>En cumplimiento de la Ley 34/2002 (LSSI-CE), se informa de los datos identificativos del titular:</p>
+        <div class="kv">
+          <div><span class="k">Denominación</span> Escala Digital Ventures, S.L.U.</div>
+          <div><span class="k">NIF</span> <span class="redact">◆ B88767520</span></div>
+          <div><span class="k">Registro Mercantil</span> <span class="redact">◆ datos de inscripción</span></div>
+          <div><span class="k">Correo</span> hola@escaladigitalventures.com</div>
+        </div>
+      </section>
+      <section>
+        <span class="sn">02 · OBJETO</span>
+        <h2>Objeto</h2>
+        <p>El presente aviso regula el uso del sitio web escaladigitalventures.com, cuyo objeto es informar sobre los servicios de producto y tecnología de Escala Digital Ventures, S.L.U.</p>
+      </section>
+      <section>
+        <span class="sn">03 · PROPIEDAD INTELECTUAL</span>
+        <h2>Propiedad intelectual e industrial</h2>
+        <p>Todos los contenidos del sitio —textos, marca, metodologías (incluido el Escala Growth Framework), diseño y código— son propiedad de Escala Digital Ventures, S.L.U. o de terceros que han autorizado su uso, y están protegidos por la normativa de propiedad intelectual e industrial. Las marcas de clientes se muestran con su autorización.</p>
+      </section>
+      <section>
+        <span class="sn">04 · RESPONSABILIDAD</span>
+        <h2>Exclusión de responsabilidad</h2>
+        <p>Escala no se responsabiliza de los daños derivados del uso del sitio ni de la disponibilidad continua del mismo. Los enlaces a sitios de terceros (por ejemplo, webs de clientes) se ofrecen a título informativo.</p>
+      </section>
+      <section style="border-bottom:none">
+        <span class="sn">05 · LEGISLACIÓN Y JURISDICCIÓN</span>
+        <h2>Legislación aplicable y jurisdicción</h2>
+        <p>Este aviso se rige por la legislación española. Para cualquier controversia, las partes se someten a los juzgados y tribunales que correspondan conforme a la legislación aplicable <span class="redact">◆ (jurisdicción a confirmar)</span>.</p>
+      </section>
+    </div>
+  </div>
+</div>
+<div class="note">Redacción DERIVADA del contrato MAGUPELL (datos §1 y jurisdicción). Los ◆ son datos a confirmar por Carlos antes de publicar (Registro Mercantil, fecha, jurisdicción). SIN dirección física — no se muestra por decisión de Carlos; el contacto es el correo. Nota clave: propiedad intelectual = de Escala (coherente con la corrección; el cliente NO es dueño del código).</div>
+
+<!-- ============ /privacidad ============ -->
+<div class="bar"><span class="t">PÁGINA 2/3</span> · /privacidad · POLÍTICA DE PRIVACIDAD (RGPD)
+  <small>Base del contrato MAGUPELL §8: responsable, finalidad, base legal, conservación, derechos, servidores en la UE (europe-west1).</small>
+</div>
+<div class="legal">
+  <div class="anchor">
+    <div class="al">EN ESTA PÁGINA</div>
+    <ul>
+      <li><a href="#" class="active">01 · Responsable</a></li>
+      <li><a href="#">02 · Datos y finalidad</a></li>
+      <li><a href="#">03 · Base legal</a></li>
+      <li><a href="#">04 · Conservación</a></li>
+      <li><a href="#">05 · Destinatarios</a></li>
+      <li><a href="#">06 · Tus derechos</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="sec-idx"><span class="n">·</span>&nbsp;PRIVACIDAD</div>
+    <h1>Política de privacidad</h1>
+    <div class="updated">ÚLTIMA ACTUALIZACIÓN · <span class="redact">◆ FECHA</span></div>
+    <div class="doc" style="margin-top:34px">
+      <section><span class="sn">01 · RESPONSABLE</span><h2>Responsable del tratamiento</h2>
+        <div class="kv">
+          <div><span class="k">Responsable</span> Escala Digital Ventures, S.L.U.</div>
+          <div><span class="k">NIF</span> <span class="redact">◆ B88767520</span></div>
+          <div><span class="k">Contacto</span> hola@escaladigitalventures.com</div>
+        </div>
+      </section>
+      <section><span class="sn">02 · DATOS Y FINALIDAD</span><h2>Datos que tratamos y para qué</h2>
+        <p>A través del formulario de contacto recogemos nombre, empresa, correo electrónico y el mensaje que nos envías. La finalidad exclusiva es responder a tu solicitud y valorar una posible colaboración. No usamos los datos para envíos comerciales no solicitados.</p></section>
+      <section><span class="sn">03 · BASE LEGAL</span><h2>Base jurídica</h2>
+        <p>El tratamiento se basa en tu consentimiento, otorgado al marcar la casilla del formulario, y en el interés legítimo de atender tu consulta.</p></section>
+      <section><span class="sn">04 · CONSERVACIÓN</span><h2>Plazo de conservación</h2>
+        <p>Conservamos tus datos el tiempo necesario para atender tu solicitud y, en su caso, mientras dure la relación; después se suprimen o se bloquean conforme a la ley. Los datos se alojan en servidores dentro de la Unión Europea <span class="redact">◆ (Google Cloud, región europe-west1)</span>.</p></section>
+      <section><span class="sn">05 · DESTINATARIOS</span><h2>Destinatarios</h2>
+        <p>No cedemos tus datos a terceros. Utilizamos proveedores de servicios (alojamiento y envío de correo) que actúan como encargados del tratamiento bajo contrato y ubicados en la UE.</p></section>
+      <section style="border-bottom:none"><span class="sn">06 · TUS DERECHOS</span><h2>Tus derechos</h2>
+        <p>Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a hola@escaladigitalventures.com. También puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).</p></section>
+    </div>
+  </div>
+</div>
+<div class="note">SIN analítica → sin cookies de terceros → NO se necesita banner de cookies (se menciona en privacidad que no se usan cookies de seguimiento). Si en el futuro se añade analítica, se revisa esta política.</div>
+
+<!-- ============ 404 ============ -->
+<div class="bar"><span class="t">PÁGINA 3/3</span> · 404 · DISEÑO PROPIO CON LA IDENTIDAD
+  <small>No es un 404 genérico: usa el lenguaje del sitio (abisal, grid, kit de diagramas, ámbar).</small>
+</div>
+<div class="nf">
+  <div class="inner">
+    <div class="code">ERROR 404 · RUTA NO ENCONTRADA</div>
+    <h1>Fuera del sistema.</h1>
+    <!-- little kit diagram: a broken/dashed path to a lost node -->
+    <svg width="200" height="70" viewBox="0 0 200 70">
+      <g stroke="#F7F7F4" stroke-width="1.5" fill="none">
+        <rect x="10" y="26" width="40" height="18"/><text x="18" y="39" font-family="IBM Plex Mono" font-size="9" fill="#F7F7F4">INICIO</text>
+        <path d="M50 35 L90 35" stroke-dasharray="4 3"/>
+        <path d="M110 35 L150 35" stroke-dasharray="4 3" opacity=".4"/>
+      </g>
+      <circle cx="100" cy="35" r="9" fill="none" stroke="#FFB703" stroke-width="1.5"/>
+      <text x="96.5" y="38.5" font-family="IBM Plex Mono" font-size="9" fill="#FFB703">?</text>
+      <circle cx="170" cy="35" r="6" fill="none" stroke="rgba(247,247,244,.35)" stroke-width="1.2" stroke-dasharray="3 3"/>
+    </svg>
+    <p style="margin-top:24px">La página que buscas no existe o se ha movido. Volvamos a un lugar conocido.</p>
+    <a class="home" href="/">VOLVER AL INICIO ↗</a>
+  </div>
+</div>
+<div class="note" style="color:var(--ambre);border-color:var(--ambre)">404 con identidad: abisal + grid + un micro-diagrama del kit (ruta discontinua hacia un nodo perdido "?"). Tono de marca ("Fuera del sistema"), no genérico. Reutiliza GridBackground y el botón. + favicon y OG images por página (no visibles en wireframe, van en el spec).</div>
+
+</body>
+</html>

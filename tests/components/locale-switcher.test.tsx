@@ -1,6 +1,7 @@
 /**
  * LocaleSwitcher component tests.
  * Spec: SPEC-P1 FR-5
+ * Phase 5: languagesLabel is now a required prop.
  *
  * Regression: SPEC-P2.3 — LocaleSwitcher threw "getPath: caseDetail requires params.slug"
  * when pageParams was not forwarded from the Page component to SiteHeader.
@@ -9,28 +10,31 @@
 
 import { render, screen } from '@testing-library/react'
 import { LocaleSwitcher } from '@/components/locale-switcher'
+import { sharedContent } from '@/content/es/shared'
+
+const LANGUAGES_LABEL = sharedContent.accessibility.languages
 
 describe('LocaleSwitcher — simple pages', () => {
   it('renders ES, EN, CA links for home', () => {
-    render(<LocaleSwitcher currentPage="home" locale="es" />)
+    render(<LocaleSwitcher currentPage="home" locale="es" languagesLabel={LANGUAGES_LABEL} />)
     expect(screen.getByRole('link', { name: 'ES' })).toHaveAttribute('href', '/')
     expect(screen.getByRole('link', { name: 'EN' })).toHaveAttribute('href', '/en')
     expect(screen.getByRole('link', { name: 'CA' })).toHaveAttribute('href', '/ca')
   })
 
   it('marks the active locale with aria-current="page"', () => {
-    render(<LocaleSwitcher currentPage="home" locale="en" />)
+    render(<LocaleSwitcher currentPage="home" locale="en" languagesLabel={LANGUAGES_LABEL} />)
     expect(screen.getByRole('link', { name: 'EN' })).toHaveAttribute('aria-current', 'page')
     expect(screen.getByRole('link', { name: 'ES' })).not.toHaveAttribute('aria-current')
   })
 
   it('has accessible nav landmark', () => {
-    render(<LocaleSwitcher currentPage="services" locale="es" />)
-    expect(screen.getByRole('navigation', { name: 'Idiomas' })).toBeInTheDocument()
+    render(<LocaleSwitcher currentPage="services" locale="es" languagesLabel={LANGUAGES_LABEL} />)
+    expect(screen.getByRole('navigation', { name: LANGUAGES_LABEL })).toBeInTheDocument()
   })
 
   it('renders correct URLs for services page', () => {
-    render(<LocaleSwitcher currentPage="services" locale="es" />)
+    render(<LocaleSwitcher currentPage="services" locale="es" languagesLabel={LANGUAGES_LABEL} />)
     expect(screen.getByRole('link', { name: 'ES' })).toHaveAttribute('href', '/que-hacemos')
     expect(screen.getByRole('link', { name: 'EN' })).toHaveAttribute('href', '/en/what-we-do')
     expect(screen.getByRole('link', { name: 'CA' })).toHaveAttribute('href', '/ca/que-fem')
@@ -54,6 +58,7 @@ describe('LocaleSwitcher — caseDetail (regression: SPEC-P2.3 bug)', () => {
           currentPage="caseDetail"
           locale="es"
           pageParams={{ slug: 'magupell' }}
+          languagesLabel={LANGUAGES_LABEL}
         />,
       )
     }).not.toThrow()
@@ -65,6 +70,7 @@ describe('LocaleSwitcher — caseDetail (regression: SPEC-P2.3 bug)', () => {
         currentPage="caseDetail"
         locale="es"
         pageParams={{ slug: 'magupell' }}
+        languagesLabel={LANGUAGES_LABEL}
       />,
     )
     expect(screen.getByRole('link', { name: 'ES' })).toHaveAttribute(
@@ -84,6 +90,7 @@ describe('LocaleSwitcher — caseDetail (regression: SPEC-P2.3 bug)', () => {
         currentPage="caseDetail"
         locale="es"
         pageParams={{ slug: 'biozero' }}
+        languagesLabel={LANGUAGES_LABEL}
       />,
     )
     expect(screen.getByRole('link', { name: 'ES' })).toHaveAttribute(
@@ -103,6 +110,7 @@ describe('LocaleSwitcher — caseDetail (regression: SPEC-P2.3 bug)', () => {
         currentPage="caseDetail"
         locale="en"
         pageParams={{ slug: 'magupell' }}
+        languagesLabel={LANGUAGES_LABEL}
       />,
     )
     expect(screen.getByRole('link', { name: 'EN' })).toHaveAttribute('aria-current', 'page')

@@ -12,7 +12,10 @@ import {
 import { MotionRuntime } from '@/components/motion-runtime'
 import { AboutPage } from '@/components/pages/about'
 import { AlliancePage } from '@/components/pages/alliance'
+import { ContactPage } from '@/components/pages/contact'
+import { LegalPage } from '@/components/pages/legal'
 import { MethodPage } from '@/components/pages/method'
+import { PrivacyPage } from '@/components/pages/privacy'
 import { ServicesPage } from '@/components/pages/services'
 import { CasesPage } from '@/components/pages/cases'
 import { CaseDossier } from '@/components/case-dossier'
@@ -25,11 +28,15 @@ import { getCase } from '@/content/data/cases'
 type RouteParams = { path?: string[] }
 
 /**
- * Disable runtime fallback for paths not in generateStaticParams.
- * Any unknown path becomes a 404 at request time.
- * Spec: SPEC-P1 FR-2.2 (Option A: only built pages emitted)
+ * Allow server-side rendering for all paths in generateStaticParams (SPEC-P6 AC-1).
+ * Next.js 16 with App Router + 'use client' components does not prerender HTML files
+ * at build time for SSG routes — it renders on-demand. dynamicParams=false causes
+ * NoFallbackError because the server can't find a prerendered version.
+ * Setting dynamicParams=true allows the standalone server to render pages on request.
+ * Unknown paths still return 404 via the notFound() call in the page component.
+ * Spec: SPEC-P1 FR-2.2 (Option A: only built pages emitted — enforced by notFound())
  */
-export const dynamicParams = false
+export const dynamicParams = true
 
 /**
  * Phase 1: home × 3 locales.
@@ -66,6 +73,15 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
     { path: ['sobre-escala'] },                     // ES about — SPEC-P2.5
     { path: ['en', 'about-escala'] },               // EN about
     { path: ['ca', 'sobre-escala'] },               // CA about
+    { path: ['contacto'] },                         // ES contact — SPEC-P2.6
+    { path: ['en', 'contact'] },                    // EN contact
+    { path: ['ca', 'contacte'] },                   // CA contact
+    { path: ['aviso-legal'] },                      // ES legal — SPEC-P4
+    { path: ['en', 'legal-notice'] },               // EN legal
+    { path: ['ca', 'avis-legal'] },                 // CA legal
+    { path: ['privacidad'] },                       // ES privacy — SPEC-P4
+    { path: ['en', 'privacy'] },                    // EN privacy
+    { path: ['ca', 'privacitat'] },                 // CA privacy
   ]
 }
 
@@ -91,10 +107,12 @@ export async function generateMetadata({
       case 'method':     return dict.method.meta
       case 'cases':      return dict.cases.meta
       case 'caseDetail': {
-        // Per-case meta from CaseStudy.meta (SPEC-P2.3 FR-6.2)
+        // Per-case meta from CaseStudy.metaByLocale (SPEC-P2.3 FR-6.2 / SPEC-P5)
         const slug = pageParams?.slug
         const caseData = slug ? getCase(slug) : null
-        return caseData?.meta ?? dict.cases.meta
+        // Use locale-keyed meta if available, fall back to ES meta
+        const localeMeta = caseData?.metaByLocale?.[locale]
+        return localeMeta ?? caseData?.meta ?? dict.cases.meta
       }
       case 'alliance':   return dict.alliance.meta
       case 'about':      return dict.about.meta
@@ -145,13 +163,20 @@ export default async function Page({
 
   // Pages not yet built → 404 until Phase 2.n adds them.
   // Phase 2.5: 'about' added — SPEC-P2.5 FR-1.1
-  const BUILT_PAGES = ['home', 'method', 'services', 'cases', 'caseDetail', 'alliance', 'about'] as const
+  // Phase 2.6: 'contact' added — SPEC-P2.6 FR-1.1
+  // Phase 4: 'legal' + 'privacy' added — SPEC-P4 FR-1.1
+  const BUILT_PAGES = ['home', 'method', 'services', 'cases', 'caseDetail', 'alliance', 'about', 'contact', 'legal', 'privacy'] as const
   if (!BUILT_PAGES.includes(page as (typeof BUILT_PAGES)[number])) notFound()
 
   // For caseDetail, resolve the case and 404 on unknown slug.
   const caseData =
     page === 'caseDetail' && pageParams?.slug ? getCase(pageParams.slug) : null
   if (page === 'caseDetail' && !caseData) notFound()
+
+  // Locale-aware hrefs for home section links
+  const methodHref = getPath('method', locale)
+  const servicesHref = getPath('services', locale)
+  const allianceHref = getPath('alliance', locale)
 
   return (
     <MotionRuntime>
@@ -160,6 +185,7 @@ export default async function Page({
       </a>
       <SiteHeader
         content={home.header}
+        accessibility={shared.accessibility}
         currentPage={page}
         locale={locale}
         pageParams={pageParams}
@@ -171,30 +197,63 @@ export default async function Page({
         lang={locale !== 'es' ? locale : undefined}
       >
         {page === 'method' ? (
-          <MethodPage dict={dict} />
+          <MethodPage dict={dict} locale={locale} />
         ) : page === 'services' ? (
           <ServicesPage dict={dict} locale={locale} />
         ) : page === 'cases' ? (
           <CasesPage dict={dict} locale={locale} />
         ) : page === 'caseDetail' && caseData ? (
-          <CaseDossier caseStudy={caseData} dict={dict.cases} locale={locale} />
+          <CaseDossier caseStudy={caseData} dict={dict.cases} locale={locale} fullDict={dict} />
         ) : page === 'alliance' ? (
-          <AlliancePage dict={dict} />
+          <AlliancePage dict={dict} locale={locale} />
         ) : page === 'about' ? (
-          <AboutPage dict={dict} />
+          <AboutPage dict={dict} locale={locale} />
+        ) : page === 'contact' ? (
+          <ContactPage dict={dict} locale={locale} />
+        ) : page === 'legal' ? (
+          <LegalPage dict={dict} />
+        ) : page === 'privacy' ? (
+          <PrivacyPage dict={dict} />
         ) : (
           <>
-            <Hero content={home.hero} claims={home.claims} />
-            <ProblemSection content={home.problem} />
-            <ServicesPreview content={home.services} />
-            <FrameworkSection content={home.framework} />
-            <ProofSection content={home.proof} />
-            <AllianceTeaser content={home.alliance} />
-            <FinalCTA content={home.finalCta} />
+            <Hero
+              content={home.hero}
+              claims={home.claims}
+              labels={home.labels}
+              diagrams={home.diagrams}
+              claimsAriaLabel={shared.accessibility.keyMessages}
+            />
+            <ProblemSection
+              content={home.problem}
+              labels={home.labels}
+              diagrams={home.diagrams}
+            />
+            <ServicesPreview
+              content={home.services}
+              labels={home.labels}
+              servicesHref={servicesHref}
+            />
+            <FrameworkSection
+              content={home.framework}
+              labels={home.labels}
+              methodHref={methodHref}
+            />
+            <ProofSection
+              content={home.proof}
+              labels={home.labels}
+              diagrams={home.diagrams}
+            />
+            <AllianceTeaser
+              content={home.alliance}
+              labels={home.labels}
+              diagrams={home.diagrams}
+              allianceHref={allianceHref}
+            />
+            <FinalCTA dict={dict} locale={locale} />
           </>
         )}
       </main>
-      <SiteFooter content={home.footer} />
+      <SiteFooter content={home.footer} accessibility={shared.accessibility} />
     </MotionRuntime>
   )
 }

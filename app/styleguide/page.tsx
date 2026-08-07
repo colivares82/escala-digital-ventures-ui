@@ -25,6 +25,8 @@ import { clients } from '@/content/es/clients'
 import { cases } from '@/content/data/cases'
 import { casesContent } from '@/content/es/cases'
 import { homeContent } from '@/content/es/home'
+import { sharedContent } from '@/content/es/shared'
+import { getDictionary } from '@/lib/i18n/dictionary'
 import { methodContent } from '@/content/es/method'
 import { servicesContent } from '@/content/es/services'
 import { CeremonialHeader } from '@/components/ceremonial-header'
@@ -34,6 +36,10 @@ import { Manifesto } from '@/components/manifesto'
 import { ValuesList } from '@/components/values-list'
 import { aboutContent } from '@/content/es/about'
 import { allianceContent } from '@/content/es/alliance'
+import { AnchorNav } from '@/components/anchor-nav'
+import { LegalDoc } from '@/components/legal-doc'
+import { legalContent } from '@/content/es/legal'
+import { privacyContent } from '@/content/es/privacy'
 
 export const metadata: Metadata = {
   title: 'Style guide | Escala Digital Ventures',
@@ -48,8 +54,10 @@ const COLOR_SWATCHES = [
   ['Ámbar', 'var(--ambre)'],
 ] as const
 
+const esDict = getDictionary('es')
+
 export default function StyleGuidePage() {
-  const { proof, claims, finalCta } = homeContent
+  const { proof, claims } = homeContent
 
   return (
     <main className="styleguide">
@@ -63,7 +71,7 @@ export default function StyleGuidePage() {
         </div>
       </header>
 
-      <ClaimsMarquee claims={claims} />
+      <ClaimsMarquee claims={claims} ariaLabel={sharedContent.accessibility.keyMessages} />
 
       <section className="styleguide__section page-shell">
         <SectionIndex index="01" label="TOKENS" />
@@ -145,24 +153,24 @@ export default function StyleGuidePage() {
           <div className="styleguide__forms">
             <div>
               <h2>Por defecto</h2>
-              <ContactForm
-                email={finalCta.email}
-                success={finalCta.success}
-              />
+              <ContactForm copy={sharedContent.contactForm} privacyHref="/privacidad" email={sharedContent.finalCta.email} />
             </div>
             <div>
               <h2>Error</h2>
-              <ContactForm
-                email={finalCta.email}
-                success={finalCta.success}
-                initialState="error"
-              />
+              <ContactForm copy={sharedContent.contactForm} privacyHref="/privacidad" email={sharedContent.finalCta.email} initialState="error" />
             </div>
             <div>
               <h2>Confirmación</h2>
+              <ContactForm copy={sharedContent.contactForm} privacyHref="/privacidad" email={sharedContent.finalCta.email} initialState="success" />
+            </div>
+            <div>
+              <h2>Dossier (confirmación)</h2>
               <ContactForm
-                email={finalCta.email}
-                success={finalCta.success}
+                copy={sharedContent.contactForm}
+                privacyHref="/privacidad"
+                email={sharedContent.finalCta.email}
+                variant="dossier"
+                dossierRef="ESCALA · REF. CONTACTO"
                 initialState="success"
               />
             </div>
@@ -198,7 +206,7 @@ export default function StyleGuidePage() {
         </section>
 
         {/* FinalCTA on paper surface for reference */}
-        <FinalCTA content={finalCta} />
+        <FinalCTA dict={esDict} locale="es" />
 
         {/* PageHeader — surface: abisal */}
         <PageHeader
@@ -549,6 +557,47 @@ export default function StyleGuidePage() {
           beliefs={aboutContent.manifesto.beliefs}
           colivaresLine={aboutContent.colivaresLine}
         />
+      </section>
+
+      {/* ── Section 11: Phase 4 — Legal doc + AnchorNav (SPEC-P4 AC-2) ── */}
+      <section aria-label="Componentes Fase 4 — Legal" style={{ borderTop: '2px solid var(--ambre)' }}>
+        <div className="page-shell" style={{ paddingBlock: '3rem' }}>
+          <SectionIndex index="11" label="LEGAL DOC — FASE 4" />
+          <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.65rem', letterSpacing: '0.1em', color: 'var(--mar)', marginBottom: '2rem' }}>
+            LegalDoc + AnchorNav — layout dos columnas (ancla lateral + columna ≤70ch). SPEC-P4 AC-2.
+          </p>
+
+          {/* AnchorNav — standalone demo */}
+          <h2 style={{ fontFamily: 'var(--font-archivo)', fontWeight: 600, fontSize: '1.25rem', marginBottom: '1rem' }}>
+            AnchorNav — navegación lateral
+          </h2>
+          <div style={{ maxWidth: '230px', border: '1px solid var(--line)', padding: '1.5rem', marginBottom: '3rem' }}>
+            <AnchorNav
+              label="EN ESTA PÁGINA"
+              items={legalContent.sections.map((s) => ({ id: s.id, index: s.index, name: s.name }))}
+            />
+          </div>
+        </div>
+
+        {/* LegalDoc — /aviso-legal */}
+        <div style={{ borderTop: '1px solid var(--line)', marginBottom: '2rem' }}>
+          <div className="page-shell" style={{ paddingTop: '2rem' }}>
+            <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.65rem', color: 'var(--mar)', marginBottom: '1rem' }}>
+              LegalDoc — /aviso-legal (5 secciones, placeholders visibles en ámbar)
+            </p>
+          </div>
+          <LegalDoc content={legalContent} />
+        </div>
+
+        {/* LegalDoc — /privacidad */}
+        <div style={{ borderTop: '1px solid var(--line)' }}>
+          <div className="page-shell" style={{ paddingTop: '2rem' }}>
+            <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.65rem', color: 'var(--mar)', marginBottom: '1rem' }}>
+              LegalDoc — /privacidad (6 secciones, sin cookies de seguimiento)
+            </p>
+          </div>
+          <LegalDoc content={privacyContent} />
+        </div>
       </section>
     </main>
   )

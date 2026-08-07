@@ -29,10 +29,9 @@ const BUILT_PAGES: BuiltPageEntry[] = [
   { page: 'caseDetail', params: { slug: 'biozero' } },  // Phase 2.3
   { page: 'alliance' },                                  // Phase 2.4 — SPEC-P2.4
   { page: 'about' },                                     // Phase 2.5 — SPEC-P2.5
-  // Phase 2 — uncomment as pages are built:
-  // { page: 'contact' },
-  // { page: 'legal' },
-  // { page: 'privacy' },
+  { page: 'contact' },                                   // Phase 2.6 — SPEC-P2.6
+  { page: 'legal' },                                     // Phase 4 — SPEC-P4 (indexable per FR-6.3)
+  { page: 'privacy' },                                   // Phase 4 — SPEC-P4 (indexable per FR-6.3)
 ]
 
 export default function sitemap(): MetadataRoute.Sitemap {

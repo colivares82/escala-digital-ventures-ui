@@ -48,13 +48,38 @@ export const sharedContent = {
       { label: 'Privacidad', href: '/privacidad' },
     ],
   },
+  /**
+   * Canonical FinalCTA content — single source for all pages.
+   * Used by FinalCTA component directly; no per-page duplication.
+   */
+  finalCta: {
+    title: 'Hablemos de tu negocio.',
+    body: 'Cuéntanos qué frena tu crecimiento. Escuchamos antes de proponer.',
+    email: 'hola@escaladigitalventures.com',
+    location: 'Mataró · Barcelona',
+    languages: 'Trabajamos en español, inglés y catalán.',
+  },
   contactForm: {
     sectionLabel: 'CONVERSACIÓN',
-    successLabel: 'ENVÍO / CONFIRMADO',
+    /** Dossier variant button label (ENVIAR MENSAJE) — section variant keeps submit */
+    sendLabel: 'ENVIAR MENSAJE',
+    submit: 'Enviar',
+    /** Loading button label while the API call is in flight */
+    sending: 'ENVIANDO…',
     fields: { name: 'Nombre', company: 'Empresa', email: 'Email', blocker: '¿Qué frena tu crecimiento?' },
     consentPrefix: 'Acepto el tratamiento de mis datos conforme a la',
     privacyLabel: 'política de privacidad',
-    submit: 'Enviar',
+    /** Success card — shown after successful API submit (replaces form in place) */
+    successHeader: 'MENSAJE ENVIADO',
+    successRef: 'ESCALA · REF. CONTACTO',
+    successH2: 'Mensaje enviado.',
+    successBody:
+      'Recibido. Te responderemos personalmente en un plazo de dos días laborables.',
+    successResend: 'ENVIAR OTRO MENSAJE ↺',
+    /** API error copy — email link injected between prefix and suffix */
+    errorApiPrefix: 'No hemos podido enviar tu mensaje. Escríbenos directamente a',
+    errorApiSuffix: 'y te respondemos enseguida.',
+    /** Validation error fallback shown when client-side errors are present */
     fallback: '¿Prefieres escribirnos directamente?',
     errors: {
       name: 'Introduce tu nombre.',
@@ -64,6 +89,17 @@ export const sharedContent = {
       blocker: 'Cuéntanos qué frena tu crecimiento.',
       consent: 'Necesitamos tu consentimiento para responderte.',
     },
+  },
+  /**
+   * Phase 4 — 404 not-found copy. Spec: SPEC-P4 FR-5.
+   * Defaults to ES; not-found.tsx cannot resolve locale in App Router.
+   */
+  notFound: {
+    code: 'ERROR 404 · RUTA NO ENCONTRADA',
+    h1: 'Fuera del sistema.',
+    body: 'La página que buscas no existe o se ha movido. Volvamos a un lugar conocido.',
+    ctaLabel: 'VOLVER AL INICIO ↗',
+    diagramAria: 'Diagrama de ruta interrumpida: nodo INICIO conectado por línea discontinua a un nodo perdido marcado con interrogación',
   },
 } as const
 

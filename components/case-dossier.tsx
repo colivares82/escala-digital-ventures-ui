@@ -5,7 +5,8 @@
  *   - capability-forward (BioZero): ReadoutStrip with 2 status readouts →
  *     CapabilityGrid (3 capabilities) → 3 DossierFields.
  * Template is genuinely data-driven: adding a 3rd case requires data only (AC-4).
- * Spec: SPEC-P2.3 FR-4
+ * Phase 5: uses dossierByLocale for locale-aware sector/readouts/capabilities/fields.
+ * Spec: SPEC-P2.3 FR-4 · SPEC-P5 FR-1
  */
 
 import { BrandHeader } from '@/components/brand-header'
@@ -18,16 +19,22 @@ import type { Locale } from '@/lib/i18n/types'
 import { cases } from '@/content/data/cases'
 import type { CaseStudy } from '@/content/data/cases'
 import type { CasesDictionary } from '@/content/types'
-import { homeContent } from '@/content/es/home'
+import type { Dictionary } from '@/lib/i18n/dictionary'
 
 interface CaseDossierProps {
   caseStudy: CaseStudy
   dict: CasesDictionary
   locale: Locale
+  /** Full dictionary needed for FinalCTA (SPEC-P5 FR-5). */
+  fullDict?: Dictionary
 }
 
-export function CaseDossier({ caseStudy, dict, locale }: CaseDossierProps) {
-  const { brand, sector, plate, readouts, capabilities, fields, mode } = caseStudy
+export function CaseDossier({ caseStudy, dict, locale, fullDict }: CaseDossierProps) {
+  const { brand, mode } = caseStudy
+
+  // Use locale-keyed dossier content (Phase 5)
+  const dossier = caseStudy.dossierByLocale[locale] ?? caseStudy.dossierByLocale.es
+  const { sector, readouts, capabilities, fields } = dossier
 
   // Determine next case (by order) and build nextcase nav
   const sorted = [...cases].sort((a, b) => a.order - b.order)
@@ -45,6 +52,19 @@ export function CaseDossier({ caseStudy, dict, locale }: CaseDossierProps) {
   // Dossier title from per-locale content
   const copy = caseStudy.content[locale] ?? caseStudy.content.es
 
+  // Localized nav aria-label (use dict.pageHeader.title as the "cases index" label)
+  const navAriaLabel = locale === 'en'
+    ? 'Navigation between dossiers'
+    : locale === 'ca'
+      ? 'Navegació entre expedients'
+      : 'Navegación entre expedientes'
+
+  const backAriaLabel = locale === 'en'
+    ? 'Back to case studies index'
+    : locale === 'ca'
+      ? "Tornar a l'índex de casos"
+      : 'Volver al índice de casos'
+
   return (
     <>
       {/* Dossier header */}
@@ -55,7 +75,7 @@ export function CaseDossier({ caseStudy, dict, locale }: CaseDossierProps) {
             sector={sector}
             brand={brand}
             title={copy.title}
-            plate={plate}
+            plate={caseStudy.plate}
             visitLabel={dict.visitLabel}
           />
 
@@ -83,7 +103,7 @@ export function CaseDossier({ caseStudy, dict, locale }: CaseDossierProps) {
           </div>
 
           {/* E · Next-case / back-to-index navigation */}
-          <nav className="dossier-nextcase" aria-label="Navegación entre expedientes">
+          <nav className="dossier-nextcase" aria-label={navAriaLabel}>
             <a href={nextHref} className="dossier-nextcase__link">
               <span className="dossier-nextcase__label">{nextLabel}</span>
               <span className="dossier-nextcase__name">{nextName}</span>
@@ -92,7 +112,7 @@ export function CaseDossier({ caseStudy, dict, locale }: CaseDossierProps) {
               <a
                 href={getPath('cases', locale)}
                 className="dossier-nextcase__back"
-                aria-label="Volver al índice de casos"
+                aria-label={backAriaLabel}
               >
                 {dict.backLabel}
               </a>
@@ -102,7 +122,7 @@ export function CaseDossier({ caseStudy, dict, locale }: CaseDossierProps) {
       </section>
 
       {/* F · FinalCTA — reused (SPEC-P2.3 FR-5) */}
-      <FinalCTA content={homeContent.finalCta} />
+      {fullDict && <FinalCTA dict={fullDict} locale={locale} />}
     </>
   )
 }

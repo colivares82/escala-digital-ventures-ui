@@ -67,14 +67,6 @@ export interface ServicesDictionary {
     readonly body: string
     readonly cta: string
   }
-  readonly finalCta: {
-    readonly title: string
-    readonly body: string
-    readonly success: string
-    readonly email: string
-    readonly location: string
-    readonly languages: string
-  }
 }
 
 /** Phase 2.1 — full Cómo trabajamos content. Spec: SPEC-P2.1 FR-8.1 */
@@ -135,14 +127,6 @@ export interface MethodDictionary {
     readonly points: ReadonlyArray<string>
     /** Small inline diagram labels (left → right). */
     readonly diagram: ReadonlyArray<string>
-  }
-  readonly finalCta: {
-    readonly title: string
-    readonly body: string
-    readonly success: string
-    readonly email: string
-    readonly location: string
-    readonly languages: string
   }
 }
 
@@ -227,14 +211,6 @@ export interface AllianceDictionary {
     /** Exactly 5 commitments. Length enforced in tests. Commitment[0].tag must be "A MEDIDA". */
     readonly items: ReadonlyArray<AllianceCommitment>
   }
-  readonly finalCta: {
-    readonly title: string
-    readonly body: string
-    readonly success: string
-    readonly email: string
-    readonly location: string
-    readonly languages: string
-  }
 }
 
 /**
@@ -318,27 +294,141 @@ export interface AboutDictionary {
    * // TODO: linkify colivares.com when live (projectbrief.md non-goal)
    */
   readonly colivaresLine: string
-  readonly finalCta: {
-    readonly title: string
-    readonly body: string
-    readonly success: string
-    readonly email: string
-    readonly location: string
-    readonly languages: string
-  }
 }
 
-/** Phase 1 stub — Phase 2 will add full content. */
+/**
+ * Phase 2.6 — full /contacto content. Spec: SPEC-P2.6 FR-7.1
+ *
+ * Gmail address lives ONLY in server env — never in this dictionary.
+ * Public address (hola@escaladigitalventures.com) appears in directMeta.email only.
+ */
 export interface ContactDictionary {
   readonly meta: PageMeta
+  readonly pageHeader: {
+    /** Mono eyebrow: "A / CONVERSACIÓN" */
+    readonly eyebrow: string
+    /** Page H1 */
+    readonly h1: string
+    /** Lead paragraph from spec §5.7 / Libro Ch. 18 */
+    readonly lead: string
+  }
+  readonly affinityFilter: {
+    /** All-caps mono heading: "TRABAJAMOS MEJOR CON" */
+    readonly heading: string
+    /** Exactly 3 lines from Libro Ch. 12/18. Length enforced in tests. */
+    readonly items: ReadonlyArray<string>
+  }
+  readonly directMeta: {
+    readonly emailLabel: string
+    /** Public display address only — NEVER the internal Gmail. */
+    readonly email: string
+    readonly locationLabel: string
+    readonly location: string
+    readonly languagesLabel: string
+    readonly languages: string
+    readonly responseLabel: string
+    readonly response: string
+  }
+  readonly dossierHeader: {
+    /** "FICHA DE CONTACTO" */
+    readonly title: string
+    /** "ESCALA · REF. CONTACTO" */
+    readonly ref: string
+  }
+  /** Mono trust micro-line under the submit button. */
+  readonly trustLine: string
 }
 
-/** Phase 1 stub — Phase 2 will add full content. */
+// ---------------------------------------------------------------------------
+// Phase 4 — Legal pages (SPEC-P4 FR-7.1)
+// ---------------------------------------------------------------------------
+
+/**
+ * A key-value row for registry/identification data in legal sections.
+ * Rendered in mono font with a mar-colored key column.
+ */
+export interface LegalKvRow {
+  readonly key: string
+  readonly value: string
+}
+
+/**
+ * A single section in a legal document.
+ * `id` is the stable anchor id (e.g. "titular", "objeto").
+ * `index` is the display ordinal (e.g. "01").
+ * `name` is the short mono nav label (e.g. "TITULAR").
+ * `title` is the H2 heading.
+ * `body` is the prose paragraph(s) — may contain {{PLACEHOLDER}} tokens.
+ * `kv` is an optional array of key-value rows (for registry data in section 01).
+ */
+export interface LegalSection {
+  readonly id: string
+  readonly index: string
+  readonly name: string
+  readonly title: string
+  readonly body: string
+  readonly kv?: ReadonlyArray<LegalKvRow>
+}
+
+/**
+ * Phase 4 — full /aviso-legal content. Spec: SPEC-P4 FR-2, FR-7.1
+ * 5 sections per LSSI-CE requirements.
+ * Unconfirmed data uses {{PLACEHOLDER}} tokens — see FR-4.
+ */
 export interface LegalDictionary {
   readonly meta: PageMeta
+  readonly header: {
+    /** Mono eyebrow: "· AVISO LEGAL" */
+    readonly eyebrow: string
+    /** Page H1 */
+    readonly h1: string
+    /** Label prefix: "ÚLTIMA ACTUALIZACIÓN ·" */
+    readonly updatedLabel: string
+    /** Date value — use {{FECHA_ACTUALIZACION}} until confirmed */
+    readonly updatedDate: string
+  }
+  /** Label for the sticky anchor nav: "EN ESTA PÁGINA" */
+  readonly anchorLabel: string
+  /** Exactly 5 sections. Length enforced in tests. */
+  readonly sections: ReadonlyArray<LegalSection>
 }
 
-/** Phase 1 stub — Phase 2 will add full content. */
+/**
+ * Phase 4 — full /privacidad content. Spec: SPEC-P4 FR-3, FR-7.1
+ * 6 sections per RGPD requirements.
+ * Unconfirmed data uses {{PLACEHOLDER}} tokens — see FR-4.
+ */
 export interface PrivacyDictionary {
   readonly meta: PageMeta
+  readonly header: {
+    /** Mono eyebrow: "· PRIVACIDAD" */
+    readonly eyebrow: string
+    /** Page H1 */
+    readonly h1: string
+    /** Label prefix: "ÚLTIMA ACTUALIZACIÓN ·" */
+    readonly updatedLabel: string
+    /** Date value — use {{FECHA_ACTUALIZACION}} until confirmed */
+    readonly updatedDate: string
+  }
+  /** Label for the sticky anchor nav: "EN ESTA PÁGINA" */
+  readonly anchorLabel: string
+  /** Exactly 6 sections. Length enforced in tests. */
+  readonly sections: ReadonlyArray<LegalSection>
+}
+
+/**
+ * Phase 4 — 404 not-found copy block. Spec: SPEC-P4 FR-5.
+ * Lives in shared content so it can be accessed without locale resolution.
+ */
+export interface NotFoundContent {
+  /** Mono code line: "ERROR 404 · RUTA NO ENCONTRADA" */
+  readonly code: string
+  /** Page H1: "Fuera del sistema." */
+  readonly h1: string
+  /** Body paragraph */
+  readonly body: string
+  /** CTA button label: "VOLVER AL INICIO ↗" */
+  readonly ctaLabel: string
+  /** Aria-label for the kit micro-diagram SVG */
+  readonly diagramAria: string
 }

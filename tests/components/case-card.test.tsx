@@ -78,6 +78,32 @@ const MAGUPELL_CASE: CaseStudy = {
     title: 'MAGUPELL — Test',
     description: 'Test description',
   },
+  // Phase 5 locale-keyed fields (required by CaseStudy type)
+  dossierByLocale: {
+    es: {
+      sector: 'EXPEDIENTE 01 · SECTOR PIEL · B2B',
+      readouts: [{ label: 'REQUISITOS', value: '100+', caption: 'funcionales' }],
+      fields: [{ key: 'CONTEXTO', body: 'Contexto de la empresa' }],
+      meta: { title: 'MAGUPELL — Test', description: 'Test description' },
+    },
+    en: {
+      sector: 'DOSSIER 01 · LEATHER SECTOR · B2B',
+      readouts: [{ label: 'REQUIREMENTS', value: '100+', caption: 'functional' }],
+      fields: [{ key: 'CONTEXT', body: 'Company context' }],
+      meta: { title: 'MAGUPELL — Test EN', description: 'Test description EN' },
+    },
+    ca: {
+      sector: 'EXPEDIENT 01 · SECTOR PELL · B2B',
+      readouts: [{ label: 'REQUISITS', value: '100+', caption: 'funcionals' }],
+      fields: [{ key: 'CONTEXT', body: 'Context de l\'empresa' }],
+      meta: { title: 'MAGUPELL — Test CA', description: 'Test description CA' },
+    },
+  },
+  metaByLocale: {
+    es: { title: 'MAGUPELL — Test', description: 'Test description' },
+    en: { title: 'MAGUPELL — Test EN', description: 'Test description EN' },
+    ca: { title: 'MAGUPELL — Test CA', description: 'Test description CA' },
+  },
 }
 
 const NO_LOGO_CASE: CaseStudy = {

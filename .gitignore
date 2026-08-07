@@ -21,6 +21,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+# next-env.d.ts — committed per Next.js recommendation (needed for CI tsc)
 # Coverage reports
 coverage/

@@ -92,18 +92,6 @@ export const servicesContent = {
     // BACKLOG follow-up: switch to /contacto when Phase 3 ships (PAGE-06).
     cta: 'Hablemos de tu negocio',
   },
-
-  // Same shape as home finalCta — reused FinalCTA component
-  finalCta: {
-    title: 'Hablemos de tu negocio.',
-    body: 'Cuéntanos qué frena tu crecimiento. Escuchamos antes de proponer.',
-    success:
-      'Recibido. Te responderemos personalmente en un plazo de dos días laborables.',
-    // Assumption: placeholder address per spec §5.7 — confirm final value before go-live.
-    email: 'hola@escaladigitalventures.com',
-    location: 'Mataró · Barcelona',
-    languages: 'Trabajamos en español, inglés y catalán.',
-  },
 } as const satisfies ServicesDictionary
 
 export type ServicesContent = typeof servicesContent

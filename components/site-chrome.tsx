@@ -3,16 +3,18 @@
 import { useEffect, useState } from 'react'
 import { LocaleSwitcher } from '@/components/locale-switcher'
 import type { homeContent } from '@/content/es/home'
-import { sharedContent } from '@/content/es/shared'
+import type { sharedContent } from '@/content/es/shared'
 import type { Locale, PageId, PageParams } from '@/lib/i18n/types'
 import {
   HEADER_COMPACT_THRESHOLD_PX,
   HEADER_SCROLL_SHADOW_PX,
 } from '@/lib/motion-constants'
 import { ANCHORS, ROUTES } from '@/lib/routes'
+import { getPath } from '@/lib/i18n/routes'
 
 type HeaderContent = typeof homeContent.header
 type FooterContent = typeof homeContent.footer
+type Accessibility = typeof sharedContent.accessibility
 
 /**
  * Tracks scroll position and direction to drive the header's two behaviors:
@@ -63,11 +65,14 @@ function useHeaderScroll() {
 
 export function SiteHeader({
   content,
+  accessibility,
   currentPage = 'home',
   locale = 'es',
   pageParams,
 }: {
   content: HeaderContent
+  /** Locale-aware accessibility labels from shared dictionary. */
+  accessibility: Accessibility
   /** Current page ID — used by LocaleSwitcher to build locale-preserving hrefs. */
   currentPage?: PageId
   /** Active locale — highlights the correct locale in LocaleSwitcher. */
@@ -75,7 +80,6 @@ export function SiteHeader({
   /** Dynamic params (e.g. case detail slug) — passed to LocaleSwitcher. */
   pageParams?: PageParams
 }) {
-  const { accessibility } = sharedContent
   const { isScrolled, isCompact } = useHeaderScroll()
 
   const headerClass = [
@@ -86,12 +90,15 @@ export function SiteHeader({
     .filter(Boolean)
     .join(' ')
 
+  // Locale-aware contact link
+  const contactHref = getPath('contact', locale)
+
   return (
     <header className={headerClass}>
       <div className="page-shell site-header__inner">
         <a
           className="site-brand"
-          href={currentPage === 'home' ? ANCHORS.INICIO : ROUTES.HOME}
+          href={currentPage === 'home' ? ANCHORS.INICIO : getPath('home', locale)}
           aria-label={accessibility.homeLabel}
         >
           <span aria-hidden="true">
@@ -126,8 +133,9 @@ export function SiteHeader({
             currentPage={currentPage}
             locale={locale}
             pageParams={pageParams}
+            languagesLabel={accessibility.languages}
           />
-          <a className="header-cta" href={ANCHORS.CONTACTO}>
+          <a className="header-cta" href={contactHref}>
             {content.contact}
           </a>
         </div>
@@ -136,9 +144,14 @@ export function SiteHeader({
   )
 }
 
-export function SiteFooter({ content }: { content: FooterContent }) {
-  const { accessibility } = sharedContent
-
+export function SiteFooter({
+  content,
+  accessibility,
+}: {
+  content: FooterContent
+  /** Locale-aware accessibility labels from shared dictionary. */
+  accessibility: Accessibility
+}) {
   return (
     <footer className="site-footer">
       <div className="page-shell site-footer__grid">

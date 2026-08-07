@@ -1,7 +1,5 @@
 /**
  * ServicesPage — /que-hacemos (Phase 2.2).
- * Sections: A·PageHeader (paper) → A(cont.)·Five ServiceRows (paper)
- *           → B·IdealClientNote (abisal) → FinalCTA (abisal).
  * All copy from content dictionary via props (zero literals in JSX).
  * Spec: SPEC-P2.2
  */
@@ -12,12 +10,16 @@ import { PageHeader } from '@/components/page-header'
 import { ServiceFig } from '@/components/service-fig'
 import { ServiceRow } from '@/components/service-row'
 import { Reveal } from '@/components/motion-runtime'
+import { getPath } from '@/lib/i18n/routes'
 import type { Dictionary } from '@/lib/i18n/dictionary'
 import type { Locale } from '@/lib/i18n/types'
 
-export function ServicesPage({ dict, locale: _locale }: { dict: Dictionary; locale: Locale }) {
+export function ServicesPage({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   const { services } = dict
-  const { pageHeader, idealClient, finalCta } = services
+  const { pageHeader, idealClient } = services
+
+  // Locale-aware contact link
+  const contactHref = getPath('contact', locale)
 
   return (
     <>
@@ -33,11 +35,6 @@ export function ServicesPage({ dict, locale: _locale }: { dict: Dictionary; loca
       <section className="service-rows">
         <div className="page-shell service-rows__list">
           {services.services.map((svc, idx) => (
-            /*
-             * Each row wrapped in staggered Reveal.
-             * CSS transition-delay via --row-index custom property.
-             * Reduced-motion: Reveal sets data-visible immediately → no delay.
-             */
             <div
               key={svc.index}
               style={{ '--row-index': idx } as React.CSSProperties}
@@ -72,12 +69,11 @@ export function ServicesPage({ dict, locale: _locale }: { dict: Dictionary; loca
         title={idealClient.title}
         body={idealClient.body}
         cta={idealClient.cta}
-        // Interim anchor until Phase 3 ships /contacto (PAGE-06). See BACKLOG.
-        ctaHref="#contacto"
+        ctaHref={contactHref}
       />
 
       {/* FinalCTA — reused component (abisal) */}
-      <FinalCTA content={finalCta} />
+      <FinalCTA dict={dict} locale={locale} />
     </>
   )
 }

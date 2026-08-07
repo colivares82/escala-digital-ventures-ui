@@ -1,9 +1,25 @@
-import { ContactForm } from '@/components/contact-form'
-import { WordReveal } from '@/components/motion-runtime'
-import { SectionIndex } from '@/components/section-index'
-import { sharedContent } from '@/content/es/shared'
+/**
+ * FinalCTA — dossier contact section at the end of every interior page.
+ *
+ * Renders the exact same two-column dossier design as /contacto:
+ * LEFT: eyebrow + H2 + lead + affinity filter + meta
+ * RIGHT: FICHA DE CONTACTO formcard + trust line
+ *
+ * Single source: ContactSection (mode="section") reads from dict.contact + dict.shared.
+ * dict + locale must be passed from the page compositor (SPEC-P5 FR-5).
+ */
+import { ContactSection } from '@/components/contact-section'
+import type { Dictionary } from '@/lib/i18n/dictionary'
+import type { Locale } from '@/lib/i18n/types'
 
-/** Structural interface accepted by FinalCTA — any page can pass its own content. */
+export function FinalCTA({ dict, locale }: { dict: Dictionary; locale: Locale }) {
+  return <ContactSection dict={dict} locale={locale} mode="section" />
+}
+
+/**
+ * @deprecated FinalCtaContent is no longer used — FinalCTA renders ContactSection.
+ * Kept for backward-compat type imports only; remove in Phase 5.
+ */
 export interface FinalCtaContent {
   readonly title: string
   readonly body: string
@@ -11,42 +27,4 @@ export interface FinalCtaContent {
   readonly email: string
   readonly location: string
   readonly languages: string
-}
-
-export function FinalCTA({
-  content,
-}: {
-  content: FinalCtaContent
-}) {
-  return (
-    <section className="final-cta dark-surface" id="contacto">
-      <div className="page-shell final-cta__inner">
-        <SectionIndex
-          index="06"
-          label={sharedContent.contactForm.sectionLabel}
-        />
-
-        <div className="final-cta__grid">
-          <div className="final-cta__intro">
-            <WordReveal
-              as="h2"
-              text={content.title}
-              className="final-cta__title"
-            />
-            <p>{content.body}</p>
-          </div>
-
-          <div className="final-cta__contact">
-            <ContactForm email={content.email} success={content.success} />
-
-            <address className="contact-meta">
-              <a href={`mailto:${content.email}`}>{content.email}</a>
-              <span>{content.location}</span>
-              <span>{content.languages}</span>
-            </address>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
 }

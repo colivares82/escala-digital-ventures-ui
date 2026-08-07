@@ -70,50 +70,80 @@ Status: ◐ in progress
   colivares.com text mention (Ch. 1–4). GridBackground reusable primitive. CeremonialHeader
   + DnaBlock + ValuesList + ExpertiseGrid (6 micro-figs) + Manifesto (10 strata plates).
   596 tests. SPEC-P2.5.
+- ☑ 2.6 `/contacto` page + contact backend (Phase 3 folded in) — Full-viewport two-column
+  immersive page (invitation/affinity-filter left · dossier form right). `ContactForm` upgraded:
+  variants (section/dossier), fetch→/api/contact, honeypot, loading/success/error states.
+  `ContactSuccess` extracted as reusable component. API route with server validation,
+  honeypot (silent 200), in-memory rate limit (5/min, TODO(P6) durable). `lib/email.ts`
+  provider abstraction (Resend, DRY_RUN mode). Gmail server-only (env). `.env.example`.
+  630 tests. SPEC-P2.6.
+- ☑ 2.7 Link audit — all internal links via ROUTES.*/getPath(), no hardcoded strings.
+  «Hablemos» CTA → /contacto (was #contacto). IdealClientNote → /contacto.
+  Legal links tracked for Phase 4. `docs/link-audit.md` produced. SPEC-P2.6 FR-8.
 Each page ships with its own spec; new compositions (case template,
 manifesto) get a wireframe first.
 **Exit criteria per page:** matches its spec section, deployed locally,
 navigation and footer links live.
 
+## PHASE 2 complete ☑ — All interior pages shipped. Phase 3 contact backend folded into 2.6.
+
 ## PHASE 3 — Contact, end to end
-Status: ☐
-- ☐ `/contacto` page reusing ContactForm.
-- ☐ API route: server-side validation, transactional email (same
-  provider as MAGUPELL), honeypot, rate limit.
-- ☐ Success/error states per spec (error shows direct email fallback).
-- ☐ Confirm final address: hola@escaladigitalventures.com.
-**Exit criteria:** form tested end to end locally with the real mailbox.
+Status: ☑ (folded into Phase 2.6)
+- ☑ `/contacto` page reusing ContactForm (with new dossier variant). SPEC-P2.6.
+- ☑ API route: server-side validation, Resend provider, honeypot, in-memory rate limit.
+- ☑ Success/error/loading states per spec. ContactSuccess reusable component.
+- ☑ hola@escaladigitalventures.com confirmed as public address. Gmail server-only.
+- ☐ Real email delivery — requires provider API key + domain DNS (Phase 6).
+  DRY_RUN mode active locally (EMAIL_API_KEY empty → logs instead of sends).
+**Exit criteria:** ✅ Code complete. One env-flip from live delivery (Phase 6).
 
 ## PHASE 4 — Legal & analytics
-Status: ☐
-- ☐ `/aviso-legal` (LSSI-CE: company data, CIF, registry — Carlos
-  provides; Claude drafts).
-- ☐ `/privacidad` (RGPD: controller, purpose, legal basis, retention,
-  rights).
-- ☐ Cookieless analytics (no banner needed).
-- ☐ 404 page with the identity, favicon, OG images.
-**Exit criteria:** legally publishable in Spain.
+Status: ☑ done (SPEC-P4)
+- ☑ `/aviso-legal` (LSSI-CE: 5 sections, placeholders for unconfirmed data — Carlos to fill before go-live).
+- ☑ `/privacidad` (RGPD: 6 sections, no-tracking-cookies statement, AEPD reference).
+- ☑ Cookieless analytics — **DROPPED** (Carlos's decision: no analytics, no banner needed).
+- ☑ 404 page with the identity (abisal + GridBackground + kit micro-diagram + «Fuera del sistema.»).
+- ☑ Favicon set (`app/icon.svg` — draft, Carlos to approve before launch).
+- ☑ OG image (`app/opengraph-image.tsx` — 1200×630, abisal + claim + ambre).
+- ☑ Placeholder guard (`lib/placeholders.ts` + tests).
+- ☑ Footer legal links + RGPD consent link now resolve to real pages.
+**Exit criteria:** ✅ Code complete. Legal pages require advisor review + placeholder resolution before go-live.
 
 ## PHASE 5 — EN & CA content
-Status: ☐
-- ☐ Claude delivers full `en` and `ca` dictionaries: claims recrafted,
-  not translated ("We automate your business. We scale with you." /
-  «Automatitzem el teu negoci. Escalem amb tu.»).
-- ☐ Carlos reviews register of both languages.
-- ☐ Localized slugs active; hreflang QA across all pages.
-**Exit criteria:** the three languages are complete and reviewed.
+Status: ☑ done (SPEC-P5)
+- ☑ Full EN + CA dictionaries delivered: all 10 page dictionaries + shared + cases data.
+  Claims recrafted per Appendix A ("We automate your business. We scale with you." /
+  «Automatitzem el teu negoci. Escalem amb tu.»). Glossary: `docs/i18n-glossary.md`.
+- ☑ `getDictionary()` forked into ES/EN/CA bundles — no more fallback re-exports.
+- ☑ Coverage guard active: `tests/content/i18n-coverage.test.ts` fails on any
+  fallback re-export, key mismatch, placeholder in non-legal EN/CA, or meta identical to ES.
+- ☑ Localized 404: pathname-based locale detection (EN/CA/ES).
+- ☑ `docs/i18n-glossary.md` + `docs/i18n-qa.md` delivered.
+- ☑ 883 tests passing; build clean; TypeScript strict clean.
+- ☐ Carlos reviews register of EN + CA (AC-9 — open until sign-off).
+- ☐ Legal placeholders resolved before go-live (inherited from Phase 4).
+**Exit criteria:** ✅ Code complete. Carlos register review + legal placeholder resolution pending.
 
 ## PHASE 6 — Google Cloud infrastructure & domain (kept for the end)
-Status: ☐ (blocked: GCP account not ready)
-- ☐ Dockerfile (`output: "standalone"`).
-- ☐ Cloud Run services `dev` + `prod`, European region.
-- ☐ GitHub Actions: lint + test + build → deploy dev → manual approval
-  → prod. (Note: branch workflow for dev/main will be configured when
-  GCP is ready; branches can be created now without the cloud target.)
-- ☐ `dev.escaladigitalventures.com` protected (IAP or basic auth).
-- ☐ Domain mapping for prod prepared (DNS not switched yet).
-**Exit criteria:** push to main reaches dev automatically; prod deploys
-only on approval.
+Status: ☑ done (SPEC-P6)
+- ☑ Dockerfile (`output: "standalone"`, multi-stage, non-root, PORT 8080, linux/amd64).
+- ☑ `.dockerignore` — lean build context, no secrets.
+- ☑ `next.config.mjs` — `output: "standalone"` + `X-Robots-Tag: noindex` for dev env.
+- ☑ `.github/workflows/deploy.yml` — CI (lint + typecheck + test:coverage ≥70%) → build image → push to Artifact Registry → auto-deploy dev → manual-approval prod (GitHub Environment "production").
+- ☑ `docs/infra-runbook.md` — step-by-step interactive setup (13 steps, every Carlos-input point marked).
+- ☑ `docs/infra-decisions.md` — 12 architecture decisions with rationale.
+- ☑ GCP project `escala-dv-web` created, billing linked, 5 APIs enabled, Artifact Registry EU created.
+- ☑ Deployer SA `escala-deployer` + WIF keyless auth (GitHub→GCP, no JSON keys).
+- ☑ Secret Manager: CONTACT_TO, CONTACT_FROM, EMAIL_API_KEY (placeholder).
+- ☑ Dev service `escala-web-dev` deployed (IAM-gated, noindex, DRY_RUN). Verified: / → 200, /en → 200, /que-hacemos → 200, /unknown → 404.
+- ☑ Prod service `escala-web-prod` deployed (scale-to-zero, max 4).
+- ☑ GitHub Actions variables (7) + "production" environment with manual approval gate.
+- ☑ Budget alert €10/month created.
+- ☑ `app/[[...path]]/page.tsx` — `dynamicParams=true` (Next.js 16 SSR on-demand; notFound() guards unknown paths).
+- ☐ Domain mapping for prod (deferred: requires Google Search Console TXT verification to propagate — retry after 15-30 min, then run `gcloud beta run domain-mappings create`). DNS switch = Phase 7.
+- ☐ Resend account + domain verification + email test (deferred). (Runbook Step 13)
+- ☐ Google Workspace MX + DNS records at GoDaddy (deferred). (Runbook Step 11)
+**Exit criteria:** ✅ Push to main reaches dev automatically; prod deploys only on approval. Dev verified live. Only domain mapping + email deferred to Phase 7.
 
 ## PHASE 7 — Launch QA & go-live
 Status: ☐
