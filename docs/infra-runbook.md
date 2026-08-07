@@ -383,14 +383,20 @@ Document the records here once you have them.
 **[CARLOS INPUT REQUIRED]** Log in to GoDaddy DNS manager for `escaladigitalventures.com`.
 Add these records (do NOT delete existing records until Phase 7 go-live):
 
-### Website (Cloud Run) — add after Step 10 output
+### Website (Cloud Run) — ✅ DOMAIN MAPPING CREATED (add at Phase 7 go-live)
 ```
-# Replace with actual values from Step 10 gcloud output:
-A     @     <CLOUD_RUN_IP_1>    TTL 3600
-A     @     <CLOUD_RUN_IP_2>    TTL 3600
-AAAA  @     <CLOUD_RUN_IPV6>    TTL 3600
-CNAME www   ghs.googlehosted.com.  TTL 3600
+# Exact records from gcloud beta run domain-mappings create (August 2026):
+A     @     216.239.32.21    TTL 3600
+A     @     216.239.34.21    TTL 3600
+A     @     216.239.36.21    TTL 3600
+A     @     216.239.38.21    TTL 3600
+AAAA  @     2001:4860:4802:32::15    TTL 3600
+AAAA  @     2001:4860:4802:34::15    TTL 3600
+AAAA  @     2001:4860:4802:36::15    TTL 3600
+AAAA  @     2001:4860:4802:38::15    TTL 3600
+CNAME www   ghs.googlehosted.com.    TTL 3600
 ```
+Note: Managed TLS certificate will provision automatically once these DNS records are added and propagate.
 
 ### Google Workspace (inbound email) — can be added NOW, independent of web DNS
 **[CARLOS INPUT REQUIRED]** Sign up for Google Workspace at workspace.google.com.
