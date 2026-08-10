@@ -14,7 +14,7 @@ import {
 import { homeContent } from '@/content/es/home'
 import { sharedContent } from '@/content/es/shared'
 
-const { labels, diagrams } = homeContent
+const { labels, diagrams, heroFigure } = homeContent
 
 describe('Hero', () => {
   it('renders the H1 heading with the hero title', () => {
@@ -24,6 +24,7 @@ describe('Hero', () => {
         claims={homeContent.claims}
         labels={labels}
         diagrams={diagrams}
+        heroFigure={heroFigure}
         claimsAriaLabel={sharedContent.accessibility.keyMessages}
       />,
     )

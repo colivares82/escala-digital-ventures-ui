@@ -16,6 +16,7 @@ import { getPath } from '@/lib/i18n/routes'
 import type { homeContent as homeContentType } from '@/content/es/home'
 import type { Dictionary } from '@/lib/i18n/dictionary'
 import type { Locale } from '@/lib/i18n/types'
+import type { HeroFigureContent } from '@/components/hero-narrative-fig'
 
 type HomeLabels = typeof homeContentType.labels
 type HomeDiagrams = typeof homeContentType.diagrams
@@ -25,12 +26,14 @@ export function Hero({
   claims,
   labels,
   diagrams,
+  heroFigure,
   claimsAriaLabel,
 }: {
   content: typeof homeContentType.hero
   claims: typeof homeContentType.claims
   labels: HomeLabels
   diagrams: HomeDiagrams
+  heroFigure?: HeroFigureContent
   claimsAriaLabel: string
 }) {
   return (
@@ -56,7 +59,7 @@ export function Hero({
 
           <div className="hero__diagram">
             <p className="hero__eyebrow">{content.eyebrow}</p>
-            <SystemDiagram kind="hero" label={diagrams.hero} />
+            <SystemDiagram kind="hero" label={diagrams.hero} heroFigure={heroFigure} />
           </div>
         </div>
       </section>

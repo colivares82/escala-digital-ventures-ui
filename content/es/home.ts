@@ -33,10 +33,31 @@ export const homeContent = {
 
   /** Accessible labels for SVG diagrams (FIG captions). */
   diagrams: {
-    hero: 'Sistema manual que se transforma en una plataforma ordenada',
+    hero: 'De procesos manuales a valor real y medible mediante un sistema a medida',
     problem: 'Flujo operativo fragmentado entre hojas, correos y documentos',
     proof: 'Evolución verificada de la operación',
     alliance: 'Cinco alianzas, dedicación completa. Dos ocupadas.',
+  },
+
+  /**
+   * Hero narrative diagram (FIG.01) — SPEC-POLISH-01.
+   * All copy comes from here; no hardcoded strings in the component.
+   * Zone numbers and FIG number are not translated (kit grammar §3.3).
+   */
+  heroFigure: {
+    /** Zone labels (left → right) */
+    zones: ['01 · PROCESOS MANUALES', '02 · SISTEMA A MEDIDA', '03 · VALOR REAL Y MEDIBLE'],
+    /** Five named input process boxes */
+    inputs: ['CORREOS', 'HOJAS DE CÁLCULO', 'NOTAS', 'CATÁLOGO', 'HISTORIALES'],
+    /** System zone title and inner reordering label */
+    system: { title: '02 · SISTEMA A MEDIDA', innerLabel: 'ORDENA · MODELA' },
+    /** Two output value boxes: label (ambre) + sub (body) */
+    outputs: [
+      { label: 'INSIGHT', sub: 'Decisiones y datos' },
+      { label: 'OPTIMIZACIÓN', sub: 'de procesos' },
+    ],
+    /** Figcaption */
+    caption: 'FIG. 01 — DE MUCHOS PROCESOS MANUALES A VALOR REAL Y MEDIBLE',
   },
 
   hero: {
