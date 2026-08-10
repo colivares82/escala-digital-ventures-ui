@@ -221,6 +221,7 @@ export default async function Page({
               claims={home.claims}
               labels={home.labels}
               diagrams={home.diagrams}
+              heroFigure={(home as { heroFigure?: unknown }).heroFigure as Parameters<typeof Hero>[0]['heroFigure']}
               claimsAriaLabel={shared.accessibility.keyMessages}
             />
             <ProblemSection

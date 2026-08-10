@@ -45,3 +45,23 @@ export const PHASE_CYCLE_VISIBLE_THRESHOLD = 0.01
  */
 export const REDUCED_MOTION_QUERY =
   '(max-width: 767px), (prefers-reduced-motion: reduce)'
+
+// ── Hero narrative diagram particles (SPEC-POLISH-01) ─────────────────────────
+
+/** Duration (ms) for a particle to travel an input path (base). */
+export const HERO_PARTICLE_IN_DURATION_MS = 1500
+
+/** Random extra duration (ms) added to input travel to vary speed. */
+export const HERO_PARTICLE_IN_JITTER_MS = 900
+
+/** Duration (ms) the particle pauses at the system boundary. */
+export const HERO_PARTICLE_HOLD_MS = 340
+
+/** Duration (ms) for a particle to travel an output path. */
+export const HERO_PARTICLE_OUT_DURATION_MS = 1100
+
+/** Interval (ms) between particle spawns. */
+export const HERO_PARTICLE_SPAWN_INTERVAL_MS = 440
+
+/** Probability (0–1) of spawning a second particle in the same interval. */
+export const HERO_PARTICLE_DOUBLE_CHANCE = 0.65

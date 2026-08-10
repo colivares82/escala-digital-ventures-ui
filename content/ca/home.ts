@@ -32,10 +32,26 @@ export const homeContent = {
   },
 
   diagrams: {
-    hero: 'Sistema manual que es transforma en una plataforma ordenada',
+    hero: 'De processos manuals a valor real i mesurable mitjançant un sistema a mida',
     problem: 'Flux operatiu fragmentat entre fulls, correus i documents',
     proof: 'Evolució verificada de l\'operació',
     alliance: 'Cinc aliances, dedicació completa. Dues ocupades.',
+  },
+
+  /**
+   * Hero narrative diagram (FIG.01) — SPEC-POLISH-01.
+   * All copy comes from here; no hardcoded strings in the component.
+   * Zone numbers and FIG number are not translated (kit grammar §3.3).
+   */
+  heroFigure: {
+    zones: ['01 · PROCESSOS MANUALS', '02 · SISTEMA A MIDA', '03 · VALOR REAL I MESURABLE'],
+    inputs: ['CORREUS', 'FULLS DE CÀLCUL', 'NOTES', 'CATÀLEG', 'HISTORIALS'],
+    system: { title: '02 · SISTEMA A MIDA', innerLabel: 'ORDENA · MODELA' },
+    outputs: [
+      { label: 'INSIGHT', sub: 'Decisions i dades' },
+      { label: 'OPTIMITZACIÓ', sub: 'de processos' },
+    ],
+    caption: 'FIG. 01 — DE MOLTS PROCESSOS MANUALS A VALOR REAL I MESURABLE',
   },
 
   hero: {

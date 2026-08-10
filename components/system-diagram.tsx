@@ -1,6 +1,8 @@
 'use client'
 
 import { DiagramReveal } from '@/components/motion-runtime'
+import { HeroNarrativeFig } from '@/components/hero-narrative-fig'
+import type { HeroFigureContent } from '@/components/hero-narrative-fig'
 
 type DiagramKind = 'hero' | 'problem' | 'proof' | 'outcome'
 
@@ -147,11 +149,19 @@ function Plate({
 export function SystemDiagram({
   kind,
   label,
+  heroFigure,
 }: {
   kind: DiagramKind
   label: string
+  heroFigure?: HeroFigureContent
 }) {
   if (kind === 'hero') {
+    // Narrative redesign (SPEC-POLISH-01): delegate to HeroNarrativeFig.
+    // heroFigure prop is required for the hero kind; falls back gracefully if absent.
+    if (heroFigure) {
+      return <HeroNarrativeFig content={heroFigure} ariaLabel={label} />
+    }
+    // Fallback: legacy diagram (should not occur in production — heroFigure always passed)
     return (
       <Plate number="01" label={label} className="hero-plate">
         <g className="diagram-assembly">

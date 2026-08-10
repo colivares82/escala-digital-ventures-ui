@@ -1,8 +1,48 @@
 import { render, screen } from '@testing-library/react'
 import { SystemDiagram } from '@/components/system-diagram'
+import type { HeroFigureContent } from '@/components/hero-narrative-fig'
+
+const mockHeroFigure: HeroFigureContent = {
+  zones: ['01 · PROCESOS MANUALES', '02 · SISTEMA A MEDIDA', '03 · VALOR REAL Y MEDIBLE'],
+  inputs: ['CORREOS', 'HOJAS DE CÁLCULO', 'NOTAS', 'CATÁLOGO', 'HISTORIALES'],
+  system: { title: '02 · SISTEMA A MEDIDA', innerLabel: 'ORDENA · MODELA' },
+  outputs: [
+    { label: 'INSIGHT', sub: 'Decisiones y datos' },
+    { label: 'OPTIMIZACIÓN', sub: 'de procesos' },
+  ],
+  caption: 'FIG. 01 — DE MUCHOS PROCESOS MANUALES A VALOR REAL Y MEDIBLE',
+}
 
 describe('SystemDiagram', () => {
-  describe('kind="hero"', () => {
+  describe('kind="hero" with heroFigure (narrative redesign)', () => {
+    it('renders an SVG with the provided aria-label', () => {
+      render(<SystemDiagram kind="hero" label="Hero diagram" heroFigure={mockHeroFigure} />)
+      expect(screen.getByRole('img', { name: 'Hero diagram' })).toBeInTheDocument()
+    })
+
+    it('renders the figcaption from heroFigure.caption', () => {
+      render(<SystemDiagram kind="hero" label="Hero diagram" heroFigure={mockHeroFigure} />)
+      expect(screen.getByText(mockHeroFigure.caption)).toBeInTheDocument()
+    })
+
+    it('renders a figure element', () => {
+      const { container } = render(
+        <SystemDiagram kind="hero" label="Hero" heroFigure={mockHeroFigure} />,
+      )
+      expect(container.querySelector('figure')).toBeInTheDocument()
+    })
+
+    it('renders the particle layer with aria-hidden', () => {
+      const { container } = render(
+        <SystemDiagram kind="hero" label="Hero" heroFigure={mockHeroFigure} />,
+      )
+      const layer = container.querySelector('.hero-particle-layer')
+      expect(layer).toBeInTheDocument()
+      expect(layer).toHaveAttribute('aria-hidden', 'true')
+    })
+  })
+
+  describe('kind="hero" without heroFigure (legacy fallback)', () => {
     it('renders an SVG with the provided aria-label', () => {
       render(<SystemDiagram kind="hero" label="Hero diagram" />)
       expect(screen.getByRole('img', { name: 'Hero diagram' })).toBeInTheDocument()

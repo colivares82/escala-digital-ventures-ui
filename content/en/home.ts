@@ -32,10 +32,26 @@ export const homeContent = {
   },
 
   diagrams: {
-    hero: 'Manual system transforming into an organised platform',
+    hero: 'From manual processes to real, measurable value through a bespoke system',
     problem: 'Fragmented operational flow across spreadsheets, emails and documents',
     proof: 'Verified operational evolution',
     alliance: 'Five alliances, full dedication. Two occupied.',
+  },
+
+  /**
+   * Hero narrative diagram (FIG.01) — SPEC-POLISH-01.
+   * All copy comes from here; no hardcoded strings in the component.
+   * Zone numbers and FIG number are not translated (kit grammar §3.3).
+   */
+  heroFigure: {
+    zones: ['01 · MANUAL PROCESSES', '02 · BESPOKE SYSTEM', '03 · REAL, MEASURABLE VALUE'],
+    inputs: ['EMAILS', 'SPREADSHEETS', 'NOTES', 'CATALOGUE', 'RECORDS'],
+    system: { title: '02 · BESPOKE SYSTEM', innerLabel: 'ORDERS · MODELS' },
+    outputs: [
+      { label: 'INSIGHT', sub: 'Decisions and data' },
+      { label: 'OPTIMISATION', sub: 'of processes' },
+    ],
+    caption: 'FIG. 01 — FROM MANY MANUAL PROCESSES TO REAL, MEASURABLE VALUE',
   },
 
   hero: {
