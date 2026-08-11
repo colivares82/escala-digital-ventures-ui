@@ -3,6 +3,8 @@
 import { DiagramReveal } from '@/components/motion-runtime'
 import { HeroNarrativeFig } from '@/components/hero-narrative-fig'
 import type { HeroFigureContent } from '@/components/hero-narrative-fig'
+import { ProblemFlowsFig } from '@/components/problem-flows-fig'
+import type { ProblemFlowsFigContent } from '@/components/problem-flows-fig'
 
 type DiagramKind = 'hero' | 'problem' | 'proof' | 'outcome'
 
@@ -150,10 +152,13 @@ export function SystemDiagram({
   kind,
   label,
   heroFigure,
+  problemFigure,
 }: {
   kind: DiagramKind
   label: string
   heroFigure?: HeroFigureContent
+  /** Problem flows diagram content (SPEC-POLISH-02). When provided, delegates to ProblemFlowsFig. */
+  problemFigure?: ProblemFlowsFigContent
 }) {
   if (kind === 'hero') {
     // Narrative redesign (SPEC-POLISH-01): delegate to HeroNarrativeFig.
@@ -190,6 +195,11 @@ export function SystemDiagram({
   }
 
   if (kind === 'problem') {
+    // Redesign (SPEC-POLISH-02): delegate to ProblemFlowsFig when content is provided.
+    if (problemFigure) {
+      return <ProblemFlowsFig content={problemFigure} ariaLabel={label} />
+    }
+    // Fallback: legacy pentagon diagram (should not occur in production)
     return (
       <Plate number="02" label={label} className="problem-plate">
         <g className="problem-web">

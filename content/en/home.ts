@@ -66,15 +66,42 @@ export const homeContent = {
 
   claims: sharedContent.claims,
 
+  /**
+   * Problem section (01 / STARTING POINT) — SPEC-POLISH-02.
+   * body is a two-paragraph tuple; both paragraphs rendered separately.
+   * Pending Carlos register review (AC-9).
+   */
   problem: {
-    title: 'Your business works. Your systems do not.',
-    body: 'Spreadsheets, emails, loose documents and knowledge locked in the heads of two or three people. It works… until it stops working: volume grows, errors multiply, invoicing falls behind and the business depends on nobody getting sick. Escala steps in exactly there: it digitalises and automates the operational core of your company and turns it into your own platform on which you can grow.',
+    title: 'Your operations have hit their limit — not your ambitions.',
+    body: [
+      'You have built a business that works. But there comes a point where the operations — spreadsheets, emails, loose documents, knowledge locked in the heads of a few people — can no longer keep up with growth: volume increases, errors multiply and the business depends on nobody being absent.',
+      'Escala steps in there: it turns that operational core into your own platform on which you can keep growing.',
+    ] as const,
     symptoms: [
       'growing volume',
       'multiplying errors',
       'delayed invoicing',
       'dependency on people',
     ],
+  },
+
+  /**
+   * Problem flows diagram (FIG.02) — SPEC-POLISH-02.
+   * All copy comes from here; no hardcoded strings in the component.
+   * Piece labels and core lines are not translated (kit grammar §3.3 — mono labels).
+   * Pending Carlos register review (AC-9).
+   */
+  problemFigure: {
+    pieces: [
+      'HOJAS DE CÁLCULO',
+      'CORREOS',
+      'NOTAS',
+      'CATÁLOGO',
+      'HISTORIAL',
+    ] as const,
+    core: ['PROCESOS', 'MANUALES'] as const,
+    caption: 'FIG. 02 — AN OPERATION DEPENDENT ON MANUAL PROCESSES: FLOWS DO NOT COMPLETE',
+    note: 'EACH PIECE TRIES TO CONNECT · THE FLOW BREAKS AT THE MANUAL STEP',
   },
 
   services: {

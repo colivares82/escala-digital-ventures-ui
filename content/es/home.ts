@@ -72,15 +72,44 @@ export const homeContent = {
 
   claims: sharedContent.claims,
 
+  /**
+   * Problem section (01 / PUNTO DE PARTIDA) — SPEC-POLISH-02.
+   * body is a two-paragraph tuple; both paragraphs rendered separately.
+   */
   problem: {
-    title: 'Tu negocio funciona. Tus sistemas, no.',
-    body: 'Hojas de cálculo, correos, documentos sueltos y el conocimiento en la cabeza de dos o tres personas. Funciona… hasta que deja de funcionar: el volumen crece, los errores se multiplican, la facturación se retrasa y el negocio depende de que nadie se ponga enfermo. Escala entra exactamente ahí: digitaliza y automatiza el corazón operativo de tu empresa y lo convierte en una plataforma propia sobre la que puedes crecer.',
+    title: 'Tu operativa llegó a su límite, no tus objetivos.',
+    body: [
+      'Has construido un negocio que funciona. Pero llega un punto en que la operativa —hojas de cálculo, correos, documentos sueltos, conocimiento en la cabeza de pocas personas— deja de acompañar el crecimiento: el volumen aumenta, los errores se multiplican y el negocio depende de que nadie falte.',
+      'Escala entra ahí: convierte ese corazón operativo en una plataforma propia sobre la que seguir creciendo.',
+    ] as const,
     symptoms: [
       'volumen que crece',
       'errores que se multiplican',
       'facturación que se retrasa',
       'dependencia de personas',
     ],
+  },
+
+  /**
+   * Problem flows diagram (FIG.02) — SPEC-POLISH-02.
+   * All copy comes from here; no hardcoded strings in the component.
+   * Piece labels and core lines are not translated (kit grammar §3.3 — mono labels).
+   */
+  problemFigure: {
+    /** Five named piece boxes arranged around the core */
+    pieces: [
+      'HOJAS DE CÁLCULO',
+      'CORREOS',
+      'NOTAS',
+      'CATÁLOGO',
+      'HISTORIAL',
+    ] as const,
+    /** Two-line core label (PROCESOS / MANUALES) */
+    core: ['PROCESOS', 'MANUALES'] as const,
+    /** Figcaption */
+    caption: 'FIG. 02 — UNA OPERATIVA QUE DEPENDE DE PROCESOS MANUALES: LOS FLUJOS NO SE COMPLETAN',
+    /** Small note line below the caption */
+    note: 'CADA PIEZA INTENTA CONECTARSE · EL FLUJO SE CORTA EN EL PASO MANUAL',
   },
 
   services: {

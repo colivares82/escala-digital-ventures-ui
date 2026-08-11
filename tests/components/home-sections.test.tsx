@@ -98,9 +98,14 @@ describe('ProblemSection', () => {
     expect(heading).toHaveAttribute('aria-label', homeContent.problem.title)
   })
 
-  it('renders the problem body copy', () => {
+  it('renders the first body paragraph', () => {
     render(<ProblemSection content={homeContent.problem} labels={labels} diagrams={diagrams} />)
-    expect(screen.getByText(homeContent.problem.body)).toBeInTheDocument()
+    expect(screen.getByText(homeContent.problem.body[0])).toBeInTheDocument()
+  })
+
+  it('renders the second body paragraph', () => {
+    render(<ProblemSection content={homeContent.problem} labels={labels} diagrams={diagrams} />)
+    expect(screen.getByText(homeContent.problem.body[1])).toBeInTheDocument()
   })
 
   it('renders all symptoms', () => {
@@ -115,6 +120,23 @@ describe('ProblemSection', () => {
     expect(
       screen.getByRole('list', { name: homeContent.labels.symptoms }),
     ).toBeInTheDocument()
+  })
+
+  it('renders the problem diagram when problemFigure is provided', () => {
+    const { container } = render(
+      <ProblemSection
+        content={homeContent.problem}
+        labels={labels}
+        diagrams={diagrams}
+        problemFigure={homeContent.problemFigure}
+      />,
+    )
+    // ProblemFlowsFig renders an SVG with role="img"
+    expect(screen.getByRole('img', { name: diagrams.problem })).toBeInTheDocument()
+    // Pulse layer is aria-hidden
+    const pulseLayer = container.querySelector('.problem-pulse-layer')
+    expect(pulseLayer).toBeInTheDocument()
+    expect(pulseLayer).toHaveAttribute('aria-hidden', 'true')
   })
 })
 

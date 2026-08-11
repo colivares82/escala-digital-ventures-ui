@@ -6,7 +6,7 @@
 |---------|--------|
 | Spanish home page (`/`) | Complete, approved |
 | Hero section with WordReveal H1 + FIG.01 system diagram | Complete |
-| ProblemSection with symptom list + FIG.02 diagram | Complete |
+| ProblemSection — SPEC-POLISH-02: new headline, 2-para body, symptoms strip, 2-col layout, FIG.02 redesign | Complete |
 | ServicesPreview (5 service lines, editorial index) | Complete |
 | FrameworkSection — `PhaseCycle` scroll-driven ring (desktop) + static list (mobile/reduced-motion) | Complete |
 | ProofSection — 4 DAT readouts + 2 ClientChips (MAGUPELL, BioZero) | Complete |

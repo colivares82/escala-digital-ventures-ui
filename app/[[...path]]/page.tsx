@@ -228,6 +228,7 @@ export default async function Page({
               content={home.problem}
               labels={home.labels}
               diagrams={home.diagrams}
+              problemFigure={(home as { problemFigure?: unknown }).problemFigure as Parameters<typeof ProblemSection>[0]['problemFigure']}
             />
             <ServicesPreview
               content={home.services}

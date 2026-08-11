@@ -66,15 +66,42 @@ export const homeContent = {
 
   claims: sharedContent.claims,
 
+  /**
+   * Problem section (01 / PUNT DE PARTIDA) — SPEC-POLISH-02.
+   * body is a two-paragraph tuple; both paragraphs rendered separately.
+   * Pending Carlos register review (AC-9).
+   */
   problem: {
-    title: 'El teu negoci funciona. Els teus sistemes, no.',
-    body: 'Fulls de càlcul, correus, documents solts i el coneixement al cap de dues o tres persones. Funciona… fins que deixa de funcionar: el volum creix, els errors es multipliquen, la facturació es retarda i el negoci depèn que ningú es posi malalt. Escala entra exactament aquí: digitalitza i automatitza el cor operatiu de la teva empresa i el converteix en una plataforma pròpia sobre la qual pots créixer.',
+    title: 'La teva operativa ha arribat al seu límit, no els teus objectius.',
+    body: [
+      'Has construït un negoci que funciona. Però arriba un punt en què l\'operativa —fulls de càlcul, correus, documents solts, coneixement al cap de poques persones— deixa d\'acompanyar el creixement: el volum augmenta, els errors es multipliquen i el negoci depèn que ningú falti.',
+      'Escala entra aquí: converteix aquell cor operatiu en una plataforma pròpia sobre la qual seguir creixent.',
+    ] as const,
     symptoms: [
       'volum que creix',
       'errors que es multipliquen',
       'facturació que es retarda',
       'dependència de persones',
     ],
+  },
+
+  /**
+   * Problem flows diagram (FIG.02) — SPEC-POLISH-02.
+   * All copy comes from here; no hardcoded strings in the component.
+   * Piece labels and core lines are not translated (kit grammar §3.3 — mono labels).
+   * Pending Carlos register review (AC-9).
+   */
+  problemFigure: {
+    pieces: [
+      'HOJAS DE CÁLCULO',
+      'CORREOS',
+      'NOTAS',
+      'CATÁLOGO',
+      'HISTORIAL',
+    ] as const,
+    core: ['PROCESOS', 'MANUALES'] as const,
+    caption: 'FIG. 02 — UNA OPERATIVA QUE DEPÈN DE PROCESSOS MANUALS: ELS FLUXOS NO ES COMPLETEN',
+    note: 'CADA PEÇA INTENTA CONNECTAR-SE · EL FLUX ES TALLA EN EL PAS MANUAL',
   },
 
   services: {

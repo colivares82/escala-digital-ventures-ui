@@ -17,6 +17,7 @@ import type { homeContent as homeContentType } from '@/content/es/home'
 import type { Dictionary } from '@/lib/i18n/dictionary'
 import type { Locale } from '@/lib/i18n/types'
 import type { HeroFigureContent } from '@/components/hero-narrative-fig'
+import type { ProblemFlowsFigContent } from '@/components/problem-flows-fig'
 
 type HomeLabels = typeof homeContentType.labels
 type HomeDiagrams = typeof homeContentType.diagrams
@@ -73,43 +74,55 @@ export function ProblemSection({
   content,
   labels,
   diagrams,
+  problemFigure,
 }: {
   content: typeof homeContentType.problem
   labels: HomeLabels
   diagrams: HomeDiagrams
+  /** Problem flows diagram content (SPEC-POLISH-02). Passed to SystemDiagram. */
+  problemFigure?: ProblemFlowsFigContent
 }) {
   return (
     <section className="section section--light" id="problema">
       <div className="page-shell">
         <SectionIndex index="01" label={labels.problem} />
 
-        <div className="problem-layout">
-          <div>
-            <WordReveal text={content.title} />
-            <ul
-              className="problem-symptoms"
-              aria-label={labels.symptoms}
-            >
-              {content.symptoms.map((symptom, i) => (
-                <Reveal
-                  key={symptom}
-                  className={`problem-symptom problem-symptom--${i + 1}`}
-                >
-                  <li>
-                    <i aria-hidden="true" />
-                    {symptom}
-                  </li>
-                </Reveal>
-              ))}
-            </ul>
-          </div>
+        {/* Full-width headline band */}
+        <WordReveal text={content.title} />
 
-          <div className="problem-layout__narrative">
-            <Reveal>
-              <p className="lead-copy">{content.body}</p>
+        {/* Symptoms strip + divider */}
+        <ul
+          className="problem-symptoms"
+          aria-label={labels.symptoms}
+        >
+          {content.symptoms.map((symptom, i) => (
+            <Reveal
+              key={symptom}
+              className={`problem-symptom problem-symptom--${i + 1}`}
+            >
+              <li>
+                <i aria-hidden="true" />
+                {symptom}
+              </li>
             </Reveal>
-            <SystemDiagram kind="problem" label={diagrams.problem} />
+          ))}
+        </ul>
+
+        {/* Two balanced columns: body | diagram */}
+        <div className="problem-cols">
+          <div className="problem-cols__body">
+            <Reveal>
+              <p className="lead-copy">{content.body[0]}</p>
+            </Reveal>
+            <Reveal>
+              <p className="lead-copy">{content.body[1]}</p>
+            </Reveal>
           </div>
+          <SystemDiagram
+            kind="problem"
+            label={diagrams.problem}
+            problemFigure={problemFigure}
+          />
         </div>
       </div>
     </section>
