@@ -1654,7 +1654,7 @@ h1, h2, h3, h4, p {
       var(--abisal) 0%,
       var(--abisal-gradient-end) 100%
     );
-  background-size: 3rem 3rem, 3rem 3rem, auto;
+  background-size: 5rem 5rem, 5rem 5rem, auto;
 }
 
 .phase-cycle__header {
@@ -1913,7 +1913,7 @@ h1, h2, h3, h4, p {
       var(--abisal) 0%,
       var(--abisal-gradient-end) 100%
     );
-  background-size: 3rem 3rem, 3rem 3rem, auto;
+  background-size: 5rem 5rem, 5rem 5rem, auto;
 }
 
 /* Inside framework-cycle, phase-cycle should not bleed to full viewport width */
@@ -2777,7 +2777,7 @@ h1, h2, h3, h4, p {
     linear-gradient(rgb(247 247 244 / 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgb(247 247 244 / 0.05) 1px, transparent 1px),
     radial-gradient(ellipse at 60% 40%, var(--abisal), var(--abisal-gradient-end));
-  background-size: 3rem 3rem, 3rem 3rem, auto;
+  background-size: 5rem 5rem, 5rem 5rem, auto;
 }
 .ideal-client .section-index {
   margin-bottom: 1.5rem;
@@ -3345,7 +3345,7 @@ h1, h2, h3, h4, p {
     linear-gradient(rgb(247 247 244 / 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgb(247 247 244 / 0.05) 1px, transparent 1px),
     radial-gradient(ellipse at 50% 45%, var(--abisal), var(--abisal-gradient-end));
-  background-size: 3rem 3rem, 3rem 3rem, auto;
+  background-size: 5rem 5rem, 5rem 5rem, auto;
   padding: var(--space-section) 0;
 }
 
@@ -3407,7 +3407,7 @@ h1, h2, h3, h4, p {
     linear-gradient(rgb(247 247 244 / 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgb(247 247 244 / 0.05) 1px, transparent 1px),
     radial-gradient(ellipse at 50% 45%, var(--abisal), var(--abisal-gradient-end));
-  background-size: 3rem 3rem, 3rem 3rem, auto;
+  background-size: 5rem 5rem, 5rem 5rem, auto;
   padding: var(--space-section) 0;
   border-top: 1px solid rgb(247 247 244 / 0.1);
 }
