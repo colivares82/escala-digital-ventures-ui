@@ -286,7 +286,12 @@ export function AllianceTeaser({
       {/* GridBackground reuse — SPEC-POLISH-04 AC-7 / SPEC-P2.5 FR-6 */}
       <GridBackground />
 
-      <div className="page-shell">
+      {/*
+       * Content wrapper MUST be position:relative so it stacks above the
+       * absolutely-positioned GridBackground (z-index:0). Same pattern as
+       * .expertise-section__inner and .manifesto__inner. See DECISIONS.md.
+       */}
+      <div className="page-shell alliance__inner">
         <SectionIndex index="05" label={labels.alliance} />
 
         {/* Title (left) | side text + button (right) — unchanged per spec */}
