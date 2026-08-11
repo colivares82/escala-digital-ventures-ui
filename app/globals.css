@@ -1304,14 +1304,16 @@ h1, h2, h3, h4, p {
   letter-spacing: 0.04em;
 }
 
-/* Protagonist: all elements visible immediately (no draw-on-scroll) */
-.alliance-constellation--protagonist .ac-draw {
+/* Protagonist: all elements visible immediately (no draw-on-scroll).
+ * Doubled class selector (specificity 0,3,0) beats the Phase 2.4 base rules
+ * (0,2,0) regardless of source order. */
+.alliance-constellation.alliance-constellation--protagonist .ac-draw {
   opacity: 1;
   transition: none;
 }
 
-/* Protagonist: solid connectors fully visible */
-.alliance-constellation--protagonist .ac-conn--solid {
+/* Protagonist: solid connectors fully visible — override draw animation */
+.alliance-constellation.alliance-constellation--protagonist .ac-conn--solid {
   stroke-dasharray: none;
   stroke-dashoffset: 0;
   opacity: 1;
