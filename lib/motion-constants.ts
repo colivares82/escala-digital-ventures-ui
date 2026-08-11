@@ -65,3 +65,20 @@ export const HERO_PARTICLE_SPAWN_INTERVAL_MS = 440
 
 /** Probability (0–1) of spawning a second particle in the same interval. */
 export const HERO_PARTICLE_DOUBLE_CHANCE = 0.65
+
+// ── Problem flows diagram pulses (SPEC-POLISH-02) ─────────────────────────────
+
+/** Duration (ms) for a pulse to travel a solid connector segment. */
+export const PROBLEM_PULSE_DURATION_MS = 1100
+
+/** Duration (ms) for the flash-and-fade at the break point. */
+export const PROBLEM_PULSE_FADE_MS = 400
+
+/** Interval (ms) between pulse spawns (one random segment per tick). */
+export const PROBLEM_PULSE_INTERVAL_MS = 700
+
+/** Angular speed (radians per frame at 60fps) for the core scale pulse. */
+export const PROBLEM_CORE_PULSE_SPEED = 0.06
+
+/** Amplitude of the core scale pulse (fraction of base scale). */
+export const PROBLEM_CORE_PULSE_AMPLITUDE = 0.03

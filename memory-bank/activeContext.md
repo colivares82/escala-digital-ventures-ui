@@ -4,7 +4,7 @@ _Last updated: August 2026 (Phase 6 COMPLETE — GCP infrastructure fully live)_
 
 ## Current state
 
-**Phase 6 COMPLETE.** Both Cloud Run environments are live and publicly accessible. CI/CD pipeline is fully operational. Branch flow: `dev` → dev environment, `main` → prod environment. Carlos is working on Phase 7 content/QA over the next few days before DNS switch.
+**Phase 6 COMPLETE + SPEC-POLISH-02 COMPLETE.** Both Cloud Run environments are live. CI/CD pipeline is fully operational. Home section 01 "Punto de partida" has been polished: new headline, two-paragraph body, horizontal symptoms strip, two-column layout, and redesigned FIG.02 (five named pieces around fragile PROCESOS MANUALES core with discontinuous flows and ambre pulses). Carlos is working on Phase 7 content/QA before DNS switch.
 
 ## What was done in Phase 6 (SPEC-P6)
 
@@ -78,6 +78,15 @@ Carlos is working on content/QA over the next few days. When ready:
 - Sign up at workspace.google.com
 - Add MX records at GoDaddy (independent of web DNS switch)
 - Add Workspace DKIM record
+
+## SPEC-POLISH-02 — completed (August 2026)
+
+- **Headline:** "Tu operativa llegó a su límite, no tus objetivos." (Libro Ch. 10/12 framing)
+- **Body:** two-paragraph tuple in ES/EN/CA; `problem.body` is `readonly [string, string]`
+- **Layout:** full-width headline → horizontal symptoms strip (1px divider) → two balanced columns (body | FIG.02)
+- **FIG.02:** `ProblemFlowsFig` component; five named pieces (HOJAS DE CÁLCULO · CORREOS · NOTAS · CATÁLOGO · HISTORIAL) around dashed ambre-dk core (PROCESOS MANUALES); solid segments stop at core border; dashed stubs at break; ambre pulses stop at break; core setInterval pulse
+- **Files changed:** `content/{es,en,ca}/home.ts`, `components/problem-flows-fig.tsx`, `components/system-diagram.tsx`, `components/home-sections.tsx`, `app/[[...path]]/page.tsx`, `app/globals.css`, `lib/motion-constants.ts`, `docs/escala-web-content-spec-v1.1.1.md`, `docs/CHANGELOG.md`, `specs/spec-polish-02-punto-de-partida.md`
+- **Tests:** 921/921 passing (51 files); build clean; no hardcoded hex in new components
 
 ## Active decisions open
 

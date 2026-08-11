@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { SystemDiagram } from '@/components/system-diagram'
 import type { HeroFigureContent } from '@/components/hero-narrative-fig'
+import type { ProblemFlowsFigContent } from '@/components/problem-flows-fig'
 
 const mockHeroFigure: HeroFigureContent = {
   zones: ['01 · PROCESOS MANUALES', '02 · SISTEMA A MEDIDA', '03 · VALOR REAL Y MEDIBLE'],
@@ -11,6 +12,19 @@ const mockHeroFigure: HeroFigureContent = {
     { label: 'OPTIMIZACIÓN', sub: 'de procesos' },
   ],
   caption: 'FIG. 01 — DE MUCHOS PROCESOS MANUALES A VALOR REAL Y MEDIBLE',
+}
+
+const mockProblemFigure: ProblemFlowsFigContent = {
+  pieces: [
+    'HOJAS DE CÁLCULO',
+    'CORREOS',
+    'NOTAS',
+    'CATÁLOGO',
+    'HISTORIAL',
+  ],
+  core: ['PROCESOS', 'MANUALES'],
+  caption: 'FIG. 02 — UNA OPERATIVA QUE DEPENDE DE PROCESOS MANUALES: LOS FLUJOS NO SE COMPLETAN',
+  note: 'CADA PIEZA INTENTA CONECTARSE · EL FLUJO SE CORTA EN EL PASO MANUAL',
 }
 
 describe('SystemDiagram', () => {
@@ -59,7 +73,33 @@ describe('SystemDiagram', () => {
     })
   })
 
-  describe('kind="problem"', () => {
+  describe('kind="problem" with problemFigure (redesign SPEC-POLISH-02)', () => {
+    it('renders an SVG with the provided aria-label', () => {
+      render(<SystemDiagram kind="problem" label="Problem diagram" problemFigure={mockProblemFigure} />)
+      expect(screen.getByRole('img', { name: 'Problem diagram' })).toBeInTheDocument()
+    })
+
+    it('renders the figcaption from problemFigure.caption', () => {
+      render(<SystemDiagram kind="problem" label="Problem diagram" problemFigure={mockProblemFigure} />)
+      expect(screen.getByText(mockProblemFigure.caption)).toBeInTheDocument()
+    })
+
+    it('renders the note from problemFigure.note', () => {
+      render(<SystemDiagram kind="problem" label="Problem diagram" problemFigure={mockProblemFigure} />)
+      expect(screen.getByText(mockProblemFigure.note)).toBeInTheDocument()
+    })
+
+    it('renders the pulse layer with aria-hidden', () => {
+      const { container } = render(
+        <SystemDiagram kind="problem" label="Problem diagram" problemFigure={mockProblemFigure} />,
+      )
+      const layer = container.querySelector('.problem-pulse-layer')
+      expect(layer).toBeInTheDocument()
+      expect(layer).toHaveAttribute('aria-hidden', 'true')
+    })
+  })
+
+  describe('kind="problem" without problemFigure (legacy fallback)', () => {
     it('renders an SVG with the provided aria-label', () => {
       render(<SystemDiagram kind="problem" label="Problem diagram" />)
       expect(screen.getByRole('img', { name: 'Problem diagram' })).toBeInTheDocument()

@@ -6,6 +6,37 @@ All notable changes, newest first.
 
 ---
 
+## [Unreleased] — SPEC-POLISH-02: Home section 01 message + layout + FIG.02
+
+Spec: `specs/spec-polish-02-punto-de-partida.md` · Wireframe: `specs/mockups/wireframe-p01-punto-partida-FINAL.html`
+
+### Changed
+- **Headline:** "Tu negocio funciona. Tus sistemas, no." → "Tu operativa llegó a su límite, no tus objetivos." (Libro Ch. 10/12 framing — problem of success, not failure).
+- **Body:** single paragraph → two-paragraph tuple (ES/EN/CA); `problem.body` is now `readonly [string, string]`.
+- **Layout:** left-column title + vertical symptom list → full-width headline band + horizontal symptoms strip (1px divider) + two balanced columns (body | diagram).
+- **FIG.02:** pentagon web pointing to RETRABAJO → five named pieces (HOJAS DE CÁLCULO · CORREOS · NOTAS · CATÁLOGO · HISTORIAL) around fragile PROCESOS MANUALES core; discontinuous flows (solid + gap + dashed stub); ambre pulses stop at the break; core slow-scale pulse.
+
+### Added
+- `components/problem-flows-fig.tsx` — new `ProblemFlowsFig` component (mirrors `HeroNarrativeFig` pattern); `ProblemFlowsFigContent` interface exported.
+- `content/{es,en,ca}/home.ts` — `problemFigure` block (pieces, core, caption, note); EN/CA recrafted (pending Carlos AC-9 review).
+- `lib/motion-constants.ts` — `PROBLEM_PULSE_*` and `PROBLEM_CORE_*` constants.
+- `tests/components/problem-flows-fig.test.tsx` — 14 tests covering aria, pieces, core, segments, stubs, pulse layer.
+- `specs/spec-polish-02-punto-de-partida.md` — implementation spec in repo.
+
+### Updated
+- `components/system-diagram.tsx` — `kind="problem"` delegates to `ProblemFlowsFig` when `problemFigure` prop provided; legacy pentagon kept as fallback.
+- `components/home-sections.tsx` — `ProblemSection` new layout; `problemFigure` prop added.
+- `app/[[...path]]/page.tsx` — passes `problemFigure` to `ProblemSection`.
+- `app/globals.css` — problem-* CSS blocks replaced with new layout (`.problem-cols`, `.problem-fig__*`, `.problem-pulse*`).
+- `tests/components/home-sections.test.tsx` — body tests updated (two paragraphs); diagram test added.
+- `tests/components/system-diagram.test.tsx` — problem branch tests updated (with/without `problemFigure`).
+- `docs/escala-web-content-spec-v1.1.1.md` — §5.1 line 01 updated to new headline/layout.
+
+### Tests
+- 921 tests, 51 files — all passing. Coverage ≥70% maintained.
+
+---
+
 ## [Unreleased] — Phase 6: GCP infrastructure & domain (SPEC-P6)
 
 Spec: `specs/spec-p6-gcloud-infra.md` · Runbook: `docs/infra-runbook.md` · Decisions: `docs/infra-decisions.md`

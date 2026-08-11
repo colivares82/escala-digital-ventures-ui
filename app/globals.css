@@ -476,14 +476,23 @@ h1, h2, h3, h4, p {
   color: rgb(247 247 244 / 0.7);
 }
 
-/* Symptom list */
+/* Problem section — SPEC-POLISH-02 */
+
+/* Full-width headline */
+#problema .word-reveal {
+  font-size: var(--text-display-lg);
+  max-width: 24ch;
+}
+
+/* Symptoms strip (horizontal, under headline, closed by divider) */
 .problem-symptoms {
   display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  margin: 0;
-  padding: 0;
+  flex-wrap: wrap;
+  gap: 0.75rem 2.25rem;
+  margin: 1.5rem 0 0;
+  padding: 0 0 2rem;
   list-style: none;
+  border-bottom: 1px solid var(--line);
 }
 .problem-symptom {
   transition-delay: calc(var(--symptom-delay, 0) * 90ms);
@@ -495,45 +504,136 @@ h1, h2, h3, h4, p {
 .problem-symptom li {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   color: var(--mar);
   font: 500 0.68rem / 1.4 var(--font-ibm-plex-mono);
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 .problem-symptom i {
-  width: 2.5rem;
+  width: 2rem;
   border-top: 1px dashed currentColor;
 }
 
-/* Two-column layout */
-.problem-layout {
+/* Two balanced columns: body | diagram */
+.problem-cols {
   display: grid;
-  grid-template-columns: 7fr 5fr;
-  gap: 5rem;
-  align-items: start;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 5vw;
+  align-items: center;
+  margin-top: 2.75rem;
 }
-.problem-layout .word-reveal {
-  font-size: var(--text-display-lg);
-}
-.problem-layout > div:first-child {
+.problem-cols__body {
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 1.125rem;
 }
-.problem-layout__narrative {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-}
-.problem-layout__narrative .lead-copy {
+.problem-cols__body .lead-copy {
   margin: 0;
+  max-width: 50ch;
 }
-.problem-layout__narrative > .diagram-reveal {
+
+/* FIG.02 — problem flows diagram */
+.problem-plate {
   width: 100%;
-  margin: 0;
+}
+.problem-plate .system-diagram {
   border: 1px solid var(--line);
+  background: var(--paper);
   padding: 1.5rem;
+  position: relative;
+}
+.problem-plate .system-diagram::before,
+.problem-plate .system-diagram::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--line);
+}
+.problem-plate .system-diagram::before {
+  top: 8px;
+  left: 8px;
+  border-right: none;
+  border-bottom: none;
+}
+.problem-plate .system-diagram::after {
+  bottom: 8px;
+  right: 8px;
+  border-left: none;
+  border-top: none;
+}
+
+/* Piece boxes */
+.problem-fig__piece-rect {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.5px;
+}
+.problem-fig__piece-label {
+  fill: var(--ink);
+  font: 500 9px / 1 var(--font-ibm-plex-mono);
+  letter-spacing: 0.03em;
+}
+
+/* Solid connectors (the connections that should exist) */
+.problem-fig__solid {
+  stroke: var(--ink);
+  stroke-width: 1.3px;
+  fill: none;
+}
+
+/* Dashed stubs near the core (the break) */
+.problem-fig__stub {
+  stroke: var(--ink);
+  stroke-width: 1.3px;
+  stroke-dasharray: 4 4;
+  opacity: 0.22;
+  fill: none;
+}
+
+/* Fragile core ring (ambre-dk, dashed) */
+.problem-fig__core-ring {
+  fill: rgba(255, 183, 3, 0.06);
+  stroke: var(--ambre-dk);
+  stroke-width: 1.6px;
+  stroke-dasharray: 6 5;
+}
+.problem-fig__core-label {
+  fill: var(--ambre-dk);
+  font: 500 11px / 1 var(--font-ibm-plex-mono);
+  letter-spacing: 0.03em;
+}
+
+/* Pulse dots (ambre, decorative) */
+.problem-pulse {
+  fill: var(--ambre);
+}
+.problem-pulse--break {
+  fill: var(--ambre-dk);
+}
+
+/* Caption and note */
+.problem-fig__caption {
+  display: block;
+  margin-top: 0.875rem;
+  font: 500 0.68rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.03em;
+  color: var(--mar);
+}
+.problem-fig__note {
+  margin: 0.375rem 0 0;
+  font: 400 0.6rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.03em;
+  color: rgb(22 24 29 / 0.5);
+}
+
+/* Corner ticks on the figure */
+.problem-plate .diagram-frame-ticks path {
+  stroke: var(--ink);
+  stroke-width: 1px;
+  fill: none;
+  opacity: 0.3;
 }
 
 .diagram-friction {
@@ -1963,13 +2063,14 @@ h1, h2, h3, h4, p {
   .hero__diagram > .diagram-reveal {
     width: 100%;
   }
-  .problem-layout {
+  /* Problem section: stack columns on mobile */
+  .problem-cols {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2.5rem;
   }
-  .problem-layout__narrative {
-    gap: 3rem;
+  .problem-plate {
+    width: 100%;
   }
   .final-cta__grid {
     display: flex;
