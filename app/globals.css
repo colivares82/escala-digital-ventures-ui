@@ -1146,6 +1146,91 @@ h1, h2, h3, h4, p {
   outline-offset: 4px;
 }
 
+/* ── ProofTimelineFig — FIG.04 ascending stair timeline (SPEC-POLISH-03) ── */
+
+/*
+ * The figure frame: white background, 1px border, corner ticks.
+ * Matches the wireframe .figframe style.
+ */
+.proof-timeline {
+  background: #fff;
+  border: 1px solid var(--line);
+  padding: 1.625rem 1.5rem 1rem;
+  position: relative;
+}
+
+/* Corner ticks — kit grammar §3.3 */
+.proof-timeline__ticks path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1;
+  opacity: 0.3;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Fill polygon under the stair — very subtle mar tint */
+.proof-timeline__fill {
+  fill: var(--mar);
+  opacity: 0.05;
+  stroke: none;
+}
+
+/* Stair line — MUST be fill:none or the open path fills black */
+.proof-timeline__stair {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Step marker dots */
+.proof-timeline__node {
+  fill: var(--ink);
+  stroke: none;
+}
+
+/* Production node — ambre accent */
+.proof-timeline__node--production {
+  fill: var(--ambre);
+  stroke: none;
+}
+
+/* Date labels — mono 14px, mar, weight 500 */
+.proof-timeline__date {
+  font: 500 14px / 1 var(--font-ibm-plex-mono);
+  fill: var(--mar);
+  stroke: none;
+}
+
+/* Deliverable labels — mono 12px, mar at 70% */
+.proof-timeline__deliverable {
+  font: 400 12px / 1 var(--font-ibm-plex-mono);
+  fill: rgb(14 58 93 / 0.7);
+  stroke: none;
+}
+
+/* Production deliverable — ambre-dk */
+.proof-timeline__deliverable--production {
+  fill: var(--ambre-dk);
+}
+
+/* Figcaption — mono 11px, mar */
+.proof-timeline__caption {
+  display: block;
+  margin-top: 0.875rem;
+  font: 500 0.6875rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.03em;
+  color: var(--mar);
+}
+
+/* Proof timeline plate — override diagram-reveal width constraint */
+.proof-timeline-plate {
+  width: 100%;
+}
+.proof-timeline-plate .proof-timeline {
+  width: 100%;
+}
+
 /* Proof grid layout */
 .proof__grid {
   grid-template-columns: minmax(20rem, 46%) 1fr;
