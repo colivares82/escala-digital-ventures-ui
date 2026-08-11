@@ -271,6 +271,27 @@ export const homeContent = {
     action: "Coneix el model d'aliança",
   },
 
+  /**
+   * Alliance constellation figure (FIG.05) — SPEC-POLISH-04.
+   * Seats as a data array: future active alliance = data-only change.
+   * All copy from here; no hardcoded strings in the component.
+   * Brand spelling: "Magupell", "BioZero".
+   * Pending Carlos register review (AC-9).
+   */
+  allianceFigure: {
+    seats: [
+      { name: 'Magupell',   state: 'occupied' },
+      { name: 'BioZero',    state: 'occupied' },
+      { name: 'DISPONIBLE', state: 'free' },
+      { name: 'DISPONIBLE', state: 'free' },
+      { name: 'DISPONIBLE', state: 'free' },
+    ],
+    caption: 'FIG. 05 — CINC PLACES. DUES ALIANCES ACTIVES. DEDICACIÓ COMPLETA.',
+    subCaption: "CADA ALIANÇA: ACOMPANYAMENT TÈCNIC · ESTRATÈGIC · VISIONARI",
+    coreSubLabel: '2 ALIANCES ACTIVES · 3 DISPONIBLES',
+    figAria: "Constel·lació d'aliances: Escala al centre, dues aliances actives (Magupell, BioZero) i tres places disponibles",
+  },
+
   footer: sharedContent.footer,
 } as const satisfies HomePageDictionary
 

@@ -322,7 +322,7 @@ describe('AllianceTeaser', () => {
     ).toHaveAttribute('href', '/modelo-de-alianza')
   })
 
-  it('renders the alliance legend', () => {
+  it('renders the alliance legend when allianceFigure is not provided (fallback)', () => {
     render(
       <AllianceTeaser
         content={homeContent.alliance}
@@ -334,5 +334,68 @@ describe('AllianceTeaser', () => {
     expect(
       screen.getByText(homeContent.labels.allianceLegend),
     ).toBeInTheDocument()
+  })
+
+  it('renders the protagonist constellation when allianceFigure is provided', () => {
+    const { container } = render(
+      <AllianceTeaser
+        content={homeContent.alliance}
+        labels={labels}
+        diagrams={diagrams}
+        allianceHref="/modelo-de-alianza"
+        allianceFigure={homeContent.allianceFigure}
+      />,
+    )
+    // AllianceConstellation renders an SVG with role="img"
+    expect(
+      screen.getByRole('img', { name: homeContent.allianceFigure.figAria }),
+    ).toBeInTheDocument()
+    // Protagonist class applied
+    expect(
+      container.querySelector('.alliance-constellation--protagonist'),
+    ).toBeInTheDocument()
+  })
+
+  it('renders caption and sub-caption when allianceFigure is provided', () => {
+    render(
+      <AllianceTeaser
+        content={homeContent.alliance}
+        labels={labels}
+        diagrams={diagrams}
+        allianceHref="/modelo-de-alianza"
+        allianceFigure={homeContent.allianceFigure}
+      />,
+    )
+    expect(screen.getByText(homeContent.allianceFigure.caption)).toBeInTheDocument()
+    expect(screen.getByText(homeContent.allianceFigure.subCaption)).toBeInTheDocument()
+  })
+
+  it('renders seat names from allianceFigure when provided', () => {
+    render(
+      <AllianceTeaser
+        content={homeContent.alliance}
+        labels={labels}
+        diagrams={diagrams}
+        allianceHref="/modelo-de-alianza"
+        allianceFigure={homeContent.allianceFigure}
+      />,
+    )
+    expect(screen.getByText('Magupell')).toBeInTheDocument()
+    expect(screen.getByText('BioZero')).toBeInTheDocument()
+  })
+
+  it('does NOT render the legacy legend when allianceFigure is provided', () => {
+    render(
+      <AllianceTeaser
+        content={homeContent.alliance}
+        labels={labels}
+        diagrams={diagrams}
+        allianceHref="/modelo-de-alianza"
+        allianceFigure={homeContent.allianceFigure}
+      />,
+    )
+    expect(
+      screen.queryByText(homeContent.labels.allianceLegend),
+    ).not.toBeInTheDocument()
   })
 })

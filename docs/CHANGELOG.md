@@ -1,5 +1,52 @@
 # Changelog
 
+## [SPEC-POLISH-04] — August 2026 — Home section 05: constellation as protagonist
+
+### Added
+- `AllianceFigureContent` interface in `content/types.ts` — typed contract for the home section 05 figure data (seats, caption, subCaption, coreSubLabel, figAria).
+- `allianceFigure` key in `content/es/home.ts`, `content/en/home.ts`, `content/ca/home.ts` — fully translatable (ES: DISPONIBLE, EN: AVAILABLE, CA: DISPONIBLE). Seats as a data array so a future active alliance is a data-only change.
+- `'protagonist'` size to `AllianceConstellation` — 960×620 viewBox, R=200, nodeR=30, coreR1=46, coreR2=60. Matches `wireframe-p05-alianza-FINAL.html` exactly.
+- Corner ticks (`<g aria-hidden="true">` with 4 `<path>`) inside the protagonist SVG.
+- `coreSubLabel` optional prop to `AllianceConstellation` — renders "2 ALIANZAS ACTIVAS · 3 DISPONIBLES" inside the SVG (protagonist only).
+- Traveling ambre pulse via SVG `<animate>` elements for occupied seats — staggered (0.6s between seats), looping, edge-to-edge (core ring → node edge). `prefers-reduced-motion` → `display:none` via CSS.
+- `labelPosition()` helper — anchors labels by `cosA`/`sinA` thresholds (right=start, left=end, top/bottom=middle), offset outside node radius. No label overlaps its node.
+- `.alliance-stage`, `.alliance-caption`, `.alliance-subcaption`, `.ac-core-sublabel` CSS classes.
+- Protagonist overrides in CSS: `opacity: 1`, `transition: none`, `stroke-dasharray: none` (no draw-on-scroll for protagonist).
+- `allianceFigure` prop to `AllianceTeaser` in `home-sections.tsx` — when provided renders protagonist constellation + caption + sub-caption; when absent falls back to legacy `SystemDiagram kind="outcome"` + legend (backward-compatible).
+- `GridBackground` reused in `AllianceTeaser` (section has `position: relative`). No duplicate grid code.
+- 15 new tests in `alliance-constellation.test.tsx` (protagonist size, viewBox, corner ticks, coreSubLabel, traveling pulses, aria-hidden).
+- 5 new tests in `home-sections.test.tsx` (protagonist constellation, caption, seat names, no legacy legend when figure provided).
+
+### Changed
+- `AllianceConstellation` — `size` prop extended from `'compact' | 'large'` to `'compact' | 'large' | 'protagonist'`. `'compact'` and `'large'` behavior unchanged.
+- `AllianceTeaser` — accepts optional `allianceFigure` prop; `GridBackground` added; section has `position: relative`.
+- `app/[[...path]]/page.tsx` — passes `allianceFigure` to `AllianceTeaser` (same pattern as `heroFigure`, `proofFigure`).
+
+### Not changed
+- `/modelo-de-alianza` page — uses `size="large"`, unaffected. No regression.
+- All other home sections (hero, problem, services, framework, proof, finalCTA) — byte-identical.
+- All other pages — byte-identical.
+- Design tokens — no new hex values; all styling via CSS custom properties.
+
+### git diff --stat
+```
+app/[[...path]]/page.tsx                         |   1 +
+app/globals.css                                  |  54 +++++
+components/alliance-constellation.tsx            | 243 ++++++++++++++++++-----
+components/home-sections.tsx                     |  37 +++-
+content/ca/home.ts                               |  21 ++
+content/en/home.ts                               |  21 ++
+content/es/home.ts                               |  20 ++
+content/types.ts                                 |  18 ++
+tests/components/alliance-constellation.test.tsx | 112 ++++++++++-
+tests/components/home-sections.test.tsx          |  65 +++++-
+11 files changed, 538 insertions(+), 56 deletions(-)
+```
+
+### Test results
+52 test files · 953 tests · 100% pass · build clean · TypeScript strict clean
+
+
 ## SPEC-POLISH-03 — Home section 04 "Evidencia" (real Magupell data) · August 2026
 
 ### Summary

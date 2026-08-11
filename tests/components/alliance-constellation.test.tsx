@@ -1,6 +1,6 @@
 /**
  * AllianceConstellation — unit tests.
- * Spec: SPEC-P2.4 FR-3 / AC-3 / AC-4
+ * Spec: SPEC-P2.4 FR-3 / AC-3 / AC-4 · SPEC-POLISH-04
  */
 
 import { render, screen } from '@testing-library/react'
@@ -10,7 +10,7 @@ import type { AllianceSeat } from '@/content/types'
 
 const FIVE_SEATS: AllianceSeat[] = [
   { name: 'Magupell',   state: 'occupied' },
-  { name: 'BIOZERO',    state: 'occupied' },
+  { name: 'BioZero',    state: 'occupied' },
   { name: 'DISPONIBLE', state: 'free' },
   { name: 'DISPONIBLE', state: 'free' },
   { name: 'DISPONIBLE', state: 'free' },
@@ -60,12 +60,12 @@ describe('AllianceConstellation', () => {
     expect(free).toHaveLength(3)
   })
 
-  it('renders ambre pulse dots only for occupied seats', () => {
+  it('renders ambre pulse dots only for occupied seats (compact/large)', () => {
     const { container } = render(
-      <AllianceConstellation seats={FIVE_SEATS} ariaLabel="test" />
+      <AllianceConstellation seats={FIVE_SEATS} ariaLabel="test" size="compact" />
     )
     const pulses = container.querySelectorAll('.ac-pulse')
-    // One pulse per occupied seat
+    // One static pulse per occupied seat in compact/large mode
     expect(pulses).toHaveLength(2)
   })
 
@@ -145,5 +145,107 @@ describe('AllianceConstellation', () => {
     )
     // SVG text elements rendered — query by text
     expect(screen.getByText('PARTNER_A')).toBeInTheDocument()
+  })
+})
+
+// ---------------------------------------------------------------------------
+// Protagonist size — SPEC-POLISH-04
+// ---------------------------------------------------------------------------
+
+describe('AllianceConstellation — protagonist size', () => {
+  it('applies protagonist class when size is protagonist', () => {
+    const { container } = render(
+      <AllianceConstellation seats={FIVE_SEATS} size="protagonist" ariaLabel="test" />
+    )
+    expect(container.querySelector('.alliance-constellation--protagonist')).toBeInTheDocument()
+  })
+
+  it('renders with 100% width (responsive) in protagonist mode', () => {
+    const { container } = render(
+      <AllianceConstellation seats={FIVE_SEATS} size="protagonist" ariaLabel="test" />
+    )
+    const svg = container.querySelector('svg')
+    expect(svg?.getAttribute('width')).toBe('100%')
+  })
+
+  it('uses 960×620 viewBox in protagonist mode', () => {
+    const { container } = render(
+      <AllianceConstellation seats={FIVE_SEATS} size="protagonist" ariaLabel="test" />
+    )
+    const svg = container.querySelector('svg')
+    expect(svg?.getAttribute('viewBox')).toBe('0 0 960 620')
+  })
+
+  it('renders corner ticks in protagonist mode', () => {
+    const { container } = render(
+      <AllianceConstellation seats={FIVE_SEATS} size="protagonist" ariaLabel="test" />
+    )
+    // Corner ticks are in a <g aria-hidden="true"> with 4 <path> elements
+    const tickGroup = container.querySelector('g[aria-hidden="true"]')
+    expect(tickGroup).toBeInTheDocument()
+    const paths = tickGroup?.querySelectorAll('path')
+    expect(paths).toHaveLength(4)
+  })
+
+  it('renders coreSubLabel when provided in protagonist mode', () => {
+    render(
+      <AllianceConstellation
+        seats={FIVE_SEATS}
+        size="protagonist"
+        ariaLabel="test"
+        coreSubLabel="2 ALIANZAS ACTIVAS · 3 DISPONIBLES"
+      />
+    )
+    expect(screen.getByText('2 ALIANZAS ACTIVAS · 3 DISPONIBLES')).toBeInTheDocument()
+  })
+
+  it('does not render coreSubLabel when not provided', () => {
+    const { container } = render(
+      <AllianceConstellation seats={FIVE_SEATS} size="protagonist" ariaLabel="test" />
+    )
+    expect(container.querySelector('.ac-core-sublabel')).not.toBeInTheDocument()
+  })
+
+  it('renders traveling pulse elements for occupied seats in protagonist mode', () => {
+    const { container } = render(
+      <AllianceConstellation seats={FIVE_SEATS} size="protagonist" ariaLabel="test" />
+    )
+    // Traveling pulses have class ac-pulse-travel
+    const travelPulses = container.querySelectorAll('.ac-pulse-travel')
+    expect(travelPulses).toHaveLength(2)
+  })
+
+  it('does NOT render static pulse dots in protagonist mode', () => {
+    const { container } = render(
+      <AllianceConstellation seats={FIVE_SEATS} size="protagonist" ariaLabel="test" />
+    )
+    // Static .ac-pulse dots are only for compact/large
+    const staticPulses = container.querySelectorAll('.ac-pulse')
+    expect(staticPulses).toHaveLength(0)
+  })
+
+  it('traveling pulses are aria-hidden', () => {
+    const { container } = render(
+      <AllianceConstellation seats={FIVE_SEATS} size="protagonist" ariaLabel="test" />
+    )
+    const travelPulses = container.querySelectorAll('.ac-pulse-travel')
+    travelPulses.forEach((pulse) => {
+      expect(pulse).toHaveAttribute('aria-hidden', 'true')
+    })
+  })
+
+  it('renders 5 seat groups in protagonist mode', () => {
+    const { container } = render(
+      <AllianceConstellation seats={FIVE_SEATS} size="protagonist" ariaLabel="test" />
+    )
+    expect(container.querySelectorAll('.ac-seat')).toHaveLength(5)
+  })
+
+  it('renders seat names in protagonist mode', () => {
+    render(
+      <AllianceConstellation seats={FIVE_SEATS} size="protagonist" ariaLabel="test" />
+    )
+    expect(screen.getByText('Magupell')).toBeInTheDocument()
+    expect(screen.getByText('BioZero')).toBeInTheDocument()
   })
 })

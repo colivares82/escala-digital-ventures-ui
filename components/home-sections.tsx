@@ -3,9 +3,11 @@
  * All labels, diagrams, and claims come from the locale-aware dictionary via props.
  * No direct ES content imports — SPEC-P5 FR-5.
  */
+import { AllianceConstellation } from '@/components/alliance-constellation'
 import { ClaimsMarquee } from '@/components/claims-marquee'
 import { ClientChip } from '@/components/client-chip'
 import { FinalCTA } from '@/components/final-cta'
+import { GridBackground } from '@/components/grid-background'
 import { PhaseCycle } from '@/components/phase-cycle'
 import { Readout } from '@/components/readout'
 import { SectionIndex } from '@/components/section-index'
@@ -20,6 +22,7 @@ import type { Locale } from '@/lib/i18n/types'
 import type { HeroFigureContent } from '@/components/hero-narrative-fig'
 import type { ProblemFlowsFigContent } from '@/components/problem-flows-fig'
 import type { ProofTimelineFigContent } from '@/components/proof-timeline-fig'
+import type { AllianceFigureContent } from '@/content/types'
 
 type HomeLabels = typeof homeContentType.labels
 type HomeDiagrams = typeof homeContentType.diagrams
@@ -262,20 +265,31 @@ export function AllianceTeaser({
   labels,
   diagrams,
   allianceHref,
+  allianceFigure,
 }: {
   content: typeof homeContentType.alliance
   labels: HomeLabels
   diagrams: HomeDiagrams
   allianceHref: string
+  /**
+   * When provided, renders the protagonist AllianceConstellation (SPEC-POLISH-04).
+   * When absent, falls back to the legacy SystemDiagram outcome branch.
+   */
+  allianceFigure?: AllianceFigureContent
 }) {
   return (
     <section
       className="section section--dark alliance dark-surface"
       id="alianza"
+      style={{ position: 'relative' }}
     >
+      {/* GridBackground reuse — SPEC-POLISH-04 AC-7 / SPEC-P2.5 FR-6 */}
+      <GridBackground />
+
       <div className="page-shell">
         <SectionIndex index="05" label={labels.alliance} />
 
+        {/* Title (left) | side text + button (right) — unchanged per spec */}
         <div className="split-heading">
           <WordReveal text={content.title} />
           <div>
@@ -287,10 +301,25 @@ export function AllianceTeaser({
           </div>
         </div>
 
-        <div className="alliance-figure">
-          <SystemDiagram kind="outcome" label={diagrams.alliance} />
-          <p className="alliance-legend">{labels.allianceLegend}</p>
-        </div>
+        {/* Protagonist constellation (SPEC-POLISH-04) */}
+        {allianceFigure ? (
+          <div className="alliance-stage">
+            <AllianceConstellation
+              seats={allianceFigure.seats}
+              size="protagonist"
+              ariaLabel={allianceFigure.figAria}
+              coreSubLabel={allianceFigure.coreSubLabel}
+            />
+            <p className="alliance-caption">{allianceFigure.caption}</p>
+            <p className="alliance-subcaption">{allianceFigure.subCaption}</p>
+          </div>
+        ) : (
+          /* Legacy fallback — keeps backward compat if allianceFigure not passed */
+          <div className="alliance-figure">
+            <SystemDiagram kind="outcome" label={diagrams.alliance} />
+            <p className="alliance-legend">{labels.allianceLegend}</p>
+          </div>
+        )}
       </div>
     </section>
   )

@@ -165,6 +165,24 @@ export interface AllianceSeat {
   readonly state: 'occupied' | 'free'
 }
 
+/**
+ * SPEC-POLISH-04 — Home section 05 constellation figure content.
+ * Seats are a data array so a future active alliance is a data-only change.
+ * All copy (caption, subCaption, coreSubLabel, figAria) is translatable.
+ */
+export interface AllianceFigureContent {
+  /** Exactly 5 seats — first at top (−90°), every 72° clockwise. */
+  readonly seats: ReadonlyArray<AllianceSeat>
+  /** Figcaption: "FIG. 05 — CINCO PLAZAS. DOS ALIANZAS ACTIVAS. DEDICACIÓN COMPLETA." */
+  readonly caption: string
+  /** Sub-caption line below the caption. */
+  readonly subCaption: string
+  /** Text rendered inside the SVG below the pentagon: "2 ALIANZAS ACTIVAS · 3 DISPONIBLES" */
+  readonly coreSubLabel: string
+  /** SVG aria-label for accessibility. */
+  readonly figAria: string
+}
+
 export interface AlliancePlane {
   /** Zero-padded ordinal: "01", "02", "03" */
   readonly index: string

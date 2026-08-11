@@ -277,6 +277,26 @@ export const homeContent = {
     action: 'Conoce el modelo de alianza',
   },
 
+  /**
+   * Alliance constellation figure (FIG.05) — SPEC-POLISH-04.
+   * Seats as a data array: future active alliance = data-only change.
+   * All copy from here; no hardcoded strings in the component.
+   * Brand spelling: "Magupell", "BioZero".
+   */
+  allianceFigure: {
+    seats: [
+      { name: 'Magupell',   state: 'occupied' },
+      { name: 'BioZero',    state: 'occupied' },
+      { name: 'DISPONIBLE', state: 'free' },
+      { name: 'DISPONIBLE', state: 'free' },
+      { name: 'DISPONIBLE', state: 'free' },
+    ],
+    caption: 'FIG. 05 — CINCO PLAZAS. DOS ALIANZAS ACTIVAS. DEDICACIÓN COMPLETA.',
+    subCaption: 'CADA ALIANZA: ACOMPAÑAMIENTO TÉCNICO · ESTRATÉGICO · VISIONARIO',
+    coreSubLabel: '2 ALIANZAS ACTIVAS · 3 DISPONIBLES',
+    figAria: 'Constelación de alianzas: Escala en el centro, dos alianzas activas (Magupell, BioZero) y tres plazas disponibles',
+  },
+
   footer: sharedContent.footer,
 } as const satisfies HomePageDictionary
 

@@ -251,6 +251,7 @@ export default async function Page({
               labels={home.labels}
               diagrams={home.diagrams}
               allianceHref={allianceHref}
+              allianceFigure={(home as { allianceFigure?: unknown }).allianceFigure as Parameters<typeof AllianceTeaser>[0]['allianceFigure']}
             />
             <FinalCTA dict={dict} locale={locale} />
           </>

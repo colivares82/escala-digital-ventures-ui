@@ -1,5 +1,20 @@
 # Progress
 
+## What works ✅ — SPEC-POLISH-04 additions
+
+| Feature | Status |
+|---------|--------|
+| AllianceConstellation `'protagonist'` size — 960×620 viewBox, R=200, nodeR=30, coreR1=46, coreR2=60 | Complete |
+| Connectors start at core OUTER ring edge, end at node edge (never crosses core or node) | Complete |
+| Labels anchored by cosA/sinA: right=start, left=end, top/bottom=middle — no overlap | Complete |
+| Traveling ambre pulse via SVG `<animate>` for occupied seats, staggered, looping | Complete |
+| Corner ticks + coreSubLabel inside protagonist SVG | Complete |
+| `AllianceFigureContent` type + `allianceFigure` key in ES/EN/CA home dictionaries (translatable) | Complete |
+| `AllianceTeaser` — protagonist path + legacy fallback (backward-compatible) | Complete |
+| `GridBackground` reused in section 05 (no duplicate grid code) | Complete |
+| `/modelo-de-alianza` page unchanged (no regression) | Complete |
+| 52 test files · 953 tests · 100% pass · build clean | Complete |
+
 ## What works ✅ — SPEC-POLISH-03 additions
 
 | Feature | Status |
