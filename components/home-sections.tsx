@@ -10,6 +10,7 @@ import { PhaseCycle } from '@/components/phase-cycle'
 import { Readout } from '@/components/readout'
 import { SectionIndex } from '@/components/section-index'
 import { SystemDiagram } from '@/components/system-diagram'
+import { ProofTimelineFig } from '@/components/proof-timeline-fig'
 import { Reveal, WordReveal } from '@/components/motion-runtime'
 import { ANCHORS, ROUTES } from '@/lib/routes'
 import { getPath } from '@/lib/i18n/routes'
@@ -18,6 +19,7 @@ import type { Dictionary } from '@/lib/i18n/dictionary'
 import type { Locale } from '@/lib/i18n/types'
 import type { HeroFigureContent } from '@/components/hero-narrative-fig'
 import type { ProblemFlowsFigContent } from '@/components/problem-flows-fig'
+import type { ProofTimelineFigContent } from '@/components/proof-timeline-fig'
 
 type HomeLabels = typeof homeContentType.labels
 type HomeDiagrams = typeof homeContentType.diagrams
@@ -198,16 +200,20 @@ export function ProofSection({
   content,
   labels,
   diagrams,
+  proofFigure,
 }: {
   content: typeof homeContentType.proof
   labels: HomeLabels
   diagrams: HomeDiagrams
+  /** Proof timeline diagram content (SPEC-POLISH-03). When provided, renders ProofTimelineFig. */
+  proofFigure?: ProofTimelineFigContent
 }) {
   return (
     <section className="section section--light proof" id="casos">
       <div className="page-shell">
         <SectionIndex index="04" label={labels.proof} />
 
+        {/* Top row: title + subtitle + chips | FIG.04 timeline */}
         <div className="split-heading proof__grid">
           <div>
             <WordReveal text={content.title} />
@@ -222,15 +228,26 @@ export function ProofSection({
               ))}
             </div>
           </div>
-          <SystemDiagram kind="proof" label={diagrams.proof} />
+          {proofFigure ? (
+            <ProofTimelineFig
+              content={proofFigure}
+              ariaLabel={proofFigure.timelineAria}
+            />
+          ) : (
+            <SystemDiagram kind="proof" label={diagrams.proof} />
+          )}
         </div>
 
+        {/* 2×3 readouts grid — SPEC-POLISH-03 */}
         <dl className="readouts">
-          {content.figures.map((figure, i) => (
+          {content.readouts.map((readout, i) => (
             <Readout
-              key={figure.label}
-              {...figure}
-              source={content.source}
+              key={readout.label}
+              label={readout.label}
+              value={readout.value}
+              kind={readout.kind}
+              caption={readout.caption}
+              plotVariant={readout.plotVariant}
               index={i}
             />
           ))}

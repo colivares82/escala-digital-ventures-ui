@@ -9,7 +9,7 @@ export const casesContent = {
   meta: {
     title: "Casos d'èxit | Escala Digital Ventures",
     description:
-      "Projectes reals: MAGUPELL i BioZero. Automatització amb resultats verificats.",
+      "Projectes reals: Magupell i BioZero. Automatització amb resultats verificats.",
   },
   pageHeader: {
     eyebrow: "A / CASOS D'ÈXIT",

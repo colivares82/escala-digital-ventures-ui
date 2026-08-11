@@ -244,6 +244,7 @@ export default async function Page({
               content={home.proof}
               labels={home.labels}
               diagrams={home.diagrams}
+              proofFigure={(home as { proofFigure?: unknown }).proofFigure as Parameters<typeof ProofSection>[0]['proofFigure']}
             />
             <AllianceTeaser
               content={home.alliance}

@@ -3,7 +3,7 @@ import { ClientChip } from '@/components/client-chip'
 import type { Client } from '@/content/es/clients'
 
 const client: Client = {
-  name: 'MAGUPELL',
+  name: 'Magupell',
   eyebrow: 'EN PRODUCCIÓN · SECTOR PIEL',
   title: 'Digitalización integral de la inspección de calidad',
   text: '100+ requisitos funcionales',
@@ -14,7 +14,7 @@ const client: Client = {
 describe('ClientChip', () => {
   it('renders the client name', () => {
     render(<ClientChip client={client} />)
-    expect(screen.getByText('MAGUPELL')).toBeInTheDocument()
+    expect(screen.getByText('Magupell')).toBeInTheDocument()
   })
 
   it('renders the eyebrow text', () => {

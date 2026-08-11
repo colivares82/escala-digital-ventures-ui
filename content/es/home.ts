@@ -198,34 +198,77 @@ export const homeContent = {
     ],
   },
 
+  /**
+   * Proof section (04 / EVIDENCIA) — SPEC-POLISH-03.
+   * Real Magupell data. Readouts structured as an array for future multi-case
+   * generalization (BioZero etc.) — adding a new case is a data change only.
+   * kind: 'number' = Archivo display figure; 'phrase' = slightly smaller phrase.
+   * plotVariant: decorative micro-plot identifier (aria-hidden in component).
+   */
   proof: {
     title: 'Hechos, no promesas.',
-    /** Client name shown as source attribution in readout data labels. */
-    source: 'MAGUPELL',
-    figures: [
+    readouts: [
       {
-        value: '100+',
         label: 'REQUISITOS',
-        caption: 'implementados y verificados en producción',
+        value: '167 → 216',
+        kind: 'number',
+        caption: 'Requisitos funcionales refinados con iteración y prototipo.',
+        plotVariant: 'growth',
       },
       {
-        value: '200+',
         label: 'PRUEBAS',
-        caption: 'automatizadas sobre flujos reales',
+        value: '1.803',
+        kind: 'number',
+        caption: 'Pruebas automatizadas: 1.042 backend + 761 frontend. Estabilidad garantizada en cada cambio.',
+        plotVariant: 'steps',
       },
       {
-        value: 'JUL 2026',
-        label: 'PRODUCCIÓN',
-        caption: 'fecha verificada de puesta en marcha',
+        label: 'ENTORNOS',
+        value: '3 entornos',
+        kind: 'number',
+        caption: 'Local, desarrollo y producción, con pipelines protegidas.',
+        plotVariant: 'bars',
       },
       {
-        value: 'REAL',
-        label: 'OPERATIVA',
-        caption:
-          'clientes, proveedores y gestión interna operando en la plataforma',
+        label: 'TIEMPO A PRODUCCIÓN',
+        value: '7 meses',
+        kind: 'number',
+        caption: 'De los primeros requerimientos a producción.',
+        plotVariant: 'stair',
       },
-    ],
+      {
+        label: 'IMPACTO',
+        value: 'Sustituyó lo manual.',
+        kind: 'phrase',
+        caption: 'El sistema orquesta la operación y da insights de datos. En su primer mes, ya es una realidad para todos los usuarios.',
+        plotVariant: 'impact',
+      },
+      {
+        label: 'A MEDIDA',
+        value: 'A medida de cada rol.',
+        kind: 'phrase',
+        caption: 'Admin, cliente, inspector y proveedor: cada función con lo que necesita, con control y auditoría completa.',
+        plotVariant: 'roles',
+      },
+    ] as const,
     cases: clients,
+  },
+
+  /**
+   * Proof timeline diagram (FIG.04) — SPEC-POLISH-03.
+   * Real Magupell dates. All copy from here; no hardcoded strings in the component.
+   * timeline is a 5-tuple (chronological order).
+   */
+  proofFigure: {
+    timeline: [
+      { date: 'DIC 2025', deliverable: 'Requerimientos' },
+      { date: 'ENE 2026', deliverable: 'Prototipo' },
+      { date: 'ABR 2026', deliverable: 'Desarrollo' },
+      { date: 'MAY–JUN 2026', deliverable: 'Preproducción' },
+      { date: 'JUL 2026', deliverable: 'Producción' },
+    ] as const,
+    timelineCaption: 'FIG. 04 — DE LOS REQUERIMIENTOS A PRODUCCIÓN EN 7 MESES, CON FECHAS VERIFICADAS',
+    timelineAria: 'Cronología verificada de Magupell: de requerimientos en diciembre de 2025 a producción en julio de 2026',
   },
 
   alliance: {

@@ -262,14 +262,23 @@ describe('ProofSection', () => {
 
   it('renders both client chips', () => {
     render(<ProofSection content={homeContent.proof} labels={labels} diagrams={diagrams} />)
-    expect(screen.getByText('MAGUPELL')).toBeInTheDocument()
+    expect(screen.getByText('Magupell')).toBeInTheDocument()
     expect(screen.getByText('BioZero')).toBeInTheDocument()
   })
 
-  it('renders the readouts dl with multiple terms', () => {
+  it('renders the readouts dl with 6 terms (SPEC-POLISH-03)', () => {
     render(<ProofSection content={homeContent.proof} labels={labels} diagrams={diagrams} />)
-    // Each readout has a <dt> (role="term"); there are 4 proof figures
-    expect(screen.getAllByRole('term').length).toBe(homeContent.proof.figures.length)
+    // Each readout has a <dt> (role="term"); there are 6 readouts
+    expect(screen.getAllByRole('term').length).toBe(homeContent.proof.readouts.length)
+  })
+
+  it('renders the real Magupell values in the readouts', () => {
+    render(<ProofSection content={homeContent.proof} labels={labels} diagrams={diagrams} />)
+    expect(screen.getByText('167 → 216')).toBeInTheDocument()
+    expect(screen.getByText('1.803')).toBeInTheDocument()
+    expect(screen.getByText('7 meses')).toBeInTheDocument()
+    expect(screen.getByText('Sustituyó lo manual.')).toBeInTheDocument()
+    expect(screen.getByText('A medida de cada rol.')).toBeInTheDocument()
   })
 })
 
