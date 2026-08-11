@@ -87,12 +87,17 @@ describe('homeContent', () => {
     })
   })
 
-  it('has exactly 4 proof readout figures', () => {
-    expect(homeContent.proof.figures).toHaveLength(4)
+  it('has exactly 6 proof readouts (SPEC-POLISH-03)', () => {
+    expect(homeContent.proof.readouts).toHaveLength(6)
   })
 
-  it('proof source is defined and non-empty', () => {
-    expect(homeContent.proof.source).toBeTruthy()
+  it('proof readouts contain real Magupell values (SPEC-POLISH-03)', () => {
+    const values = homeContent.proof.readouts.map((r) => r.value)
+    expect(values).toContain('167 → 216')
+    expect(values).toContain('1.803')
+    expect(values).toContain('7 meses')
+    expect(values).toContain('Sustituyó lo manual.')
+    expect(values).toContain('A medida de cada rol.')
   })
 
   it('finalCta email matches expected placeholder domain', () => {
@@ -132,8 +137,8 @@ describe('clients', () => {
     })
   })
 
-  it('MAGUPELL is the first client (production-proven proof point)', () => {
-    expect(clients[0].name).toBe('MAGUPELL')
+  it('Magupell is the first client (production-proven proof point)', () => {
+    expect(clients[0].name).toBe('Magupell')
   })
 })
 
@@ -318,7 +323,7 @@ describe('allianceContent — Phase 2.4 (SPEC-P2.4 AC-7)', () => {
     expect(allianceContent.seats).toHaveLength(5)
   })
 
-  it('exactly 2 seats are occupied (MAGUPELL + BIOZERO)', () => {
+  it('exactly 2 seats are occupied (Magupell + BIOZERO)', () => {
     const occupied = allianceContent.seats.filter((s) => s.state === 'occupied')
     expect(occupied).toHaveLength(2)
   })
@@ -328,11 +333,11 @@ describe('allianceContent — Phase 2.4 (SPEC-P2.4 AC-7)', () => {
     expect(free).toHaveLength(3)
   })
 
-  it('MAGUPELL and BIOZERO are the occupied seats', () => {
+  it('Magupell and BIOZERO are the occupied seats', () => {
     const occupiedNames = allianceContent.seats
       .filter((s) => s.state === 'occupied')
       .map((s) => s.name)
-    expect(occupiedNames).toContain('MAGUPELL')
+    expect(occupiedNames).toContain('Magupell')
     expect(occupiedNames).toContain('BIOZERO')
   })
 

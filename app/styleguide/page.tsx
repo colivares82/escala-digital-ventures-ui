@@ -136,12 +136,15 @@ export default function StyleGuidePage() {
           ))}
         </div>
         <dl className="readouts">
-          {proof.figures.map((figure, index) => (
+          {proof.readouts.map((readout, index) => (
             <Readout
-              {...figure}
-              source={proof.source}
+              key={readout.label}
+              label={readout.label}
+              value={readout.value}
+              kind={readout.kind}
+              caption={readout.caption}
+              plotVariant={readout.plotVariant}
               index={index}
-              key={figure.label}
             />
           ))}
         </dl>

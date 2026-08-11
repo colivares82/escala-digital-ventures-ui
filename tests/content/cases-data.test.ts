@@ -42,7 +42,7 @@ describe('cases data — structure', () => {
   })
 })
 
-describe('MAGUPELL — data-forward invariants', () => {
+describe('Magupell — data-forward invariants', () => {
   const mag = cases.find((c) => c.slug === 'magupell')!
 
   it('is data-forward mode', () => {
@@ -140,10 +140,10 @@ describe('BioZero — capability-forward invariants', () => {
 })
 
 describe('getCase helper', () => {
-  it('returns MAGUPELL by slug', () => {
+  it('returns Magupell by slug', () => {
     const c = getCase('magupell')
     expect(c).not.toBeNull()
-    expect(c!.name).toBe('MAGUPELL')
+    expect(c!.name).toBe('Magupell')
   })
 
   it('returns BioZero by slug', () => {
@@ -180,7 +180,7 @@ describe('case detail meta — length limits (SPEC-P2.3 FR-6.2)', () => {
   it('meta titles reference the client name', () => {
     const magMeta = getCase('magupell')!.meta
     const bzMeta = getCase('biozero')!.meta
-    expect(magMeta.title.toUpperCase()).toContain('MAGUPELL')
+    expect(magMeta.title.toUpperCase()).toContain('MAGUPELL') // title uses MAGUPELL in uppercase
     expect(bzMeta.title).toContain('BioZero')
   })
 })

@@ -1,10 +1,28 @@
 # Active Context
 
-_Last updated: August 2026 (Phase 6 COMPLETE — GCP infrastructure fully live)_
+_Last updated: August 2026 (SPEC-POLISH-03 COMPLETE — home section 04 real Magupell data)_
 
 ## Current state
 
-**Phase 6 COMPLETE + SPEC-POLISH-02 COMPLETE.** Both Cloud Run environments are live. CI/CD pipeline is fully operational. Home section 01 "Punto de partida" has been polished: new headline, two-paragraph body, horizontal symptoms strip, two-column layout, and redesigned FIG.02 (five named pieces around fragile PROCESOS MANUALES core with discontinuous flows and ambre pulses). Carlos is working on Phase 7 content/QA before DNS switch.
+**Phase 6 COMPLETE + SPEC-POLISH-02 COMPLETE + SPEC-POLISH-03 COMPLETE.** Both Cloud Run environments are live. CI/CD pipeline is fully operational. Home section 01 "Punto de partida" was polished in POLISH-02. Home section 04 "Evidencia" has now been polished with real Magupell data: 6 readouts (167→216, 1.803, 3 entornos, 7 meses, "Sustituyó lo manual.", "A medida de cada rol."), redesigned FIG.04 timeline with 5 real-dated milestones, and brand spelling corrected to "Magupell" everywhere. Carlos is working on Phase 7 content/QA before DNS switch.
+
+## What was done in SPEC-POLISH-03
+
+### Brand spelling fix
+- `MAGUPELL` → `Magupell` everywhere in user-facing copy (content dictionaries, component labels, tests)
+- Internal code identifiers (`const MAGUPELL`, `CASE_MAGUPELL`, test describe strings) left unchanged
+
+### Section 04 redesign
+- **`proof.readouts[6]`** — real Magupell data: 167→216 requisitos, 1.803 pruebas (1.042 backend + 761 frontend), 3 entornos, 7 meses, "Sustituyó lo manual.", "A medida de cada rol."
+- **`proof.proofFigure`** — new key: timeline[5] (DIC 2025→JUL 2026), timelineCaption, timelineAria
+- **`components/proof-timeline-fig.tsx`** — NEW: FIG.04 ascending stair, 5 real-dated milestones anchored to treads, ambre production node, corner ticks, tokens only
+- **`components/readout.tsx`** — redesigned: `kind` (number/phrase), 6 `plotVariant` micro-plots (aria-hidden), body-font captions (~15px, max 42ch), no source suffix, no CountUp
+- **`components/home-sections.tsx`** — `ProofSection` renders 6 readouts in 2×3 grid, delegates FIG.04 to `ProofTimelineFig`
+- **CSS** — `.readout` cells redesigned (flex, body captions), 2×3 grid, responsive to 360px
+
+### Test results
+- 52 test files · 938 tests · 100% pass · build clean · TypeScript strict clean
+- No hardcoded hex in new components
 
 ## What was done in Phase 6 (SPEC-P6)
 
@@ -23,7 +41,7 @@ _Last updated: August 2026 (Phase 6 COMPLETE — GCP infrastructure fully live)_
 | `escala-web-prod` | `https://escala-web-prod-228491148700.europe-west1.run.app` | Public (allUsers) | DRY_RUN=true | No |
 
 ### CI/CD pipeline (`.github/workflows/deploy.yml`)
-- **`dev` branch push** → CI (lint + tsc + 883 tests + coverage ≥70%) → build linux/amd64 → push to AR → deploy `escala-web-dev`
+- **`dev` branch push** → CI (lint + tsc + 938 tests + coverage ≥70%) → build linux/amd64 → push to AR → deploy `escala-web-dev`
 - **`main` branch push** → same CI → deploy `escala-web-prod`
 - **Auth:** Workload Identity Federation (keyless)
 - **GitHub variables set:** GCP_PROJECT_ID, GCP_REGION, AR_REPO, CLOUD_RUN_SERVICE_DEV, CLOUD_RUN_SERVICE_PROD, WIF_PROVIDER, WIF_SERVICE_ACCOUNT
@@ -39,15 +57,6 @@ _Last updated: August 2026 (Phase 6 COMPLETE — GCP infrastructure fully live)_
   CNAME www  ghs.googlehosted.com.
   ```
 - Managed TLS will provision automatically once DNS records are added
-
-### Code changes in Phase 6
-- `Dockerfile` — Next.js standalone, multi-stage, non-root, linux/amd64
-- `.dockerignore` — lean build context
-- `next.config.mjs` — `output: 'standalone'` + `X-Robots-Tag: noindex` for dev
-- `app/[[...path]]/page.tsx` — `dynamicParams=true` (Next.js 16 SSR on-demand; notFound() guards unknown paths)
-- `next-env.d.ts` — committed (needed for CI tsc to resolve image types)
-- `tests/components/case-card.test.tsx` — added dossierByLocale/metaByLocale to mock
-- `docs/infra-runbook.md` + `docs/infra-decisions.md` — complete
 
 ## What comes next (Phase 7 — Launch QA & go-live)
 
@@ -97,8 +106,9 @@ Carlos is working on content/QA over the next few days. When ready:
 - **EN/CA copy register:** Carlos to review and sign off (AC-9)
 - **Real imagery:** case-study context images pending from clients
 - **ServiceFig variants:** DRAFT VISUAL — Carlos will iterate one-by-one after review
-- **Logo-display permission:** Carlos to confirm for MAGUPELL + BioZero before Phase 7 launch
+- **Logo-display permission:** Carlos to confirm for Magupell + BioZero before Phase 7 launch
 - **Analytics:** dropped by Carlos decision (SPEC-P4 §0). No analytics, no banner.
 - **Rate limit store:** in-memory. Swap to Redis/Upstash if abuse observed.
 - **Resend account:** not yet created. EMAIL_DRY_RUN=true on both envs until set up.
 - **Google Workspace:** not yet set up. Inbound email to hola@escaladigitalventures.com pending.
+- **Next polish:** section 05 "Alianza" or section 02 "Capacidades" — Carlos to decide.

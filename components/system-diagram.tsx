@@ -273,7 +273,7 @@ export function SystemDiagram({
       </g>
       <g className="alliance-nodes">
         <Node
-          x={320} y={84} label="MAGUPELL"
+          x={320} y={84} label="Magupell"
           circle radius={20} labelY={56} active
         />
         <Node

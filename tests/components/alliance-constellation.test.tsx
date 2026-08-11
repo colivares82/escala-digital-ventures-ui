@@ -9,7 +9,7 @@ import { AllianceConstellation } from '@/components/alliance-constellation'
 import type { AllianceSeat } from '@/content/types'
 
 const FIVE_SEATS: AllianceSeat[] = [
-  { name: 'MAGUPELL',   state: 'occupied' },
+  { name: 'Magupell',   state: 'occupied' },
   { name: 'BIOZERO',    state: 'occupied' },
   { name: 'DISPONIBLE', state: 'free' },
   { name: 'DISPONIBLE', state: 'free' },

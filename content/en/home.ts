@@ -190,33 +190,79 @@ export const homeContent = {
     ],
   },
 
+  /**
+   * Proof section (04 / EVIDENCE) — SPEC-POLISH-03.
+   * Real Magupell data. Readouts structured as an array for future multi-case
+   * generalization — adding a new case is a data change only.
+   * kind: 'number' = Archivo display figure; 'phrase' = slightly smaller phrase.
+   * plotVariant: decorative micro-plot identifier (aria-hidden in component).
+   * Pending Carlos register review (AC-9).
+   */
   proof: {
     title: 'Facts, not promises.',
-    source: 'MAGUPELL',
-    figures: [
+    readouts: [
       {
-        value: '100+',
         label: 'REQUIREMENTS',
-        caption: 'implemented and verified in production',
+        value: '167 → 216',
+        kind: 'number',
+        caption: 'Functional requirements refined through iteration and prototype.',
+        plotVariant: 'growth',
       },
       {
-        value: '200+',
         label: 'TESTS',
-        caption: 'automated over real workflows',
+        value: '1.803',
+        kind: 'number',
+        caption: 'Automated tests: 1,042 backend + 761 frontend. Stability guaranteed with every change.',
+        plotVariant: 'steps',
       },
       {
-        value: 'JUL 2026',
-        label: 'PRODUCTION',
-        caption: 'verified go-live date',
+        label: 'ENVIRONMENTS',
+        value: '3 environments',
+        kind: 'number',
+        caption: 'Local, development and production, with protected pipelines.',
+        plotVariant: 'bars',
       },
       {
-        value: 'REAL',
-        label: 'OPERATION',
-        caption:
-          'clients, suppliers and internal management operating on the platform',
+        label: 'TIME TO PRODUCTION',
+        value: '7 months',
+        kind: 'number',
+        caption: 'From the first requirements to production.',
+        plotVariant: 'stair',
       },
-    ],
+      {
+        label: 'IMPACT',
+        value: 'Replaced the manual.',
+        kind: 'phrase',
+        caption: 'The system orchestrates the operation and provides data insights. In its first month, already a reality for all users.',
+        plotVariant: 'impact',
+      },
+      {
+        label: 'BESPOKE',
+        value: 'Tailored to each role.',
+        kind: 'phrase',
+        caption: 'Admin, client, inspector and supplier: each function with what it needs, with full control and auditability.',
+        plotVariant: 'roles',
+      },
+    ] as const,
     cases: clients,
+  },
+
+  /**
+   * Proof timeline diagram (FIG.04) — SPEC-POLISH-03.
+   * Real Magupell dates. All copy from here; no hardcoded strings in the component.
+   * timeline is a 5-tuple (chronological order).
+   * Pending Carlos register review (AC-9).
+   */
+  proofFigure: {
+    timeline: [
+      { date: 'DEC 2025', deliverable: 'Requirements' },
+      { date: 'JAN 2026', deliverable: 'Prototype' },
+      { date: 'APR 2026', deliverable: 'Development' },
+      { date: 'MAY–JUN 2026', deliverable: 'Pre-production' },
+      { date: 'JUL 2026', deliverable: 'Production' },
+    ] as const,
+    timelineCaption: 'FIG. 04 — FROM REQUIREMENTS TO PRODUCTION IN 7 MONTHS, WITH VERIFIED DATES',
+    timelineAria: 'Verified Magupell timeline: from requirements in December 2025 to production in July 2026',
   },
 
   alliance: {

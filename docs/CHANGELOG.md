@@ -1,5 +1,37 @@
 # Changelog
 
+## SPEC-POLISH-03 — Home section 04 "Evidencia" (real Magupell data) · August 2026
+
+### Summary
+Replaced generic rounded figures in the home ProofSection with real, Carlos-verified Magupell data. Redesigned FIG.04 as a real-dated ascending stair timeline. Fixed brand spelling "Magupell" (was "MAGUPELL") everywhere in user-facing copy.
+
+### Changed files (git diff --stat)
+- `app/[[...path]]/page.tsx` — passes `proofFigure` to `ProofSection`
+- `app/globals.css` — redesigned `.readout` cells (flex, body captions, 2×3 grid), new FIG.04 styles, responsive to 360px
+- `app/styleguide/page.tsx` — updated to new `proof.readouts` API
+- `components/home-sections.tsx` — `ProofSection` now accepts `proofFigure`, renders 6 readouts in 2×3 grid, delegates FIG.04 to `ProofTimelineFig`
+- `components/readout.tsx` — redesigned: `kind` (number/phrase), 6 `plotVariant` micro-plots (aria-hidden), body-font captions (~15px), no source suffix, no CountUp
+- `components/proof-timeline-fig.tsx` — NEW: FIG.04 ascending stair, 5 real-dated milestones, labels anchored to treads, ambre production node, tokens only
+- `components/system-diagram.tsx` — `label="Magupell"` in outcome diagram (brand spelling fix)
+- `content/{es,en,ca}/alliance.ts` — `{ name: 'Magupell' }` seat (brand spelling fix)
+- `content/{es,en,ca}/cases.ts` — "Magupell y BioZero" in meta description (brand spelling fix)
+- `content/{es,en,ca}/home.ts` — `proof.readouts[6]` + `proofFigure` (timeline[5] + timelineCaption + timelineAria); removed `proof.source` and `proof.figures`
+- `content/data/cases.ts` — `name: 'Magupell'`, `brand.name: 'Magupell'` (brand spelling fix)
+- `specs/spec-polish-03-evidencia.md` — NEW: spec file
+- `tests/components/alliance-constellation.test.tsx` — `'Magupell'` seat name
+- `tests/components/client-chip.test.tsx` — `'Magupell'` name
+- `tests/components/home-sections.test.tsx` — 6 readouts, real values, `'Magupell'` chip
+- `tests/components/proof-timeline-fig.test.tsx` — NEW: 13 tests for ProofTimelineFig
+- `tests/components/readout.test.tsx` — updated for new API (11 tests)
+- `tests/content/cases-data.test.ts` — `'Magupell'` name
+- `tests/content/content-integrity.test.ts` — 6 readouts guard, real values, `'Magupell'`
+- `tests/content/i18n-coverage.test.ts` — exemption list: `number`, `phrase`, `growth`, `steps`, `stair`, `impact`, `roles`, `Magupell`
+
+### Test results
+- 52 test files · 938 tests · 100% pass · build clean · TypeScript strict clean
+- No hardcoded hex in new components (grep = 0)
+
+
 > Cross-linked docs: [ARCHITECTURE](./ARCHITECTURE.md) · [BACKLOG](./BACKLOG.md) · [REQUIREMENTS_TRACEABILITY](./REQUIREMENTS_TRACEABILITY.md) · [PLAN](../PLAN.md)
 
 All notable changes, newest first.

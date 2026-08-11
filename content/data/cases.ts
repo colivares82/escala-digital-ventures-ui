@@ -273,12 +273,12 @@ const magupellDossierCa: CaseDossierLocale = {
 const MAGUPELL: CaseStudy = {
   slug: 'magupell',
   order: 1,
-  name: 'MAGUPELL',
+  name: 'Magupell',
   href: '/casos-de-exito/magupell',
   sector: 'EXPEDIENTE 01 · SECTOR PIEL · B2B',
   mode: 'data-forward',
   brand: {
-    name: 'MAGUPELL',
+    name: 'Magupell',
     logo: magupellLogo,
     url: 'https://www.magupell.com',
   },

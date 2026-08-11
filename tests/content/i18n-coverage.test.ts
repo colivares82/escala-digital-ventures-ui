@@ -112,8 +112,8 @@ function isExemptValue(value: string): boolean {
   if (/^(JUL 2026|100\+|200\+|V1|B2B|CTO|REAL|PRIMER CLIENTE|FIRST CLIENT|PRIMER CLIENT)$/.test(value)) return true
   // Legal acronyms
   if (/^(LSSI-CE|RGPD|AEPD|roadmap|Google Cloud|MIT)$/.test(value)) return true
-  // Brand names (standalone)
-  if (/^(Escala|MAGUPELL|BioZero|ESCALA)$/.test(value)) return true
+  // Brand names (standalone) — Magupell spelling corrected (SPEC-POLISH-03)
+  if (/^(Escala|MAGUPELL|Magupell|BioZero|ESCALA)$/.test(value)) return true
   // Very short strings (≤3 chars) — ordinals, indices, etc.
   if (value.trim().length <= 3) return true
   // Numeric-only strings
@@ -122,8 +122,8 @@ function isExemptValue(value: string): boolean {
   if (/^0[1-9]$/.test(value.trim())) return true
   // URLs
   if (/^https?:\/\//.test(value)) return true
-  // CSS class-like or variant identifiers
-  if (/^(capture|platform|ai|product|evolve|fullstack|hub|bars|nodes|signal|insertion|data-forward|capability-forward|occupied|free)$/.test(value)) return true
+  // CSS class-like or variant identifiers (including readout kind + plotVariant — SPEC-POLISH-03)
+  if (/^(capture|platform|ai|product|evolve|fullstack|hub|bars|nodes|signal|insertion|data-forward|capability-forward|occupied|free|number|phrase|growth|steps|stair|impact|roles)$/.test(value)) return true
   // Section index letters
   if (/^[A-E]$/.test(value.trim())) return true
   // Arrow/symbol-only strings

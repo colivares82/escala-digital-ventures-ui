@@ -25,11 +25,11 @@ export const allianceContent = {
     sectionEyebrow: 'B / WHY ONLY FIVE',
     heading: 'Why only five',
     body: 'We deliberately limit the number of active clients — approximately five alliances — to guarantee dedication, closeness and continuous support. It is not a limitation: it is the business model. Each client receives deep involvement and direct access to accumulated strategic knowledge.',
-    constellationAria: 'FIG. 05 — Alliance constellation: five seats around Escala, two occupied (MAGUPELL, BIOZERO) and three available.',
+    constellationAria: 'FIG. 05 — Alliance constellation: five seats around Escala, two occupied (Magupell, BioZero) and three available.',
   },
 
   seats: [
-    { name: 'MAGUPELL', state: 'occupied' },
+    { name: 'Magupell', state: 'occupied' },
     { name: 'BIOZERO',  state: 'occupied' },
     { name: 'AVAILABLE', state: 'free' },
     { name: 'AVAILABLE', state: 'free' },

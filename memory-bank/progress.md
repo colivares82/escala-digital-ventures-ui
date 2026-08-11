@@ -1,5 +1,16 @@
 # Progress
 
+## What works ✅ — SPEC-POLISH-03 additions
+
+| Feature | Status |
+|---------|--------|
+| ProofSection — 6 real Magupell readouts (167→216, 1.803, 3 entornos, 7 meses, "Sustituyó lo manual.", "A medida de cada rol.") | Complete |
+| ProofTimelineFig — FIG.04 ascending stair, 5 real-dated milestones (DIC 2025→JUL 2026), labels anchored to treads, ambre production node | Complete |
+| Readout redesign — kind (number/phrase), 6 plotVariant micro-plots (aria-hidden), body-font captions (~15px, max 42ch) | Complete |
+| Brand spelling "Magupell" (was "MAGUPELL") — fixed everywhere in user-facing copy | Complete |
+| ProofSection 2×3 grid layout — responsive to 360px | Complete |
+| 52 test files · 938 tests · 100% pass · build clean | Complete |
+
 ## What works ✅
 
 | Feature | Status |
@@ -9,7 +20,7 @@
 | ProblemSection — SPEC-POLISH-02: new headline, 2-para body, symptoms strip, 2-col layout, FIG.02 redesign | Complete |
 | ServicesPreview (5 service lines, editorial index) | Complete |
 | FrameworkSection — `PhaseCycle` scroll-driven ring (desktop) + static list (mobile/reduced-motion) | Complete |
-| ProofSection — 4 DAT readouts + 2 ClientChips (MAGUPELL, BioZero) | Complete |
+| ProofSection — 6 real Magupell readouts + 2 ClientChips (Magupell, BioZero) + FIG.04 timeline | Complete |
 | AllianceTeaser — FIG.05 constellation diagram | Complete |
 | FinalCTA — ContactForm (browser-only validation, no API) | Complete |
 | ClaimsMarquee (ambre band, between hero and problem) | Complete |

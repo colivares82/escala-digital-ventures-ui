@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WIREFRAME FINAL v2 — sección 04 Evidencia</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#F7F7F4;--ink:#16181D;--mar:#0E3A5D;--abisal:#0A2B45;--ambre:#FFB703;--ambre-dk:#B85C00;
+    --display:'Archivo',system-ui,sans-serif;--body:'Instrument Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--body);background:var(--paper);color:var(--ink)}
+  .wf{background:#111;color:#eee;font-family:var(--mono);font-size:12px;padding:14px 32px;letter-spacing:.05em}
+  .wf b{color:var(--ambre)}
+  .note{font-family:var(--mono);font-size:11px;color:var(--ambre-dk);border-left:1px dashed var(--ambre-dk);padding-left:10px;margin:16px 6vw;max-width:840px;line-height:1.55}
+  .sec{padding:70px 6vw}
+  .idx{font-family:var(--mono);font-size:12px;letter-spacing:.15em;margin-bottom:24px}
+  .idx .n{color:var(--ambre-dk)}
+  .top{display:grid;grid-template-columns:1fr 1.25fr;gap:5vw;align-items:start}
+  h2{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(2.6rem,5vw,4rem);line-height:1.02}
+  .vsub{font-family:var(--mono);font-size:12px;color:var(--mar);letter-spacing:.05em;margin:18px 0 26px}
+  .chip{border:1px solid rgba(22,24,29,.2);padding:20px 22px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .chip .cn{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:1.3rem}
+  .chip .cs{font-family:var(--mono);font-size:11px;color:var(--mar);margin-top:6px}
+  .chip .go{font-family:var(--mono);font-size:11px;color:var(--mar);border-bottom:1px solid var(--mar);padding-bottom:3px;white-space:nowrap}
+
+  .figframe{border:1px solid rgba(22,24,29,.15);background:#fff;padding:26px;position:relative}
+  .figframe::before,.figframe::after{content:"";position:absolute;width:14px;height:14px;border:1px solid rgba(22,24,29,.3)}
+  .figframe::before{top:10px;left:10px;border-right:none;border-bottom:none}
+  .figframe::after{bottom:10px;right:10px;border-left:none;border-top:none}
+  svg text{font-family:'IBM Plex Mono',monospace}
+  .cap{font-family:var(--mono);font-size:11px;color:var(--mar);margin-top:14px;letter-spacing:.03em}
+
+  /* readouts 2 cols x 3 rows */
+  .dats{display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(22,24,29,.18);margin-top:40px}
+  .dat{padding:34px 34px;border:.5px solid rgba(22,24,29,.14);min-height:200px;display:flex;flex-direction:column}
+  .dat .dl{font-family:var(--mono);font-size:12px;color:var(--mar);letter-spacing:.05em}
+  .dat .plot{margin:16px 0;height:38px}
+  .dat .val{font-family:var(--display);font-stretch:112%;font-weight:600;color:var(--mar);line-height:1.02;margin-top:auto}
+  .dat .num{font-size:clamp(2.4rem,3.4vw,3.2rem)}
+  .dat .phrase{font-size:clamp(1.5rem,2.2vw,2rem)}
+  .dat .cap2{font-family:var(--body);font-size:15px;color:rgba(22,24,29,.72);margin-top:14px;line-height:1.5;max-width:42ch}
+</style>
+</head>
+<body>
+<div class="wf">WIREFRAME · <b>FINAL v2</b> · sección 04 · readouts con VALOR (no dato bruto) · 2 col × 3 filas · texto legible, nada se sale · escalera más grande</div>
+
+<section class="sec">
+  <div class="idx"><span class="n">04</span>&nbsp;/&nbsp;EVIDENCIA</div>
+
+  <div class="top">
+    <div>
+      <h2>Hechos, no promesas.</h2>
+      <div class="vsub">EVIDENCIA VERIFICADA EN CLIENTES REALES</div>
+      <div class="chip"><div><div class="cn">Magupell</div><div class="cs">EN PRODUCCIÓN · SECTOR PIEL</div></div><div class="go">VER CASO ↗</div></div>
+      <div class="chip"><div><div class="cn">BioZero</div><div class="cs">V1 ENTREGADA · CLÍNICA DENTAL + IA</div></div><div class="go">VER CASO ↗</div></div>
+    </div>
+
+    <div>
+      <div class="figframe">
+        <!-- bigger, readable stair -->
+        <svg width="100%" viewBox="0 0 720 400" style="max-width:720px">
+          <!-- 5 steps ascending. Each step has: a tread (horizontal), a label anchored to the tread start, aligned. -->
+          <!-- geometry: treads at x ranges, y levels -->
+          <!-- step tread y-levels -->
+          <!-- fill under stair -->
+          <path d="M60 340 L180 340 L180 284 L320 284 L320 228 L460 228 L460 172 L580 172 L580 100 L660 100 L660 360 L60 360 Z" fill="rgba(14,58,93,.05)"/>
+          <!-- stair line -->
+          <g stroke="#16181D" stroke-width="2" fill="none">
+            <path d="M60 340 L180 340 L180 284 L320 284 L320 228 L460 228 L460 172 L580 172 L580 100 L660 100"/>
+          </g>
+          <!-- step markers at each riser top -->
+          <g fill="#16181D"><circle cx="180" cy="340" r="3.5"/><circle cx="320" cy="284" r="3.5"/><circle cx="460" cy="228" r="3.5"/><circle cx="580" cy="172" r="3.5"/></g>
+          <circle cx="660" cy="100" r="6" fill="#FFB703"/>
+
+          <!-- labels: each anchored just ABOVE its own tread, aligned to the tread's left x -->
+          <!-- tread1: x 60-180, y340 ; tread2: 180-320, y284 ; tread3: 320-460, y228 ; tread4: 460-580, y172 ; tread5: 580-660, y100 -->
+          <g font-family="IBM Plex Mono">
+            <!-- step 1 -->
+            <text x="66" y="326" font-size="14" font-weight="500" fill="#0E3A5D">DIC 2025</text>
+            <text x="66" y="311" font-size="12" fill="rgba(14,58,93,.7)">Requerimientos</text>
+            <!-- step 2 -->
+            <text x="186" y="270" font-size="14" font-weight="500" fill="#0E3A5D">ENE 2026</text>
+            <text x="186" y="255" font-size="12" fill="rgba(14,58,93,.7)">Prototipo</text>
+            <!-- step 3 -->
+            <text x="326" y="214" font-size="14" font-weight="500" fill="#0E3A5D">ABR 2026</text>
+            <text x="326" y="199" font-size="12" fill="rgba(14,58,93,.7)">Desarrollo</text>
+            <!-- step 4 -->
+            <text x="466" y="158" font-size="14" font-weight="500" fill="#0E3A5D">MAY–JUN 2026</text>
+            <text x="466" y="143" font-size="12" fill="rgba(14,58,93,.7)">Preproducción</text>
+            <!-- step 5 (top, ambre) -->
+            <text x="586" y="86" font-size="14" font-weight="500" fill="#0E3A5D">JUL 2026</text>
+            <text x="586" y="71" font-size="12" fill="#B85C00">Producción</text>
+          </g>
+        </svg>
+        <div class="cap">FIG. 04 — DE LOS REQUERIMIENTOS A PRODUCCIÓN EN 7 MESES, CON FECHAS VERIFICADAS</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dats">
+    <div class="dat">
+      <div class="dl">DAT.01 / REQUISITOS</div>
+      <svg class="plot" viewBox="0 0 200 38"><polyline points="0,30 90,28 91,16 200,8" fill="none" stroke="#0E3A5D" stroke-width="1.5"/><circle cx="200" cy="8" r="3" fill="#FFB703"/></svg>
+      <div class="val num">167 → 216</div>
+      <div class="cap2">Requisitos funcionales refinados con iteración y prototipo.</div>
+    </div>
+    <div class="dat">
+      <div class="dl">DAT.02 / PRUEBAS</div>
+      <svg class="plot" viewBox="0 0 200 38"><polyline points="0,32 50,26 100,20 150,12 200,6" fill="none" stroke="#0E3A5D" stroke-width="1.5"/><circle cx="200" cy="6" r="3" fill="#FFB703"/></svg>
+      <div class="val num">1.803</div>
+      <div class="cap2">Pruebas automatizadas: 1.042 backend + 761 frontend. Estabilidad garantizada en cada cambio.</div>
+    </div>
+    <div class="dat">
+      <div class="dl">DAT.03 / ENTORNOS</div>
+      <svg class="plot" viewBox="0 0 200 38"><g stroke="#0E3A5D" stroke-width="1.5" fill="none"><rect x="16" y="12" width="34" height="14"/><rect x="83" y="12" width="34" height="14"/><rect x="150" y="12" width="34" height="14"/><line x1="50" y1="19" x2="83" y2="19"/><line x1="117" y1="19" x2="150" y2="19"/></g></svg>
+      <div class="val num">3 entornos</div>
+      <div class="cap2">Local, desarrollo y producción, con pipelines protegidas.</div>
+    </div>
+    <div class="dat">
+      <div class="dl">DAT.04 / TIEMPO A PRODUCCIÓN</div>
+      <svg class="plot" viewBox="0 0 200 38"><polyline points="0,32 40,32 40,24 90,24 90,16 140,16 140,8 200,8" fill="none" stroke="#0E3A5D" stroke-width="1.5"/><circle cx="200" cy="8" r="3" fill="#FFB703"/></svg>
+      <div class="val num">7 meses</div>
+      <div class="cap2">De los primeros requerimientos a producción.</div>
+    </div>
+    <div class="dat">
+      <div class="dl">DAT.05 / IMPACTO</div>
+      <svg class="plot" viewBox="0 0 200 38"><g stroke="#0E3A5D" stroke-width="1.5" fill="none"><path d="M4 30 C40 30 40 10 80 10" stroke-dasharray="3 3" opacity=".5"/><path d="M80 10 L196 10"/></g><circle cx="196" cy="10" r="3" fill="#FFB703"/></svg>
+      <div class="val phrase">Sustituyó lo manual.</div>
+      <div class="cap2">El sistema orquesta la operación y da insights de datos. En su primer mes, ya es una realidad para todos los usuarios.</div>
+    </div>
+    <div class="dat">
+      <div class="dl">DAT.06 / A MEDIDA</div>
+      <svg class="plot" viewBox="0 0 200 38"><g stroke="#0E3A5D" stroke-width="1.5" fill="none"><circle cx="30" cy="19" r="6"/><circle cx="80" cy="19" r="6"/><circle cx="130" cy="19" r="6"/><circle cx="180" cy="19" r="6"/></g></svg>
+      <div class="val phrase">A medida de cada rol.</div>
+      <div class="cap2">Admin, cliente, inspector y proveedor: cada función con lo que necesita, con control y auditoría completa.</div>
+    </div>
+  </div>
+</section>
+
+<div class="note" style="color:var(--ambre-dk);border-color:var(--ambre-dk);background:#fff;padding:12px 14px">
+NOTAS · Readouts con VALOR, no dato bruto: DAT.04 = "7 meses" (no la fecha suelta); DAT.05 = frase-valor "Sustituyó lo manual" + el detalle real (orquesta, insights, realidad para todos en 1 mes); DAT.06 = "A medida de cada rol" + control y auditoría. · Formato mixto: cifra grande donde la hay (Archivo), frase-valor donde importa el mensaje. · 2 columnas × 3 filas. · Texto legible (cap2 a 15px, no mono diminuto) y contenido dentro de los recuadros. · Escalera FIG.04 más grande, etiquetas a 13px con subtítulo, todo dentro del marco. · Cifras reales de Magupell.
+</div>
+</body>
+</html>

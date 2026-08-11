@@ -1,57 +1,113 @@
-import { CountUp } from '@/components/motion-runtime'
-
 /**
- * SVG path data for the sparkline plots inside each readout.
- * Indexed 0–3 to match the four proof figures.
+ * Readout — a single evidence cell in the ProofSection 2×3 grid.
+ * SPEC-POLISH-03: redesigned for real Magupell data.
+ *
+ * Props:
+ *   label      — mono eyebrow (e.g. "REQUISITOS")
+ *   value      — the figure or phrase to display
+ *   kind       — 'number' renders larger Archivo; 'phrase' renders slightly smaller
+ *   caption    — body-font description (~15px, max 42ch)
+ *   plotVariant — which decorative micro-plot to render (aria-hidden)
+ *   index      — 0-based position (used for DAT.XX label)
+ *
+ * No CountUp animation — values are real, exact, and should not animate.
+ * No source suffix — removed per wireframe (SPEC-POLISH-03 §3.2).
+ * Colors from design tokens only; no hardcoded hex.
  */
-const PLOTS = [
-  'M4 38L20 28L34 31L50 18L66 22L82 8L96 12',
-  'M4 34H22V26H40V30H58V16H76V20H96V8',
-  'M4 36C18 36 18 24 32 24S46 12 60 12S74 22 96 6',
-  'M4 34L22 30L40 30L58 19L76 19L96 8',
-] as const
 
-/** Y coordinate for the endpoint dot on each sparkline. */
-const ENDPOINT_Y = [12, 8, 6, 8] as const
+/** Decorative SVG micro-plot paths per variant. All aria-hidden. */
+const MICRO_PLOTS: Record<string, React.ReactNode> = {
+  /** growth: ascending line (167→216 requisitos) */
+  growth: (
+    <>
+      <polyline points="0,30 90,28 91,16 200,8" fill="none" strokeWidth="1.5" />
+      <circle cx="200" cy="8" r="3" className="readout__plot-dot" />
+    </>
+  ),
+  /** steps: steady ascending steps (1803 tests) */
+  steps: (
+    <>
+      <polyline points="0,32 50,26 100,20 150,12 200,6" fill="none" strokeWidth="1.5" />
+      <circle cx="200" cy="6" r="3" className="readout__plot-dot" />
+    </>
+  ),
+  /** bars: three connected boxes (3 environments) */
+  bars: (
+    <g strokeWidth="1.5" fill="none">
+      <rect x="16" y="12" width="34" height="14" />
+      <rect x="83" y="12" width="34" height="14" />
+      <rect x="150" y="12" width="34" height="14" />
+      <line x1="50" y1="19" x2="83" y2="19" />
+      <line x1="117" y1="19" x2="150" y2="19" />
+    </g>
+  ),
+  /** stair: ascending stair (7 months) */
+  stair: (
+    <>
+      <polyline points="0,32 40,32 40,24 90,24 90,16 140,16 140,8 200,8" fill="none" strokeWidth="1.5" />
+      <circle cx="200" cy="8" r="3" className="readout__plot-dot" />
+    </>
+  ),
+  /** impact: dashed then solid (manual→digital) */
+  impact: (
+    <g strokeWidth="1.5" fill="none">
+      <path d="M4 30 C40 30 40 10 80 10" strokeDasharray="3 3" opacity=".5" />
+      <path d="M80 10 L196 10" />
+      <circle cx="196" cy="10" r="3" className="readout__plot-dot" />
+    </g>
+  ),
+  /** roles: four circles (4 roles) */
+  roles: (
+    <g strokeWidth="1.5" fill="none">
+      <circle cx="30" cy="19" r="6" />
+      <circle cx="80" cy="19" r="6" />
+      <circle cx="130" cy="19" r="6" />
+      <circle cx="180" cy="19" r="6" />
+    </g>
+  ),
+}
 
 export function Readout({
-  value,
   label,
+  value,
+  kind,
   caption,
-  source,
+  plotVariant,
   index,
 }: {
-  value: string
   label: string
+  value: string
+  kind: 'number' | 'phrase'
   caption: string
-  /** Client name displayed as the data-source attribution. */
-  source: string
+  plotVariant: string
   index: number
 }) {
-  const plotPath = PLOTS[index] ?? PLOTS[0]
-  const dotY = ENDPOINT_Y[index] ?? ENDPOINT_Y[0]
+  const plot = MICRO_PLOTS[plotVariant] ?? MICRO_PLOTS['growth']
 
   return (
     <div className="readout">
-      <p>
-        DAT.{String(index + 1).padStart(2, '0')} / {label} / {source}
+      {/* DAT.XX / LABEL — mono eyebrow */}
+      <p className="readout__eyebrow">
+        DAT.{String(index + 1).padStart(2, '0')} / {label}
       </p>
 
+      {/* Decorative micro-plot — aria-hidden */}
       <svg
         className="readout__plot"
-        viewBox="0 0 100 44"
-        role="img"
-        aria-label={`Trazado de ${label.toLowerCase()}`}
+        viewBox="0 0 200 38"
+        aria-hidden="true"
+        focusable="false"
       >
-        <path className="readout__baseline" d="M4 40H96" />
-        <path className="readout__trace" d={plotPath} />
-        <circle className="readout__point" cx="96" cy={dotY} r="2" />
+        <g className="readout__plot-lines">{plot}</g>
       </svg>
 
-      <dd>
-        {/^[-+]?\d/.test(value) ? <CountUp value={value} /> : value}
+      {/* Value — Archivo display, larger for number, slightly smaller for phrase */}
+      <dd className={`readout__value readout__value--${kind}`}>
+        {value}
       </dd>
-      <dt>{caption}</dt>
+
+      {/* Caption — body font ~15px, max 42ch */}
+      <dt className="readout__caption">{caption}</dt>
     </div>
   )
 }
