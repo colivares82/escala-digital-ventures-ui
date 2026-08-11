@@ -1,10 +1,28 @@
 # Active Context
 
-_Last updated: August 2026 (SPEC-POLISH-03 COMPLETE — home section 04 real Magupell data)_
+_Last updated: August 2026 (SPEC-POLISH-04 COMPLETE — home section 05 constellation as protagonist)_
 
 ## Current state
 
-**Phase 6 COMPLETE + SPEC-POLISH-02 COMPLETE + SPEC-POLISH-03 COMPLETE.** Both Cloud Run environments are live. CI/CD pipeline is fully operational. Home section 01 "Punto de partida" was polished in POLISH-02. Home section 04 "Evidencia" has now been polished with real Magupell data: 6 readouts (167→216, 1.803, 3 entornos, 7 meses, "Sustituyó lo manual.", "A medida de cada rol."), redesigned FIG.04 timeline with 5 real-dated milestones, and brand spelling corrected to "Magupell" everywhere. Carlos is working on Phase 7 content/QA before DNS switch.
+**Phase 6 COMPLETE + SPEC-POLISH-02 COMPLETE + SPEC-POLISH-03 COMPLETE + SPEC-POLISH-04 COMPLETE.** Both Cloud Run environments are live. CI/CD pipeline is fully operational. Home section 05 "Modelo de alianza" has been polished: the constellation is now the protagonist (960×620 viewBox, larger core/nodes), connectors meet the ring edge, labels are anchored by direction (no overlap), traveling ambre pulse animation for active seats, GridBackground reused, all copy translatable (ES/EN/CA). Carlos is working on Phase 7 content/QA before DNS switch.
+
+## What was done in SPEC-POLISH-04
+
+### Constellation as protagonist
+- **`AllianceConstellation`** — new `'protagonist'` size (960×620 viewBox, R=200, nodeR=30, coreR1=46, coreR2=60). `'compact'` and `'large'` unchanged — `/modelo-de-alianza` unaffected.
+- **Connectors** — start at core OUTER ring edge (CORE_R2), end at node edge. Never crosses core or node.
+- **Labels** — anchored by `cosA`/`sinA` thresholds: right-side=start, left-side=end, top/bottom=middle. No label overlaps its node.
+- **Traveling pulse** — SVG `<animate>` elements for occupied seats (declarative, no JS). `prefers-reduced-motion` → `display:none` via CSS.
+- **Corner ticks** — 4 `<path>` elements in `<g aria-hidden="true">` inside the protagonist SVG.
+- **`coreSubLabel`** — new optional prop; renders "2 ALIANZAS ACTIVAS · 3 DISPONIBLES" inside the SVG.
+- **`AllianceFigureContent`** — new type in `content/types.ts`; `allianceFigure` key added to ES/EN/CA home dictionaries (fully translatable).
+- **`AllianceTeaser`** — accepts `allianceFigure?: AllianceFigureContent`; when provided renders protagonist constellation + caption + sub-caption; when absent falls back to legacy `SystemDiagram kind="outcome"` + legend.
+- **`GridBackground`** — reused in `AllianceTeaser` (section has `position: relative`). No duplicate grid code.
+- **CSS** — `.alliance-stage`, `.alliance-caption`, `.alliance-subcaption`, `.ac-core-sublabel`, protagonist overrides (opacity 1, no draw-on-scroll), reduced-motion pulse hide.
+
+### Test results
+- 52 test files · 953 tests · 100% pass · build clean · TypeScript strict clean
+- No hardcoded hex in new components
 
 ## What was done in SPEC-POLISH-03
 
