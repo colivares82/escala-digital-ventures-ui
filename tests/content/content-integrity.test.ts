@@ -354,7 +354,7 @@ describe('allianceContent — Phase 2.4 (SPEC-P2.4 AC-7)', () => {
     expect(allianceContent.seats).toHaveLength(5)
   })
 
-  it('exactly 2 seats are occupied (Magupell + BIOZERO)', () => {
+  it('exactly 2 seats are occupied (Magupell + BioZero)', () => {
     const occupied = allianceContent.seats.filter((s) => s.state === 'occupied')
     expect(occupied).toHaveLength(2)
   })
@@ -364,12 +364,23 @@ describe('allianceContent — Phase 2.4 (SPEC-P2.4 AC-7)', () => {
     expect(free).toHaveLength(3)
   })
 
-  it('Magupell and BIOZERO are the occupied seats', () => {
+  it('Magupell and BioZero are the occupied seats', () => {
     const occupiedNames = allianceContent.seats
       .filter((s) => s.state === 'occupied')
       .map((s) => s.name)
     expect(occupiedNames).toContain('Magupell')
-    expect(occupiedNames).toContain('BIOZERO')
+    expect(occupiedNames).toContain('BioZero')
+  })
+
+  // POLISH-09: casing must match the home page exactly (§2.2 "home wins")
+  it('occupied seat casing matches the home page allianceFigure seats exactly', () => {
+    const occupiedNames = allianceContent.seats
+      .filter((s) => s.state === 'occupied')
+      .map((s) => s.name)
+    const homeOccupiedNames = homeContent.allianceFigure.seats
+      .filter((s) => s.state === 'occupied')
+      .map((s) => s.name)
+    expect(occupiedNames.sort()).toEqual(homeOccupiedNames.sort())
   })
 
   // FR-4.1: exactly 3 planes

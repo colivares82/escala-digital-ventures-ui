@@ -30,23 +30,28 @@ export function AlliancePage({ dict, locale }: { dict: Dictionary; locale: Local
         <div className="page-shell alliance-why__inner">
           <p className="alliance-why__eyebrow">{whyFive.sectionEyebrow}</p>
 
-          <div className="alliance-why__grid">
-            <Reveal>
-              <div className="alliance-why__text">
-                <h2 className="alliance-why__heading">{whyFive.heading}</h2>
-                <p className="alliance-why__body">{whyFive.body}</p>
-              </div>
-            </Reveal>
-
-            <div className="alliance-why__figure">
-              <DiagramReveal>
-                <AllianceConstellation
-                  seats={seats}
-                  size="large"
-                  ariaLabel={whyFive.constellationAria}
-                />
-              </DiagramReveal>
+          <Reveal>
+            <div className="alliance-why__text">
+              <h2 className="alliance-why__heading">{whyFive.heading}</h2>
+              <p className="alliance-why__body">{whyFive.body}</p>
             </div>
+          </Reveal>
+
+          {/*
+           * Protagonist size (960×620 viewBox, responsive width) — same
+           * configuration as the home page constellation (SPEC-POLISH-04).
+           * 'large' (fixed 420×420) left no horizontal margin for labels at
+           * the pentagon's widest points, clipping "BIOZERO" and "DISPONIBLE"
+           * at the SVG edge. POLISH-09.
+           */}
+          <div className="alliance-why__stage">
+            <DiagramReveal>
+              <AllianceConstellation
+                seats={seats}
+                size="protagonist"
+                ariaLabel={whyFive.constellationAria}
+              />
+            </DiagramReveal>
           </div>
         </div>
       </section>

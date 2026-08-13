@@ -30,7 +30,7 @@ export const allianceContent = {
 
   seats: [
     { name: 'Magupell', state: 'occupied' },
-    { name: 'BIOZERO',  state: 'occupied' },
+    { name: 'BioZero',  state: 'occupied' },
     { name: 'AVAILABLE', state: 'free' },
     { name: 'AVAILABLE', state: 'free' },
     { name: 'AVAILABLE', state: 'free' },

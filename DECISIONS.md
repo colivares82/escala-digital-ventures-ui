@@ -20,6 +20,36 @@
 - **FIG.08 connector endpoints computed geometrically, not hand-authored.** `pointOnCoreBorder()` derives each connector's core-side endpoint from the core center/radius and the module-facing anchor point, so every connector lands exactly on the ring border (distance from core center == radius, verified in tests) — never short, never crossing into the circle.
 - **FIG.11 full-circle arc via `stroke-dasharray`/`stroke-dashoffset` `<animate>`, not `<animateMotion>`.** The previous quarter-arc pulse used `<animateMotion>` tracing a path; the fix instead animates the arc's own `stroke-dashoffset` from full length to 0, which draws the complete loop continuously and, when `visible=false` (reduced-motion), simply omits `stroke-dasharray` so the arc renders as a complete, static circle — satisfying "reduced-motion → arc shown complete" without extra CSS.
 
+## SPEC-POLISH-09 decisions (/modelo-de-alianza constellation clipping fix)
+
+- **`size="large"` → `size="protagonist"`, component untouched.** The reported clipping
+  (`BIOZERO` → `BIOZE`, `DISPONIBLE` → `ONIBLE`) was a geometry-budget problem specific to
+  the `large` variant: fixed 420×420 viewBox, pentagon spans x=60…360, leaving only 60px of
+  margin for labels needing ~55-60px. The `protagonist` variant (960×620, responsive width)
+  already used on home leaves 280px of margin per side. Switching the page's `size` prop is
+  the entire fix — no change to `AllianceConstellation`'s geometry, props, or defaults.
+- **Casing conflict (BIOZERO vs BioZero) resolved in favor of home, per explicit approval.**
+  `content/{es,en,ca}/alliance.ts` used `BIOZERO`; `content/{es,en,ca}/home.ts`
+  `allianceFigure.seats` used `BioZero`. Corrected the alliance dictionaries to match home
+  exactly. This is a one-token data change (seat name), not the section's prose copy — the
+  eyebrow/heading/body/aria strings are untouched. A permanent regression test now asserts
+  the two dictionaries' occupied-seat names stay identical.
+- **Reveal on a home-tuned CSS rule: page-scoped counter-rule, not a component change.** The
+  home page has `.alliance-constellation--protagonist .ac-draw { opacity: 1 }` because home
+  renders the protagonist constellation without a reveal wrapper. `/modelo-de-alianza` wraps
+  it in the existing `DiagramReveal`, so a page-scoped, higher-specificity counter-rule
+  (`.alliance-why__stage .diagram-reveal[data-visible='true'] .ac-draw`) restores the
+  fade-in for this page only. The selector is unreachable outside `.alliance-why__stage`, so
+  home cannot regress.
+- **`coreSubLabel` intentionally omitted on `/modelo-de-alianza`.** No such copy exists in
+  `alliance.ts`; adding a new dictionary key was outside the approved scope. The alliance
+  page's constellation therefore lacks the "2 ALIANZAS ACTIVAS · 3 DISPONIBLES" sub-line
+  visible on home — a deliberate, documented gap, not an oversight.
+- **Pre-existing `.site-header`/`.page-header__*` 8px overflow at 360px left unfixed.** Live
+  measurement showed this on every `PageHeader`-using page (`/como-trabajamos`,
+  `/casos-de-exito`, `/modelo-de-alianza` alike), not introduced by this change and out of
+  this spec's scope (`PageHeader` is explicitly protected). Flagged as a follow-up.
+
 ## Phase 2.3 decisions
 
 - **Logo asset location (`app/assets/brand/` not `public/brand/`):** spec says `public/brand/`. Logos are stored instead as `app/assets/brand/magupell-logo.png` and `app/assets/brand/biozero-logo.png` and imported as Next.js static images (`StaticImageData`) via `next/image`. Rationale: (1) build fails at compile time if the file is missing (vs. silent 404 from `public/`); (2) content-hashed URLs for optimal long-term caching; (3) intrinsic width/height inferred automatically from the import. See `content/data/cases.ts` for the import.

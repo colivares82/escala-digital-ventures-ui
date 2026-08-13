@@ -1,5 +1,20 @@
 # Progress
 
+## What works ✅ — SPEC-POLISH-09 additions (`/modelo-de-alianza` constellation fix)
+
+| Feature | Status |
+|---------|--------|
+| Clipping fixed — "Por qué solo cinco" now renders `AllianceConstellation` at `size="protagonist"` (960×620, responsive, 280px margin per side) instead of `size="large"` (fixed 420×420, only 60px margin, clipped `BIOZERO`/`DISPONIBLE` at the SVG edge) | Complete |
+| `AllianceConstellation` and `GridBackground` byte-identical — zero changes; fix lives entirely in `components/pages/alliance.tsx` | Complete |
+| Layout restructured: text block above (normal measure) → constellation below at full section width (`.alliance-why__stage`, max 900px, matches home's `.alliance-stage`) | Complete |
+| Casing corrected: `content/{es,en,ca}/alliance.ts` seats `BIOZERO` → `BioZero` to match `content/{es,en,ca}/home.ts` exactly (home is canonical); permanent regression test added | Complete |
+| Scroll-reveal preserved via existing `DiagramReveal`/`data-visible` mechanism — a page-scoped CSS counter-rule restores fade-in for the protagonist variant on this page only, without touching home's own always-visible rule | Complete |
+| Reduced motion: fully static/visible via the existing global rule — no page-specific handling needed | Complete |
+| New test file `tests/components/alliance-page.test.tsx` (8 tests) — 100% coverage of `components/pages/alliance.tsx` (was 0%) | Complete |
+| Live-verified via headless Chrome over CDP: label `getBBox()` geometry (not DOM presence) at 360/390/768/1024/1440/1920 × ES/EN/CA — zero clipped labels post-fix (was 4/5 clipped per locale); home page measured unaffected; connector geometry unchanged; reveal + reduced-motion confirmed | Complete |
+| 65 test files · 1115 tests · 100% pass · `npx tsc --noEmit` clean · `eslint` 0 new warnings · `npm run build` clean · coverage 80.46%/77.81%/86.48%/83.33% | Complete |
+| Known follow-up: pre-existing 8px horizontal overflow at 360px from `.site-header`/`.page-header__*`, present on every `PageHeader` page — not introduced by this fix, out of scope (`PageHeader` protected), not yet triaged | Flagged |
+
 ## What works ✅ — SPEC-POLISH-07 additions (header nav + mobile menu)
 
 | Feature | Status |
@@ -337,3 +352,4 @@
 | Legal placeholders unresolved | Medium | `{{FECHA_ACTUALIZACION}}`, `{{REGISTRO_MERCANTIL}}`, `{{NIF_B88767520}}`, `{{JURISDICCION}}`, `{{REGION_EU_GOOGLE_CLOUD}}` — Carlos must fill before go-live. Visible as ambre highlights in dev. |
 | Legal advisor review required | Medium | Legal copy drafted from MAGUPELL contract + LSSI-CE/RGPD. Not legal advice. Advisor must review before go-live. |
 | Favicon artwork is a draft | Low | `app/icon.svg` — Carlos to review and replace with final approved logomark before launch. |
+| 8px horizontal overflow at 360px on `PageHeader` pages | Low | `.site-header`/`.page-header__*` overflow slightly at the narrowest tested width, on every page using `PageHeader` (`/como-trabajamos`, `/casos-de-exito`, `/modelo-de-alianza`). Found during SPEC-POLISH-09 live QA; pre-existing, not introduced by that change. Not yet triaged into the backlog. |
