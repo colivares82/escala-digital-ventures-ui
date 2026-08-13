@@ -258,7 +258,18 @@ export default async function Page({
           </>
         )}
       </main>
-      <SiteFooter content={home.footer} accessibility={shared.accessibility} />
+      <SiteFooter
+        content={home.footer}
+        accessibility={shared.accessibility}
+        brand={shared.header.brand}
+        contactLabel={shared.header.contact}
+        email={shared.finalCta.email}
+        location={shared.finalCta.location}
+        languages={shared.finalCta.languages}
+        currentPage={page}
+        locale={locale}
+        pageParams={pageParams}
+      />
     </MotionRuntime>
   )
 }
