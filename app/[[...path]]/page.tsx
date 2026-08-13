@@ -189,6 +189,7 @@ export default async function Page({
         currentPage={page}
         locale={locale}
         pageParams={pageParams}
+        email={shared.finalCta.email}
       />
       {/* lang on main provides locale signal for EN/CA; html lang stays "es" until
           Phase 6 middleware sets it correctly per-request. */}

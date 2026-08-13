@@ -20,6 +20,9 @@ export const sharedContent = {
     footerNavigation: 'Footer navigation',
     languages: 'Languages',
     keyMessages: 'Key messages',
+    // SPEC-POLISH-07 §5 — mobile menu trigger/close accessible labels.
+    menuOpen: 'Open menu',
+    menuClose: 'Close menu',
   },
   header: {
     brand: 'ESCALA',

@@ -1,5 +1,96 @@
 # Changelog
 
+## [SPEC-POLISH-07 hotfix] — August 2026 — locale-switcher spacing, invisible mobile nav, missing wordmark
+
+### Bugs (found in live QA screenshots, after SPEC-POLISH-07 was reported complete)
+1. Desktop locale switcher rendered "ESENCA" with no visible gap between ES/EN/CA.
+2. Mobile overlay's 5 nav items and locale switcher were invisible (present in the
+   DOM per the original live check, but not actually rendered/visible).
+3. Mobile overlay brand slot showed only the 3-square symbol, missing "ESCALA".
+
+### Root cause (one mistake, three symptoms)
+`.site-header nav` (bare element+descendant selector) matched **every** `<nav>`
+inside `<header>` — the primary nav, `.locale-switcher`, and (while `MobileMenu`
+still rendered as a child of `<header>`) the overlay's own `<nav>` too. A gap-zeroing
+rule and the `max-width:1023px` hide rule, both scoped to that bare selector,
+therefore reached the locale switcher and the overlay nav respectively. Separately,
+`components/mobile-menu.tsx` simply never rendered `{content.brand}` in its brand
+link.
+
+### Fix
+- `components/site-chrome.tsx` — primary `<nav>` now carries an explicit
+  `site-header__nav` class; `MobileMenu` now renders as a **sibling of `<header>`**
+  (fragment return), not a descendant, so it is structurally unreachable by any
+  `.site-header ...` rule.
+- `app/globals.css` — every `.site-header nav` selector (base gap rule, gap-zeroing
+  rule, `max-width:1023px` hide rule, `[aria-current="page"]` active state) renamed
+  to `.site-header__nav`.
+- `components/mobile-menu.tsx` — overlay brand link now renders `{content.brand}`.
+
+### Added — regression tests
+`tests/components/site-chrome.test.tsx`: primary nav carries `.site-header__nav`
+and the locale switcher does not; the **open** overlay is confirmed not nested
+inside `<header>`; the open overlay's brand slot text contains "ESCALA".
+
+### Verified
+Live re-check via headless Chromium over CDP, this time asserting **visibility**
+(`getBoundingClientRect()`/computed `display`), not just DOM existence — the same
+gap that let these bugs through the first live check. Locale switcher gaps now
+`[12, 12]`px (was `[0, 0]`); mobile overlay nav items and switcher now
+`itemsVisible: [true×5]` / `navDisplay: "flex"` (was hidden); overlay
+`brandText: "ESCALA"` (was missing). Desktop header re-confirmed unaffected (80px
+height, no wrap, 4 separators). `npm test` 1093/1093 passing · coverage
+79.91%/77.6%/85.99%/82.78% · `npm run build` clean. Full writeup:
+`specs/spec-polish-07-header-navigation.md` §9.
+
+## [SPEC-POLISH-07] — August 2026 — Header nav type + mobile menu
+
+### Problem
+Header nav sat at 0.66rem with no visual separation between links, and below the
+1024px breakpoint the inline nav was simply `display: none` with no replacement —
+the site had no way to navigate between pages from a phone.
+
+### Changed
+- `components/site-chrome.tsx` — nav raised to 0.80rem with a decorative `·`
+  separator (`aria-hidden`, outside the link, `user-select`/`pointer-events` guarded);
+  brand wrapped in a dimensioned slot (132×32 desktop / 112×28 mobile, ready for the
+  logo spec); new `<button className="site-header__trigger">` mobile menu trigger;
+  `SiteHeader` now takes a required `email` prop for the overlay's contact line.
+- `app/globals.css` — header type scale (`.site-header nav a`, `.locale-switcher`,
+  `.header-cta`) raised to 0.80rem (`.header-cta`'s size scoped separately from the
+  shared `.primary-link` rule it used to share, so nothing outside the header moved);
+  `.site-header__sep` separator with 16px/11px responsive padding; `.site-brand`
+  given fixed dimensions; `.site-header__trigger` bars; new `.mobile-menu` block;
+  the `max-width: 1023px` breakpoint now hides `.site-header__actions` too (not just
+  `nav`) and shows the trigger; removed two dead mobile rules (`.locale-switcher`
+  `display:none` and `.header-cta` padding tweak at 639px — both elements are already
+  hidden below 1024px).
+- `app/[[...path]]/page.tsx` — passes `email={shared.finalCta.email}` to `SiteHeader`.
+- `lib/motion-constants.ts` — `HEADER_MOBILE_BREAKPOINT_PX`, `HEADER_DESKTOP_MEDIA_QUERY`,
+  `MOBILE_MENU_TRANSITION_MS`.
+- `content/{es,en,ca}/shared.ts` — `accessibility.menuOpen` / `menuClose`.
+
+### Added
+- `components/mobile-menu.tsx` — full-screen overlay (< 1024px) on the abisal surface
+  (`GridBackground`), reusing existing header content: bar (brand slot + close),
+  nav (5 items, mono `01`–`05` index + display label, active in amber), foot (CTA,
+  `LocaleSwitcher`, contact email). Hand-rolled focus trap, Lenis-aware scroll lock
+  (position:fixed + scrollbar-width compensation, restores exact scroll position on
+  close), Escape-to-close, close-on-navigate, and a `matchMedia` resize guard that
+  force-closes the overlay if the viewport crosses into desktop while open.
+- `tests/components/mobile-menu.test.tsx` — 13 tests: render states, nav completeness,
+  active-page marking, close paths (button/Escape/nav-click), scroll lock, focus
+  management (initial + trap both directions), resize guard.
+- `specs/spec-polish-07-header-navigation.md` — full spec + live verification log
+  (headless Chromium over CDP: header height 80px unchanged at 1920/1024/390px;
+  brand slot 112×28 at mobile; scroll lock + focus-return confirmed live).
+
+### Verified
+`npx tsc --noEmit` clean · `npm run lint` no new warnings · `npm test` 1090/1090
+passing (63 files, +1 new file) · `npm run test:coverage` 79.71%/77.43%/85.21%/82.67%
+(new `mobile-menu.tsx` at 95.38%/80%/100%/100%) · `npm run build` succeeds · header
+height measured live before/after: 80px / 80px, identical.
+
 ## [SPEC-CASE-01 hotfix] — August 2026 — CSS nesting bug that made the page render broken
 
 ### Bug

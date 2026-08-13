@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { LocaleSwitcher } from '@/components/locale-switcher'
+import { MobileMenu } from '@/components/mobile-menu'
 import type { homeContent } from '@/content/es/home'
 import type { sharedContent } from '@/content/es/shared'
 import type { Locale, PageId, PageParams } from '@/lib/i18n/types'
@@ -69,6 +70,7 @@ export function SiteHeader({
   currentPage = 'home',
   locale = 'es',
   pageParams,
+  email,
 }: {
   content: HeaderContent
   /** Locale-aware accessibility labels from shared dictionary. */
@@ -79,8 +81,12 @@ export function SiteHeader({
   locale?: Locale
   /** Dynamic params (e.g. case detail slug) — passed to LocaleSwitcher. */
   pageParams?: PageParams
+  /** Contact email shown in the mobile overlay foot (sharedContent.finalCta.email). */
+  email: string
 }) {
   const { isScrolled, isCompact } = useHeaderScroll()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const triggerRef = useRef<HTMLButtonElement>(null)
 
   const headerClass = [
     'site-header',
@@ -90,17 +96,15 @@ export function SiteHeader({
     .filter(Boolean)
     .join(' ')
 
-  // Locale-aware contact link
+  // Locale-aware contact link + home link, shared by desktop nav and overlay.
   const contactHref = getPath('contact', locale)
+  const brandHref = currentPage === 'home' ? ANCHORS.INICIO : getPath('home', locale)
 
   return (
+    <>
     <header className={headerClass}>
       <div className="page-shell site-header__inner">
-        <a
-          className="site-brand"
-          href={currentPage === 'home' ? ANCHORS.INICIO : getPath('home', locale)}
-          aria-label={accessibility.homeLabel}
-        >
+        <a className="site-brand" href={brandHref} aria-label={accessibility.homeLabel}>
           <span aria-hidden="true">
             <i />
             <i />
@@ -109,21 +113,24 @@ export function SiteHeader({
           {content.brand}
         </a>
 
-        <nav aria-label={accessibility.primaryNavigation}>
-          {content.nav.map((item) => {
+        <nav className="site-header__nav" aria-label={accessibility.primaryNavigation}>
+          {content.nav.map((item, i) => {
             // Active state: nav items with a pageId mark themselves when
             // the current page matches. (SPEC-P2.1 AC-11 / FR-2.2)
             const isActive =
               'pageId' in item &&
               (item as { pageId: string }).pageId === currentPage
             return (
-              <a
-                href={item.href}
-                key={item.label}
-                aria-current={isActive ? 'page' : undefined}
-              >
-                {item.label}
-              </a>
+              <span className="site-header__nav-item" key={item.label}>
+                {i > 0 && (
+                  <span className="site-header__sep" aria-hidden="true">
+                    ·
+                  </span>
+                )}
+                <a href={item.href} aria-current={isActive ? 'page' : undefined}>
+                  {item.label}
+                </a>
+              </span>
             )
           })}
         </nav>
@@ -139,8 +146,41 @@ export function SiteHeader({
             {content.contact}
           </a>
         </div>
+
+        <button
+          ref={triggerRef}
+          type="button"
+          className="site-header__trigger"
+          aria-label={isMenuOpen ? accessibility.menuClose : accessibility.menuOpen}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-menu"
+          onClick={() => setIsMenuOpen((open) => !open)}
+        >
+          <i />
+          <i />
+          <i />
+        </button>
       </div>
     </header>
+
+    {/* Rendered as a header sibling, not a descendant — `.site-header`-scoped
+        rules (e.g. hiding the inline nav below 1024px) must never reach the
+        overlay's own <nav>. Fixed-position overlay, so DOM position doesn't
+        affect layout. */}
+    <MobileMenu
+      isOpen={isMenuOpen}
+      onClose={() => setIsMenuOpen(false)}
+      content={content}
+      accessibility={accessibility}
+      currentPage={currentPage}
+      locale={locale}
+      pageParams={pageParams}
+      contactHref={contactHref}
+      email={email}
+      brandHref={brandHref}
+      triggerRef={triggerRef}
+    />
+    </>
   )
 }
 

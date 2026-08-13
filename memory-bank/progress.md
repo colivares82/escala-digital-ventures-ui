@@ -1,5 +1,20 @@
 # Progress
 
+## What works ✅ — SPEC-POLISH-07 additions (header nav + mobile menu)
+
+| Feature | Status |
+|---------|--------|
+| Header nav / locale switcher / CTA label raised 0.66rem → 0.80rem; decorative `·` separator between nav links (`aria-hidden`, outside the link, not in the hit area) | Complete |
+| Separator + nav↔switcher↔button gaps compress one step at 1024–1200px so nothing wraps at any measured width | Complete |
+| Brand slot dimensioned (132×32 desktop / 112×28 mobile), reused verbatim inside the mobile overlay bar — ready for the logo spec to drop in | Complete |
+| **Mobile menu built** — below 1024px the header previously rendered no navigation at all (`display: none`, no replacement); now a calibrated 3-bar trigger opens a full-screen overlay (`components/mobile-menu.tsx`) on the abisal surface with all 5 pages (mono `01`–`05` index), the locale switcher, «Hablemos», and the contact email | Complete |
+| Overlay behavior: hand-rolled focus trap (Tab wraps both directions), Lenis-aware scroll lock restoring the exact scroll position on close, `Escape`-to-close, close-on-navigate, and a `matchMedia` resize guard that force-closes the overlay if the viewport crosses into desktop while still open | Complete |
+| Reduced motion: overlay open/close animation removed under `prefers-reduced-motion: reduce`; mount/unmount logic unchanged either way | Complete |
+| `SiteHeader` now requires an `email` prop (`shared.finalCta.email`) for the overlay foot | Complete |
+| Two dead CSS rules removed (`.locale-switcher { display: none }` and a `.header-cta` padding tweak at 639px — both already covered by the new 1024px breakpoint hiding `.site-header__actions`) | Complete |
+| Live-verified via headless Chromium over CDP (no Playwright wired into this project yet): header height unchanged at 80px across 1920/1024/390px; brand slot exact at 112×28 mobile; scroll lock + focus-return confirmed | Complete |
+| 63 test files · 1090 tests · 100% pass · `npx tsc --noEmit` clean · `eslint` 0 new warnings · `npm run build` clean · coverage 79.71%/77.43%/85.21%/82.67% | Complete |
+
 ## What works ✅ — SPEC-CASE-01 additions (Magupell case page rewrite)
 
 | Feature | Status |

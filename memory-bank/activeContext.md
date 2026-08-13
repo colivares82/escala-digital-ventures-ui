@@ -1,10 +1,58 @@
 # Active Context
 
-_Last updated: August 2026 (SPEC-CASE-01 hotfix — CSS nesting bug fixed + regression guard added; SPEC-CASE-01 itself already COMPLETE — Magupell case page rewrite, CaseDossier promoted to canonical template)_
+_Last updated: August 2026 (SPEC-POLISH-07 hotfix — locale-switcher spacing, invisible mobile nav, missing overlay wordmark, all fixed; SPEC-POLISH-07 itself already COMPLETE)_
 
 ## Current state
 
-**Phase 6 COMPLETE + SPEC-POLISH-02/03/04/05/06 COMPLETE + SPEC-CASE-01 COMPLETE (+ hotfix).** Both Cloud Run environments are live. CI/CD pipeline is fully operational. `/casos-de-exito/magupell` was rewritten in ES/EN/CA with verified production figures (was carrying pre-launch `100+`/`200+` placeholders and invoicing language); `CaseDossier` was promoted to a single canonical case template (approved deviation — see below) and BioZero was migrated onto it with unchanged copy. Carlos is working on Phase 7 content/QA before DNS switch.
+**Phase 6 COMPLETE + SPEC-POLISH-02/03/04/05/06/07 COMPLETE (+ hotfix) + SPEC-CASE-01 COMPLETE (+ hotfix).** Both Cloud Run environments are live. CI/CD pipeline is fully operational. `/casos-de-exito/magupell` was rewritten in ES/EN/CA with verified production figures (was carrying pre-launch `100+`/`200+` placeholders and invoicing language); `CaseDossier` was promoted to a single canonical case template (approved deviation — see below) and BioZero was migrated onto it with unchanged copy. Carlos is working on Phase 7 content/QA before DNS switch.
+
+### Post-completion hotfix: three POLISH-07 bugs found in live screenshots (found after being reported "complete")
+`.site-header nav` (a bare element+descendant selector) matched **every** `<nav>`
+inside `<header>` — not just the primary nav, but `.locale-switcher` and, while
+`MobileMenu` still rendered as a child of `<header>`, the overlay's own `<nav>` too.
+That zeroed the locale switcher's gap ("ESENCA" with no spacing) and hid the entire
+mobile overlay nav below 1024px — the exact defect POLISH-07 was built to fix, now
+silently reintroduced by a selector collision. A third, unrelated bug: the overlay's
+brand slot never rendered the "ESCALA" wordmark, only the symbol. **The original
+live verification (headless Chromium over CDP) queried `querySelectorAll(...).length`
+and got the right count — it never checked visibility**, so all three shipped as
+"verified." Fixed by giving the primary nav an explicit `site-header__nav` class
+(every former `.site-header nav` selector renamed to it), moving `MobileMenu` to
+render as a header **sibling** instead of a descendant, and adding the missing
+`{content.brand}` render. Full writeup: `docs/CHANGELOG.md` → "SPEC-POLISH-07 hotfix"
+and `specs/spec-polish-07-header-navigation.md` §9.
+
+**Standing lesson (second instance of this pattern — apply going forward):**
+existence in the DOM is not visibility. A live-verification script must assert
+`getBoundingClientRect().width/height > 0` or a computed `display !== 'none'`, not
+just `querySelectorAll(...).length`. (First instance: the SPEC-CASE-01 hotfix below,
+which established the same lesson for *CSS reachability* — this one extends it to
+*selector scope/specificity* causing an unrelated element to be hidden by a rule
+that was never meant to target it.) Also: **bare `.parent element` selectors are a
+standing risk in the header** — any future `<nav>`/`<button>`/etc. added inside
+`.site-header` should get its own scoping class immediately, not rely on being "the
+only one" of its element type.
+
+### SPEC-POLISH-07 — header nav + mobile menu (completed, then hotfixed — see above)
+Header nav/switcher/CTA raised 0.66rem → 0.80rem with a decorative `·` separator
+between links; brand wrapped in a dimensioned slot (132×32 / 112×28) ready for the
+upcoming logo spec. **The real defect fixed:** below 1024px the header rendered no
+navigation at all (`nav { display: none }`, nothing replacing it) — there was no way
+to move between pages from a phone. Built `components/mobile-menu.tsx`: a 3-bar
+trigger opens a full-screen overlay (abisal surface, reused `GridBackground`) with
+all 5 pages (mono `01`–`05` index), the locale switcher, «Hablemos», and the contact
+email — hand-rolled focus trap, Lenis-aware scroll lock (restores exact scroll
+position on close), `Escape`-to-close, close-on-navigate, and a `matchMedia` guard
+that force-closes the overlay if the viewport crosses into desktop while open.
+Two dead CSS rules were removed as part of this (`.locale-switcher` `display:none`
+and a `.header-cta` padding tweak at 639px — both already covered once
+`.site-header__actions` hides below 1024px). Full writeup + live verification log
+(headless Chromium over CDP — header height measured 80px unchanged at three
+viewports): `specs/spec-polish-07-header-navigation.md` and `docs/CHANGELOG.md`.
+**Open follow-up:** EN/CA no-wrap check across the full QA matrix width×locale grid
+was not re-verified live in this pass (flagged in the spec's §6) — worth a manual
+check before considering this fully signed off, and a good candidate for the
+project's first Playwright E2E once that's wired in (currently not part of the stack).
 
 ### Post-completion hotfix: SPEC-CASE-01's CSS was inert (found after being reported "complete")
 The `app/globals.css` insert for SPEC-CASE-01 (~415 lines) landed *before* the closing `}` of a
