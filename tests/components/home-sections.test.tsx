@@ -14,7 +14,7 @@ import {
 import { homeContent } from '@/content/es/home'
 import { sharedContent } from '@/content/es/shared'
 
-const { labels, diagrams } = homeContent
+const { labels, diagrams, heroFigure } = homeContent
 
 describe('Hero', () => {
   it('renders the H1 heading with the hero title', () => {
@@ -24,6 +24,7 @@ describe('Hero', () => {
         claims={homeContent.claims}
         labels={labels}
         diagrams={diagrams}
+        heroFigure={heroFigure}
         claimsAriaLabel={sharedContent.accessibility.keyMessages}
       />,
     )
@@ -97,9 +98,14 @@ describe('ProblemSection', () => {
     expect(heading).toHaveAttribute('aria-label', homeContent.problem.title)
   })
 
-  it('renders the problem body copy', () => {
+  it('renders the first body paragraph', () => {
     render(<ProblemSection content={homeContent.problem} labels={labels} diagrams={diagrams} />)
-    expect(screen.getByText(homeContent.problem.body)).toBeInTheDocument()
+    expect(screen.getByText(homeContent.problem.body[0])).toBeInTheDocument()
+  })
+
+  it('renders the second body paragraph', () => {
+    render(<ProblemSection content={homeContent.problem} labels={labels} diagrams={diagrams} />)
+    expect(screen.getByText(homeContent.problem.body[1])).toBeInTheDocument()
   })
 
   it('renders all symptoms', () => {
@@ -114,6 +120,23 @@ describe('ProblemSection', () => {
     expect(
       screen.getByRole('list', { name: homeContent.labels.symptoms }),
     ).toBeInTheDocument()
+  })
+
+  it('renders the problem diagram when problemFigure is provided', () => {
+    const { container } = render(
+      <ProblemSection
+        content={homeContent.problem}
+        labels={labels}
+        diagrams={diagrams}
+        problemFigure={homeContent.problemFigure}
+      />,
+    )
+    // ProblemFlowsFig renders an SVG with role="img"
+    expect(screen.getByRole('img', { name: diagrams.problem })).toBeInTheDocument()
+    // Pulse layer is aria-hidden
+    const pulseLayer = container.querySelector('.problem-pulse-layer')
+    expect(pulseLayer).toBeInTheDocument()
+    expect(pulseLayer).toHaveAttribute('aria-hidden', 'true')
   })
 })
 
@@ -239,14 +262,23 @@ describe('ProofSection', () => {
 
   it('renders both client chips', () => {
     render(<ProofSection content={homeContent.proof} labels={labels} diagrams={diagrams} />)
-    expect(screen.getByText('MAGUPELL')).toBeInTheDocument()
+    expect(screen.getByText('Magupell')).toBeInTheDocument()
     expect(screen.getByText('BioZero')).toBeInTheDocument()
   })
 
-  it('renders the readouts dl with multiple terms', () => {
+  it('renders the readouts dl with 6 terms (SPEC-POLISH-03)', () => {
     render(<ProofSection content={homeContent.proof} labels={labels} diagrams={diagrams} />)
-    // Each readout has a <dt> (role="term"); there are 4 proof figures
-    expect(screen.getAllByRole('term').length).toBe(homeContent.proof.figures.length)
+    // Each readout has a <dt> (role="term"); there are 6 readouts
+    expect(screen.getAllByRole('term').length).toBe(homeContent.proof.readouts.length)
+  })
+
+  it('renders the real Magupell values in the readouts', () => {
+    render(<ProofSection content={homeContent.proof} labels={labels} diagrams={diagrams} />)
+    expect(screen.getByText('167 → 216')).toBeInTheDocument()
+    expect(screen.getByText('1.803')).toBeInTheDocument()
+    expect(screen.getByText('7 meses')).toBeInTheDocument()
+    expect(screen.getByText('Sustituyó lo manual.')).toBeInTheDocument()
+    expect(screen.getByText('A medida de cada rol.')).toBeInTheDocument()
   })
 })
 
@@ -290,7 +322,7 @@ describe('AllianceTeaser', () => {
     ).toHaveAttribute('href', '/modelo-de-alianza')
   })
 
-  it('renders the alliance legend', () => {
+  it('renders the alliance legend when allianceFigure is not provided (fallback)', () => {
     render(
       <AllianceTeaser
         content={homeContent.alliance}
@@ -302,5 +334,68 @@ describe('AllianceTeaser', () => {
     expect(
       screen.getByText(homeContent.labels.allianceLegend),
     ).toBeInTheDocument()
+  })
+
+  it('renders the protagonist constellation when allianceFigure is provided', () => {
+    const { container } = render(
+      <AllianceTeaser
+        content={homeContent.alliance}
+        labels={labels}
+        diagrams={diagrams}
+        allianceHref="/modelo-de-alianza"
+        allianceFigure={homeContent.allianceFigure}
+      />,
+    )
+    // AllianceConstellation renders an SVG with role="img"
+    expect(
+      screen.getByRole('img', { name: homeContent.allianceFigure.figAria }),
+    ).toBeInTheDocument()
+    // Protagonist class applied
+    expect(
+      container.querySelector('.alliance-constellation--protagonist'),
+    ).toBeInTheDocument()
+  })
+
+  it('renders caption and sub-caption when allianceFigure is provided', () => {
+    render(
+      <AllianceTeaser
+        content={homeContent.alliance}
+        labels={labels}
+        diagrams={diagrams}
+        allianceHref="/modelo-de-alianza"
+        allianceFigure={homeContent.allianceFigure}
+      />,
+    )
+    expect(screen.getByText(homeContent.allianceFigure.caption)).toBeInTheDocument()
+    expect(screen.getByText(homeContent.allianceFigure.subCaption)).toBeInTheDocument()
+  })
+
+  it('renders seat names from allianceFigure when provided', () => {
+    render(
+      <AllianceTeaser
+        content={homeContent.alliance}
+        labels={labels}
+        diagrams={diagrams}
+        allianceHref="/modelo-de-alianza"
+        allianceFigure={homeContent.allianceFigure}
+      />,
+    )
+    expect(screen.getByText('Magupell')).toBeInTheDocument()
+    expect(screen.getByText('BioZero')).toBeInTheDocument()
+  })
+
+  it('does NOT render the legacy legend when allianceFigure is provided', () => {
+    render(
+      <AllianceTeaser
+        content={homeContent.alliance}
+        labels={labels}
+        diagrams={diagrams}
+        allianceHref="/modelo-de-alianza"
+        allianceFigure={homeContent.allianceFigure}
+      />,
+    )
+    expect(
+      screen.queryByText(homeContent.labels.allianceLegend),
+    ).not.toBeInTheDocument()
   })
 })

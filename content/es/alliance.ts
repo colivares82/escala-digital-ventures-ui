@@ -25,13 +25,13 @@ export const allianceContent = {
     sectionEyebrow: 'B / POR QUÉ SOLO CINCO',
     heading: 'Por qué solo cinco',
     body: 'Limitamos deliberadamente el número de clientes activos —aproximadamente cinco alianzas— para garantizar dedicación, cercanía y acompañamiento continuo. No es una limitación: es el modelo de negocio. Cada cliente recibe una implicación profunda y acceso directo al conocimiento estratégico acumulado.',
-    constellationAria: 'FIG. 05 — Constelación de alianzas: cinco plazas alrededor de Escala, dos ocupadas (MAGUPELL, BIOZERO) y tres disponibles.',
+    constellationAria: 'FIG. 05 — Constelación de alianzas: cinco plazas alrededor de Escala, dos ocupadas (Magupell, BioZero) y tres disponibles.',
   },
 
   // Exactly 5 seats. Enforced in tests. (SPEC-P2.4 FR-3.2)
   seats: [
-    { name: 'MAGUPELL', state: 'occupied' },
-    { name: 'BIOZERO',  state: 'occupied' },
+    { name: 'Magupell', state: 'occupied' },
+    { name: 'BioZero',  state: 'occupied' },
     { name: 'DISPONIBLE', state: 'free' },
     { name: 'DISPONIBLE', state: 'free' },
     { name: 'DISPONIBLE', state: 'free' },

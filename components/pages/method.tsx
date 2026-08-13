@@ -1,14 +1,19 @@
 /**
- * MethodPage — /como-trabajamos (Phase 2.1).
- * Sections: A·PageHeader (paper) → B·PhaseCycle (abisal) → C·ExecutionPractices (paper)
- *            → D·ExecutionPipelineFig (abisal) → E·AiBuildBlock (abisal) → FinalCTA.
+ * MethodPage — /como-trabajamos.
+ * Sections: A·PageHeader (paper) → B·ExecutionCycleFig (abisal) → C·ExecutionPractices (paper)
+ *            → D·AiBuildBlock (abisal) → E·PhaseCycle (abisal) → FinalCTA.
+ * B/C order is an approved deliberate deviation from SPEC-POLISH-06 §1.1 (which had the
+ * execution-cycle figure AFTER the practices) — Carlos requested "El flujo de ejecución"
+ * before "La ejecución, en el día a día" post-implementation. The Escala Growth Framework
+ * (PhaseCycle) remains the LAST content section before FinalCTA per §1 — its own
+ * copy/component/figure content is unchanged, only its position and section letter moved.
  * All copy from content dictionary via props (zero literals in JSX).
  * Phases shared from dict.home.framework.phases — no duplication (FR-3.2).
- * Spec: SPEC-P2.1
+ * Spec: SPEC-POLISH-06
  */
 
 import { AiBuildBlock } from '@/components/ai-build-block'
-import { ExecutionPipelineFig } from '@/components/execution-pipeline-fig'
+import { ExecutionCycleFig } from '@/components/execution-cycle-fig'
 import { ExecutionPractices } from '@/components/execution-practices'
 import { FinalCTA } from '@/components/final-cta'
 import { PageHeader } from '@/components/page-header'
@@ -32,7 +37,39 @@ export function MethodPage({ dict, locale }: { dict: Dictionary; locale: Locale 
         surface="paper"
       />
 
-      {/* B · El Ciclo de Crecimiento (abisal) — reused PhaseCycle, unchanged internals */}
+      {/* B · De la especificación al feedback / FIG.06 (abisal) — closed execution cycle */}
+      <ExecutionCycleFig
+        sectionIndex={method.pipeline.sectionIndex}
+        sectionLabel={method.pipeline.sectionEyebrow}
+        sectionTitle={method.pipeline.sectionTitle}
+        lead={method.pipeline.lead}
+        stations={method.pipeline.stations}
+        centre={method.pipeline.centre}
+        returnLabel={method.pipeline.returnLabel}
+        caption={method.pipeline.caption}
+        ariaLabel={method.pipeline.ariaLabel}
+      />
+
+      {/* C · La ejecución, en el día a día (paper) */}
+      <ExecutionPractices
+        sectionIndex={method.executionPractices.sectionIndex}
+        sectionLabel={method.executionPractices.sectionEyebrow}
+        title={method.executionPractices.title}
+        lead={method.executionPractices.lead}
+        practices={method.executionPractices.practices}
+      />
+
+      {/* D · Ingeniería con criterio, acelerada por agentes / FIG.12 (abisal) */}
+      <AiBuildBlock
+        sectionIndex={method.aiBuild.sectionIndex}
+        sectionLabel={method.aiBuild.sectionEyebrow}
+        title={method.aiBuild.title}
+        body={method.aiBuild.body}
+        figure={method.aiBuild.figure}
+        legend={method.aiBuild.legend}
+      />
+
+      {/* E · Un método propio: el Escala Growth Framework (abisal) — moved per §1 */}
       <section className="section section--dark dark-surface framework-cycle">
         <PhaseCycle
           phases={phases}
@@ -45,37 +82,6 @@ export function MethodPage({ dict, locale }: { dict: Dictionary; locale: Locale 
           // action intentionally omitted — self-link suppressed on the method page (FR-3.3)
         />
       </section>
-
-      {/* C · La ejecución, en el día a día (paper) */}
-      <ExecutionPractices
-        sectionIndex={method.executionPractices.sectionIndex}
-        sectionLabel={method.executionPractices.sectionEyebrow}
-        title={method.executionPractices.title}
-        lead={method.executionPractices.lead}
-        practices={method.executionPractices.practices}
-      />
-
-      {/* D · El flujo de ejecución / FIG.06 (abisal) — PROVISIONAL VISUAL */}
-      <ExecutionPipelineFig
-        sectionIndex={method.pipeline.sectionIndex}
-        sectionLabel={method.pipeline.sectionEyebrow}
-        sectionTitle={method.pipeline.sectionTitle}
-        nodes={method.pipeline.nodes}
-        caption={method.pipeline.caption}
-        legend={method.pipeline.legend}
-        ariaLabel={method.pipeline.ariaLabel}
-        returnArcLabel={method.pipeline.returnArcLabel}
-      />
-
-      {/* E · Cómo construimos (abisal) */}
-      <AiBuildBlock
-        sectionIndex={method.aiBuild.sectionIndex}
-        sectionLabel={method.aiBuild.sectionEyebrow}
-        title={method.aiBuild.title}
-        lead={method.aiBuild.lead}
-        points={method.aiBuild.points}
-        diagram={method.aiBuild.diagram}
-      />
 
       <FinalCTA dict={dict} locale={locale} />
     </>

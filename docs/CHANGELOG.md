@@ -1,8 +1,484 @@
 # Changelog
 
+## [SPEC-POLISH-10] — August 2026 — `/modelo-de-alianza` "Por qué solo cinco" split layout
+
+CSS-only change (`app/globals.css`, one file, +54 lines). At ≥1024px the section is now a
+40/60 grid (text left, `AllianceConstellation` right, 56px gap, vertically centred)
+instead of the POLISH-09 stacked layout; below 1024px it still stacks, with a new 620px
+cap on the diagram between 640–1023px. Section padding at ≥1024px reduced 8rem → 6rem.
+No TSX or content changed — `AllianceConstellation`, `GridBackground`,
+`components/pages/alliance.tsx`, and all `content/**` are untouched.
+
+Verified live over CDP: 40/60 split exact at 1024/1440/1920px, zero clipped labels at
+360–1920px × ES/EN/CA, heading doesn't overflow its column at 1024px in any locale,
+section height at 1440px down from 1154.4px to 767.7px (−33%), home page unaffected,
+scroll-reveal and reduced-motion both still correct. One deviation: the diagram's
+rendered width at 1440px (801.6px) came out narrower than POLISH-09's flat 900px cap
+(852px) — the literal arithmetic result of the mandated 40/60 split against the sitewide
+`.page-shell` max-width. Implemented exactly as specified rather than patched around; see
+`specs/spec-polish-10-why-five-layout.md` §3.
+
+## [SPEC-POLISH-09] — August 2026 — `/modelo-de-alianza` constellation clipping fix
+
+### Bug
+"Por qué solo cinco" rendered the shared `AllianceConstellation` at `size="large"`
+(fixed 420×420 viewBox) inside a cramped `1fr 1fr` grid column. The pentagon's widest
+points left only 60px of margin for outward-anchored labels needing ~55-60px, so
+`BIOZERO` and `DISPONIBLE` were clipped by the SVG's default `overflow: hidden` — reading
+as `BIOZE` / `ONIBLE` in production.
+
+### Fix
+- `components/pages/alliance.tsx` — switched to `size="protagonist"` (the same
+  responsive 960×620 variant already used on the home page, with 280px of margin per
+  side); removed the side-by-side `.alliance-why__grid`, restructured to text above,
+  full-width constellation stage below.
+- `app/globals.css` — replaced `.alliance-why__grid`/`.alliance-why__figure` with
+  `.alliance-why__stage`; added a page-scoped counter-rule so the existing
+  `DiagramReveal` scroll-reveal (already used elsewhere) applies correctly to the
+  protagonist variant on this page without touching the home page's own always-visible
+  rule for the same CSS classes.
+- `content/{es,en,ca}/alliance.ts` — corrected `BIOZERO` → `BioZero` in the seats array
+  to match the home page's casing exactly (home is the canonical source per spec).
+
+### Added — regression tests
+`tests/components/alliance-page.test.tsx` (8 tests, new file, 100% coverage of
+`components/pages/alliance.tsx`): protagonist size used (not large), legacy grid wrapper
+gone, constellation still wrapped in the scroll-reveal, all 5 seat labels render in full
+(no truncation), no `coreSubLabel` rendered (no such copy exists for this page), other
+alliance sections unaffected. `tests/content/content-integrity.test.ts`: updated 2
+existing `BIOZERO` assertions to `BioZero`; added a permanent test asserting the alliance
+dictionary's occupied-seat names always match the home dictionary's.
+
+### Verified
+`AllianceConstellation` and `GridBackground` byte-identical (`git diff` empty on both).
+Live re-check via headless Chrome over CDP at 360/390/768/1024/1440/1920px × ES/EN/CA,
+asserting **SVG label geometry** (`getBBox()` against the viewBox) rather than DOM
+presence: zero out-of-bounds labels post-fix (was 4/5 clipped per locale before). Home
+page measured unaffected (`900×581.25` rect, `960×620` viewBox, unchanged classes/labels/
+caption). Connector geometry unchanged (`d1FromCoreCenter === coreRadius` for all 5
+seats). Reveal confirmed live: forced below-the-fold → `opacity: 0`; scrolled into view →
+`opacity: 1`. `prefers-reduced-motion: reduce` confirmed fully static/visible. A
+pre-existing, site-wide 8px overflow at 360px from `.site-header`/`.page-header__*`
+(present on every `PageHeader` page, not introduced here) remains and is flagged as a
+follow-up — see `specs/spec-polish-09-alliance-constellation.md` §5.
+
+## [SPEC-POLISH-07 hotfix] — August 2026 — locale-switcher spacing, invisible mobile nav, missing wordmark
+
+### Bugs (found in live QA screenshots, after SPEC-POLISH-07 was reported complete)
+1. Desktop locale switcher rendered "ESENCA" with no visible gap between ES/EN/CA.
+2. Mobile overlay's 5 nav items and locale switcher were invisible (present in the
+   DOM per the original live check, but not actually rendered/visible).
+3. Mobile overlay brand slot showed only the 3-square symbol, missing "ESCALA".
+
+### Root cause (one mistake, three symptoms)
+`.site-header nav` (bare element+descendant selector) matched **every** `<nav>`
+inside `<header>` — the primary nav, `.locale-switcher`, and (while `MobileMenu`
+still rendered as a child of `<header>`) the overlay's own `<nav>` too. A gap-zeroing
+rule and the `max-width:1023px` hide rule, both scoped to that bare selector,
+therefore reached the locale switcher and the overlay nav respectively. Separately,
+`components/mobile-menu.tsx` simply never rendered `{content.brand}` in its brand
+link.
+
+### Fix
+- `components/site-chrome.tsx` — primary `<nav>` now carries an explicit
+  `site-header__nav` class; `MobileMenu` now renders as a **sibling of `<header>`**
+  (fragment return), not a descendant, so it is structurally unreachable by any
+  `.site-header ...` rule.
+- `app/globals.css` — every `.site-header nav` selector (base gap rule, gap-zeroing
+  rule, `max-width:1023px` hide rule, `[aria-current="page"]` active state) renamed
+  to `.site-header__nav`.
+- `components/mobile-menu.tsx` — overlay brand link now renders `{content.brand}`.
+
+### Added — regression tests
+`tests/components/site-chrome.test.tsx`: primary nav carries `.site-header__nav`
+and the locale switcher does not; the **open** overlay is confirmed not nested
+inside `<header>`; the open overlay's brand slot text contains "ESCALA".
+
+### Verified
+Live re-check via headless Chromium over CDP, this time asserting **visibility**
+(`getBoundingClientRect()`/computed `display`), not just DOM existence — the same
+gap that let these bugs through the first live check. Locale switcher gaps now
+`[12, 12]`px (was `[0, 0]`); mobile overlay nav items and switcher now
+`itemsVisible: [true×5]` / `navDisplay: "flex"` (was hidden); overlay
+`brandText: "ESCALA"` (was missing). Desktop header re-confirmed unaffected (80px
+height, no wrap, 4 separators). `npm test` 1093/1093 passing · coverage
+79.91%/77.6%/85.99%/82.78% · `npm run build` clean. Full writeup:
+`specs/spec-polish-07-header-navigation.md` §9.
+
+## [SPEC-POLISH-07] — August 2026 — Header nav type + mobile menu
+
+### Problem
+Header nav sat at 0.66rem with no visual separation between links, and below the
+1024px breakpoint the inline nav was simply `display: none` with no replacement —
+the site had no way to navigate between pages from a phone.
+
+### Changed
+- `components/site-chrome.tsx` — nav raised to 0.80rem with a decorative `·`
+  separator (`aria-hidden`, outside the link, `user-select`/`pointer-events` guarded);
+  brand wrapped in a dimensioned slot (132×32 desktop / 112×28 mobile, ready for the
+  logo spec); new `<button className="site-header__trigger">` mobile menu trigger;
+  `SiteHeader` now takes a required `email` prop for the overlay's contact line.
+- `app/globals.css` — header type scale (`.site-header nav a`, `.locale-switcher`,
+  `.header-cta`) raised to 0.80rem (`.header-cta`'s size scoped separately from the
+  shared `.primary-link` rule it used to share, so nothing outside the header moved);
+  `.site-header__sep` separator with 16px/11px responsive padding; `.site-brand`
+  given fixed dimensions; `.site-header__trigger` bars; new `.mobile-menu` block;
+  the `max-width: 1023px` breakpoint now hides `.site-header__actions` too (not just
+  `nav`) and shows the trigger; removed two dead mobile rules (`.locale-switcher`
+  `display:none` and `.header-cta` padding tweak at 639px — both elements are already
+  hidden below 1024px).
+- `app/[[...path]]/page.tsx` — passes `email={shared.finalCta.email}` to `SiteHeader`.
+- `lib/motion-constants.ts` — `HEADER_MOBILE_BREAKPOINT_PX`, `HEADER_DESKTOP_MEDIA_QUERY`,
+  `MOBILE_MENU_TRANSITION_MS`.
+- `content/{es,en,ca}/shared.ts` — `accessibility.menuOpen` / `menuClose`.
+
+### Added
+- `components/mobile-menu.tsx` — full-screen overlay (< 1024px) on the abisal surface
+  (`GridBackground`), reusing existing header content: bar (brand slot + close),
+  nav (5 items, mono `01`–`05` index + display label, active in amber), foot (CTA,
+  `LocaleSwitcher`, contact email). Hand-rolled focus trap, Lenis-aware scroll lock
+  (position:fixed + scrollbar-width compensation, restores exact scroll position on
+  close), Escape-to-close, close-on-navigate, and a `matchMedia` resize guard that
+  force-closes the overlay if the viewport crosses into desktop while open.
+- `tests/components/mobile-menu.test.tsx` — 13 tests: render states, nav completeness,
+  active-page marking, close paths (button/Escape/nav-click), scroll lock, focus
+  management (initial + trap both directions), resize guard.
+- `specs/spec-polish-07-header-navigation.md` — full spec + live verification log
+  (headless Chromium over CDP: header height 80px unchanged at 1920/1024/390px;
+  brand slot 112×28 at mobile; scroll lock + focus-return confirmed live).
+
+### Verified
+`npx tsc --noEmit` clean · `npm run lint` no new warnings · `npm test` 1090/1090
+passing (63 files, +1 new file) · `npm run test:coverage` 79.71%/77.43%/85.21%/82.67%
+(new `mobile-menu.tsx` at 95.38%/80%/100%/100%) · `npm run build` succeeds · header
+height measured live before/after: 80px / 80px, identical.
+
+## [SPEC-CASE-01 hotfix] — August 2026 — CSS nesting bug that made the page render broken
+
+### Bug
+SPEC-CASE-01's CSS insert (~415 lines) landed *before* the closing `}` of a pre-existing
+`.not-found__cta` `@media (prefers-reduced-motion: reduce)` block instead of after it, silently
+wrapping the entire new `.case-readout-grid` / `.case-narrative` / `.case-flow-fig` /
+`.case-roles` / `.case-governance` / `.case-timeline-ladder` section inside that media query.
+Under normal (non-reduced-motion) conditions every one of those rules was unreachable, so
+`/casos-de-exito/magupell` (and BioZero, migrated onto the same components) rendered as
+unstyled/broken content — while every one of the 1051 existing tests still passed, because they
+only assert on markup and text, never on whether a CSS rule is actually reachable. The bug was
+found only by visually loading the live page after SPEC-CASE-01 had already been reported
+complete.
+
+### Fix
+Inserted the missing `}` immediately after the `.not-found__cta { transition: none; }` rule
+(closing the reduced-motion query at its original, correct boundary) and removed the resulting
+orphaned stray `}` left at the end of the file. No CSS rule content changed — only brace
+placement. Verified via: (1) brace-balance script across the whole file (depth returns to 0, no
+negative dips), (2) the production build's compiled CSS chunk showing `.case-readout-grid` etc.
+as top-level rules, not nested in any `@media`, and (3) the new regression test below, confirmed
+to fail against the original broken structure and pass against the fix.
+
+### Added — regression safeguard
+- `tests/content/css-structure-guard.test.ts` — parses `app/globals.css` as text (jsdom doesn't
+  apply real stylesheets, so `getComputedStyle` gives false confidence here) and asserts: total
+  brace balance; every canonical CaseDossier selector is reachable and not trapped inside
+  `prefers-reduced-motion: reduce`; every `case-*` className emitted by the 6 SPEC-CASE-01
+  components has a matching CSS rule; and the governance dark surface is owned by
+  `.case-narrative__section--governance` (the full-bleed section wrapper), not the inner
+  `.case-governance` card container — documenting a "transparent background" false alarm found
+  while investigating this bug so it isn't misdiagnosed as a regression later.
+- `content/data/cases.ts` — `getCase`'s unused `_locale` param renamed to `locale` with an
+  explicit `void locale` and a doc comment explaining it's intentionally unused (was a lint
+  warning; the parameter itself is kept because a test exercises the "locale doesn't affect
+  result" contract).
+
+### Verified
+1066/1066 tests passing (62 files, +15 from the new guard); `npx tsc --noEmit` clean; `eslint`
+0 errors; `npm run build` clean; coverage 78.72%/77.31%/85.71%/81.56%
+(lines/branches/functions/statements), above the 70% floor.
+
+## [SPEC-CASE-01] — August 2026 — Magupell case page rewrite (launch-safe version)
+
+### Summary
+Rewrote `/casos-de-exito/magupell` (ES/EN/CA) with verified production figures (167 → 216
+requirements, 1.803/1,803 automated tests, 7 months to production, 4 roles, 3 environments,
+live since July 2026), replacing the pre-launch placeholders (`100+`/`200+`) and every
+invoicing/billing-as-invoice reference with "resúmenes de cobro" / "billing summaries" /
+"resums de cobrament". Fixed the brand spelling "Magupell" (was "MAGUPELL") in every
+user-facing string on this page and its index card. Added two new numbered sections
+(04 "A medida de cada rol", 05 "Gobernanza" on the abisal surface) and two new figures
+(FIG. EXP-02 "El ciclo operativo", FIG. EXP-03 chronology ladder with per-milestone detail).
+
+### Approved deviation — CaseDossier is now the canonical case template
+Per explicit direction from Carlos during implementation, `CaseDossier` was upgraded to a
+richer canonical structure (`readoutGrid` + `narrative[]`, dispatched by `CaseNarrative`) and
+BioZero was migrated onto it, rather than building a Magupell-only template as the original
+spec's §0.2 shared-component freeze implied. BioZero's copy is byte-unchanged; only its
+rendering shape changed (readouts → `CaseReadoutGrid`, fields/capabilities → `CaseNarrative`
+prose + capabilities blocks). This supersedes SPEC-CASE-01 AC-9 ("BioZero byte-identical") by
+design — see DECISIONS.md. The template still falls back to the legacy `ReadoutStrip` /
+`DossierField` / `CapabilityGrid` rendering when a case supplies neither `readoutGrid` nor
+`narrative`, preserving AC-4 (a 3rd case needs data only, no component changes).
+
+### Resolved blockers
+- **Environments count (§2):** confirmed **3 entornos** (local, desarrollo, producción, con
+  pipelines protegidas) — matches the home page `proof.readouts` verbatim. DAT.05 and the
+  "CAMBIOS SEGUROS" governance card use this figure.
+- **FIG. EXP-02 caption collision:** BioZero's header `plate` string is also
+  `'FIG. EXP-02\nESCALA · PRIMER CLIENTE'`. Kept as-is — different surfaces (header plate vs.
+  in-page figure caption) — flagged rather than silently changed.
+
+### New files
+- `components/case-readout-grid.tsx` — canonical n-cell readout grid (`DAT.0N / LABEL` + amber
+  tick), page-local, not shared with the home `ProofSection` by design (SPEC-CASE-01 §3).
+- `components/case-narrative.tsx` — variant dispatcher for the canonical numbered narrative
+  (`prose` / `flow-fig` / `roles` / `governance` / `capabilities` / `timeline`).
+- `components/case-flow-fig.tsx` — FIG. EXP-02 "El ciclo operativo": 4 nodes, connectors
+  terminating at node borders (behind nodes, never overlapping), one-shot L→R traversal accent
+  on entry, full static fallback under `prefers-reduced-motion`, vertical stack <720px.
+- `components/case-roles-grid.tsx` — section 04, 2×2 role cards.
+- `components/case-governance.tsx` — section 05, abisal surface, 2×2 cards, AA-safe
+  `rgba(234,240,245,.82)` body text on `--abisal`.
+- `components/case-timeline-ladder.tsx` — FIG. EXP-03, 5-milestone strip with a detail line
+  per milestone (extends the home `ProofTimelineFig` concept; does not import/reuse it).
+
+### Changed files
+- `content/data/cases.ts` — new canonical types (`CaseReadoutCell`, `CaseNarrativeBlock` union,
+  `CaseFlowNode`, `CaseRole`, `CaseGovernanceCard`, `CaseTimelineMilestone`); Magupell rewritten
+  in all 3 locales (`readoutGrid` + `narrative[]`, new meta, new card copy,
+  `cardSubtitleByLocale`); BioZero migrated onto the canonical shape with unchanged copy.
+- `components/case-dossier.tsx` — prefers `readoutGrid`/`narrative` when present, falls back to
+  legacy `ReadoutStrip`/`DossierField`/`CapabilityGrid` otherwise.
+- `components/case-card.tsx` — uses `cardSubtitleByLocale` when present (ES fallback preserved).
+- `app/globals.css` — new `SPEC-CASE-01` section: `.case-readout-grid`, `.case-narrative`,
+  `.case-flow-fig` (+ traversal keyframe + reduced-motion override), `.case-roles`,
+  `.case-governance`, `.case-timeline-ladder`. Tokens only, no hardcoded hex.
+- `lib/motion-constants.ts` — `CASE_FLOW_MOBILE_BREAKPOINT_PX`, `CASE_FLOW_TRAVERSAL_DUR_S`.
+- `tests/content/cases-data.test.ts` — rewritten Magupell invariants for the canonical shape;
+  added content guardrails (no `factura|facturación|facturar|invoic`, no `MAGUPELL`, no
+  `100+|200+`) and a BioZero migration-parity test.
+
+### Tests
+6 new component test files (`case-readout-grid`, `case-flow-fig`, `case-roles-grid`,
+`case-governance`, `case-timeline-ladder`, `case-narrative`) plus a canonical-rendering
+integration file (`case-dossier-canonical.test.tsx`) against the real Magupell/BioZero data.
+1051/1051 tests passing (61 files); `npx tsc --noEmit` clean; `npm run build` clean; coverage
+78.69%/77.31%/85.71%/81.53% (lines/branches/functions/statements), above the 70% floor.
+
+### Out of scope (per spec §0.2, untouched)
+BioZero's own copy, the home page, all other interior pages, routing/i18n plumbing, design
+tokens, shared primitives (`PageHeader`, `Section`, `FinalCTA`, `GridBackground`,
+`AllianceConstellation`, `ServiceFig`, `ContactForm`), the Magupell logo asset and outbound
+link, and `/docs` sources (still carry the pre-launch `100+`/`200+`/invoicing/`MAGUPELL`
+narrative — reported per spec §8, not edited here).
+
+## [SPEC-POLISH-06] — August 2026 — /como-trabajamos: execution cycle, build system, section order
+
+### Changed
+- **Section order** — the Escala Growth Framework (`PhaseCycle`) moved from section B to the
+  **last content section (E)**, immediately before `FinalCTA`. Final order (after a post-
+  implementation addendum, see below): A·PageHeader → B·ExecutionCycleFig (FIG.06) →
+  C·ExecutionPractices → D·AiBuildBlock (FIG.12) → E·PhaseCycle → FinalCTA. Re-lettered in
+  all 3 locales; the Framework's own copy, component and figure are unchanged — only its
+  position and section letter moved.
+- **Addendum — B/C swap (post-implementation, Carlos's request):** the initial
+  implementation ordered B·ExecutionPractices → C·ExecutionCycleFig, matching SPEC-POLISH-06
+  §1.1. Carlos requested "El flujo de ejecución" precede "La ejecución, en el día a día" once
+  live — swapped to B·ExecutionCycleFig → C·ExecutionPractices, re-lettered accordingly
+  (`pipeline.sectionIndex` C→B, `executionPractices.sectionIndex` B→C) in all 3 locales. This
+  is a deliberate, approved deviation from §1.1's exact order — recorded here rather than left
+  as a silent mismatch between spec and code. Surfaces were intentionally left unchanged
+  (pure reorder); Carlos will review the resulting paper→dark→paper→dark→dark rhythm live and
+  decide separately whether `ExecutionPractices` should move to the dark surface.
+- **Figure numbering** — kept FIG.06 for the execution-cycle figure; the new "how we build"
+  figure takes **FIG.12** (next free global number), not FIG.07 — FIG.07 is already used by
+  `/que-hacemos` and the site numbers figures globally, not per page. `/que-hacemos` FIG.07–11
+  are untouched.
+- **`ExecutionPipelineFig` (open-ended pipeline, FIG.06) replaced by `ExecutionCycleFig`** — a
+  single closed ring with 5 stations clockwise from 12 o'clock (Especificación → Aprobación →
+  Construcción → Producción → Uso real), an amber return edge (station 5 → 1) whose chevron
+  arrowhead stops at station 1's marker, 5 always-visible direction chevrons, and a phase-locked
+  12s ambre pulse. Client-owned stations (Aprobación, Uso real) get the amber marker treatment;
+  quality is not a station (support line under Construcción only, per Libro Ch. 6). <720px
+  fallback: vertical station list (same pattern as `PhaseCycle`'s static list).
+- **`AiBuildBlock` full replacement** — heading/body now "Ingeniería con criterio, acelerada
+  por agentes" (was "La IA también en cómo construimos"); the copy-left/figure-right split is
+  replaced by heading + body full width → new `HowWeBuildFig` (FIG.12) full content width →
+  4-column legend (gobierno/ejecución/control/capitalización, collapses to 2 cols <900px, 1 col
+  <560px).
+- **`HowWeBuildFig` (new)** — a layered system diagram: a dashed governing frame containing the
+  approved-specification entry, 3 named parallel agent lanes (Implementación · Pruebas ·
+  Documentación) and 2 amber gates (Criterio senior, Calidad verificable); Producción sits
+  **outside** the frame; an amber return path re-enters it. Three staggered 7s pulses per lane,
+  gate flashes offset 0.5s to read as sequential checks, dimmer return pulse.
+
+### Added
+- `components/execution-cycle-fig.tsx`, `components/how-we-build-fig.tsx` — new page-scoped
+  figure components for `/como-trabajamos` only.
+- `EXEC_CYCLE_*`, `HOW_WE_BUILD_*` constants in `lib/motion-constants.ts` — additive only.
+- `tests/components/execution-cycle-fig.test.tsx`, `tests/components/how-we-build-fig.test.tsx`.
+- Content-integrity guards: exactly 5 stations, exactly 2 client-owned, no station labelled
+  "Calidad", sections lettered A–E with no gap/duplicate.
+
+### Removed
+- `components/execution-pipeline-fig.tsx` and its test — fully replaced by `ExecutionCycleFig`.
+
+### Not changed
+- `PageHeader`, `Section`, `FinalCTA`, `GridBackground`, `AllianceConstellation`, `ServiceFig`,
+  `ContactForm`, `PhaseCycle` (component internals) — byte-identical.
+- Every other page (`/`, `/que-hacemos`, `/casos-de-exito*`, `/modelo-de-alianza`,
+  `/sobre-escala`, `/contacto`, legal, 404) — byte-identical.
+
+### Deviations from §0 scope guard (reported, not silent)
+- `app/globals.css` — no per-component stylesheets exist in this project; new BEM blocks added,
+  dead `.pipeline-*`/`.ai-diagram*` rules removed.
+- `app/styleguide/page.tsx` — renders both changed components; updated to the new prop shapes.
+- `lib/motion-constants.ts` — additive timing constants only (no-magic-numbers rule).
+
+### Test results
+- 54 test files · 991 tests · 100% pass · build clean · TypeScript strict clean · lint clean
+  (0 new errors) · coverage 77.96%/76.14%/84.71%/80.85% (well above the 70% floor) · 0
+  hardcoded hex in the two new components.
+
+## [SPEC-POLISH-05] — August 2026 — /que-hacemos: FIG.08/09/11 overlap & layering fixes
+
+### Fixed
+- **FIG.08 (`platform`, ARQUITECTURA MODULAR)** — module boxes (USUARIOS · ROLES, DOMINIO, CORREO, DOCUMENTOS, FACTURACIÓN) resized to fit their labels (no text spilling outside); `PLATAFORMA` fits inside the core ring; connector endpoints computed geometrically from the core center/radius so every line lands exactly on the core border (verified: distance from core center == radius for all 5 connectors) — never short, never crossing in.
+- **FIG.09 (`ai`, IA EN EL PROCESO)** — flow line split into two edge-to-edge segments (`ENTRADA→PROCESO`, `PROCESO→DECISIÓN`) so it never crosses box text; process boxes given an opaque `--paper` fill as a second safeguard; "DONDE APORTA" repositioned above the IA node, off the diagram (previously overlapped the diagram); IA dashed connector now meets the PROCESO box's top edge exactly (was already close, confirmed correct in the rewrite).
+- **FIG.11 (`evolve`, EVOLUCIÓN CONTINUA)** — z-order corrected: circle stroke drawn first (underneath), the three nodes (USO, FEEDBACK, MEJORA) drawn last with an opaque `--paper` fill so the circle stroke is hidden behind each node (was previously drawn under the line with `fill="none"`, exposing the stroke through the nodes).
+
+### Added
+- **FIG.08 animation** — five staggered, looping module→core ambre pulses (`SERVICE_FIG_PLATFORM_PULSE_DUR_S`, `SERVICE_FIG_PLATFORM_PULSE_STAGGER_S`). This figure previously had no animation at all.
+- **FIG.09 animation** — pulses on both flow segments plus the dashed IA connector (`SERVICE_FIG_AI_FLOW_PULSE_DUR_S`, `SERVICE_FIG_AI_CONNECTOR_PULSE_DUR_S`).
+- **FIG.11 animation** — the ambre progress arc now traces the FULL circle continuously via a `stroke-dasharray`/`stroke-dashoffset` SVG `<animate>` (`SERVICE_FIG_EVOLVE_ARC_DUR_S`), replacing the previous static quarter-arc + traveling-dot pulse. `prefers-reduced-motion` renders the arc complete and static (no extra CSS needed).
+- `LegacyCanvas` helper in `components/service-fig.tsx` — wraps FIG.07/FIG.10's untouched markup in a single `translate(10 15)` to center it on the new shared 340×180 canvas.
+- `SERVICE_FIG_*` constant block in `lib/motion-constants.ts` (viewbox/offset/pulse-duration/arc-duration) — additive only.
+- `tests/components/service-fig-polish-05.test.tsx` — 12 new tests: FIG.08 connector-to-border geometry (computed proof), FIG.09 flow-segment count + opaque box fill + label placement, FIG.11 node z-order + full-circle arc command count, FIG.07/FIG.10 untouched-geometry guards.
+- 5 new tests in `tests/components/service-fig.test.tsx` (shared 340×180 viewBox across all 5 variants).
+
+### Changed
+- All five `ServiceFig` variants now render on a shared `0 0 340 180` viewBox (was `0 0 320 150`), so all five figures render at equal height in the 320px column. **Approved amendment** to SPEC-POLISH-05 §0/AC-5: FIG.07 (`capture`) and FIG.10 (`product`) receive a canvas-only change (viewBox + wrapping translate) — their drawing coordinates, strokes, labels, and animation timings are byte-identical.
+
+### Not changed
+- `/que-hacemos` page (PageHeader, layout, all five service rows' copy) — byte-identical.
+- `ServiceFig` component's public API/props — unchanged; only internal variant-drawing code changed.
+- All other pages/components, all content dictionaries — byte-identical.
+- `app/globals.css` — untouched (all new animation logic lives in SVG attributes).
+
+### Test results
+- 53 test files · 970 tests · 100% pass · build clean · TypeScript strict clean · lint clean · 0 hardcoded hex in `service-fig.tsx`
+
+## [SPEC-POLISH-04] — August 2026 — Home section 05: constellation as protagonist
+
+### Added
+- `AllianceFigureContent` interface in `content/types.ts` — typed contract for the home section 05 figure data (seats, caption, subCaption, coreSubLabel, figAria).
+- `allianceFigure` key in `content/es/home.ts`, `content/en/home.ts`, `content/ca/home.ts` — fully translatable (ES: DISPONIBLE, EN: AVAILABLE, CA: DISPONIBLE). Seats as a data array so a future active alliance is a data-only change.
+- `'protagonist'` size to `AllianceConstellation` — 960×620 viewBox, R=200, nodeR=30, coreR1=46, coreR2=60. Matches `wireframe-p05-alianza-FINAL.html` exactly.
+- Corner ticks (`<g aria-hidden="true">` with 4 `<path>`) inside the protagonist SVG.
+- `coreSubLabel` optional prop to `AllianceConstellation` — renders "2 ALIANZAS ACTIVAS · 3 DISPONIBLES" inside the SVG (protagonist only).
+- Traveling ambre pulse via SVG `<animate>` elements for occupied seats — staggered (0.6s between seats), looping, edge-to-edge (core ring → node edge). `prefers-reduced-motion` → `display:none` via CSS.
+- `labelPosition()` helper — anchors labels by `cosA`/`sinA` thresholds (right=start, left=end, top/bottom=middle), offset outside node radius. No label overlaps its node.
+- `.alliance-stage`, `.alliance-caption`, `.alliance-subcaption`, `.ac-core-sublabel` CSS classes.
+- Protagonist overrides in CSS: `opacity: 1`, `transition: none`, `stroke-dasharray: none` (no draw-on-scroll for protagonist).
+- `allianceFigure` prop to `AllianceTeaser` in `home-sections.tsx` — when provided renders protagonist constellation + caption + sub-caption; when absent falls back to legacy `SystemDiagram kind="outcome"` + legend (backward-compatible).
+- `GridBackground` reused in `AllianceTeaser` (section has `position: relative`). No duplicate grid code.
+- 15 new tests in `alliance-constellation.test.tsx` (protagonist size, viewBox, corner ticks, coreSubLabel, traveling pulses, aria-hidden).
+- 5 new tests in `home-sections.test.tsx` (protagonist constellation, caption, seat names, no legacy legend when figure provided).
+
+### Changed
+- `AllianceConstellation` — `size` prop extended from `'compact' | 'large'` to `'compact' | 'large' | 'protagonist'`. `'compact'` and `'large'` behavior unchanged.
+- `AllianceTeaser` — accepts optional `allianceFigure` prop; `GridBackground` added; section has `position: relative`.
+- `app/[[...path]]/page.tsx` — passes `allianceFigure` to `AllianceTeaser` (same pattern as `heroFigure`, `proofFigure`).
+
+### Not changed
+- `/modelo-de-alianza` page — uses `size="large"`, unaffected. No regression.
+- All other home sections (hero, problem, services, framework, proof, finalCTA) — byte-identical.
+- All other pages — byte-identical.
+- Design tokens — no new hex values; all styling via CSS custom properties.
+
+### git diff --stat
+```
+app/[[...path]]/page.tsx                         |   1 +
+app/globals.css                                  |  54 +++++
+components/alliance-constellation.tsx            | 243 ++++++++++++++++++-----
+components/home-sections.tsx                     |  37 +++-
+content/ca/home.ts                               |  21 ++
+content/en/home.ts                               |  21 ++
+content/es/home.ts                               |  20 ++
+content/types.ts                                 |  18 ++
+tests/components/alliance-constellation.test.tsx | 112 ++++++++++-
+tests/components/home-sections.test.tsx          |  65 +++++-
+11 files changed, 538 insertions(+), 56 deletions(-)
+```
+
+### Test results
+52 test files · 953 tests · 100% pass · build clean · TypeScript strict clean
+
+
+## SPEC-POLISH-03 — Home section 04 "Evidencia" (real Magupell data) · August 2026
+
+### Summary
+Replaced generic rounded figures in the home ProofSection with real, Carlos-verified Magupell data. Redesigned FIG.04 as a real-dated ascending stair timeline. Fixed brand spelling "Magupell" (was "MAGUPELL") everywhere in user-facing copy.
+
+### Changed files (git diff --stat)
+- `app/[[...path]]/page.tsx` — passes `proofFigure` to `ProofSection`
+- `app/globals.css` — redesigned `.readout` cells (flex, body captions, 2×3 grid), new FIG.04 styles, responsive to 360px
+- `app/styleguide/page.tsx` — updated to new `proof.readouts` API
+- `components/home-sections.tsx` — `ProofSection` now accepts `proofFigure`, renders 6 readouts in 2×3 grid, delegates FIG.04 to `ProofTimelineFig`
+- `components/readout.tsx` — redesigned: `kind` (number/phrase), 6 `plotVariant` micro-plots (aria-hidden), body-font captions (~15px), no source suffix, no CountUp
+- `components/proof-timeline-fig.tsx` — NEW: FIG.04 ascending stair, 5 real-dated milestones, labels anchored to treads, ambre production node, tokens only
+- `components/system-diagram.tsx` — `label="Magupell"` in outcome diagram (brand spelling fix)
+- `content/{es,en,ca}/alliance.ts` — `{ name: 'Magupell' }` seat (brand spelling fix)
+- `content/{es,en,ca}/cases.ts` — "Magupell y BioZero" in meta description (brand spelling fix)
+- `content/{es,en,ca}/home.ts` — `proof.readouts[6]` + `proofFigure` (timeline[5] + timelineCaption + timelineAria); removed `proof.source` and `proof.figures`
+- `content/data/cases.ts` — `name: 'Magupell'`, `brand.name: 'Magupell'` (brand spelling fix)
+- `specs/spec-polish-03-evidencia.md` — NEW: spec file
+- `tests/components/alliance-constellation.test.tsx` — `'Magupell'` seat name
+- `tests/components/client-chip.test.tsx` — `'Magupell'` name
+- `tests/components/home-sections.test.tsx` — 6 readouts, real values, `'Magupell'` chip
+- `tests/components/proof-timeline-fig.test.tsx` — NEW: 13 tests for ProofTimelineFig
+- `tests/components/readout.test.tsx` — updated for new API (11 tests)
+- `tests/content/cases-data.test.ts` — `'Magupell'` name
+- `tests/content/content-integrity.test.ts` — 6 readouts guard, real values, `'Magupell'`
+- `tests/content/i18n-coverage.test.ts` — exemption list: `number`, `phrase`, `growth`, `steps`, `stair`, `impact`, `roles`, `Magupell`
+
+### Test results
+- 52 test files · 938 tests · 100% pass · build clean · TypeScript strict clean
+- No hardcoded hex in new components (grep = 0)
+
+
 > Cross-linked docs: [ARCHITECTURE](./ARCHITECTURE.md) · [BACKLOG](./BACKLOG.md) · [REQUIREMENTS_TRACEABILITY](./REQUIREMENTS_TRACEABILITY.md) · [PLAN](../PLAN.md)
 
 All notable changes, newest first.
+
+---
+
+## [Unreleased] — SPEC-POLISH-02: Home section 01 message + layout + FIG.02
+
+Spec: `specs/spec-polish-02-punto-de-partida.md` · Wireframe: `specs/mockups/wireframe-p01-punto-partida-FINAL.html`
+
+### Changed
+- **Headline:** "Tu negocio funciona. Tus sistemas, no." → "Tu operativa llegó a su límite, no tus objetivos." (Libro Ch. 10/12 framing — problem of success, not failure).
+- **Body:** single paragraph → two-paragraph tuple (ES/EN/CA); `problem.body` is now `readonly [string, string]`.
+- **Layout:** left-column title + vertical symptom list → full-width headline band + horizontal symptoms strip (1px divider) + two balanced columns (body | diagram).
+- **FIG.02:** pentagon web pointing to RETRABAJO → five named pieces (HOJAS DE CÁLCULO · CORREOS · NOTAS · CATÁLOGO · HISTORIAL) around fragile PROCESOS MANUALES core; discontinuous flows (solid + gap + dashed stub); ambre pulses stop at the break; core slow-scale pulse.
+
+### Added
+- `components/problem-flows-fig.tsx` — new `ProblemFlowsFig` component (mirrors `HeroNarrativeFig` pattern); `ProblemFlowsFigContent` interface exported.
+- `content/{es,en,ca}/home.ts` — `problemFigure` block (pieces, core, caption, note); EN/CA recrafted (pending Carlos AC-9 review).
+- `lib/motion-constants.ts` — `PROBLEM_PULSE_*` and `PROBLEM_CORE_*` constants.
+- `tests/components/problem-flows-fig.test.tsx` — 14 tests covering aria, pieces, core, segments, stubs, pulse layer.
+- `specs/spec-polish-02-punto-de-partida.md` — implementation spec in repo.
+
+### Updated
+- `components/system-diagram.tsx` — `kind="problem"` delegates to `ProblemFlowsFig` when `problemFigure` prop provided; legacy pentagon kept as fallback.
+- `components/home-sections.tsx` — `ProblemSection` new layout; `problemFigure` prop added.
+- `app/[[...path]]/page.tsx` — passes `problemFigure` to `ProblemSection`.
+- `app/globals.css` — problem-* CSS blocks replaced with new layout (`.problem-cols`, `.problem-fig__*`, `.problem-pulse*`).
+- `tests/components/home-sections.test.tsx` — body tests updated (two paragraphs); diagram test added.
+- `tests/components/system-diagram.test.tsx` — problem branch tests updated (with/without `problemFigure`).
+- `docs/escala-web-content-spec-v1.1.1.md` — §5.1 line 01 updated to new headline/layout.
+
+### Tests
+- 921 tests, 51 files — all passing. Coverage ≥70% maintained.
 
 ---
 

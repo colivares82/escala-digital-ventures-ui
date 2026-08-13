@@ -1,16 +1,20 @@
 /**
- * CaseDossier — single mode-aware template rendering both case detail pages.
- * The `mode` field on CaseStudy drives density:
- *   - data-forward (MAGUPELL): ReadoutStrip with 4 numeric readouts → 5 DossierFields.
- *   - capability-forward (BioZero): ReadoutStrip with 2 status readouts →
- *     CapabilityGrid (3 capabilities) → 3 DossierFields.
- * Template is genuinely data-driven: adding a 3rd case requires data only (AC-4).
- * Phase 5: uses dossierByLocale for locale-aware sector/readouts/capabilities/fields.
- * Spec: SPEC-P2.3 FR-4 · SPEC-P5 FR-1
+ * CaseDossier — the canonical case-detail template (SPEC-CASE-01).
+ *
+ * Approved deviation from the original per-mode split (SPEC-P2.3): this is now
+ * the single source of truth for every case going forward. A case supplies
+ * `readoutGrid` + `narrative` (canonical shape) to render through CaseReadoutGrid
+ * + CaseNarrative; if a case supplies neither, the template falls back to the
+ * legacy ReadoutStrip / DossierField / CapabilityGrid rendering so minimal or
+ * future data-only cases keep working without new data (AC-4 preserved).
+ * See DECISIONS.md for the rationale and docs/CHANGELOG.md for the migration.
+ * Spec: SPEC-P2.3 FR-4 · SPEC-P5 FR-1 · SPEC-CASE-01
  */
 
 import { BrandHeader } from '@/components/brand-header'
 import { CapabilityGrid } from '@/components/capability-grid'
+import { CaseNarrative } from '@/components/case-narrative'
+import { CaseReadoutGrid } from '@/components/case-readout-grid'
 import { DossierField } from '@/components/dossier-field'
 import { FinalCTA } from '@/components/final-cta'
 import { ReadoutStrip } from '@/components/readout-strip'
@@ -34,7 +38,8 @@ export function CaseDossier({ caseStudy, dict, locale, fullDict }: CaseDossierPr
 
   // Use locale-keyed dossier content (Phase 5)
   const dossier = caseStudy.dossierByLocale[locale] ?? caseStudy.dossierByLocale.es
-  const { sector, readouts, capabilities, fields } = dossier
+  const { sector, readouts, capabilities, fields, readoutGrid, narrative } = dossier
+  const isCanonical = Boolean(readoutGrid && narrative)
 
   // Determine next case (by order) and build nextcase nav
   const sorted = [...cases].sort((a, b) => a.order - b.order)
@@ -79,28 +84,37 @@ export function CaseDossier({ caseStudy, dict, locale, fullDict }: CaseDossierPr
             visitLabel={dict.visitLabel}
           />
 
-          {/* B · ReadoutStrip — protagonist for data-forward, context for capability-forward */}
-          <ReadoutStrip readouts={readouts} />
+          {/* B · Readouts — canonical CaseReadoutGrid when present, else legacy ReadoutStrip */}
+          {isCanonical && readoutGrid ? (
+            <CaseReadoutGrid readouts={readoutGrid} />
+          ) : (
+            <ReadoutStrip readouts={readouts} />
+          )}
 
-          {/* C · CapabilityGrid — only for capability-forward cases */}
-          {mode === 'capability-forward' && capabilities && capabilities.length > 0 && (
+          {/* C · Legacy CapabilityGrid — only for non-canonical capability-forward cases.
+              Canonical cases render their capabilities block via CaseNarrative instead. */}
+          {!isCanonical && mode === 'capability-forward' && capabilities && capabilities.length > 0 && (
             <CapabilityGrid
               sectionLabel={dict.capabilitiesLabel}
               capabilities={capabilities}
             />
           )}
 
-          {/* D · Narrative fields */}
-          <div className="dossier-narrative">
-            {fields.map((field, idx) => (
-              <DossierField
-                key={field.key}
-                num={String(idx + 1).padStart(2, '0')}
-                fieldKey={field.key}
-                body={field.body}
-              />
-            ))}
-          </div>
+          {/* D · Narrative — canonical CaseNarrative when present, else legacy DossierField list */}
+          {isCanonical && narrative ? (
+            <CaseNarrative blocks={narrative} />
+          ) : (
+            <div className="dossier-narrative">
+              {fields.map((field, idx) => (
+                <DossierField
+                  key={field.key}
+                  num={String(idx + 1).padStart(2, '0')}
+                  fieldKey={field.key}
+                  body={field.body}
+                />
+              ))}
+            </div>
+          )}
 
           {/* E · Next-case / back-to-index navigation */}
           <nav className="dossier-nextcase" aria-label={navAriaLabel}>

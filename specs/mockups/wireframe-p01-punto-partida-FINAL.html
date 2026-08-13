@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WIREFRAME FINAL — sección 01 Punto de partida</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#F7F7F4;--ink:#16181D;--mar:#0E3A5D;--abisal:#0A2B45;--ambre:#FFB703;--ambre-dk:#B85C00;
+    --display:'Archivo',system-ui,sans-serif;--body:'Instrument Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--body);background:var(--paper);color:var(--ink)}
+  .wf{background:#111;color:#eee;font-family:var(--mono);font-size:12px;padding:14px 32px;letter-spacing:.05em}
+  .wf b{color:var(--ambre)}
+  .note{font-family:var(--mono);font-size:11px;color:var(--ambre-dk);border-left:1px dashed var(--ambre-dk);padding-left:10px;margin:16px 6vw;max-width:800px;line-height:1.55}
+  .sec{padding:80px 6vw}
+  .idx{font-family:var(--mono);font-size:12px;letter-spacing:.15em;margin-bottom:24px}
+  .idx .n{color:var(--ambre-dk)}
+
+  /* TITLE BAND (full width) */
+  h2{font-family:var(--display);font-stretch:112%;font-weight:600;font-size:clamp(2.6rem,5vw,4.2rem);line-height:1.03;max-width:24ch}
+  .symptoms{list-style:none;margin-top:26px;display:flex;flex-wrap:wrap;gap:12px 36px;padding-bottom:34px;border-bottom:1px solid rgba(22,24,29,.14)}
+  .symptoms li{font-family:var(--mono);font-size:12px;color:var(--mar);letter-spacing:.03em;display:flex;gap:12px;align-items:center}
+  .symptoms li::before{content:"----";color:rgba(14,58,93,.4);letter-spacing:-1px}
+
+  /* TWO COLUMNS below */
+  .cols{display:grid;grid-template-columns:1fr 1.15fr;gap:5vw;align-items:center;margin-top:44px}
+  .body p{font-size:19px;line-height:1.65;max-width:50ch;opacity:.9}
+  .figframe{border:1px solid rgba(22,24,29,.15);background:#fff;padding:26px;position:relative}
+  .figframe::before,.figframe::after{content:"";position:absolute;width:14px;height:14px;border:1px solid rgba(22,24,29,.3)}
+  .figframe::before{top:10px;left:10px;border-right:none;border-bottom:none}
+  .figframe::after{bottom:10px;right:10px;border-left:none;border-top:none}
+  svg text{font-family:'IBM Plex Mono',monospace}
+  .cap{font-family:var(--mono);font-size:11px;color:var(--mar);margin-top:14px;letter-spacing:.03em}
+  .controls{position:fixed;right:20px;bottom:20px;z-index:100}
+  .controls button{font-family:var(--mono);font-size:11px;background:var(--ambre);color:var(--ink);border:none;padding:9px 14px;cursor:pointer;border-radius:2px}
+</style>
+</head>
+<body>
+<div class="wf">WIREFRAME · <b>FINAL v2</b> · sección 01 · TÍTULO horizontal + síntomas subtítulo · abajo 2 columnas (texto | diagrama) equilibradas</div>
+
+<section class="sec">
+  <div class="idx"><span class="n">01</span>&nbsp;/&nbsp;PUNTO DE PARTIDA</div>
+
+  <!-- TITLE BAND -->
+  <h2>Tu operativa llegó a su límite, no tus objetivos.</h2>
+  <ul class="symptoms">
+    <li>VOLUMEN QUE CRECE</li>
+    <li>ERRORES QUE SE MULTIPLICAN</li>
+    <li>FACTURACIÓN QUE SE RETRASA</li>
+    <li>DEPENDENCIA DE PERSONAS</li>
+  </ul>
+
+  <!-- TWO COLUMNS -->
+  <div class="cols">
+    <div class="body">
+      <p>Has construido un negocio que funciona. Pero llega un punto en que la operativa —hojas de cálculo, correos, documentos sueltos, conocimiento en la cabeza de pocas personas— deja de acompañar el crecimiento: el volumen aumenta, los errores se multiplican y el negocio depende de que nadie falte.</p>
+      <p style="margin-top:18px">Escala entra ahí: convierte ese corazón operativo en una plataforma propia sobre la que seguir creciendo.</p>
+    </div>
+
+    <div>
+      <div class="figframe">
+        <svg id="fig" width="100%" viewBox="0 0 640 300" style="max-width:640px">
+          <!-- pieces around a fragile center -->
+          <g font-size="10" fill="#16181D">
+            <g><rect x="24" y="34" width="130" height="30" fill="none" stroke="#16181D"/><text x="34" y="53">HOJAS DE CÁLCULO</text></g>
+            <g><rect x="266" y="20" width="90" height="30" fill="none" stroke="#16181D"/><text x="276" y="39">CORREOS</text></g>
+            <g><rect x="500" y="38" width="90" height="30" fill="none" stroke="#16181D"/><text x="510" y="57">NOTAS</text></g>
+            <g><rect x="34" y="228" width="100" height="30" fill="none" stroke="#16181D"/><text x="44" y="247">CATÁLOGO</text></g>
+            <g><rect x="486" y="226" width="110" height="30" fill="none" stroke="#16181D"/><text x="496" y="245">HISTORIAL</text></g>
+          </g>
+
+          <!-- discontinuous flows: solid segment from piece toward center, then a GAP, then a dashed stub -->
+          <g id="links" stroke="#16181D" stroke-width="1.3" fill="none">
+            <path class="seg" d="M154 52 L250 118"/><path d="M288 143 L306 152" opacity=".22" stroke-dasharray="4 4"/>
+            <path class="seg" d="M314 50 L320 104"/>
+            <path class="seg" d="M500 56 L392 118"/><path d="M352 143 L334 152" opacity=".22" stroke-dasharray="4 4"/>
+            <path class="seg" d="M134 240 L252 178"/><path d="M290 158 L306 152" opacity=".22" stroke-dasharray="4 4"/>
+            <path class="seg" d="M486 238 L390 176"/><path d="M352 158 L334 152" opacity=".22" stroke-dasharray="4 4"/>
+          </g>
+
+          <!-- fragile center: PROCESOS MANUALES -->
+          <g id="core">
+            <circle cx="320" cy="150" r="46" fill="rgba(255,183,3,.06)" stroke="#B85C00" stroke-width="1.6" stroke-dasharray="6 5"/>
+            <text x="320" y="146" font-size="11" fill="#B85C00" text-anchor="middle">PROCESOS</text>
+            <text x="320" y="160" font-size="11" fill="#B85C00" text-anchor="middle">MANUALES</text>
+          </g>
+
+          <text x="24" y="288" font-size="9" fill="rgba(22,24,29,.5)">CADA PIEZA INTENTA CONECTARSE · EL FLUJO SE CORTA EN EL PASO MANUAL</text>
+        </svg>
+        <div class="cap">FIG. 02 — UNA OPERATIVA QUE DEPENDE DE PROCESOS MANUALES: LOS FLUJOS NO SE COMPLETAN</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="controls"><button onclick="tg()" id="mb">⏸ Pausar</button></div>
+
+<div class="note" style="color:var(--ambre-dk);border-color:var(--ambre-dk);background:#fff;padding:12px 14px">
+NOTAS · MAQUETACIÓN v2: (1) Título a todo el ancho arriba. (2) Síntomas como franja-subtítulo horizontal bajo el título, con línea divisoria. (3) Debajo, 2 columnas equilibradas y centradas verticalmente entre sí: texto explicativo | diagrama — sin huecos vacíos. · DIAGRAMA igual que aprobamos: 5 piezas penden de PROCESOS MANUALES; flujos que se cortan (sólido + hueco + muñón); pulsos que se detienen en el corte; núcleo que late; reduced-motion estático.
+</div>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const segs=[...document.querySelectorAll('#links .seg')];
+let running=true;
+function pulse(seg){
+  if(!running) return;
+  const len=seg.getTotalLength();
+  const dot=document.createElementNS(NS,'circle');
+  dot.setAttribute('r',3);dot.setAttribute('fill','#FFB703');
+  seg.parentNode.appendChild(dot);
+  const t0=performance.now(), dur=1100;
+  function fr(now){
+    const e=now-t0;
+    if(e<dur && running){
+      const p=seg.getPointAtLength((e/dur)*len);
+      dot.setAttribute('cx',p.x);dot.setAttribute('cy',p.y);
+      requestAnimationFrame(fr);
+    } else {
+      const end=seg.getPointAtLength(len);
+      dot.setAttribute('cx',end.x);dot.setAttribute('cy',end.y);dot.setAttribute('fill','#B85C00');
+      let o=1;const fo=setInterval(()=>{o-=0.12;dot.setAttribute('opacity',o.toFixed(2));if(o<=0){clearInterval(fo);dot.remove();}},40);
+    }
+  }
+  requestAnimationFrame(fr);
+}
+setInterval(()=>{ if(running){ pulse(segs[Math.floor(Math.random()*segs.length)]); } }, 700);
+const core=document.querySelector('#core circle');let cg=0;
+setInterval(()=>{ if(running){ cg+=0.1; const s=1+Math.sin(cg)*0.03; core.setAttribute('transform',`translate(320 150) scale(${s}) translate(-320 -150)`);} },40);
+function tg(){running=!running;document.getElementById('mb').textContent=running?'⏸ Pausar':'▶ Reanudar';}
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){running=false;document.getElementById('mb').textContent='▶ Reanudar';}
+</script>
+</body>
+</html>

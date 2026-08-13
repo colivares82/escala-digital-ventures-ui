@@ -189,6 +189,7 @@ export default async function Page({
         currentPage={page}
         locale={locale}
         pageParams={pageParams}
+        email={shared.finalCta.email}
       />
       {/* lang on main provides locale signal for EN/CA; html lang stays "es" until
           Phase 6 middleware sets it correctly per-request. */}
@@ -221,12 +222,14 @@ export default async function Page({
               claims={home.claims}
               labels={home.labels}
               diagrams={home.diagrams}
+              heroFigure={(home as { heroFigure?: unknown }).heroFigure as Parameters<typeof Hero>[0]['heroFigure']}
               claimsAriaLabel={shared.accessibility.keyMessages}
             />
             <ProblemSection
               content={home.problem}
               labels={home.labels}
               diagrams={home.diagrams}
+              problemFigure={(home as { problemFigure?: unknown }).problemFigure as Parameters<typeof ProblemSection>[0]['problemFigure']}
             />
             <ServicesPreview
               content={home.services}
@@ -242,18 +245,31 @@ export default async function Page({
               content={home.proof}
               labels={home.labels}
               diagrams={home.diagrams}
+              proofFigure={(home as { proofFigure?: unknown }).proofFigure as Parameters<typeof ProofSection>[0]['proofFigure']}
             />
             <AllianceTeaser
               content={home.alliance}
               labels={home.labels}
               diagrams={home.diagrams}
               allianceHref={allianceHref}
+              allianceFigure={(home as { allianceFigure?: unknown }).allianceFigure as Parameters<typeof AllianceTeaser>[0]['allianceFigure']}
             />
             <FinalCTA dict={dict} locale={locale} />
           </>
         )}
       </main>
-      <SiteFooter content={home.footer} accessibility={shared.accessibility} />
+      <SiteFooter
+        content={home.footer}
+        accessibility={shared.accessibility}
+        brand={shared.header.brand}
+        contactLabel={shared.header.contact}
+        email={shared.finalCta.email}
+        location={shared.finalCta.location}
+        languages={shared.finalCta.languages}
+        currentPage={page}
+        locale={locale}
+        pageParams={pageParams}
+      />
     </MotionRuntime>
   )
 }

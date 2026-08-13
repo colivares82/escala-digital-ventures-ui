@@ -20,6 +20,9 @@ export const sharedContent = {
     footerNavigation: 'Navegació del peu',
     languages: 'Idiomes',
     keyMessages: 'Missatges clau',
+    // SPEC-POLISH-07 §5 — mobile menu trigger/close accessible labels.
+    menuOpen: 'Obrir menú',
+    menuClose: 'Tancar menú',
   },
   header: {
     brand: 'ESCALA',
@@ -43,16 +46,23 @@ export const sharedContent = {
     claim: 'Automatitzem el teu negoci. Escalem amb tu.',
     company: 'Escala Digital Ventures, S.L.U. · Mataró, Barcelona',
     direction: 'Direcció general: referència a colivares.com',
+    col: {
+      navigation: 'Navegació',
+      contact: 'Contacte',
+      legal: 'Legal',
+    },
     navigation: [
       { label: 'Què fem', href: '/ca/que-fem' },
       { label: 'Com treballem', href: '/ca/com-treballem' },
       { label: "Casos d'èxit", href: '/ca/casos-dexit' },
       { label: "Model d'aliança", href: '/ca/model-dalianca' },
+      { label: 'Sobre Escala', href: '/ca/sobre-escala' },
     ],
     legal: [
       { label: 'Avís legal', href: '/ca/avis-legal' },
       { label: 'Privacitat', href: '/ca/privacitat' },
     ],
+    noTracking: 'Sense galetes de seguiment',
   },
   finalCta: {
     title: 'Parlem del teu negoci.',

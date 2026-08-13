@@ -20,15 +20,18 @@ export const methodContent = {
     lead: 'Un marco estratégico propio y una práctica de ejecución disciplinada. El objetivo nunca es entregar software: es aumentar la capacidad de crecimiento de tu negocio.',
   },
 
+  // SPEC-POLISH-06 §1: Escala Growth Framework moved to last content section (E), before FinalCTA.
   phaseCycle: {
     sectionEyebrow: 'EL CICLO DE CRECIMIENTO',
-    sectionIndex: 'B',
+    sectionIndex: 'E',
     title: 'Un método propio: el Escala Growth Framework',
     lead: 'DIEZ FASES · UN CICLO CONTINUO DE MEJORA',
     ariaLabel: 'Ciclo de crecimiento de diez fases',
     phasePrefix: 'FASE',
   },
 
+  // SPEC-POLISH-06 addendum: swapped B/C order at Carlos's request post-implementation —
+  // "El flujo de ejecución" now precedes "La ejecución, en el día a día".
   executionPractices: {
     sectionEyebrow: 'LA EJECUCIÓN, EN EL DÍA A DÍA',
     sectionIndex: 'C',
@@ -68,43 +71,51 @@ export const methodContent = {
     ],
   },
 
+  // SPEC-POLISH-06 §2 — closed execution cycle, FIG. 06.
   pipeline: {
     sectionEyebrow: 'EL FLUJO DE EJECUCIÓN',
-    sectionIndex: 'D',
+    sectionIndex: 'B',
     sectionTitle: 'De la especificación al feedback',
-    nodes: [
-      { label: 'ESPECIFICACIÓN' },
-      { label: 'PROTOTIPO' },
-      { label: 'CONSTRUCCIÓN' },
-      { label: 'CALIDAD' },
-      { label: 'PRODUCCIÓN' },
-      { label: 'FEEDBACK' },
+    lead: 'Cada incremento recorre el mismo camino, y el camino no termina: lo que aprenden tus usuarios entra en la siguiente especificación.',
+    stations: [
+      { label: 'ESPECIFICACIÓN', sub: 'REQUISITOS + PROTOTIPO', actor: 'escala' },
+      { label: 'APROBACIÓN', sub: 'EL CLIENTE VALIDA ANTES', actor: 'client' },
+      { label: 'CONSTRUCCIÓN', sub: 'PRUEBAS · ENTORNOS', actor: 'escala' },
+      { label: 'PRODUCCIÓN', sub: 'DESPLIEGUE CONTINUO', actor: 'escala' },
+      { label: 'USO REAL', sub: 'TUS USUARIOS, CADA DÍA', actor: 'client' },
     ],
-    caption: 'FIG. 06 — DE LA ESPECIFICACIÓN AL FEEDBACK EN CICLOS CORTOS',
-    legend: 'CICLO CONTINUO · EL FEEDBACK REALIMENTA LA SIGUIENTE ESPECIFICACIÓN',
-    ariaLabel: 'Diagrama del flujo de ejecución: especificación, prototipo, construcción, calidad, producción y feedback en ciclo continuo',
-    returnArcLabel: 'RETORNO AL ORIGEN',
+    centre: ['CICLOS CORTOS', 'MEJORA CONTINUA'],
+    returnLabel: 'EL FEEDBACK SE PRIORIZA Y ENTRA EN EL SIGUIENTE CICLO',
+    caption: 'FIG. 06 — EL CICLO DE EJECUCIÓN: DE LA ESPECIFICACIÓN AL USO REAL, Y VUELTA A EMPEZAR',
+    ariaLabel: 'Ciclo cerrado de ejecución con cinco estaciones: especificación, aprobación del cliente, construcción, producción y uso real, con retorno del feedback a la especificación.',
   },
 
+  // SPEC-POLISH-06 §3 — "how we build" layered system, FIG. 12.
   aiBuild: {
     sectionEyebrow: 'CÓMO CONSTRUIMOS',
-    sectionIndex: 'E',
-    title: 'La IA también en cómo construimos',
-    // Verbatim from Libro v2.1 Ch. 7 "IA también en cómo se construye"
-    lead: 'Escala no solo integra IA en los productos de sus clientes: la utiliza en su propio proceso de creación. Un flujo de trabajo propio de ingeniería asistida por agentes de IA, gobernado por una biblioteca interna de estándares, reglas y patrones probados en producción, multiplica la velocidad de ejecución, mientras que el criterio senior de producto e ingeniería garantiza que lo que se construye es lo correcto y que se construye bien.',
-    // Only claims supported by Libro Ch. 7 / Ch. 9 (FR-6.3 guardrail — no invented metrics, no vendor names)
-    points: [
-      'BIBLIOTECA INTERNA DE ESTÁNDARES, REGLAS Y PATRONES PROBADOS EN PRODUCCIÓN',
-      'FLUJO DE INGENIERÍA ASISTIDA POR AGENTES DE IA',
-      'CRITERIO SENIOR DE PRODUCTO E INGENIERÍA EN CADA DECISIÓN',
-      'CONSISTENCIA ENTRE PROYECTOS · VELOCIDAD DE UN EQUIPO COMPLETO',
-    ],
-    // Small inline diagram labels: left → right (FR-6.2)
-    diagram: [
-      'BIBLIOTECA DE REGLAS',
-      'AGENTE',
-      'CRITERIO SENIOR',
-      'PRODUCCIÓN',
+    sectionIndex: 'D',
+    title: 'Ingeniería con criterio, acelerada por agentes',
+    body: 'No construimos más rápido por usar IA: construimos más rápido porque cada decisión ocurre dentro de un sistema. Una biblioteca propia de estándares, reglas y patrones probados en producción gobierna el trabajo; los agentes ejecutan en paralelo dentro de ese marco; y nada llega a producción sin pasar por criterio senior y calidad verificable. La velocidad de un equipo completo, con la coherencia de una sola mente.',
+    figure: {
+      frame: 'BIBLIOTECA DE ESTÁNDARES, REGLAS Y PATRONES PROBADOS EN PRODUCCIÓN',
+      entry: 'ESPECIFICACIÓN',
+      entrySub: 'APROBADA',
+      lanePrefix: 'AGENTE',
+      lanes: ['IMPLEMENTACIÓN', 'PRUEBAS', 'DOCUMENTACIÓN'],
+      gate1: 'CRITERIO SENIOR',
+      gate2: 'CALIDAD VERIFICABLE',
+      gate2Sub: 'PRUEBAS · CI/CD · ENTORNOS',
+      exit: 'PRODUCCIÓN',
+      exitSub: 'MODULAR · ESCALABLE',
+      returnLabel: 'CADA PROYECTO EN PRODUCCIÓN REFINA LOS PATRONES QUE GOBIERNAN EL SIGUIENTE',
+      caption: 'FIG. 12 — EL SISTEMA QUE GOBIERNA CÓMO CONSTRUIMOS',
+      ariaLabel: 'La especificación aprobada entra en una biblioteca de estándares que gobierna el trabajo, se ejecuta en tres carriles paralelos de agentes, atraviesa las puertas de criterio senior y calidad verificable, sale a producción y devuelve patrones refinados a la biblioteca.',
+    },
+    legend: [
+      { label: 'GOBIERNO', text: 'Una biblioteca propia de estándares, reglas y patrones probados en producción.' },
+      { label: 'EJECUCIÓN', text: 'Agentes de IA trabajando en paralelo, siempre dentro de ese marco.' },
+      { label: 'CONTROL', text: 'Criterio senior y calidad verificable antes de que nada salga a producción.' },
+      { label: 'CAPITALIZACIÓN', text: 'Cada proyecto real refina el sistema que gobierna el siguiente.' },
     ],
   },
 } as const satisfies MethodDictionary

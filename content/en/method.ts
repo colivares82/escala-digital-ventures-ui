@@ -20,15 +20,18 @@ export const methodContent = {
     lead: 'Our own strategic framework and a disciplined execution practice. The goal is never to deliver software: it is to increase the growth capacity of your business.',
   },
 
+  // SPEC-POLISH-06 §1: Escala Growth Framework moved to last content section (E), before FinalCTA.
   phaseCycle: {
     sectionEyebrow: 'THE GROWTH CYCLE',
-    sectionIndex: 'B',
+    sectionIndex: 'E',
     title: 'Our own method: the Escala Growth Framework',
     lead: 'TEN PHASES · ONE CONTINUOUS IMPROVEMENT CYCLE',
     ariaLabel: 'Ten-phase growth cycle',
     phasePrefix: 'PHASE',
   },
 
+  // SPEC-POLISH-06 addendum: swapped B/C order at Carlos's request post-implementation —
+  // "The execution flow" now precedes "Execution, day to day".
   executionPractices: {
     sectionEyebrow: 'EXECUTION, DAY TO DAY',
     sectionIndex: 'C',
@@ -68,40 +71,51 @@ export const methodContent = {
     ],
   },
 
+  // SPEC-POLISH-06 §2 — closed execution cycle, FIG. 06.
   pipeline: {
     sectionEyebrow: 'THE EXECUTION FLOW',
-    sectionIndex: 'D',
+    sectionIndex: 'B',
     sectionTitle: 'From specification to feedback',
-    nodes: [
-      { label: 'SPECIFICATION' },
-      { label: 'PROTOTYPE' },
-      { label: 'BUILD' },
-      { label: 'QUALITY' },
-      { label: 'PRODUCTION' },
-      { label: 'FEEDBACK' },
+    lead: 'Every increment travels the same path, and the path never ends: what your users learn feeds the next specification.',
+    stations: [
+      { label: 'SPECIFICATION', sub: 'REQUIREMENTS + PROTOTYPE', actor: 'escala' },
+      { label: 'APPROVAL', sub: 'THE CLIENT SIGNS OFF FIRST', actor: 'client' },
+      { label: 'BUILD', sub: 'TESTS · ENVIRONMENTS', actor: 'escala' },
+      { label: 'PRODUCTION', sub: 'CONTINUOUS DEPLOYMENT', actor: 'escala' },
+      { label: 'REAL USE', sub: 'YOUR USERS, EVERY DAY', actor: 'client' },
     ],
-    caption: 'FIG. 06 — FROM SPECIFICATION TO FEEDBACK IN SHORT CYCLES',
-    legend: 'CONTINUOUS CYCLE · FEEDBACK FEEDS THE NEXT SPECIFICATION',
-    ariaLabel: 'Execution flow diagram: specification, prototype, build, quality, production and feedback in a continuous cycle',
-    returnArcLabel: 'RETURN TO ORIGIN',
+    centre: ['SHORT CYCLES', 'CONTINUOUS IMPROVEMENT'],
+    returnLabel: 'FEEDBACK IS PRIORITISED AND ENTERS THE NEXT CYCLE',
+    caption: 'FIG. 06 — THE EXECUTION CYCLE: FROM SPECIFICATION TO REAL USE, AND BACK AGAIN',
+    ariaLabel: 'A closed execution cycle with five stations: specification, client approval, build, production and real use, with feedback returning to the specification.',
   },
 
+  // SPEC-POLISH-06 §3 — "how we build" layered system, FIG. 12.
   aiBuild: {
     sectionEyebrow: 'HOW WE BUILD',
-    sectionIndex: 'E',
-    title: 'AI also in how we build',
-    lead: 'Escala not only integrates AI into its clients\' products: it uses it in its own creation process. A proprietary AI-agent-assisted engineering workflow, governed by an internal library of standards, rules and patterns proven in production, multiplies execution speed, while senior product and engineering judgement ensures that what is built is the right thing and that it is built well.',
-    points: [
-      'INTERNAL LIBRARY OF STANDARDS, RULES AND PATTERNS PROVEN IN PRODUCTION',
-      'AI-AGENT-ASSISTED ENGINEERING WORKFLOW',
-      'SENIOR PRODUCT AND ENGINEERING JUDGEMENT IN EVERY DECISION',
-      'CONSISTENCY ACROSS PROJECTS · SPEED OF A FULL TEAM',
-    ],
-    diagram: [
-      'RULES LIBRARY',
-      'AGENT',
-      'SENIOR JUDGEMENT',
-      'PRODUCTION',
+    sectionIndex: 'D',
+    title: 'Engineering judgement, accelerated by agents',
+    body: 'We don\'t build faster because we use AI: we build faster because every decision happens inside a system. Our own library of standards, rules and production-proven patterns governs the work; agents execute in parallel within that frame; and nothing reaches production without passing senior judgement and verifiable quality. The speed of a full team, with the coherence of a single mind.',
+    figure: {
+      frame: 'LIBRARY OF STANDARDS, RULES AND PRODUCTION-PROVEN PATTERNS',
+      entry: 'SPECIFICATION',
+      entrySub: 'APPROVED',
+      lanePrefix: 'AGENT',
+      lanes: ['IMPLEMENTATION', 'TESTS', 'DOCUMENTATION'],
+      gate1: 'SENIOR JUDGEMENT',
+      gate2: 'VERIFIABLE QUALITY',
+      gate2Sub: 'TESTS · CI/CD · ENVIRONMENTS',
+      exit: 'PRODUCTION',
+      exitSub: 'MODULAR · SCALABLE',
+      returnLabel: 'EVERY PROJECT IN PRODUCTION REFINES THE PATTERNS THAT GOVERN THE NEXT ONE',
+      caption: 'FIG. 12 — THE SYSTEM THAT GOVERNS HOW WE BUILD',
+      ariaLabel: 'The approved specification enters a library of standards that governs the work, runs through three parallel agent lanes, crosses the senior judgement and verifiable quality gates, exits to production, and returns refined patterns to the library.',
+    },
+    legend: [
+      { label: 'GOVERNANCE', text: 'Our own library of standards, rules and production-proven patterns.' },
+      { label: 'EXECUTION', text: 'AI agents working in parallel, always within that frame.' },
+      { label: 'CONTROL', text: 'Senior judgement and verifiable quality before anything reaches production.' },
+      { label: 'COMPOUNDING', text: 'Every real project refines the system that governs the next one.' },
     ],
   },
 } as const satisfies MethodDictionary

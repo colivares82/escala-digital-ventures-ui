@@ -25,7 +25,10 @@ export function CaseCard({
   expedienteLabel,
   openLabel,
 }: CaseCardProps) {
-  const { slug, order, name, cardSubtitle, sector, brand } = caseStudy
+  const { slug, order, name, cardSubtitle, cardSubtitleByLocale, sector, brand } = caseStudy
+
+  // Prefer the locale-keyed subtitle (SPEC-CASE-01 §5); fall back to the ES-only field.
+  const subtitle = cardSubtitleByLocale?.[locale] ?? cardSubtitle
 
   // Build "EXPEDIENTE · 01 · SECTOR PIEL" from sector string
   // sector already is the full eyebrow, but we render the expediente prefix separately
@@ -59,7 +62,7 @@ export function CaseCard({
       )}
 
       <h3 className="case-index-card__name">{name}</h3>
-      <p className="case-index-card__subtitle">{cardSubtitle}</p>
+      <p className="case-index-card__subtitle">{subtitle}</p>
 
       <a href={detailHref} className="case-index-card__cta">
         {openLabel}

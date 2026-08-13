@@ -1,15 +1,99 @@
 # Progress
 
+## What works ✅ — SPEC-POLISH-09 additions (`/modelo-de-alianza` constellation fix)
+
+| Feature | Status |
+|---------|--------|
+| Clipping fixed — "Por qué solo cinco" now renders `AllianceConstellation` at `size="protagonist"` (960×620, responsive, 280px margin per side) instead of `size="large"` (fixed 420×420, only 60px margin, clipped `BIOZERO`/`DISPONIBLE` at the SVG edge) | Complete |
+| `AllianceConstellation` and `GridBackground` byte-identical — zero changes; fix lives entirely in `components/pages/alliance.tsx` | Complete |
+| Layout restructured: text block above (normal measure) → constellation below at full section width (`.alliance-why__stage`, max 900px, matches home's `.alliance-stage`) | Complete |
+| Casing corrected: `content/{es,en,ca}/alliance.ts` seats `BIOZERO` → `BioZero` to match `content/{es,en,ca}/home.ts` exactly (home is canonical); permanent regression test added | Complete |
+| Scroll-reveal preserved via existing `DiagramReveal`/`data-visible` mechanism — a page-scoped CSS counter-rule restores fade-in for the protagonist variant on this page only, without touching home's own always-visible rule | Complete |
+| Reduced motion: fully static/visible via the existing global rule — no page-specific handling needed | Complete |
+| New test file `tests/components/alliance-page.test.tsx` (8 tests) — 100% coverage of `components/pages/alliance.tsx` (was 0%) | Complete |
+| Live-verified via headless Chrome over CDP: label `getBBox()` geometry (not DOM presence) at 360/390/768/1024/1440/1920 × ES/EN/CA — zero clipped labels post-fix (was 4/5 clipped per locale); home page measured unaffected; connector geometry unchanged; reveal + reduced-motion confirmed | Complete |
+| 65 test files · 1115 tests · 100% pass · `npx tsc --noEmit` clean · `eslint` 0 new warnings · `npm run build` clean · coverage 80.46%/77.81%/86.48%/83.33% | Complete |
+| Known follow-up: pre-existing 8px horizontal overflow at 360px from `.site-header`/`.page-header__*`, present on every `PageHeader` page — not introduced by this fix, out of scope (`PageHeader` protected), not yet triaged | Flagged |
+
+## What works ✅ — SPEC-POLISH-07 additions (header nav + mobile menu)
+
+| Feature | Status |
+|---------|--------|
+| Header nav / locale switcher / CTA label raised 0.66rem → 0.80rem; decorative `·` separator between nav links (`aria-hidden`, outside the link, not in the hit area) | Complete |
+| Separator + nav↔switcher↔button gaps compress one step at 1024–1200px so nothing wraps at any measured width | Complete |
+| Brand slot dimensioned (132×32 desktop / 112×28 mobile), reused verbatim inside the mobile overlay bar — ready for the logo spec to drop in | Complete |
+| **Mobile menu built** — below 1024px the header previously rendered no navigation at all (`display: none`, no replacement); now a calibrated 3-bar trigger opens a full-screen overlay (`components/mobile-menu.tsx`) on the abisal surface with all 5 pages (mono `01`–`05` index), the locale switcher, «Hablemos», and the contact email | Complete |
+| Overlay behavior: hand-rolled focus trap (Tab wraps both directions), Lenis-aware scroll lock restoring the exact scroll position on close, `Escape`-to-close, close-on-navigate, and a `matchMedia` resize guard that force-closes the overlay if the viewport crosses into desktop while still open | Complete |
+| Reduced motion: overlay open/close animation removed under `prefers-reduced-motion: reduce`; mount/unmount logic unchanged either way | Complete |
+| `SiteHeader` now requires an `email` prop (`shared.finalCta.email`) for the overlay foot | Complete |
+| Two dead CSS rules removed (`.locale-switcher { display: none }` and a `.header-cta` padding tweak at 639px — both already covered by the new 1024px breakpoint hiding `.site-header__actions`) | Complete |
+| Live-verified via headless Chromium over CDP (no Playwright wired into this project yet): header height unchanged at 80px across 1920/1024/390px; brand slot exact at 112×28 mobile; scroll lock + focus-return confirmed | Complete |
+| 63 test files · 1090 tests · 100% pass · `npx tsc --noEmit` clean · `eslint` 0 new warnings · `npm run build` clean · coverage 79.71%/77.43%/85.21%/82.67% | Complete |
+
+## What works ✅ — SPEC-CASE-01 additions (Magupell case page rewrite)
+
+| Feature | Status |
+|---------|--------|
+| `/casos-de-exito/magupell` rewritten ES/EN/CA — verified figures (167→216 reqs, 1.803/1,803 tests, 7 meses, 4 roles, 3 entornos, live Jul 2026), no `100+`/`200+`, no invoicing language, "Magupell" spelling fixed everywhere | Complete |
+| `CaseDossier` promoted to the canonical case template (approved deviation from the original per-mode split) — renders `readoutGrid` + `narrative[]` when present, falls back to legacy `ReadoutStrip`/`DossierField`/`CapabilityGrid` otherwise | Complete |
+| BioZero migrated onto the canonical template — copy byte-unchanged, rendering shape updated (capabilities now a `narrative` block) | Complete |
+| 6 new page-local components: `CaseReadoutGrid`, `CaseNarrative` (variant dispatcher), `CaseFlowFig` (FIG. EXP-02), `CaseRolesGrid` (section 04), `CaseGovernance` (section 05, abisal), `CaseTimelineLadder` (FIG. EXP-03) | Complete |
+| `CaseFlowFig` — connectors terminate at node borders (never overlap), one-shot L→R traversal on entry, full static fallback under `prefers-reduced-motion`, vertical stack <720px, no text overflow at 360px | Complete |
+| Case index card (`/casos-de-exito`) — localized subtitle (`cardSubtitleByLocale`), no invoicing, "Magupell" spelling, updated figures | Complete |
+| Metadata (title/description/OG/Twitter) rewritten ×3 locales — ≤60/≤155 chars, one verified figure, no invoicing | Complete |
+| Environments count confirmed as 3 (matches home page) — DAT.05 + "CAMBIOS SEGUROS" governance card unblocked | Complete |
+| Content guardrail tests: zero `factura\|facturación\|facturar\|invoic`, zero `MAGUPELL`, zero `100+\|200+` in Magupell content/card/metadata across all locales | Complete |
+| **Hotfix:** `app/globals.css` SPEC-CASE-01 insert was accidentally nested inside `@media (prefers-reduced-motion: reduce)` (stray/missing brace), making all new CSS inert under normal conditions — fixed; verified via brace-balance check + compiled production CSS chunk | Complete |
+| **Regression guard:** `tests/content/css-structure-guard.test.ts` — static structural analysis of `globals.css` (brace balance, at-rule reachability, className↔rule parity); proven to fail against the original broken structure and pass against the fix | Complete |
+| 62 test files · 1066 tests · 100% pass · `npx tsc --noEmit` clean · `eslint` 0 errors · `npm run build` clean · coverage 78.72%/77.31%/85.71%/81.56% | Complete |
+
+## What works ✅ — SPEC-POLISH-05 additions
+
+| Feature | Status |
+|---------|--------|
+| ServiceFig FIG.08 (`platform`) — module boxes sized to text, connectors computed to land exactly on the core ring border, staggered looping pulses (previously missing animation) | Complete |
+| ServiceFig FIG.09 (`ai`) — flow line split into edge-to-edge segments (never crosses box text), opaque box fill, "DONDE APORTA" repositioned above the IA node off-diagram, IA connector meets PROCESO top edge | Complete |
+| ServiceFig FIG.11 (`evolve`) — nodes drawn on top of the circle with opaque fill (hides stroke behind), ambre arc now completes the FULL circle in a continuous loop (previously a static quarter) | Complete |
+| Shared 340×180 canvas across all 5 ServiceFig variants; FIG.07/FIG.10 canvas-normalised only (geometry byte-identical, verified by dedicated tests) | Complete |
+| `lib/motion-constants.ts` — new `SERVICE_FIG_*` timing/geometry constants (additive) | Complete |
+| 53 test files · 970 tests · 100% pass · build clean · TypeScript strict clean · 0 hardcoded hex | Complete |
+
+## What works ✅ — SPEC-POLISH-04 additions
+
+| Feature | Status |
+|---------|--------|
+| AllianceConstellation `'protagonist'` size — 960×620 viewBox, R=200, nodeR=30, coreR1=46, coreR2=60 | Complete |
+| Connectors start at core OUTER ring edge, end at node edge (never crosses core or node) | Complete |
+| Labels anchored by cosA/sinA: right=start, left=end, top/bottom=middle — no overlap | Complete |
+| Traveling ambre pulse via SVG `<animate>` for occupied seats, staggered, looping | Complete |
+| Corner ticks + coreSubLabel inside protagonist SVG | Complete |
+| `AllianceFigureContent` type + `allianceFigure` key in ES/EN/CA home dictionaries (translatable) | Complete |
+| `AllianceTeaser` — protagonist path + legacy fallback (backward-compatible) | Complete |
+| `GridBackground` reused in section 05 (no duplicate grid code) | Complete |
+| `/modelo-de-alianza` page unchanged (no regression) | Complete |
+| 52 test files · 953 tests · 100% pass · build clean | Complete |
+
+## What works ✅ — SPEC-POLISH-03 additions
+
+| Feature | Status |
+|---------|--------|
+| ProofSection — 6 real Magupell readouts (167→216, 1.803, 3 entornos, 7 meses, "Sustituyó lo manual.", "A medida de cada rol.") | Complete |
+| ProofTimelineFig — FIG.04 ascending stair, 5 real-dated milestones (DIC 2025→JUL 2026), labels anchored to treads, ambre production node | Complete |
+| Readout redesign — kind (number/phrase), 6 plotVariant micro-plots (aria-hidden), body-font captions (~15px, max 42ch) | Complete |
+| Brand spelling "Magupell" (was "MAGUPELL") — fixed everywhere in user-facing copy | Complete |
+| ProofSection 2×3 grid layout — responsive to 360px | Complete |
+| 52 test files · 938 tests · 100% pass · build clean | Complete |
+
 ## What works ✅
 
 | Feature | Status |
 |---------|--------|
 | Spanish home page (`/`) | Complete, approved |
 | Hero section with WordReveal H1 + FIG.01 system diagram | Complete |
-| ProblemSection with symptom list + FIG.02 diagram | Complete |
+| ProblemSection — SPEC-POLISH-02: new headline, 2-para body, symptoms strip, 2-col layout, FIG.02 redesign | Complete |
 | ServicesPreview (5 service lines, editorial index) | Complete |
 | FrameworkSection — `PhaseCycle` scroll-driven ring (desktop) + static list (mobile/reduced-motion) | Complete |
-| ProofSection — 4 DAT readouts + 2 ClientChips (MAGUPELL, BioZero) | Complete |
+| ProofSection — 6 real Magupell readouts + 2 ClientChips (Magupell, BioZero) + FIG.04 timeline | Complete |
 | AllianceTeaser — FIG.05 constellation diagram | Complete |
 | FinalCTA — ContactForm (browser-only validation, no API) | Complete |
 | ClaimsMarquee (ambre band, between hero and problem) | Complete |
@@ -65,8 +149,10 @@
 | `MethodDictionary` full interface (types.ts) | Complete |
 | `content/es/method.ts` — verbatim Libro Ch. 7/9 copy | Complete |
 | `ExecutionPractices` — 5 sticky panels, mobile fallback | Complete |
-| `ExecutionPipelineFig` — FIG.06 provisional, isolated, swappable | Complete |
-| `AiBuildBlock` — sober, editorial guardrail enforced | Complete |
+| `ExecutionCycleFig` — FIG.06 closed cycle, replaces `ExecutionPipelineFig` (SPEC-POLISH-06) | Complete |
+| `HowWeBuildFig` — FIG.12 layered system diagram (SPEC-POLISH-06) | Complete |
+| `AiBuildBlock` — full replacement: heading/body/figure/legend (SPEC-POLISH-06) | Complete |
+| Section order: Escala Growth Framework moved to last section (E), before FinalCTA | Complete |
 | PhaseCycle: `sectionIndex` + optional `action` (no home regression) | Complete |
 | Header nav: "Cómo trabajamos" → true route; `aria-current="page"` | Complete |
 | Brand link: route-aware (home anchor on home, `/` on interior pages) | Complete |
@@ -226,19 +312,24 @@
 | `docs/i18n-glossary.md` + `docs/i18n-qa.md` | P2 | ✅ Done (SPEC-P5) |
 | Carlos register review (AC-9) | P0 | ⬜ Pending Carlos |
 
-### Phase 6 — Infra (code complete; GCP bootstrap pending Carlos)
+### Phase 6 — Infra ☑ COMPLETE
 | Feature | Priority | Status |
 |---------|----------|--------|
-| Dockerfile + standalone output | P2 | ✅ Done (SPEC-P6) |
+| Dockerfile + standalone output (linux/amd64) | P2 | ✅ Done (SPEC-P6) |
 | `.dockerignore` + `next.config.mjs` standalone + noindex | P2 | ✅ Done (SPEC-P6) |
-| GitHub Actions CI/CD (lint + test + build + deploy) | P2 | ✅ Done (SPEC-P6) |
+| GitHub Actions CI/CD (dev→dev, main→prod, WIF keyless) | P2 | ✅ Done (SPEC-P6) |
 | `docs/infra-runbook.md` + `docs/infra-decisions.md` | P2 | ✅ Done (SPEC-P6) |
-| GCP bootstrap (Carlos): project, billing, APIs, AR | P2 | ⬜ Awaiting Carlos |
-| Deployer SA + WIF keyless auth | P2 | ⬜ Awaiting Carlos |
-| Secret Manager secrets | P2 | ⬜ Awaiting Carlos |
-| dev + prod Cloud Run services deployed | P2 | ⬜ Awaiting Carlos |
-| Domain mapping + budget alert | P2 | ⬜ Awaiting Carlos |
-| Resend + Workspace + DNS (email) | P2 | ⬜ Deferred |
+| GCP project `escala-dv-web`, billing, APIs, AR EU | P2 | ✅ Done (SPEC-P6) |
+| Deployer SA + WIF keyless auth | P2 | ✅ Done (SPEC-P6) |
+| Secret Manager: CONTACT_TO, CONTACT_FROM, EMAIL_API_KEY | P2 | ✅ Done (SPEC-P6) |
+| dev service live (public, noindex, DRY_RUN) | P2 | ✅ Done (SPEC-P6) |
+| prod service live (public, DRY_RUN until Resend ready) | P2 | ✅ Done (SPEC-P6) |
+| Domain mapping prepared (DNS not switched) | P2 | ✅ Done (SPEC-P6) |
+| Budget alert €10/month | P2 | ✅ Done (SPEC-P6) |
+| `next-env.d.ts` committed (CI tsc fix) | P2 | ✅ Done (SPEC-P6) |
+| Resend account + email verification | P2 | ⬜ Deferred (Phase 7) |
+| Google Workspace MX + DNS records | P2 | ⬜ Deferred (Phase 7) |
+| DNS switch to Cloud Run (go-live) | P2 | ⬜ Phase 7 |
 
 ### Phase 7 — Launch QA
 | Feature | Priority | Backlog ID |
@@ -261,3 +352,4 @@
 | Legal placeholders unresolved | Medium | `{{FECHA_ACTUALIZACION}}`, `{{REGISTRO_MERCANTIL}}`, `{{NIF_B88767520}}`, `{{JURISDICCION}}`, `{{REGION_EU_GOOGLE_CLOUD}}` — Carlos must fill before go-live. Visible as ambre highlights in dev. |
 | Legal advisor review required | Medium | Legal copy drafted from MAGUPELL contract + LSSI-CE/RGPD. Not legal advice. Advisor must review before go-live. |
 | Favicon artwork is a draft | Low | `app/icon.svg` — Carlos to review and replace with final approved logomark before launch. |
+| 8px horizontal overflow at 360px on `PageHeader` pages | Low | `.site-header`/`.page-header__*` overflow slightly at the narrowest tested width, on every page using `PageHeader` (`/como-trabajamos`, `/casos-de-exito`, `/modelo-de-alianza`). Found during SPEC-POLISH-09 live QA; pre-existing, not introduced by that change. Not yet triaged into the backlog. |

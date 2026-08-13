@@ -9,7 +9,7 @@ export const casesContent = {
   meta: {
     title: 'Case studies | Escala Digital Ventures',
     description:
-      'Real projects: MAGUPELL and BioZero. Automation with verified results.',
+      'Real projects: Magupell and BioZero. Automation with verified results.',
   },
   pageHeader: {
     eyebrow: 'A / CASE STUDIES',

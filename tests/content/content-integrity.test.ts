@@ -87,12 +87,17 @@ describe('homeContent', () => {
     })
   })
 
-  it('has exactly 4 proof readout figures', () => {
-    expect(homeContent.proof.figures).toHaveLength(4)
+  it('has exactly 6 proof readouts (SPEC-POLISH-03)', () => {
+    expect(homeContent.proof.readouts).toHaveLength(6)
   })
 
-  it('proof source is defined and non-empty', () => {
-    expect(homeContent.proof.source).toBeTruthy()
+  it('proof readouts contain real Magupell values (SPEC-POLISH-03)', () => {
+    const values = homeContent.proof.readouts.map((r) => r.value)
+    expect(values).toContain('167 → 216')
+    expect(values).toContain('1.803')
+    expect(values).toContain('7 meses')
+    expect(values).toContain('Sustituyó lo manual.')
+    expect(values).toContain('A medida de cada rol.')
   })
 
   it('finalCta email matches expected placeholder domain', () => {
@@ -132,8 +137,8 @@ describe('clients', () => {
     })
   })
 
-  it('MAGUPELL is the first client (production-proven proof point)', () => {
-    expect(clients[0].name).toBe('MAGUPELL')
+  it('Magupell is the first client (production-proven proof point)', () => {
+    expect(clients[0].name).toBe('Magupell')
   })
 })
 
@@ -162,13 +167,26 @@ describe('methodContent — Phase 2.1 (SPEC-P2.1 AC-7)', () => {
     expect(bodies).toContain('prototipo visual navegable')
   })
 
-  it('has exactly 6 pipeline nodes', () => {
-    expect(methodContent.pipeline.nodes).toHaveLength(6)
+  it('has exactly 5 execution-cycle stations (SPEC-POLISH-06 §2.2)', () => {
+    expect(methodContent.pipeline.stations).toHaveLength(5)
   })
 
-  it('every pipeline node has a label', () => {
-    methodContent.pipeline.nodes.forEach((node) => {
-      expect(node.label).toBeTruthy()
+  it('every station has a label, sub-label and actor', () => {
+    methodContent.pipeline.stations.forEach((station) => {
+      expect(station.label).toBeTruthy()
+      expect(station.sub).toBeTruthy()
+      expect(['escala', 'client']).toContain(station.actor)
+    })
+  })
+
+  it('exactly 2 stations are client-owned (approval + real use)', () => {
+    const clientStations = methodContent.pipeline.stations.filter((s) => s.actor === 'client')
+    expect(clientStations).toHaveLength(2)
+  })
+
+  it('no station is labelled "Calidad" — quality is not a station (§2.2)', () => {
+    methodContent.pipeline.stations.forEach((station) => {
+      expect(station.label.toLowerCase()).not.toContain('calidad')
     })
   })
 
@@ -176,13 +194,31 @@ describe('methodContent — Phase 2.1 (SPEC-P2.1 AC-7)', () => {
     expect(methodContent.pipeline.caption).toContain('FIG. 06')
   })
 
-  it('aiBuild has between 3 and 4 points', () => {
-    expect(methodContent.aiBuild.points.length).toBeGreaterThanOrEqual(3)
-    expect(methodContent.aiBuild.points.length).toBeLessThanOrEqual(4)
+  it('aiBuild figure caption references FIG. 12', () => {
+    expect(methodContent.aiBuild.figure.caption).toContain('FIG. 12')
   })
 
-  it('aiBuild lead is verbatim from Libro Ch. 7', () => {
-    expect(methodContent.aiBuild.lead).toContain('ingeniería asistida por agentes de IA')
+  it('aiBuild has exactly 3 named lanes and a four-item legend', () => {
+    expect(methodContent.aiBuild.figure.lanes).toHaveLength(3)
+    expect(methodContent.aiBuild.legend).toHaveLength(4)
+  })
+
+  it('aiBuild body reflects the engineering-judgement thesis (§3.2)', () => {
+    expect(methodContent.aiBuild.body).toContain('criterio senior')
+  })
+
+  it('method sections are lettered B–E in page reading order, no gap or duplicate', () => {
+    // Reading order on the page (SPEC-POLISH-06 + swap addendum):
+    // A·PageHeader → B·pipeline (flujo) → C·executionPractices → D·aiBuild → E·phaseCycle.
+    const lettersInReadingOrder = [
+      methodContent.pipeline.sectionIndex,
+      methodContent.executionPractices.sectionIndex,
+      methodContent.aiBuild.sectionIndex,
+      methodContent.phaseCycle.sectionIndex,
+    ]
+    expect(lettersInReadingOrder).toEqual(['B', 'C', 'D', 'E'])
+    // No duplicate letters regardless of order.
+    expect(new Set(lettersInReadingOrder).size).toBe(lettersInReadingOrder.length)
   })
 
   it('contains no Russian language (AC-7 grep guard)', () => {
@@ -318,7 +354,7 @@ describe('allianceContent — Phase 2.4 (SPEC-P2.4 AC-7)', () => {
     expect(allianceContent.seats).toHaveLength(5)
   })
 
-  it('exactly 2 seats are occupied (MAGUPELL + BIOZERO)', () => {
+  it('exactly 2 seats are occupied (Magupell + BioZero)', () => {
     const occupied = allianceContent.seats.filter((s) => s.state === 'occupied')
     expect(occupied).toHaveLength(2)
   })
@@ -328,12 +364,23 @@ describe('allianceContent — Phase 2.4 (SPEC-P2.4 AC-7)', () => {
     expect(free).toHaveLength(3)
   })
 
-  it('MAGUPELL and BIOZERO are the occupied seats', () => {
+  it('Magupell and BioZero are the occupied seats', () => {
     const occupiedNames = allianceContent.seats
       .filter((s) => s.state === 'occupied')
       .map((s) => s.name)
-    expect(occupiedNames).toContain('MAGUPELL')
-    expect(occupiedNames).toContain('BIOZERO')
+    expect(occupiedNames).toContain('Magupell')
+    expect(occupiedNames).toContain('BioZero')
+  })
+
+  // POLISH-09: casing must match the home page exactly (§2.2 "home wins")
+  it('occupied seat casing matches the home page allianceFigure seats exactly', () => {
+    const occupiedNames = allianceContent.seats
+      .filter((s) => s.state === 'occupied')
+      .map((s) => s.name)
+    const homeOccupiedNames = homeContent.allianceFigure.seats
+      .filter((s) => s.state === 'occupied')
+      .map((s) => s.name)
+    expect(occupiedNames.sort()).toEqual(homeOccupiedNames.sort())
   })
 
   // FR-4.1: exactly 3 planes

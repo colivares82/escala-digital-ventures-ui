@@ -25,12 +25,12 @@ export const allianceContent = {
     sectionEyebrow: 'B / PER QUÈ NOMÉS CINC',
     heading: 'Per què només cinc',
     body: 'Limitem deliberadament el nombre de clients actius —aproximadament cinc aliances— per garantir dedicació, proximitat i acompanyament continu. No és una limitació: és el model de negoci. Cada client rep una implicació profunda i accés directe al coneixement estratègic acumulat.',
-    constellationAria: "FIG. 05 — Constel·lació d'aliances: cinc places al voltant d'Escala, dues ocupades (MAGUPELL, BIOZERO) i tres disponibles.",
+    constellationAria: "FIG. 05 — Constel·lació d'aliances: cinc places al voltant d'Escala, dues ocupades (Magupell, BioZero) i tres disponibles.",
   },
 
   seats: [
-    { name: 'MAGUPELL', state: 'occupied' },
-    { name: 'BIOZERO',  state: 'occupied' },
+    { name: 'Magupell', state: 'occupied' },
+    { name: 'BioZero',  state: 'occupied' },
     { name: 'DISPONIBLE', state: 'free' },
     { name: 'DISPONIBLE', state: 'free' },
     { name: 'DISPONIBLE', state: 'free' },

@@ -137,4 +137,16 @@ describe('ServiceFig', () => {
     const svgTexts = container.querySelectorAll('svg text')
     expect(svgTexts.length).toBeGreaterThan(0)
   })
+
+  // ── SPEC-POLISH-05: shared canvas — all five variants use the same viewBox ─
+  it.each(SERVICE_FIXTURES)(
+    'variant "$variant" uses the shared 340×180 viewBox (canvas normalisation)',
+    ({ variant, labels, caption }) => {
+      const { container } = render(
+        <ServiceFig variant={variant} labels={labels} caption={caption} />,
+      )
+      const svg = container.querySelector('svg')
+      expect(svg?.getAttribute('viewBox')).toBe('0 0 340 180')
+    },
+  )
 })

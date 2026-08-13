@@ -33,10 +33,31 @@ export const homeContent = {
 
   /** Accessible labels for SVG diagrams (FIG captions). */
   diagrams: {
-    hero: 'Sistema manual que se transforma en una plataforma ordenada',
+    hero: 'De procesos manuales a valor real y medible mediante un sistema a medida',
     problem: 'Flujo operativo fragmentado entre hojas, correos y documentos',
     proof: 'Evolución verificada de la operación',
     alliance: 'Cinco alianzas, dedicación completa. Dos ocupadas.',
+  },
+
+  /**
+   * Hero narrative diagram (FIG.01) — SPEC-POLISH-01.
+   * All copy comes from here; no hardcoded strings in the component.
+   * Zone numbers and FIG number are not translated (kit grammar §3.3).
+   */
+  heroFigure: {
+    /** Zone labels (left → right) */
+    zones: ['01 · PROCESOS MANUALES', '02 · SISTEMA A MEDIDA', '03 · VALOR REAL Y MEDIBLE'],
+    /** Five named input process boxes */
+    inputs: ['CORREOS', 'HOJAS DE CÁLCULO', 'NOTAS', 'CATÁLOGO', 'HISTORIALES'],
+    /** System zone title and inner reordering label */
+    system: { title: '02 · SISTEMA A MEDIDA', innerLabel: 'ORDENA · MODELA' },
+    /** Two output value boxes: label (ambre) + sub (body) */
+    outputs: [
+      { label: 'INSIGHT', sub: 'Decisiones y datos' },
+      { label: 'OPTIMIZACIÓN', sub: 'de procesos' },
+    ],
+    /** Figcaption */
+    caption: 'FIG. 01 — DE MUCHOS PROCESOS MANUALES A VALOR REAL Y MEDIBLE',
   },
 
   hero: {
@@ -51,15 +72,44 @@ export const homeContent = {
 
   claims: sharedContent.claims,
 
+  /**
+   * Problem section (01 / PUNTO DE PARTIDA) — SPEC-POLISH-02.
+   * body is a two-paragraph tuple; both paragraphs rendered separately.
+   */
   problem: {
-    title: 'Tu negocio funciona. Tus sistemas, no.',
-    body: 'Hojas de cálculo, correos, documentos sueltos y el conocimiento en la cabeza de dos o tres personas. Funciona… hasta que deja de funcionar: el volumen crece, los errores se multiplican, la facturación se retrasa y el negocio depende de que nadie se ponga enfermo. Escala entra exactamente ahí: digitaliza y automatiza el corazón operativo de tu empresa y lo convierte en una plataforma propia sobre la que puedes crecer.',
+    title: 'Tu operativa llegó a su límite, no tus objetivos.',
+    body: [
+      'Has construido un negocio que funciona. Pero llega un punto en que la operativa —hojas de cálculo, correos, documentos sueltos, conocimiento en la cabeza de pocas personas— deja de acompañar el crecimiento: el volumen aumenta, los errores se multiplican y el negocio depende de que nadie falte.',
+      'Escala entra ahí: convierte ese corazón operativo en una plataforma propia sobre la que seguir creciendo.',
+    ] as const,
     symptoms: [
       'volumen que crece',
       'errores que se multiplican',
       'facturación que se retrasa',
       'dependencia de personas',
     ],
+  },
+
+  /**
+   * Problem flows diagram (FIG.02) — SPEC-POLISH-02.
+   * All copy comes from here; no hardcoded strings in the component.
+   * Piece labels and core lines are not translated (kit grammar §3.3 — mono labels).
+   */
+  problemFigure: {
+    /** Five named piece boxes arranged around the core */
+    pieces: [
+      'HOJAS DE CÁLCULO',
+      'CORREOS',
+      'NOTAS',
+      'CATÁLOGO',
+      'HISTORIAL',
+    ] as const,
+    /** Two-line core label (PROCESOS / MANUALES) */
+    core: ['PROCESOS', 'MANUALES'] as const,
+    /** Figcaption */
+    caption: 'FIG. 02 — UNA OPERATIVA QUE DEPENDE DE PROCESOS MANUALES: LOS FLUJOS NO SE COMPLETAN',
+    /** Small note line below the caption */
+    note: 'CADA PIEZA INTENTA CONECTARSE · EL FLUJO SE CORTA EN EL PASO MANUAL',
   },
 
   services: {
@@ -148,40 +198,103 @@ export const homeContent = {
     ],
   },
 
+  /**
+   * Proof section (04 / EVIDENCIA) — SPEC-POLISH-03.
+   * Real Magupell data. Readouts structured as an array for future multi-case
+   * generalization (BioZero etc.) — adding a new case is a data change only.
+   * kind: 'number' = Archivo display figure; 'phrase' = slightly smaller phrase.
+   * plotVariant: decorative micro-plot identifier (aria-hidden in component).
+   */
   proof: {
     title: 'Hechos, no promesas.',
-    /** Client name shown as source attribution in readout data labels. */
-    source: 'MAGUPELL',
-    figures: [
+    readouts: [
       {
-        value: '100+',
         label: 'REQUISITOS',
-        caption: 'implementados y verificados en producción',
+        value: '167 → 216',
+        kind: 'number',
+        caption: 'Requisitos funcionales refinados con iteración y prototipo.',
+        plotVariant: 'growth',
       },
       {
-        value: '200+',
         label: 'PRUEBAS',
-        caption: 'automatizadas sobre flujos reales',
+        value: '1.803',
+        kind: 'number',
+        caption: 'Pruebas automatizadas: 1.042 backend + 761 frontend. Estabilidad garantizada en cada cambio.',
+        plotVariant: 'steps',
       },
       {
-        value: 'JUL 2026',
-        label: 'PRODUCCIÓN',
-        caption: 'fecha verificada de puesta en marcha',
+        label: 'ENTORNOS',
+        value: '3 entornos',
+        kind: 'number',
+        caption: 'Local, desarrollo y producción, con pipelines protegidas.',
+        plotVariant: 'bars',
       },
       {
-        value: 'REAL',
-        label: 'OPERATIVA',
-        caption:
-          'clientes, proveedores y gestión interna operando en la plataforma',
+        label: 'TIEMPO A PRODUCCIÓN',
+        value: '7 meses',
+        kind: 'number',
+        caption: 'De los primeros requerimientos a producción.',
+        plotVariant: 'stair',
       },
-    ],
+      {
+        label: 'IMPACTO',
+        value: 'Sustituyó lo manual.',
+        kind: 'phrase',
+        caption: 'El sistema orquesta la operación y da insights de datos. En su primer mes, ya es una realidad para todos los usuarios.',
+        plotVariant: 'impact',
+      },
+      {
+        label: 'A MEDIDA',
+        value: 'A medida de cada rol.',
+        kind: 'phrase',
+        caption: 'Admin, cliente, inspector y proveedor: cada función con lo que necesita, con control y auditoría completa.',
+        plotVariant: 'roles',
+      },
+    ] as const,
     cases: clients,
+  },
+
+  /**
+   * Proof timeline diagram (FIG.04) — SPEC-POLISH-03.
+   * Real Magupell dates. All copy from here; no hardcoded strings in the component.
+   * timeline is a 5-tuple (chronological order).
+   */
+  proofFigure: {
+    timeline: [
+      { date: 'DIC 2025', deliverable: 'Requerimientos' },
+      { date: 'ENE 2026', deliverable: 'Prototipo' },
+      { date: 'ABR 2026', deliverable: 'Desarrollo' },
+      { date: 'MAY–JUN 2026', deliverable: 'Preproducción' },
+      { date: 'JUL 2026', deliverable: 'Producción' },
+    ] as const,
+    timelineCaption: 'FIG. 04 — DE LOS REQUERIMIENTOS A PRODUCCIÓN EN 7 MESES, CON FECHAS VERIFICADAS',
+    timelineAria: 'Cronología verificada de Magupell: de requerimientos en diciembre de 2025 a producción en julio de 2026',
   },
 
   alliance: {
     title: 'Cinco alianzas. Toda nuestra dedicación.',
     body: 'Limitamos deliberadamente el número de clientes activos para garantizar dedicación, cercanía y acompañamiento continuo. No es una limitación: es el modelo.',
     action: 'Conoce el modelo de alianza',
+  },
+
+  /**
+   * Alliance constellation figure (FIG.05) — SPEC-POLISH-04.
+   * Seats as a data array: future active alliance = data-only change.
+   * All copy from here; no hardcoded strings in the component.
+   * Brand spelling: "Magupell", "BioZero".
+   */
+  allianceFigure: {
+    seats: [
+      { name: 'Magupell',   state: 'occupied' },
+      { name: 'BioZero',    state: 'occupied' },
+      { name: 'DISPONIBLE', state: 'free' },
+      { name: 'DISPONIBLE', state: 'free' },
+      { name: 'DISPONIBLE', state: 'free' },
+    ],
+    caption: 'FIG. 05 — CINCO PLAZAS. DOS ALIANZAS ACTIVAS. DEDICACIÓN COMPLETA.',
+    subCaption: 'CADA ALIANZA: ACOMPAÑAMIENTO TÉCNICO · ESTRATÉGICO · VISIONARIO',
+    coreSubLabel: '2 ALIANZAS ACTIVAS · 3 DISPONIBLES',
+    figAria: 'Constelación de alianzas: Escala en el centro, dos alianzas activas (Magupell, BioZero) y tres plazas disponibles',
   },
 
   footer: sharedContent.footer,

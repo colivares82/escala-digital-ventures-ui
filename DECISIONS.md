@@ -14,6 +14,61 @@
 - Alliance model: the constellation communicates five intentionally limited alliances, with occupied and available positions.
 - `--ambre-dk` (#b85c00): dark amber token introduced in SPEC-P2.2 for the ServiceRow problem-line text on `--paper` surfaces. The pure `--ambre` (#ffb703) does NOT pass AA contrast on paper; `--ambre-dk` was chosen as the darkest amber shade that passes WCAG AA (4.5:1) on light backgrounds. Used exclusively for problem-line text in service rows and dossier field keys — no other use.
 
+## SPEC-POLISH-05 decisions (/que-hacemos FIG.08/09/11 fixes)
+
+- **Shared 340×180 canvas for all five ServiceFig variants (was 320×150).** FIG.08/09/11 needed the larger canvas to reproduce the approved wireframe geometry (module boxes sized to text, edge-to-edge flow segments, full-circle arc). To avoid five figures rendering at unequal heights in the shared 320px column, FIG.07 (`capture`) and FIG.10 (`product`) were given a **canvas-only normalisation**: `viewBox` changed to the same 340×180, and their existing (untouched) markup wrapped in one `<g transform="translate(10 15)">` via a shared `LegacyCanvas` helper. No coordinate, stroke, label, or animation inside FIG.07/FIG.10 changed — verified by dedicated geometry assertions in `tests/components/service-fig-polish-05.test.tsx` (asserts exact `cx`/`cy`/`r`/`x`/`height` on both variants' ambre-accented elements). Approved by Carlos (August 2026); amends SPEC-POLISH-05 §0/AC-5.
+- **FIG.08 connector endpoints computed geometrically, not hand-authored.** `pointOnCoreBorder()` derives each connector's core-side endpoint from the core center/radius and the module-facing anchor point, so every connector lands exactly on the ring border (distance from core center == radius, verified in tests) — never short, never crossing into the circle.
+- **FIG.11 full-circle arc via `stroke-dasharray`/`stroke-dashoffset` `<animate>`, not `<animateMotion>`.** The previous quarter-arc pulse used `<animateMotion>` tracing a path; the fix instead animates the arc's own `stroke-dashoffset` from full length to 0, which draws the complete loop continuously and, when `visible=false` (reduced-motion), simply omits `stroke-dasharray` so the arc renders as a complete, static circle — satisfying "reduced-motion → arc shown complete" without extra CSS.
+
+## SPEC-POLISH-10 decisions (/modelo-de-alianza "Por qué solo cinco" split layout)
+
+- **CSS-only, one file.** Recomposed the section into a 40/60 grid (text/diagram) at
+  ≥1024px purely via `app/globals.css`; no TSX or content change was needed since the
+  existing DOM order (eyebrow → text → stage) already matches both the stacked and split
+  layouts.
+- **Override block placement matters.** The ≥1024px media-query override must come
+  *after* the base `.alliance-why__*` rules in source order — a media query alone does
+  not raise specificity, so placing it earlier (as first attempted) let the later base
+  rules silently win. Caught during live measurement (stage `padding-inline` wasn't
+  actually zeroing out), fixed by reordering.
+- **AC-5 diagram-width target not fully met, and left as-is rather than patched around.**
+  The literal 40/60 split of `.page-shell`'s capped content width tops out the diagram
+  around 800–811px at 1440–1920px, ~50px *narrower* than POLISH-09's flat 900px cap.
+  Implemented exactly per the given ratio/gap/100%-of-column instructions rather than
+  adding an unspecified minimum-width rule to force the number up — see
+  `specs/spec-polish-10-why-five-layout.md` §3 for the full numbers and the open decision
+  (keep the literal ratio, or add a floor width).
+
+## SPEC-POLISH-09 decisions (/modelo-de-alianza constellation clipping fix)
+
+- **`size="large"` → `size="protagonist"`, component untouched.** The reported clipping
+  (`BIOZERO` → `BIOZE`, `DISPONIBLE` → `ONIBLE`) was a geometry-budget problem specific to
+  the `large` variant: fixed 420×420 viewBox, pentagon spans x=60…360, leaving only 60px of
+  margin for labels needing ~55-60px. The `protagonist` variant (960×620, responsive width)
+  already used on home leaves 280px of margin per side. Switching the page's `size` prop is
+  the entire fix — no change to `AllianceConstellation`'s geometry, props, or defaults.
+- **Casing conflict (BIOZERO vs BioZero) resolved in favor of home, per explicit approval.**
+  `content/{es,en,ca}/alliance.ts` used `BIOZERO`; `content/{es,en,ca}/home.ts`
+  `allianceFigure.seats` used `BioZero`. Corrected the alliance dictionaries to match home
+  exactly. This is a one-token data change (seat name), not the section's prose copy — the
+  eyebrow/heading/body/aria strings are untouched. A permanent regression test now asserts
+  the two dictionaries' occupied-seat names stay identical.
+- **Reveal on a home-tuned CSS rule: page-scoped counter-rule, not a component change.** The
+  home page has `.alliance-constellation--protagonist .ac-draw { opacity: 1 }` because home
+  renders the protagonist constellation without a reveal wrapper. `/modelo-de-alianza` wraps
+  it in the existing `DiagramReveal`, so a page-scoped, higher-specificity counter-rule
+  (`.alliance-why__stage .diagram-reveal[data-visible='true'] .ac-draw`) restores the
+  fade-in for this page only. The selector is unreachable outside `.alliance-why__stage`, so
+  home cannot regress.
+- **`coreSubLabel` intentionally omitted on `/modelo-de-alianza`.** No such copy exists in
+  `alliance.ts`; adding a new dictionary key was outside the approved scope. The alliance
+  page's constellation therefore lacks the "2 ALIANZAS ACTIVAS · 3 DISPONIBLES" sub-line
+  visible on home — a deliberate, documented gap, not an oversight.
+- **Pre-existing `.site-header`/`.page-header__*` 8px overflow at 360px left unfixed.** Live
+  measurement showed this on every `PageHeader`-using page (`/como-trabajamos`,
+  `/casos-de-exito`, `/modelo-de-alianza` alike), not introduced by this change and out of
+  this spec's scope (`PageHeader` is explicitly protected). Flagged as a follow-up.
+
 ## Phase 2.3 decisions
 
 - **Logo asset location (`app/assets/brand/` not `public/brand/`):** spec says `public/brand/`. Logos are stored instead as `app/assets/brand/magupell-logo.png` and `app/assets/brand/biozero-logo.png` and imported as Next.js static images (`StaticImageData`) via `next/image`. Rationale: (1) build fails at compile time if the file is missing (vs. silent 404 from `public/`); (2) content-hashed URLs for optimal long-term caching; (3) intrinsic width/height inferred automatically from the import. See `content/data/cases.ts` for the import.
@@ -53,3 +108,45 @@
 - **Rate limiter: in-memory token bucket, ephemeral on Cloud Run.** Spec FR-3.3 notes that Cloud Run instances are ephemeral so the in-memory rate limit resets on cold-start. Decision: acceptable pre-launch. A `// TODO(P6): swap to durable store (Redis/Upstash)` comment is in `app/api/contact/route.ts`. The limit (5/min/IP, configurable via `RATE_LIMIT_PER_MIN`) prevents casual abuse; the ephemeral reset is an acceptable compromise at this traffic level.
 
 - **Phase 2 status: COMPLETE (2.6 = last missing piece).** All interior pages ship: method, services, cases (2), alliance, about, contact. Phase 3 is folded into 2.6. Next milestone is Phase 4 (legal pages + analytics).
+
+## SPEC-CASE-01 decisions (Magupell case page rewrite)
+
+- **`CaseDossier` promoted to the canonical case template — approved deviation from §0.2.**
+  SPEC-CASE-01 §0.2 froze all shared components, including `ReadoutStrip`, `DossierField`,
+  `CapabilityGrid` and `CaseDossier` itself, and instructed: "if a shared component cannot
+  render a new section as specified, stop and report rather than modifying it." The new
+  Magupell structure (2×3 readout grid, role cards, dark governance block, two new figures)
+  cannot render through the old per-mode (`data-forward`/`capability-forward`) template. Given
+  the choice between (a) a page-local `MagupellDossier` leaving `CaseDossier` untouched, or
+  (b) upgrading `CaseDossier` itself and migrating BioZero onto it, Carlos explicitly chose
+  (b): "Use this dossier as defined, and extend it to Biozero, moving forward for CaseDossier,
+  this will be the source of truth." This supersedes AC-9 ("BioZero page byte-identical") by
+  design — BioZero's *copy* is unchanged, but its *rendering* now goes through the same
+  `CaseReadoutGrid` + `CaseNarrative` path as Magupell.
+- **Backward-compatible canonical shape, not a breaking rewrite.** `CaseDossierLocale` gained
+  two new **optional** fields, `readoutGrid` and `narrative`. `CaseDossier` renders the
+  canonical path when both are present and falls back to the legacy `ReadoutStrip` /
+  `DossierField` / `CapabilityGrid` rendering otherwise. This keeps AC-4 (a 3rd case needs only
+  data, no component changes) true for both shapes and required no changes to `ReadoutStrip`,
+  `DossierField`, or `CapabilityGrid` themselves — they remain in use by `/styleguide` and by
+  the legacy fallback path.
+- **Environments count resolved as 3 (not 2).** Spec §2 flagged this as blocking and explicit:
+  "Do not implement DAT.05 or that governance card until this is confirmed. Ask." Carlos
+  confirmed **3 entornos — local, desarrollo y producción, con pipelines protegidas**, matching
+  `content/es/home.ts → proof.readouts[2]` verbatim (already published on the home page). This
+  keeps the site internally consistent between the home evidence grid and the case dossier.
+- **`FIG. EXP-02` caption reused despite BioZero's `plate` string collision.** BioZero's header
+  plate is the literal string `'FIG. EXP-02\nESCALA · PRIMER CLIENTE'` (a different UI surface —
+  the engineering plate in `BrandHeader`, not an in-page figure caption). The wireframe assigns
+  `FIG. EXP-02` to Magupell's new operational-flow figure caption. Decision: keep both as-is;
+  they render in visually distinct contexts and neither is a global figure-numbering violation
+  in the sense the site's FIG.01–FIG.12 convention addresses (that convention numbers the home/
+  interior-page figures; the `FIG. EXP-0N` series is a separate, case-dossier-scoped label).
+  Flagged in `docs/CHANGELOG.md` rather than silently resolved.
+- **`CaseFlowFig` and `CaseTimelineLadder` render as HTML/CSS grids, not SVG.** The home
+  `ProofTimelineFig` uses an SVG stair; the case page's chronology ladder needed a full prose
+  detail line per milestone (SPEC-CASE-01 §3), which reads far better as HTML text than as SVG
+  `<text>`. Both new figures use bordered CSS grids with a CSS keyframe traversal accent
+  (`case-flow-traversal`, gated by `[data-visible="true"]` and disabled entirely under
+  `prefers-reduced-motion: reduce`), consistent with the project's existing `DiagramReveal` +
+  `data-visible` reveal pattern rather than introducing a new animation primitive.
