@@ -1,5 +1,16 @@
 # Progress
 
+## What works ✅ — SPEC-POLISH-05 additions
+
+| Feature | Status |
+|---------|--------|
+| ServiceFig FIG.08 (`platform`) — module boxes sized to text, connectors computed to land exactly on the core ring border, staggered looping pulses (previously missing animation) | Complete |
+| ServiceFig FIG.09 (`ai`) — flow line split into edge-to-edge segments (never crosses box text), opaque box fill, "DONDE APORTA" repositioned above the IA node off-diagram, IA connector meets PROCESO top edge | Complete |
+| ServiceFig FIG.11 (`evolve`) — nodes drawn on top of the circle with opaque fill (hides stroke behind), ambre arc now completes the FULL circle in a continuous loop (previously a static quarter) | Complete |
+| Shared 340×180 canvas across all 5 ServiceFig variants; FIG.07/FIG.10 canvas-normalised only (geometry byte-identical, verified by dedicated tests) | Complete |
+| `lib/motion-constants.ts` — new `SERVICE_FIG_*` timing/geometry constants (additive) | Complete |
+| 53 test files · 970 tests · 100% pass · build clean · TypeScript strict clean · 0 hardcoded hex | Complete |
+
 ## What works ✅ — SPEC-POLISH-04 additions
 
 | Feature | Status |

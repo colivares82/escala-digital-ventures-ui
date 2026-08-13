@@ -1,5 +1,33 @@
 # Changelog
 
+## [SPEC-POLISH-05] — August 2026 — /que-hacemos: FIG.08/09/11 overlap & layering fixes
+
+### Fixed
+- **FIG.08 (`platform`, ARQUITECTURA MODULAR)** — module boxes (USUARIOS · ROLES, DOMINIO, CORREO, DOCUMENTOS, FACTURACIÓN) resized to fit their labels (no text spilling outside); `PLATAFORMA` fits inside the core ring; connector endpoints computed geometrically from the core center/radius so every line lands exactly on the core border (verified: distance from core center == radius for all 5 connectors) — never short, never crossing in.
+- **FIG.09 (`ai`, IA EN EL PROCESO)** — flow line split into two edge-to-edge segments (`ENTRADA→PROCESO`, `PROCESO→DECISIÓN`) so it never crosses box text; process boxes given an opaque `--paper` fill as a second safeguard; "DONDE APORTA" repositioned above the IA node, off the diagram (previously overlapped the diagram); IA dashed connector now meets the PROCESO box's top edge exactly (was already close, confirmed correct in the rewrite).
+- **FIG.11 (`evolve`, EVOLUCIÓN CONTINUA)** — z-order corrected: circle stroke drawn first (underneath), the three nodes (USO, FEEDBACK, MEJORA) drawn last with an opaque `--paper` fill so the circle stroke is hidden behind each node (was previously drawn under the line with `fill="none"`, exposing the stroke through the nodes).
+
+### Added
+- **FIG.08 animation** — five staggered, looping module→core ambre pulses (`SERVICE_FIG_PLATFORM_PULSE_DUR_S`, `SERVICE_FIG_PLATFORM_PULSE_STAGGER_S`). This figure previously had no animation at all.
+- **FIG.09 animation** — pulses on both flow segments plus the dashed IA connector (`SERVICE_FIG_AI_FLOW_PULSE_DUR_S`, `SERVICE_FIG_AI_CONNECTOR_PULSE_DUR_S`).
+- **FIG.11 animation** — the ambre progress arc now traces the FULL circle continuously via a `stroke-dasharray`/`stroke-dashoffset` SVG `<animate>` (`SERVICE_FIG_EVOLVE_ARC_DUR_S`), replacing the previous static quarter-arc + traveling-dot pulse. `prefers-reduced-motion` renders the arc complete and static (no extra CSS needed).
+- `LegacyCanvas` helper in `components/service-fig.tsx` — wraps FIG.07/FIG.10's untouched markup in a single `translate(10 15)` to center it on the new shared 340×180 canvas.
+- `SERVICE_FIG_*` constant block in `lib/motion-constants.ts` (viewbox/offset/pulse-duration/arc-duration) — additive only.
+- `tests/components/service-fig-polish-05.test.tsx` — 12 new tests: FIG.08 connector-to-border geometry (computed proof), FIG.09 flow-segment count + opaque box fill + label placement, FIG.11 node z-order + full-circle arc command count, FIG.07/FIG.10 untouched-geometry guards.
+- 5 new tests in `tests/components/service-fig.test.tsx` (shared 340×180 viewBox across all 5 variants).
+
+### Changed
+- All five `ServiceFig` variants now render on a shared `0 0 340 180` viewBox (was `0 0 320 150`), so all five figures render at equal height in the 320px column. **Approved amendment** to SPEC-POLISH-05 §0/AC-5: FIG.07 (`capture`) and FIG.10 (`product`) receive a canvas-only change (viewBox + wrapping translate) — their drawing coordinates, strokes, labels, and animation timings are byte-identical.
+
+### Not changed
+- `/que-hacemos` page (PageHeader, layout, all five service rows' copy) — byte-identical.
+- `ServiceFig` component's public API/props — unchanged; only internal variant-drawing code changed.
+- All other pages/components, all content dictionaries — byte-identical.
+- `app/globals.css` — untouched (all new animation logic lives in SVG attributes).
+
+### Test results
+- 53 test files · 970 tests · 100% pass · build clean · TypeScript strict clean · lint clean · 0 hardcoded hex in `service-fig.tsx`
+
 ## [SPEC-POLISH-04] — August 2026 — Home section 05: constellation as protagonist
 
 ### Added

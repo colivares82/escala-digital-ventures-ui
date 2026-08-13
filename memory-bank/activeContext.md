@@ -1,10 +1,24 @@
 # Active Context
 
-_Last updated: August 2026 (SPEC-POLISH-04 COMPLETE — home section 05 constellation as protagonist)_
+_Last updated: August 2026 (SPEC-POLISH-05 COMPLETE — /que-hacemos FIG.08/09/11 overlap & layering fixes)_
 
 ## Current state
 
-**Phase 6 COMPLETE + SPEC-POLISH-02 COMPLETE + SPEC-POLISH-03 COMPLETE + SPEC-POLISH-04 COMPLETE.** Both Cloud Run environments are live. CI/CD pipeline is fully operational. Home section 05 "Modelo de alianza" has been polished: the constellation is now the protagonist (960×620 viewBox, larger core/nodes), connectors meet the ring edge, labels are anchored by direction (no overlap), traveling ambre pulse animation for active seats, GridBackground reused, all copy translatable (ES/EN/CA). Carlos is working on Phase 7 content/QA before DNS switch.
+**Phase 6 COMPLETE + SPEC-POLISH-02/03/04/05 COMPLETE.** Both Cloud Run environments are live. CI/CD pipeline is fully operational. `/que-hacemos` FIG.08 (arquitectura modular), FIG.09 (IA en el proceso), and FIG.11 (evolución continua) had overlap/layering defects (text spilling, flow line crossing text, misplaced label, nodes under the line) — all three fixed surgically in `ServiceFig`, with animations preserved/corrected. Carlos is working on Phase 7 content/QA before DNS switch.
+
+## What was done in SPEC-POLISH-05
+
+### /que-hacemos FIG.08/09/11 geometry & layering fixes
+- **FIG.08 (`platform`)** — module boxes resized to fit their text; `PLATAFORMA` fits inside the core ring; connector endpoints computed geometrically (`pointOnCoreBorder()`) so every line lands exactly on the core border; five staggered, looping module→core pulses added (previously this figure had none).
+- **FIG.09 (`ai`)** — flow line split into two edge-to-edge segments so it never crosses box text; process boxes given opaque `--paper` fill as a second safeguard; "DONDE APORTA" moved above the IA node, off the diagram; IA dashed connector meets the PROCESO box's top edge exactly; pulses added on both flow segments and the IA connector.
+- **FIG.11 (`evolve`)** — z-order fixed: circle stroke drawn first, the three nodes drawn last with opaque `--paper` fill (hides the stroke behind them); the ambre progress arc now traces the FULL circle via a `stroke-dasharray`/`stroke-dashoffset` `<animate>` (previously a static quarter-arc with a traveling dot); reduced-motion renders the arc complete and static (no extra CSS needed — `stroke-dasharray` is simply omitted when `visible=false`).
+- **Canvas normalisation (approved amendment)** — all five ServiceFig variants now share a 340×180 viewBox (was 320×150). FIG.07/FIG.10 receive canvas-only changes (new `LegacyCanvas` wrapper + `translate(10 15)`) — their drawing coordinates are byte-identical, verified by dedicated tests.
+- **`lib/motion-constants.ts`** — additive `SERVICE_FIG_*` block (viewbox/offset/pulse-duration/arc-duration constants); no existing export touched.
+- **Diff scope** — `components/service-fig.tsx`, `lib/motion-constants.ts`, `tests/components/service-fig.test.tsx`, `tests/components/service-fig-polish-05.test.tsx` (new). No page, no other component, no dictionary touched.
+
+### Test results
+- 53 test files · 970 tests · 100% pass · build clean · TypeScript strict clean · lint clean
+- No hardcoded hex in `service-fig.tsx`
 
 ## What was done in SPEC-POLISH-04
 
@@ -123,7 +137,7 @@ Carlos is working on content/QA over the next few days. When ready:
 - **Favicon artwork:** Carlos to review draft and replace with final approved logomark
 - **EN/CA copy register:** Carlos to review and sign off (AC-9)
 - **Real imagery:** case-study context images pending from clients
-- **ServiceFig variants:** DRAFT VISUAL — Carlos will iterate one-by-one after review
+- **ServiceFig variants:** FIG.08/09/11 geometry fixed (SPEC-POLISH-05); FIG.07/FIG.10 canvas-normalised only. Still DRAFT VISUAL overall — Carlos may iterate further after live review
 - **Logo-display permission:** Carlos to confirm for Magupell + BioZero before Phase 7 launch
 - **Analytics:** dropped by Carlos decision (SPEC-P4 §0). No analytics, no banner.
 - **Rate limit store:** in-memory. Swap to Redis/Upstash if abuse observed.
