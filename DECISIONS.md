@@ -20,6 +20,25 @@
 - **FIG.08 connector endpoints computed geometrically, not hand-authored.** `pointOnCoreBorder()` derives each connector's core-side endpoint from the core center/radius and the module-facing anchor point, so every connector lands exactly on the ring border (distance from core center == radius, verified in tests) — never short, never crossing into the circle.
 - **FIG.11 full-circle arc via `stroke-dasharray`/`stroke-dashoffset` `<animate>`, not `<animateMotion>`.** The previous quarter-arc pulse used `<animateMotion>` tracing a path; the fix instead animates the arc's own `stroke-dashoffset` from full length to 0, which draws the complete loop continuously and, when `visible=false` (reduced-motion), simply omits `stroke-dasharray` so the arc renders as a complete, static circle — satisfying "reduced-motion → arc shown complete" without extra CSS.
 
+## SPEC-POLISH-10 decisions (/modelo-de-alianza "Por qué solo cinco" split layout)
+
+- **CSS-only, one file.** Recomposed the section into a 40/60 grid (text/diagram) at
+  ≥1024px purely via `app/globals.css`; no TSX or content change was needed since the
+  existing DOM order (eyebrow → text → stage) already matches both the stacked and split
+  layouts.
+- **Override block placement matters.** The ≥1024px media-query override must come
+  *after* the base `.alliance-why__*` rules in source order — a media query alone does
+  not raise specificity, so placing it earlier (as first attempted) let the later base
+  rules silently win. Caught during live measurement (stage `padding-inline` wasn't
+  actually zeroing out), fixed by reordering.
+- **AC-5 diagram-width target not fully met, and left as-is rather than patched around.**
+  The literal 40/60 split of `.page-shell`'s capped content width tops out the diagram
+  around 800–811px at 1440–1920px, ~50px *narrower* than POLISH-09's flat 900px cap.
+  Implemented exactly per the given ratio/gap/100%-of-column instructions rather than
+  adding an unspecified minimum-width rule to force the number up — see
+  `specs/spec-polish-10-why-five-layout.md` §3 for the full numbers and the open decision
+  (keep the literal ratio, or add a floor width).
+
 ## SPEC-POLISH-09 decisions (/modelo-de-alianza constellation clipping fix)
 
 - **`size="large"` → `size="protagonist"`, component untouched.** The reported clipping

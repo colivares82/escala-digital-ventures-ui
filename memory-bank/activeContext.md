@@ -1,10 +1,19 @@
 # Active Context
 
-_Last updated: August 2026 (SPEC-POLISH-09 COMPLETE — /modelo-de-alianza constellation clipping fix)_
+_Last updated: August 2026 (SPEC-POLISH-10 COMPLETE — /modelo-de-alianza "Por qué solo cinco" split layout)_
 
 ## Current state
 
-**Phase 6 COMPLETE + SPEC-POLISH-02/03/04/05/06/07/09 COMPLETE (+ POLISH-07 hotfix) + SPEC-CASE-01 COMPLETE (+ hotfix).** Both Cloud Run environments are live. CI/CD pipeline is fully operational. `/casos-de-exito/magupell` was rewritten in ES/EN/CA with verified production figures (was carrying pre-launch `100+`/`200+` placeholders and invoicing language); `CaseDossier` was promoted to a single canonical case template (approved deviation — see below) and BioZero was migrated onto it with unchanged copy. Carlos is working on Phase 7 content/QA before DNS switch.
+**Phase 6 COMPLETE + SPEC-POLISH-02/03/04/05/06/07/09/10 COMPLETE (+ POLISH-07 hotfix) + SPEC-CASE-01 COMPLETE (+ hotfix).** Both Cloud Run environments are live. CI/CD pipeline is fully operational. `/casos-de-exito/magupell` was rewritten in ES/EN/CA with verified production figures (was carrying pre-launch `100+`/`200+` placeholders and invoicing language); `CaseDossier` was promoted to a single canonical case template (approved deviation — see below) and BioZero was migrated onto it with unchanged copy. Carlos is working on Phase 7 content/QA before DNS switch.
+
+### SPEC-POLISH-10 — `/modelo-de-alianza` "Por qué solo cinco" split layout (COMPLETE)
+CSS-only (`app/globals.css`, +54 lines, one file). At ≥1024px the section is now a 40/60
+grid (text/diagram, 56px gap, centred) instead of POLISH-09's stacked layout; below that
+it still stacks. Section height at 1440px down 1154.4px → 767.7px (−33%). One deviation:
+diagram width at 1440px (801.6px) is narrower than POLISH-09's flat 900px cap (852px) —
+the literal result of the mandated 40/60 ratio against the sitewide `.page-shell` cap;
+implemented as specified rather than patched. Full writeup:
+`specs/spec-polish-10-why-five-layout.md`.
 
 ### SPEC-POLISH-09 — `/modelo-de-alianza` constellation clipping fix (COMPLETE)
 "Por qué solo cinco" rendered `AllianceConstellation` at `size="large"` (fixed 420×420

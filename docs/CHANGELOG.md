@@ -1,5 +1,23 @@
 # Changelog
 
+## [SPEC-POLISH-10] — August 2026 — `/modelo-de-alianza` "Por qué solo cinco" split layout
+
+CSS-only change (`app/globals.css`, one file, +54 lines). At ≥1024px the section is now a
+40/60 grid (text left, `AllianceConstellation` right, 56px gap, vertically centred)
+instead of the POLISH-09 stacked layout; below 1024px it still stacks, with a new 620px
+cap on the diagram between 640–1023px. Section padding at ≥1024px reduced 8rem → 6rem.
+No TSX or content changed — `AllianceConstellation`, `GridBackground`,
+`components/pages/alliance.tsx`, and all `content/**` are untouched.
+
+Verified live over CDP: 40/60 split exact at 1024/1440/1920px, zero clipped labels at
+360–1920px × ES/EN/CA, heading doesn't overflow its column at 1024px in any locale,
+section height at 1440px down from 1154.4px to 767.7px (−33%), home page unaffected,
+scroll-reveal and reduced-motion both still correct. One deviation: the diagram's
+rendered width at 1440px (801.6px) came out narrower than POLISH-09's flat 900px cap
+(852px) — the literal arithmetic result of the mandated 40/60 split against the sitewide
+`.page-shell` max-width. Implemented exactly as specified rather than patched around; see
+`specs/spec-polish-10-why-five-layout.md` §3.
+
 ## [SPEC-POLISH-09] — August 2026 — `/modelo-de-alianza` constellation clipping fix
 
 ### Bug
