@@ -82,3 +82,29 @@ export const PROBLEM_CORE_PULSE_SPEED = 0.06
 
 /** Amplitude of the core scale pulse (fraction of base scale). */
 export const PROBLEM_CORE_PULSE_AMPLITUDE = 0.03
+
+// ── ServiceFig — FIG.08/09/11 geometry fixes (SPEC-POLISH-05) ─────────────────
+
+/** Shared canvas for all five ServiceFig variants (was 320×150; normalised so
+ *  FIG.08/09/11 match the approved wireframe while FIG.07/10 keep identical
+ *  geometry, just centered on the larger canvas via a translate wrapper). */
+export const SERVICE_FIG_VIEWBOX_W = 340
+export const SERVICE_FIG_VIEWBOX_H = 180
+
+/** Translate offset that centers the legacy 320×150 geometry (FIG.07/10)
+ *  inside the shared 340×180 canvas without touching any coordinate. */
+export const SERVICE_FIG_LEGACY_OFFSET_X = 10
+export const SERVICE_FIG_LEGACY_OFFSET_Y = 15
+
+/** FIG.08 — duration of a single module→core connector pulse. */
+export const SERVICE_FIG_PLATFORM_PULSE_DUR_S = 1.8
+/** FIG.08 — stagger delay between successive module pulses (seconds), looping. */
+export const SERVICE_FIG_PLATFORM_PULSE_STAGGER_S = 0.35
+
+/** FIG.09 — duration of a pulse traveling one flow segment. */
+export const SERVICE_FIG_AI_FLOW_PULSE_DUR_S = 1.3
+/** FIG.09 — duration of the pulse traveling the dashed IA connector. */
+export const SERVICE_FIG_AI_CONNECTOR_PULSE_DUR_S = 1.1
+
+/** FIG.11 — duration for the ambre arc to complete one full loop. */
+export const SERVICE_FIG_EVOLVE_ARC_DUR_S = 4
