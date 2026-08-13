@@ -8,10 +8,11 @@
 import type { MethodDictionary } from '@/content/types'
 
 export const methodContent = {
+  // SEO-01 §3.2 — primary term: "how custom software gets built".
   meta: {
-    title: 'How we work | Escala Digital Ventures',
+    title: 'How We Work — From Manual Process to Platform',
     description:
-      'The Escala Growth Framework: ten phases that connect business, people, processes and technology.',
+      'A spec-driven, AI-assisted method under senior judgement: you approve a navigable prototype before we build, and quality is proven with automated tests.',
   },
 
   pageHeader: {
@@ -116,6 +117,40 @@ export const methodContent = {
       { label: 'EXECUTION', text: 'AI agents working in parallel, always within that frame.' },
       { label: 'CONTROL', text: 'Senior judgement and verifiable quality before anything reaches production.' },
       { label: 'COMPOUNDING', text: 'Every real project refines the system that governs the next one.' },
+    ],
+  },
+
+  /** Q&A block — SEO-01 §5.6 / §5.8. British register; EN figures: 1,803. */
+  faq: {
+    sectionEyebrow: 'F / FREQUENTLY ASKED QUESTIONS',
+    sectionIndex: 'F',
+    heading: 'Frequently asked questions',
+    items: [
+      {
+        question: 'What is a specification, and why do I approve it before you build?',
+        answer:
+          'It is the document describing what will be built before any code is written: business context, numbered requirements, edge cases and acceptance criteria. Where there is an interface, it includes a navigable visual prototype. You approve it. That way misunderstandings get resolved when they cost a conversation, not when they cost a build.',
+      },
+      {
+        question: 'Do you use AI to develop? Does that affect quality?',
+        answer:
+          'We do use it, governed by an internal library of standards and patterns proven in production, and always under senior review. The effect is the speed of a full team with the coherence of a single mind. What does not change is the judgement: deciding what gets built, and verifying it was built properly, stays human.',
+      },
+      {
+        question: 'How do you prove that what you deliver works?',
+        answer:
+          'With verifiable facts rather than promises: automated test coverage, separate environments and stability in production. The Magupell platform rests on 1,803 automated tests and three environments with protected deployment.',
+      },
+      {
+        question: 'What happens after go-live?',
+        answer:
+          'That is where the long part of the relationship begins. Every alliance in production includes continuous support and evolution with full traceability of the work: real user feedback is gathered, prioritised, specified and shipped in short cycles. The product improves every month.',
+      },
+      {
+        question: 'How much time does my team have to commit?',
+        answer:
+          'Less than people fear, but not zero. We need access to whoever genuinely knows the process, above all in the first weeks and at each specification review. After that, the load concentrates on deciding and validating, not on managing.',
+      },
     ],
   },
 } as const satisfies MethodDictionary

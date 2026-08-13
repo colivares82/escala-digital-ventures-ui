@@ -1,5 +1,64 @@
 # Changelog
 
+## [SEO-01] — August 2026 — Search & AI discoverability
+
+Surgical SEO pass across all 27 routes (9 pages × 3 locales) plus the 6 case-detail metas.
+No layout change, no shared component touched, every `H1` byte-identical.
+
+### Fixed
+- **Every page title was double-branded.** `app/layout.tsx` applied
+  `template: '%s | Escala Digital Ventures'` on top of dictionary titles that already ended
+  in the same suffix, so production rendered e.g. `Qué hacemos | Escala Digital Ventures |
+  Escala Digital Ventures` — over the 60-char budget on all 27 routes. The existing
+  ≤60 guard never caught it because it measured the dictionary string, not the rendered
+  title. Template is now pass-through (`'%s'`); the new guard asserts the **rendered** title.
+- **`og:image` was never emitted.** `app/opengraph-image.tsx` existed and returned 200, but
+  `generateMetadata` returned an `openGraph` object without `images`, which suppresses
+  Next's file-convention injection. Fixed by not overriding `openGraph.images`.
+- **Vitest collected the suite twice after a build.** `next build` (`output: 'standalone'`)
+  copies `tests/` into `.next/standalone/`; vitest had no `.next` exclusion, so
+  `build && test:coverage` ran 140 files / 2048 tests and skewed coverage. Excluded in
+  `vitest.config.ts` (pre-existing latent CI hazard, surfaced by this work).
+
+### Added
+- **Structured data (§6)** — one server-rendered `<script type="application/ld+json">` per
+  page carrying an `@graph`: `Organization`+`ProfessionalService`, `Person` (founder),
+  `WebSite`, `WebPage`/`ContactPage`, `BreadcrumbList`, 5× `Service` (on `/que-hacemos`),
+  `Article` (case pages), `FAQPage` (only the 3 Q&A pages). `lib/seo/` + `components/json-ld.tsx`.
+  Locality-level address only (no `streetAddress`/`postalCode`); `Organization.sameAs`
+  omitted pending the company LinkedIn; no `vatID`/`taxID` while `/aviso-legal` holds
+  placeholder tokens; no telephone node.
+- **Q&A blocks (§5)** — new `FaqBlock` component on `/que-hacemos`, `/como-trabajamos` and
+  `/modelo-de-alianza`, in all three locales (16 Q&A pairs per locale). Always expanded, no
+  accordion, no `<details>`, `<h3>` + `<p>`, present in server-rendered HTML with JS disabled.
+- **`/llms.txt` (§7.5)** — new static route, `text/plain`, carrying the canonical entity
+  definition, service lines, alliance model, verified facts and key pages in 3 locales.
+- **`robots.txt`** — 12 AI/search crawlers now named explicitly; `/api/` added to disallow.
+- **`sitemap.xml`** — `x-default` alternate + real content-derived `lastmod` (mtime of each
+  route's content modules, never build time).
+- **Tests** — 6 new files, +198 tests: `faq-block`, `schema`, `page-graph`, `page-meta`,
+  `crawl`, and a permanent `seo-prohibitions-guard` sweeping every locale + the JSON-LD
+  output for the §0.3 prohibitions (`100+`/`200+`, invoicing language, code-ownership
+  claims, former employers, Russian, `MAGUPELL` casing, colivares.com links, street address).
+
+### Changed
+- All 27 page metas + 6 case-detail metas replaced with the §3 strings.
+- Full OG/Twitter set: `og:type` (`article` on case pages), `og:site_name`,
+  `og:locale:alternate`, `twitter:card: summary_large_image`. EN is now `en_GB`, not `en_US`.
+- Visible copy: exactly the 9 rows in §4 — home hero sub-line + eyebrow (ES/EN/CA),
+  `/que-hacemos` lead, service 1 and 3 lead sentences, `/modelo-de-alianza` lead, and the
+  `/sobre-escala` lead, which now **imports** the canonical definition from `lib/seo/entity.ts`
+  so the three surfaces required to match by AC-19 cannot drift.
+
+### Notes
+- §4.8 (generic anchor text) and §4.9 (image `alt`) were audited and found **already
+  compliant** — no changes needed.
+- §5.4 says "reuse `Section`"; no such shared component exists in this repo. `FaqBlock`
+  follows the established `<section>` + `.page-shell` + `SectionIndex` BEM pattern instead.
+- **The domain is not yet serving this site.** `escaladigitalventures.com` still resolves to
+  GoDaddy parking, so §7.4 (single canonical host) and §9 (Search Console / Bing) remain
+  open for Carlos. Full audit in the SEO-01 Step 0 report.
+
 ## [SPEC-POLISH-10] — August 2026 — `/modelo-de-alianza` "Por qué solo cinco" split layout
 
 CSS-only change (`app/globals.css`, one file, +54 lines). At ≥1024px the section is now a

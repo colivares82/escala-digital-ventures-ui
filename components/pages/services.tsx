@@ -4,6 +4,7 @@
  * Spec: SPEC-P2.2
  */
 
+import { FaqBlock } from '@/components/faq-block'
 import { FinalCTA } from '@/components/final-cta'
 import { IdealClientNote } from '@/components/ideal-client-note'
 import { PageHeader } from '@/components/page-header'
@@ -70,6 +71,14 @@ export function ServicesPage({ dict, locale }: { dict: Dictionary; locale: Local
         body={idealClient.body}
         cta={idealClient.cta}
         ctaHref={contactHref}
+      />
+
+      {/* C · Q&A — after the last content section, before FinalCTA (SEO-01 §5.2) */}
+      <FaqBlock
+        sectionEyebrow={services.faq.sectionEyebrow}
+        sectionIndex={services.faq.sectionIndex}
+        heading={services.faq.heading}
+        items={services.faq.items}
       />
 
       {/* FinalCTA — reused component (abisal) */}

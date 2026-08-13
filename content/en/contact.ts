@@ -6,10 +6,11 @@
 import type { ContactDictionary } from '@/content/types'
 
 export const contactContent = {
+  // SEO-01 §3.2 — primary term: "contact a technology partner".
   meta: {
-    title: "Let's talk | Escala Digital Ventures",
+    title: "Contact — Let's Talk About Your Business | Escala",
     description:
-      'Tell us what is holding back your growth. We listen before we propose — if we fit, we say so honestly.',
+      'Tell us what is holding your company’s growth back. We listen before proposing and say honestly whether we can help and whether we fit as partners.',
   },
   pageHeader: {
     eyebrow: 'A / CONVERSATION',

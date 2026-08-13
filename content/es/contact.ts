@@ -9,10 +9,11 @@
 import type { ContactDictionary } from '@/content/types'
 
 export const contactContent = {
+  // SEO-01 §3.1 — primary term: "contactar socio tecnológico".
   meta: {
-    title: 'Hablemos | Escala Digital Ventures',
+    title: 'Contacto — Hablemos de tu negocio | Escala',
     description:
-      'Cuéntanos qué frena tu crecimiento. Escuchamos antes de proponer — si encajamos, lo decimos con honestidad.',
+      'Cuéntanos qué frena el crecimiento de tu empresa. Escuchamos antes de proponer y te decimos con honestidad si podemos ayudarte y si encajamos como socios.',
   },
   pageHeader: {
     eyebrow: 'A / CONVERSACIÓN',

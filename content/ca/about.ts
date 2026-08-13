@@ -7,18 +7,22 @@
  * Ownership rule (SPEC-FIX-01): no code-ownership wording.
  */
 import type { AboutDictionary } from '@/content/types'
+import { CANONICAL_DEFINITION } from '@/lib/seo/entity'
 
 export const aboutContent = {
+  // SEO-01 §3.3 — primary term: "estudi de producte i tecnologia Barcelona".
   meta: {
-    title: 'Sobre Escala | Estudi de producte i tecnologia',
+    title: 'Sobre Escala — Soci tecnològic a Mataró, Barcelona',
     description:
-      'ADN, valors, els 10 principis i l\'experiència darrere d\'Escala. Mataró, Barcelona.',
+      'Més de dues dècades construint plataformes de programari empresarial d\'abast global, ara al servei d\'un nombre reduït d\'empreses en creixement.',
   },
 
   ceremonial: {
     kicker: 'A · SOBRE ESCALA · ESTUDI DE PRODUCTE I TECNOLOGIA',
+    // H1 unchanged — brand asset (SEO-01 §0.2 / AC-3).
     h1: 'Construïm capacitats, no aplicacions.',
-    sub: 'Escala Digital Ventures, S.L.U. és un estudi de producte i tecnologia amb seu a Mataró (Barcelona), constituït el 2026. Existim perquè un nombre reduït d\'empreses creixi mitjançant tecnologia entesa com a estratègia de negoci.',
+    // SEO-01 §4.7 / AC-19 — canonical definition verbatim (imported, see ES).
+    sub: `${CANONICAL_DEFINITION.ca} Constituïda el 2026, existim perquè un nombre reduït d'empreses creixi mitjançant tecnologia entesa com a estratègia de negoci.`,
   },
 
   dna: {

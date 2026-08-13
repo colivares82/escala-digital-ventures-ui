@@ -7,6 +7,7 @@
 import { AllianceConstellation } from '@/components/alliance-constellation'
 import { AlliancePlanes } from '@/components/alliance-planes'
 import { CommitmentsBand } from '@/components/commitments-band'
+import { FaqBlock } from '@/components/faq-block'
 import { FinalCTA } from '@/components/final-cta'
 import { PageHeader } from '@/components/page-header'
 import { DiagramReveal, Reveal } from '@/components/motion-runtime'
@@ -67,6 +68,14 @@ export function AlliancePage({ dict, locale }: { dict: Dictionary; locale: Local
         sectionEyebrow={commitments.sectionEyebrow}
         heading={commitments.heading}
         items={commitments.items}
+      />
+
+      {/* E · Q&A — after the last content section, before FinalCTA (SEO-01 §5.2) */}
+      <FaqBlock
+        sectionEyebrow={alliance.faq.sectionEyebrow}
+        sectionIndex={alliance.faq.sectionIndex}
+        heading={alliance.faq.heading}
+        items={alliance.faq.items}
       />
 
       <FinalCTA dict={dict} locale={locale} />

@@ -15,6 +15,7 @@
 import { AiBuildBlock } from '@/components/ai-build-block'
 import { ExecutionCycleFig } from '@/components/execution-cycle-fig'
 import { ExecutionPractices } from '@/components/execution-practices'
+import { FaqBlock } from '@/components/faq-block'
 import { FinalCTA } from '@/components/final-cta'
 import { PageHeader } from '@/components/page-header'
 import { PhaseCycle } from '@/components/phase-cycle'
@@ -82,6 +83,14 @@ export function MethodPage({ dict, locale }: { dict: Dictionary; locale: Locale 
           // action intentionally omitted — self-link suppressed on the method page (FR-3.3)
         />
       </section>
+
+      {/* F · Q&A — after the last content section, before FinalCTA (SEO-01 §5.2) */}
+      <FaqBlock
+        sectionEyebrow={method.faq.sectionEyebrow}
+        sectionIndex={method.faq.sectionIndex}
+        heading={method.faq.heading}
+        items={method.faq.items}
+      />
 
       <FinalCTA dict={dict} locale={locale} />
     </>

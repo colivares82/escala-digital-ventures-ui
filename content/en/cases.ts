@@ -6,10 +6,11 @@
 import type { CasesDictionary } from '@/content/types'
 
 export const casesContent = {
+  // SEO-01 §3.2 — primary term: "process digitisation case studies".
   meta: {
-    title: 'Case studies | Escala Digital Ventures',
+    title: 'Case Studies — Manual Processes Turned Into Platforms',
     description:
-      'Real projects: Magupell and BioZero. Automation with verified results.',
+      'Magupell and BioZero: two companies that replaced manual operations with a platform of their own. Verifiable figures, published with client permission.',
   },
   pageHeader: {
     eyebrow: 'A / CASE STUDIES',
