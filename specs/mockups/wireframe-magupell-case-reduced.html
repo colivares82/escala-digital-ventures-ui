@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WIREFRAME — Expediente Magupell · versión reducida (launch) · Escala</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Instrument+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F7F4; --ink:#16181D; --mar:#0E3A5D; --abisal:#0A2B45;
+    --amber:#FFB703; --amber-dark:#B85C00;
+    --rule:rgba(22,24,29,.14); --muted:rgba(22,24,29,.62);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Instrument Sans',system-ui,sans-serif;line-height:1.6}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+  .mono{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+  h1,h2,h3{font-family:'Archivo',sans-serif;font-stretch:112%;letter-spacing:-.02em;line-height:1.05;margin:0}
+  h1{font-size:clamp(2.2rem,4.4vw,3.6rem);font-weight:600}
+  h2{font-size:clamp(1.5rem,2.4vw,2.1rem);font-weight:600}
+  h3{font-size:1.05rem;font-weight:600;letter-spacing:0}
+  p{margin:0 0 14px}
+  .note{background:#fff5d6;border:1px solid var(--amber-dark);padding:10px 14px;margin:0 0 6px;font-size:12px;font-family:'IBM Plex Mono',monospace}
+  .cut{background:#f0f0ec;border:1px dashed rgba(22,24,29,.35);color:var(--muted);padding:10px 14px;margin:18px 0;font-size:12px;font-family:'IBM Plex Mono',monospace}
+  .sec{padding:64px 0;border-top:1px solid var(--rule)}
+  .idx{display:flex;gap:20px;margin-bottom:22px;align-items:baseline}
+  .idx .num{font-family:'IBM Plex Mono',monospace;font-size:26px;color:var(--mar);font-weight:500}
+  .idx .lbl{color:var(--amber-dark)}
+  .lead{max-width:62ch;font-size:1.05rem}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--rule)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--rule)}
+  .cell{padding:22px 24px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+  .cell .k{color:var(--muted);margin-bottom:10px}
+  .cell .v{font-family:'IBM Plex Mono',monospace;font-size:30px;color:var(--mar);line-height:1;margin-bottom:8px}
+  .cell .u{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);line-height:1.5}
+  .cell .tick{width:22px;height:2px;background:var(--amber-dark);margin-bottom:12px}
+  .roles{display:grid;grid-template-columns:repeat(2,1fr);border:1px solid var(--rule)}
+  .role{padding:24px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+  .role .r{color:var(--amber-dark);margin-bottom:8px}
+  .dark{background:var(--abisal);color:#EAF0F5}
+  .dark .idx .num{color:var(--amber)} .dark .lbl{color:var(--amber)}
+  .dark .cell,.dark .grid2{border-color:rgba(255,255,255,.18)}
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--rule);margin-top:26px}
+  .step{padding:18px;border-right:1px solid var(--rule)}
+  .step .d{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--amber-dark);letter-spacing:.12em}
+  .step .t{font-family:'Archivo';font-weight:600;margin:6px 0 4px}
+  .step .x{font-size:.85rem;color:var(--muted)}
+  .cap{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+  figure{margin:28px 0 0}
+  .figframe{border:1px solid var(--rule);padding:18px;background:#fff}
+  .hdrbar{height:8px;background:var(--abisal)}
+  a{color:var(--mar)}
+</style>
+</head>
+<body>
+<div class="hdrbar"></div>
+<div class="wrap">
+
+<div class="note">WIREFRAME · VERSIÓN REDUCIDA (LANZAMIENTO). Estructura, jerarquía y copy ES final. Los bloques marcados DIFERIDO no se construyen ahora: esperan autorización ampliada del cliente y se añadirán en una iteración posterior sin rehacer lo construido.</div>
+
+<!-- ============ HEADER ============ -->
+<section class="sec" style="border-top:none">
+  <div class="mono" style="color:var(--muted)">EXPEDIENTE 01 · SECTOR PIEL · B2B · EN PRODUCCIÓN</div>
+  <div style="margin:18px 0 10px;border:1px solid var(--rule);padding:22px;display:inline-block;background:#fff">[LOGO MAGUPELL — sin cambios]</div>
+  <div class="mono"><a href="#">www.magupell.com ↗</a></div>
+  <h1 style="margin-top:22px;max-width:20ch">De la inspección manual a una plataforma que orquesta todo el negocio</h1>
+  <p class="lead" style="margin-top:18px">Magupell inspecciona la calidad de las pieles que las marcas de lujo compran a sus tenerías. En siete meses pasó de una operativa sostenida por hojas de cálculo y correos a una plataforma propia en producción, donde administración, inspectores, clientes y proveedores trabajan sobre el mismo dato.</p>
+  <div class="mono cap">FIG. EXP-01 · ESCALA · 2026</div>
+</section>
+
+<!-- ============ READOUTS 2x3 ============ -->
+<section class="sec">
+  <div class="note">[CAMBIO] 4 readouts genéricos (100+ / 200+ / JUL 2026 / REAL) → rejilla 2×3 con las cifras verificadas ya publicadas en la home, cada una con su línea de valor.</div>
+  <div class="grid3">
+    <div class="cell"><div class="k mono">DAT.01 / REQUISITOS</div><div class="tick"></div><div class="v">167 → 216</div><div class="u">Refinados con iteración y prototipo antes de construir.</div></div>
+    <div class="cell"><div class="k mono">DAT.02 / PRUEBAS</div><div class="tick"></div><div class="v">1.803</div><div class="u">1.042 backend + 761 frontend. Cada cambio se despliega con la red puesta.</div></div>
+    <div class="cell"><div class="k mono">DAT.03 / TIEMPO A PRODUCCIÓN</div><div class="tick"></div><div class="v">7 meses</div><div class="u">De los primeros requerimientos a la operación real.</div></div>
+    <div class="cell"><div class="k mono">DAT.04 / ROLES</div><div class="tick"></div><div class="v">4 roles</div><div class="u">Administración, inspector, cliente y proveedor, cada uno con su propio panel.</div></div>
+    <div class="cell"><div class="k mono">DAT.05 / ENTORNOS</div><div class="tick"></div><div class="v">3 entornos</div><div class="u">Local, desarrollo y producción, con pipelines protegidas.</div></div>
+    <div class="cell"><div class="k mono">DAT.06 / OPERATIVA</div><div class="tick"></div><div class="v">REAL</div><div class="u">En producción desde jul 2026 en dominio propio sobre Google Cloud. Los resúmenes de cobro se preparan y se envían desde la plataforma.</div></div>
+  </div>
+</section>
+
+<!-- ============ 01 CONTEXTO ============ -->
+<section class="sec">
+  <div class="idx"><span class="num">01</span><span class="mono lbl">CONTEXTO</span></div>
+  <div class="lead">
+    <p>Magupell, S.L. inspecciona la calidad de las pieles que las marcas de lujo de moda y marroquinería compran a sus tenerías. Es un negocio de nicho, técnico y exigente: cada lote se clasifica, se somete a pruebas, se contrasta contra un patrón de referencia acordado y se documenta con evidencia fotográfica.</p>
+    <p>Un servicio que funciona y que creció más rápido que los sistemas que lo sostenían.</p>
+  </div>
+  <div class="cut">DIFERIDO · "empresa familiar" y el detalle del nivel de exigencia del cliente final salen de esta versión.</div>
+</section>
+
+<!-- ============ 02 PUNTO DE PARTIDA ============ -->
+<section class="sec">
+  <div class="idx"><span class="num">02</span><span class="mono lbl">PUNTO DE PARTIDA</span></div>
+  <div class="lead">
+    <p>El corazón del negocio —inspección, resultados por lote, fichas técnicas, catálogos, clientes y cobros— vivía fuera de cualquier sistema: hojas de cálculo, documentos sueltos y conocimiento no sistematizado. Difícil de trazar, difícil de cobrar, imposible de escalar.</p>
+    <p>No era un fallo del negocio: era el límite de la operativa manual.</p>
+  </div>
+  <div class="cut">DIFERIDO · tabla "antes → ahora" (8 filas). Es el bloque que más expone el modelo operativo previo del cliente.</div>
+</section>
+
+<!-- ============ 03 SOLUCIÓN + FIG. EXP-02 ============ -->
+<section class="sec">
+  <div class="idx"><span class="num">03</span><span class="mono lbl">SOLUCIÓN</span></div>
+  <div class="lead">
+    <p>Escala diseñó y construyó la plataforma completa: una aplicación web B2B a medida que cubre el ciclo operativo de extremo a extremo. Del catálogo de clientes, proveedores y estándares de calidad acordados, a la inspección en campo desde tablet con evidencia fotográfica; de ahí a la revisión y aprobación interna, la distribución del informe y el resumen de cobro que cierra el período.</p>
+    <p>Con gestión de usuarios y roles, generación de documentos, correo transaccional con el dominio corporativo del cliente y notificaciones en tiempo real. Una arquitectura preparada para evolucionar durante años.</p>
+  </div>
+
+  <div class="note">[NUEVO] FIG. EXP-02 — El ciclo operativo. Figura propia de este expediente: no reutiliza FIG.01/02/04/05 ni sus componentes. SVG con conectores que terminan en el borde de cada nodo, recorrido animado izquierda→derecha y fallback estático con prefers-reduced-motion.</div>
+  <figure>
+    <div class="figframe">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+        <div style="border:1px solid var(--rule);padding:14px"><div class="mono" style="color:var(--amber-dark)">01</div><b>Catálogo</b><div style="font-size:.85rem;color:var(--muted)">Clientes, proveedores y estándares de calidad acordados</div></div>
+        <div style="border:1px solid var(--rule);padding:14px"><div class="mono" style="color:var(--amber-dark)">02</div><b>Inspección</b><div style="font-size:.85rem;color:var(--muted)">En tablet, sobre el terreno, con evidencia fotográfica</div></div>
+        <div style="border:1px solid var(--rule);padding:14px"><div class="mono" style="color:var(--amber-dark)">03</div><b>Revisión y envío</b><div style="font-size:.85rem;color:var(--muted)">Aprobación interna y distribución del informe</div></div>
+        <div style="border:1px solid var(--rule);padding:14px"><div class="mono" style="color:var(--amber-dark)">04</div><b>Cobro</b><div style="font-size:.85rem;color:var(--muted)">Resumen del período, calculado y enviado desde el sistema</div></div>
+      </div>
+      <div style="margin-top:12px;border:1px dashed var(--amber-dark);padding:12px;text-align:center" class="mono">TRANSVERSAL · UN SOLO DATO · TRAZABILIDAD COMPLETA · NOTIFICACIONES EN TIEMPO REAL</div>
+    </div>
+    <figcaption class="cap">FIG. EXP-02 — UN ÚNICO FLUJO, DE LA INSPECCIÓN AL COBRO</figcaption>
+  </figure>
+  <div class="cut">DIFERIDO · nodo 05 desglosado, catálogo maestro descrito en detalle, configurador de criterios, escala unificada de resultados, aceptación bajo condiciones e incidencias.</div>
+</section>
+
+<!-- ============ 04 ROLES (versión abstracta) ============ -->
+<section class="sec">
+  <div class="idx"><span class="num">04</span><span class="mono lbl">A MEDIDA DE CADA ROL</span></div>
+  <p class="lead">Una sola plataforma, cuatro formas de trabajar. Cada rol entra y ve exactamente lo que necesita —ni más, ni menos— con su propio cuadro de mando.</p>
+  <div class="roles">
+    <div class="role"><div class="mono r">ROL 01</div><h3>Administración</h3><p style="font-size:.95rem;margin:8px 0 0">Dirige la operación de principio a fin: configura, revisa, aprueba, distribuye y cierra el período, con una visión del negocio en tiempo real.</p></div>
+    <div class="role"><div class="mono r">ROL 02</div><h3>Inspector</h3><p style="font-size:.95rem;margin:8px 0 0">Trabaja sobre el terreno desde la tablet: registra la inspección con su evidencia fotográfica y la envía a revisión sin pasar por el papel ni por la hoja de cálculo.</p></div>
+    <div class="role"><div class="mono r">ROL 03</div><h3>Cliente</h3><p style="font-size:.95rem;margin:8px 0 0">Accede a su portal para consultar y descargar los informes de sus lotes y seguir la evolución de la calidad recibida.</p></div>
+    <div class="role"><div class="mono r">ROL 04</div><h3>Proveedor</h3><p style="font-size:.95rem;margin:8px 0 0">Consulta el resultado de las inspecciones de los lotes que ha producido, con la información acotada a lo que le corresponde.</p></div>
+  </div>
+  <div class="cut">DIFERIDO · las cuatro listas de capacidades por rol, y el rendimiento de calidad comparado que ve el proveedor.</div>
+</section>
+
+<!-- ============ 05 GOBERNANZA (oscuro) ============ -->
+<section class="sec dark" style="margin:0 -32px;padding:64px 32px">
+  <div class="wrap" style="padding:0">
+    <div class="idx"><span class="num">05</span><span class="mono lbl">GOBERNANZA</span></div>
+    <h2 style="max-width:22ch">Crecer sin perder el control de lo que ocurre.</h2>
+    <p class="lead" style="color:rgba(234,240,245,.82);margin-top:16px">Abrir la operación a más usuarios solo es posible si cada uno ve estrictamente lo suyo y toda decisión queda registrada. Esa es la diferencia entre digitalizar y poder escalar.</p>
+    <div class="grid2" style="margin-top:26px">
+      <div class="cell"><div class="mono" style="color:var(--amber)">ACCESO</div><p style="margin:8px 0 0;color:rgba(234,240,245,.82)">Permisos por rol: cada usuario accede únicamente a la información que le corresponde.</p></div>
+      <div class="cell"><div class="mono" style="color:var(--amber)">TRAZABILIDAD</div><p style="margin:8px 0 0;color:rgba(234,240,245,.82)">Quién hizo qué, cuándo y sobre qué lote. Las decisiones quedan registradas con su justificación.</p></div>
+      <div class="cell"><div class="mono" style="color:var(--amber)">DATOS EN LA UE</div><p style="margin:8px 0 0;color:rgba(234,240,245,.82)">Alojamiento en Google Cloud, región europea, sin transferencias fuera del EEE, con copias de seguridad automáticas.</p></div>
+      <div class="cell"><div class="mono" style="color:var(--amber)">CAMBIOS SEGUROS</div><p style="margin:8px 0 0;color:rgba(234,240,245,.82)">1.803 pruebas automatizadas y tres entornos con pipelines protegidas: la plataforma evoluciona cada mes sin poner en riesgo la operación.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 IMPACTO + escalera ============ -->
+<section class="sec">
+  <div class="idx"><span class="num">06</span><span class="mono lbl">IMPACTO</span></div>
+  <div class="lead">
+    <p>En su primer mes en producción, la plataforma dejó de ser un proyecto para convertirse en la forma de trabajar. Todos los perfiles operan dentro del sistema: la inspección nace sobre el terreno y llega al resumen de cobro sin salir de él.</p>
+    <p>El cambio no es solo de herramienta. Magupell pasó de reconstruir su información a consultarla, y lo hizo con el estándar de ingeniería del software empresarial global aplicado a un negocio de nicho.</p>
+  </div>
+  <div class="note">[CAMBIO] Escalera cronológica: la misma de la home, con una línea de detalle por hito.</div>
+  <div class="steps">
+    <div class="step"><div class="d">DIC 2025</div><div class="t">Requerimientos</div><div class="x">Análisis del negocio, proceso a proceso.</div></div>
+    <div class="step"><div class="d">ENE 2026</div><div class="t">Prototipo</div><div class="x">Prototipo navegable aprobado antes de construir. 167 → 216 requisitos.</div></div>
+    <div class="step"><div class="d">ABR 2026</div><div class="t">Desarrollo</div><div class="x">Construcción con pruebas automatizadas desde el primer día.</div></div>
+    <div class="step"><div class="d">MAY–JUN 2026</div><div class="t">Preproducción</div><div class="x">Validación y puesta a punto con los usuarios.</div></div>
+    <div class="step"><div class="d">JUL 2026</div><div class="t">Producción</div><div class="x">Dominio propio sobre Google Cloud. Operación real desde el primer mes.</div></div>
+  </div>
+  <div class="cap">FIG. EXP-03 — DE LOS REQUERIMIENTOS A PRODUCCIÓN EN 7 MESES, CON FECHAS VERIFICADAS</div>
+</section>
+
+<!-- ============ 07 SIGUIENTES PASOS ============ -->
+<section class="sec">
+  <div class="idx"><span class="num">07</span><span class="mono lbl">SIGUIENTES PASOS</span></div>
+  <p class="lead">La alianza continúa en soporte y evolución mensual: cada mejora se especifica, se acuerda y entra en producción a partir del feedback real de quienes usan el sistema todos los días. La plataforma no está terminada — está viva, y crece al ritmo del negocio.</p>
+</section>
+
+<section class="sec">
+  <div class="mono"><a href="#">SIGUIENTE EXPEDIENTE ↓ BioZero</a> &nbsp;·&nbsp; <a href="#">VOLVER AL ÍNDICE ↑</a></div>
+  <div class="note" style="margin-top:24px">[SIN CAMBIOS] FinalCTA compartido, footer, navegación entre expedientes, logo y enlace a magupell.com.</div>
+  <div class="note">[CAMBIOS FUERA DE ESTA PÁGINA] 1) Tarjeta de Magupell en /casos-de-exito. 2) Metadata + OG (hoy "100+ requisitos, 200+ pruebas"). 3) Grafía MAGUPELL → Magupell. 4) EN/CA de todo lo anterior. 5) Ninguna aparición de "factura / facturación" referida a la plataforma.</div>
+</section>
+
+</div>
+</body>
+</html>

@@ -42,48 +42,115 @@ describe('cases data — structure', () => {
   })
 })
 
-describe('Magupell — data-forward invariants', () => {
+describe('Magupell — canonical dossier invariants (SPEC-CASE-01)', () => {
   const mag = cases.find((c) => c.slug === 'magupell')!
+  const esDossier = mag.dossierByLocale.es
+  const enDossier = mag.dossierByLocale.en
+  const caDossier = mag.dossierByLocale.ca
 
-  it('is data-forward mode', () => {
-    expect(mag.mode).toBe('data-forward')
+  it('has exactly 6 readouts in the canonical grid (ES/EN/CA)', () => {
+    expect(esDossier.readoutGrid).toHaveLength(6)
+    expect(enDossier.readoutGrid).toHaveLength(6)
+    expect(caDossier.readoutGrid).toHaveLength(6)
   })
 
-  it('has exactly 4 readouts', () => {
-    expect(mag.readouts).toHaveLength(4)
+  it('readout grid uses DAT.01–DAT.06 mono keys in order', () => {
+    const keys = esDossier.readoutGrid!.map((r) => r.key)
+    expect(keys).toEqual(['DAT.01', 'DAT.02', 'DAT.03', 'DAT.04', 'DAT.05', 'DAT.06'])
   })
 
-  it('has exactly 5 dossier fields', () => {
-    expect(mag.fields).toHaveLength(5)
-  })
-
-  it('has no capabilities (data-forward)', () => {
-    expect(mag.capabilities).toBeUndefined()
-  })
-
-  it('readouts include the 100+ requisitos figure', () => {
-    const values = mag.readouts.map((r) => r.value)
-    expect(values).toContain('100+')
-    expect(values).toContain('200+')
-  })
-
-  it('readouts include production date and operational status', () => {
-    const values = mag.readouts.map((r) => r.value)
-    expect(values).toContain('JUL 2026')
+  it('readouts carry exactly the §2 verified figures (ES)', () => {
+    const values = esDossier.readoutGrid!.map((r) => r.value)
+    expect(values).toContain('167 → 216')
+    expect(values).toContain('1.803')
+    expect(values).toContain('7 meses')
+    expect(values).toContain('4 roles')
+    expect(values).toContain('3 entornos')
     expect(values).toContain('REAL')
   })
 
-  it('field keys match the spec verbatim', () => {
-    const keys = mag.fields.map((f) => f.key)
-    expect(keys).toContain('CONTEXTO')
-    expect(keys).toContain('PROBLEMA')
-    expect(keys).toContain('SOLUCIÓN')
-    expect(keys).toContain('IMPACTO')
-    expect(keys).toContain('SIGUIENTES PASOS')
+  it('EN readouts use comma-formatted test count (1,803) not ES dot format', () => {
+    const values = enDossier.readoutGrid!.map((r) => r.value)
+    expect(values).toContain('1,803')
+    expect(values).not.toContain('1.803')
+  })
+
+  it('has exactly 7 canonical narrative sections (ES/EN/CA)', () => {
+    expect(esDossier.narrative).toHaveLength(7)
+    expect(enDossier.narrative).toHaveLength(7)
+    expect(caDossier.narrative).toHaveLength(7)
+  })
+
+  it('narrative sections are numbered 01–07 in order', () => {
+    const nums = esDossier.narrative!.map((b) => b.num)
+    expect(nums).toEqual(['01', '02', '03', '04', '05', '06', '07'])
+  })
+
+  it('section 03 is the flow-fig variant with 4 flow nodes', () => {
+    const flowBlock = esDossier.narrative!.find((b) => b.variant === 'flow-fig')
+    if (flowBlock?.variant !== 'flow-fig') throw new Error('flow-fig block not found')
+    expect(flowBlock.flowNodes).toHaveLength(4)
+  })
+
+  it('section 04 is the roles variant with 4 role cards', () => {
+    const rolesBlock = esDossier.narrative!.find((b) => b.variant === 'roles')
+    if (rolesBlock?.variant !== 'roles') throw new Error('roles block not found')
+    expect(rolesBlock.roles).toHaveLength(4)
+  })
+
+  it('section 05 is the governance variant with 4 cards', () => {
+    const govBlock = esDossier.narrative!.find((b) => b.variant === 'governance')
+    if (govBlock?.variant !== 'governance') throw new Error('governance block not found')
+    expect(govBlock.cards).toHaveLength(4)
+  })
+
+  it('section 06 is the timeline variant with 5 milestones', () => {
+    const timelineBlock = esDossier.narrative!.find((b) => b.variant === 'timeline')
+    if (timelineBlock?.variant !== 'timeline') throw new Error('timeline block not found')
+    expect(timelineBlock.milestones).toHaveLength(5)
   })
 
   it('brand URL points to magupell.com', () => {
     expect(mag.brand.url).toBe('https://www.magupell.com')
+  })
+
+  it('card subtitle is localized (ES/EN/CA)', () => {
+    expect(mag.cardSubtitleByLocale?.es).toBeTruthy()
+    expect(mag.cardSubtitleByLocale?.en).toBeTruthy()
+    expect(mag.cardSubtitleByLocale?.ca).toBeTruthy()
+  })
+})
+
+describe('Magupell — content guardrails (SPEC-CASE-01 §0.3, AC-1/2/3)', () => {
+  const mag = cases.find((c) => c.slug === 'magupell')!
+  const allText = JSON.stringify([
+    mag.content,
+    mag.cardSubtitle,
+    mag.cardSubtitleByLocale,
+    mag.sector,
+    mag.dossierByLocale,
+  ])
+
+  it('never mentions invoicing/billing-as-invoice (factura|facturación|facturar|invoic)', () => {
+    expect(allText).not.toMatch(/factura|facturaci[oó]n|facturar|invoic/i)
+  })
+
+  it('never uses the MAGUPELL all-caps spelling in user-facing strings', () => {
+    // "Magupell, S.L." legal form is fine; the bare all-caps brand is not.
+    expect(allText).not.toMatch(/MAGUPELL/)
+  })
+
+  it('never republishes the retired 100+/200+ placeholder figures', () => {
+    expect(allText).not.toMatch(/100\+|200\+/)
+  })
+
+  it('uses "resumen(es) de cobro" / "billing summar" / "resum(s) de cobrament" instead', () => {
+    const esDossier = mag.dossierByLocale.es
+    const enDossier = mag.dossierByLocale.en
+    const caDossier = mag.dossierByLocale.ca
+    expect(JSON.stringify(esDossier)).toMatch(/resum(?:en|ai)?e?s? de cobro/i)
+    expect(JSON.stringify(enDossier)).toMatch(/billing summar(?:y|ies)/i)
+    expect(JSON.stringify(caDossier)).toMatch(/resum(?:s)? de cobrament/i)
   })
 })
 
@@ -139,6 +206,35 @@ describe('BioZero — capability-forward invariants', () => {
   })
 })
 
+describe('BioZero — migrated onto the canonical CaseDossier template (SPEC-CASE-01)', () => {
+  const bz = cases.find((c) => c.slug === 'biozero')!
+
+  it('supplies readoutGrid + narrative in all 3 locales (canonical shape present)', () => {
+    ;(['es', 'en', 'ca'] as const).forEach((locale) => {
+      const dossier = bz.dossierByLocale[locale]
+      expect(dossier.readoutGrid).toBeDefined()
+      expect(dossier.readoutGrid!.length).toBeGreaterThan(0)
+      expect(dossier.narrative).toBeDefined()
+      expect(dossier.narrative!.length).toBeGreaterThan(0)
+    })
+  })
+
+  it('narrative includes a capabilities-variant block carrying the original 3 capabilities', () => {
+    const capBlock = bz.dossierByLocale.es.narrative!.find((b) => b.variant === 'capabilities')
+    if (capBlock?.variant !== 'capabilities') throw new Error('capabilities block not found')
+    expect(capBlock.capabilities).toHaveLength(3)
+  })
+
+  it('migrated copy is unchanged from the legacy fields (same text, new shape)', () => {
+    const legacyContext = bz.dossierByLocale.es.fields.find((f) => f.key === 'CONTEXTO')!.body
+    const narrativeContext = bz.dossierByLocale.es.narrative!.find(
+      (b) => b.variant === 'prose' && b.label === 'CONTEXTO',
+    )
+    if (narrativeContext?.variant !== 'prose') throw new Error('prose CONTEXTO block not found')
+    expect(narrativeContext.paragraphs[0]).toBe(legacyContext)
+  })
+})
+
 describe('getCase helper', () => {
   it('returns Magupell by slug', () => {
     const c = getCase('magupell')
@@ -180,7 +276,9 @@ describe('case detail meta — length limits (SPEC-P2.3 FR-6.2)', () => {
   it('meta titles reference the client name', () => {
     const magMeta = getCase('magupell')!.meta
     const bzMeta = getCase('biozero')!.meta
-    expect(magMeta.title.toUpperCase()).toContain('MAGUPELL') // title uses MAGUPELL in uppercase
+    // SPEC-CASE-01 §0.3: spelling is "Magupell", never the all-caps "MAGUPELL".
+    expect(magMeta.title).toContain('Magupell')
+    expect(magMeta.title).not.toMatch(/MAGUPELL/)
     expect(bzMeta.title).toContain('BioZero')
   })
 })

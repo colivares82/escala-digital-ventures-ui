@@ -134,3 +134,11 @@ export const HOW_WE_BUILD_GATE_OFFSET_S = 0.5
 
 /** Duration (s) for the dimmer return-path pulse from Producción back into the frame. */
 export const HOW_WE_BUILD_RETURN_PULSE_DUR_S = 7
+
+// ── CaseFlowFig — FIG. EXP-02 operational cycle (SPEC-CASE-01) ────────────────
+
+/** Breakpoint (px) below which the 4 flow nodes stack vertically. */
+export const CASE_FLOW_MOBILE_BREAKPOINT_PX = 720
+
+/** Duration (s) for one left→right traversal pulse across all 4 nodes, once on entry. */
+export const CASE_FLOW_TRAVERSAL_DUR_S = 2.4

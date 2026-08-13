@@ -4904,3 +4904,417 @@ h1, h2, h3, h4, p {
     transition: none;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* SPEC-CASE-01 — Magupell case page rewrite (canonical CaseDossier template)  */
+/* CaseReadoutGrid · CaseNarrative · CaseFlowFig · CaseRolesGrid ·             */
+/* CaseGovernance · CaseTimelineLadder                                        */
+/* Spec: SPEC-CASE-01                                                         */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── CaseReadoutGrid — 2×3 (adapts to n cells) ── */
+.case-readout-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--line);
+  margin: 2rem 0;
+}
+.case-readout-grid__cell {
+  padding: 1.5rem 1.25rem;
+  border: 0.5px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.case-readout-grid__key {
+  font: 500 0.6rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.06em;
+  color: var(--mar);
+  text-transform: uppercase;
+}
+.case-readout-grid__tick {
+  width: 1.375rem;
+  height: 2px;
+  background: var(--ambre-dk);
+}
+.case-readout-grid__value {
+  font: 500 clamp(1.4rem, 2.6vw, 2rem) / 1 var(--font-ibm-plex-mono);
+  color: var(--mar);
+  letter-spacing: -0.02em;
+}
+.case-readout-grid__caption {
+  font: 500 0.7rem / 1.5 var(--font-ibm-plex-mono);
+  color: rgb(22 24 29 / 0.62);
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 767px) {
+  .case-readout-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ── CaseNarrative — numbered section wrapper (mirrors dossier-field index style) ── */
+.case-narrative {
+  margin-top: 2rem;
+}
+.case-narrative__section {
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--line);
+}
+.case-narrative__index {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.case-narrative__num {
+  font: 500 1.5rem / 1 var(--font-ibm-plex-mono);
+  color: var(--mar);
+  letter-spacing: -0.02em;
+}
+.case-narrative__label {
+  font: 500 0.65rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  color: var(--ambre-dk);
+  text-transform: uppercase;
+}
+.case-narrative__prose {
+  max-width: 68ch;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.case-narrative__prose p {
+  margin: 0;
+  line-height: 1.65;
+  color: rgb(22 24 29 / 0.88);
+}
+
+/* Governance section runs full-bleed on the abisal surface */
+.case-narrative__section--governance {
+  background: var(--abisal);
+  color: #eaf0f5;
+  margin: 2.5rem calc(-50vw + 50%);
+  padding: 3rem calc(50vw - 50%);
+  border-top: none;
+}
+.case-narrative__section--governance .case-narrative__num {
+  color: var(--ambre);
+}
+.case-narrative__section--governance .case-narrative__label {
+  color: var(--ambre);
+}
+
+
+/* ── CaseGovernance — AA-contrast 2×2 cards on abisal ── */
+.case-governance__heading {
+  font: 600 clamp(1.5rem, 2.6vw, 2rem) / 1.15 var(--font-archivo);
+  font-stretch: 112%;
+  margin: 0 0 1rem;
+  max-width: 32ch;
+}
+.case-governance__lead {
+  max-width: 60ch;
+  line-height: 1.65;
+  /* rgba(234,240,245,.82) — AA-safe on --abisal per SPEC-CASE-01 §3 */
+  color: rgba(234, 240, 245, 0.82);
+  margin: 0 0 2rem;
+}
+.case-governance__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.case-governance__card {
+  background: var(--abisal);
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.case-governance__label {
+  font: 500 0.65rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  color: var(--ambre);
+}
+.case-governance__body {
+  margin: 0;
+  line-height: 1.6;
+  color: rgba(234, 240, 245, 0.82);
+}
+
+@media (max-width: 767px) {
+  .case-governance__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── CaseRolesGrid — 2×2 role cards (section 04) ── */
+.case-roles__lead {
+  max-width: 62ch;
+  line-height: 1.65;
+  margin: 0 0 1.75rem;
+  color: rgb(22 24 29 / 0.85);
+}
+.case-roles__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.case-roles__card {
+  background: var(--paper);
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.case-roles__index {
+  font: 500 0.65rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.08em;
+  color: var(--ambre-dk);
+}
+.case-roles__title {
+  margin: 0;
+  font: 600 1.1rem / 1.2 var(--font-archivo);
+  font-stretch: 112%;
+}
+.case-roles__body {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: rgb(22 24 29 / 0.8);
+}
+
+@media (max-width: 767px) {
+  .case-roles__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ── CaseFlowFig — FIG. EXP-02 "El ciclo operativo" ── */
+.case-flow-fig {
+  margin: 2rem 0 0;
+}
+.case-flow-fig__figure {
+  margin: 0;
+  border: 1px solid var(--line);
+  padding: 2rem 1.75rem 1.5rem;
+  background: var(--paper);
+}
+.case-flow-fig__row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: stretch;
+}
+.case-flow-fig__node-wrap {
+  display: contents;
+}
+.case-flow-fig__node {
+  border: 1px solid var(--line);
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  background: var(--paper);
+  position: relative;
+  z-index: 1; /* nodes sit above connectors */
+}
+.case-flow-fig__index {
+  font: 500 1.1rem / 1 var(--font-ibm-plex-mono);
+  color: var(--ambre-dk);
+}
+.case-flow-fig__title {
+  margin: 0;
+  font: 600 1rem / 1.2 var(--font-archivo);
+  font-stretch: 112%;
+  overflow-wrap: break-word;
+}
+.case-flow-fig__detail {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgb(22 24 29 / 0.7);
+  overflow-wrap: break-word;
+}
+
+/* Connector: sits between two nodes, terminates exactly at their borders — the
+   grid places it in its own implicit column via the surrounding contents wrapper. */
+.case-flow-fig__connector {
+  position: relative;
+  display: none; /* enabled via ::before line + horizontal layout below */
+}
+
+/* Desktop/tablet: horizontal row with connector lines drawn between grid cells. */
+@media (min-width: 721px) {
+  .case-flow-fig__row {
+    column-gap: 1.5rem;
+    position: relative;
+  }
+  .case-flow-fig__row::before {
+    content: '';
+    position: absolute;
+    left: calc(12.5% + 0.75rem);
+    right: calc(12.5% + 0.75rem);
+    top: 50%;
+    height: 1px;
+    background: var(--line);
+    z-index: 0; /* behind nodes — connectors never overlap a node (SPEC-CASE-01 §4) */
+  }
+  .case-flow-fig__connector {
+    display: none;
+  }
+}
+
+/* Below the tablet breakpoint: stack vertically, connector becomes a short vertical rule. */
+@media (max-width: 720px) {
+  .case-flow-fig__row {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .case-flow-fig__node-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .case-flow-fig__connector {
+    display: block;
+    width: 1px;
+    height: 1.25rem;
+    margin: 0 auto;
+    background: var(--line);
+    z-index: 0;
+  }
+  .case-flow-fig__node {
+    z-index: 1;
+  }
+}
+
+
+/* Traversal accent: one directional pulse, left→right, runs once on entry. */
+.case-flow-fig__traversal {
+  display: none;
+}
+@media (min-width: 721px) {
+  [data-visible='true'] .case-flow-fig__row::after {
+    content: '';
+    position: absolute;
+    left: calc(12.5% + 0.75rem);
+    top: 50%;
+    width: 0.5rem;
+    height: 3px;
+    margin-top: -1px;
+    background: var(--ambre);
+    border-radius: 2px;
+    z-index: 0;
+    animation: case-flow-traversal 2.4s var(--ease-out) 1 both;
+  }
+}
+@keyframes case-flow-traversal {
+  from {
+    left: calc(12.5% + 0.75rem);
+    opacity: 1;
+  }
+  to {
+    left: calc(87.5% - 0.75rem - 0.5rem);
+    opacity: 0;
+  }
+}
+
+.case-flow-fig__band {
+  border: 1px solid var(--ambre-dk);
+  background: rgba(184, 92, 0, 0.06);
+  margin-top: 1.75rem;
+  padding: 0.9rem 1.25rem;
+}
+.case-flow-fig__band-text {
+  margin: 0;
+  font: 500 0.7rem / 1.5 var(--font-ibm-plex-mono);
+  letter-spacing: 0.08em;
+  color: var(--ambre-dk);
+  text-align: center;
+  text-transform: uppercase;
+  overflow-wrap: break-word;
+}
+.case-flow-fig__caption {
+  margin-top: 1rem;
+  font: 500 0.65rem / 1.5 var(--font-ibm-plex-mono);
+  letter-spacing: 0.06em;
+  color: rgb(22 24 29 / 0.55);
+  text-transform: uppercase;
+}
+
+/* Full static fallback under prefers-reduced-motion (SPEC-CASE-01 §4). */
+@media (prefers-reduced-motion: reduce) {
+  .case-flow-fig__row::after {
+    animation: none !important;
+    display: none !important;
+  }
+}
+
+
+/* ── CaseTimelineLadder — FIG. EXP-03 chronology strip (section 06) ── */
+.case-timeline-ladder {
+  margin-top: 1.5rem;
+}
+.case-timeline-ladder__figure {
+  margin: 0;
+}
+.case-timeline-ladder__steps {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border: 1px solid var(--line);
+}
+.case-timeline-ladder__step {
+  padding: 1.15rem 1rem;
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+.case-timeline-ladder__step:last-child {
+  border-right: none;
+}
+.case-timeline-ladder__date {
+  font: 500 0.65rem / 1.4 var(--font-ibm-plex-mono);
+  letter-spacing: 0.08em;
+  color: var(--ambre-dk);
+}
+.case-timeline-ladder__title {
+  font: 600 0.95rem / 1.2 var(--font-archivo);
+  font-stretch: 112%;
+}
+.case-timeline-ladder__detail {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgb(22 24 29 / 0.7);
+}
+.case-timeline-ladder__caption {
+  margin-top: 1rem;
+  font: 500 0.65rem / 1.5 var(--font-ibm-plex-mono);
+  letter-spacing: 0.06em;
+  color: rgb(22 24 29 / 0.55);
+  text-transform: uppercase;
+}
+
+@media (max-width: 767px) {
+  .case-timeline-ladder__steps {
+    grid-template-columns: 1fr;
+  }
+  .case-timeline-ladder__step {
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+  .case-timeline-ladder__step:last-child {
+    border-bottom: none;
+  }
+}

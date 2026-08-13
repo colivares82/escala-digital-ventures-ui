@@ -1,5 +1,22 @@
 # Progress
 
+## What works ✅ — SPEC-CASE-01 additions (Magupell case page rewrite)
+
+| Feature | Status |
+|---------|--------|
+| `/casos-de-exito/magupell` rewritten ES/EN/CA — verified figures (167→216 reqs, 1.803/1,803 tests, 7 meses, 4 roles, 3 entornos, live Jul 2026), no `100+`/`200+`, no invoicing language, "Magupell" spelling fixed everywhere | Complete |
+| `CaseDossier` promoted to the canonical case template (approved deviation from the original per-mode split) — renders `readoutGrid` + `narrative[]` when present, falls back to legacy `ReadoutStrip`/`DossierField`/`CapabilityGrid` otherwise | Complete |
+| BioZero migrated onto the canonical template — copy byte-unchanged, rendering shape updated (capabilities now a `narrative` block) | Complete |
+| 6 new page-local components: `CaseReadoutGrid`, `CaseNarrative` (variant dispatcher), `CaseFlowFig` (FIG. EXP-02), `CaseRolesGrid` (section 04), `CaseGovernance` (section 05, abisal), `CaseTimelineLadder` (FIG. EXP-03) | Complete |
+| `CaseFlowFig` — connectors terminate at node borders (never overlap), one-shot L→R traversal on entry, full static fallback under `prefers-reduced-motion`, vertical stack <720px, no text overflow at 360px | Complete |
+| Case index card (`/casos-de-exito`) — localized subtitle (`cardSubtitleByLocale`), no invoicing, "Magupell" spelling, updated figures | Complete |
+| Metadata (title/description/OG/Twitter) rewritten ×3 locales — ≤60/≤155 chars, one verified figure, no invoicing | Complete |
+| Environments count confirmed as 3 (matches home page) — DAT.05 + "CAMBIOS SEGUROS" governance card unblocked | Complete |
+| Content guardrail tests: zero `factura\|facturación\|facturar\|invoic`, zero `MAGUPELL`, zero `100+\|200+` in Magupell content/card/metadata across all locales | Complete |
+| **Hotfix:** `app/globals.css` SPEC-CASE-01 insert was accidentally nested inside `@media (prefers-reduced-motion: reduce)` (stray/missing brace), making all new CSS inert under normal conditions — fixed; verified via brace-balance check + compiled production CSS chunk | Complete |
+| **Regression guard:** `tests/content/css-structure-guard.test.ts` — static structural analysis of `globals.css` (brace balance, at-rule reachability, className↔rule parity); proven to fail against the original broken structure and pass against the fix | Complete |
+| 62 test files · 1066 tests · 100% pass · `npx tsc --noEmit` clean · `eslint` 0 errors · `npm run build` clean · coverage 78.72%/77.31%/85.71%/81.56% | Complete |
+
 ## What works ✅ — SPEC-POLISH-05 additions
 
 | Feature | Status |
