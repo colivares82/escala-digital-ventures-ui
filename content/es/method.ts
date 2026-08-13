@@ -8,10 +8,11 @@
 import type { MethodDictionary } from '@/content/types'
 
 export const methodContent = {
+  // SEO-01 §3.1 — primary term: "cómo se desarrolla un software a medida".
   meta: {
-    title: 'Cómo trabajamos | Escala Digital Ventures',
+    title: 'Cómo trabajamos: del proceso manual a la plataforma',
     description:
-      'El Escala Growth Framework: diez fases que conectan negocio, personas, procesos y tecnología.',
+      'Método dirigido por especificaciones y asistido por IA con criterio sénior: apruebas un prototipo antes de construir y la calidad se demuestra con pruebas.',
   },
 
   pageHeader: {
@@ -116,6 +117,44 @@ export const methodContent = {
       { label: 'EJECUCIÓN', text: 'Agentes de IA trabajando en paralelo, siempre dentro de ese marco.' },
       { label: 'CONTROL', text: 'Criterio senior y calidad verificable antes de que nada salga a producción.' },
       { label: 'CAPITALIZACIÓN', text: 'Cada proyecto real refina el sistema que gobierna el siguiente.' },
+    ],
+  },
+
+  /**
+   * Q&A block — SEO-01 §5.6. Figures trace to §0.4: 1.803 automated tests
+   * (ES/CA formatting) and 3 environments.
+   */
+  faq: {
+    sectionEyebrow: 'F / PREGUNTAS FRECUENTES',
+    sectionIndex: 'F',
+    heading: 'Preguntas frecuentes',
+    items: [
+      {
+        question:
+          '¿Qué es una especificación y por qué la apruebo antes de construir?',
+        answer:
+          'Es el documento que describe qué se va a construir antes de escribir código: contexto de negocio, requisitos numerados, casos límite y criterios de aceptación. Cuando hay interfaz, incluye un prototipo visual navegable. Lo apruebas tú. Así los malentendidos se resuelven cuando cuestan una conversación, no cuando cuestan un desarrollo.',
+      },
+      {
+        question: '¿Usáis IA para desarrollar? ¿Eso afecta a la calidad?',
+        answer:
+          'Sí la usamos, gobernada por una biblioteca interna de estándares y patrones probados en producción, y siempre bajo revisión sénior. El efecto es velocidad de un equipo completo con la coherencia de una sola mente. Lo que no cambia es el criterio: decidir qué se construye y verificar que está bien construido sigue siendo humano.',
+      },
+      {
+        question: '¿Cómo demostráis que lo entregado funciona?',
+        answer:
+          'Con hechos verificables, no con promesas: cobertura de pruebas automatizadas, entornos separados y estabilidad en producción. La plataforma de Magupell se sostiene sobre 1.803 pruebas automatizadas y tres entornos con despliegue protegido.',
+      },
+      {
+        question: '¿Qué pasa después de la puesta en producción?',
+        answer:
+          'Ahí empieza la parte larga de la relación. Cada alianza en producción incluye soporte y evolución continuos con trazabilidad completa del trabajo: se recoge el feedback real de los usuarios, se prioriza, se especifica y entra en producción en ciclos cortos. El producto mejora cada mes.',
+      },
+      {
+        question: '¿Cuánto tiempo tiene que dedicar mi equipo?',
+        answer:
+          'Menos del que se teme, pero no cero. Necesitamos acceso a quien conoce el proceso de verdad, sobre todo en las primeras semanas y en cada revisión de especificación. A partir de ahí, la carga se concentra en decidir y validar, no en gestionar.',
+      },
     ],
   },
 } as const satisfies MethodDictionary

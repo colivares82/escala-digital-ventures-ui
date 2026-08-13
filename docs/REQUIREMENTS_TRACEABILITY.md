@@ -101,9 +101,14 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 |----|-------------|--------|-------|
 | R-7.1 | ES is master; EN/CA are professional-register translations | ✅ | ES master + all stubs complete; `content/en/*` and `content/ca/*` re-export ES with `TODO(P5)` markers |
 | R-7.2 | Carlos reviews all EN/CA copy before launch | ⬜ | Pre-condition for Phase 5 translations |
-| R-7.3 | Localized metadata per page (title ≤60, desc ≤155) | ✅ | `generateMetadata` per page in catch-all; limits enforced by `tests/lib/i18n/meta.test.ts` (42 tests) |
-| R-7.4 | `sitemap.xml` with all alternates | ✅ | `app/sitemap.ts` — all built pages × locales with `alternates.languages`; legal pages included (Phase 4) |
-| R-7.5 | `robots.txt` | ✅ | `app/robots.ts` — allow `/`; disallow `/styleguide`; references sitemap |
+| R-7.3 | Localized metadata per page (title ≤60, desc ≤155) | ✅ | SEO-01 §3: all 27 metas + 6 case metas rewritten. Limits now enforced on the **rendered** title (`tests/lib/seo/page-meta.test.ts`) after the double-brand template bug; `tests/lib/i18n/meta.test.ts` retained |
+| R-7.4 | `sitemap.xml` with all alternates | ✅ | `app/sitemap.ts` — 33 URLs; SEO-01 §7.2 added `x-default` + content-derived `lastmod` |
+| R-7.5 | `robots.txt` | ✅ | `app/robots.ts` — SEO-01 §7.1: 12 AI/search crawlers named explicitly; `/api/` + `/styleguide` disallowed |
+| R-7.6 | Structured data (JSON-LD) | ✅ | SEO-01 §6: one server-rendered `@graph` per page — `lib/seo/`, `components/json-ld.tsx`; validated by `tests/lib/seo/{schema,page-graph}.test.ts` |
+| R-7.7 | Q&A blocks for AI/answer-engine discoverability | ✅ | SEO-01 §5: `FaqBlock` on `/que-hacemos`, `/como-trabajamos`, `/modelo-de-alianza` × 3 locales; always expanded, in server-rendered HTML |
+| R-7.8 | `/llms.txt` machine summary | ✅ | SEO-01 §7.5: `app/llms.txt/route.ts` + `lib/seo/llms-txt.ts`, served `text/plain` |
+| R-7.9 | Single canonical host (`www`↔apex, `http`→`https`) | ⬜ | **Blocked on DNS switch** — domain still serves GoDaddy parking. SEO-01 §7.4 / AC-17; Carlos-side |
+| R-7.10 | Search Console + Bing Webmaster verification | ⬜ | **Blocked on DNS switch.** SEO-01 §9; DNS-TXT verified, cookieless, no analytics |
 
 ## §8 — SEO, analytics, performance
 

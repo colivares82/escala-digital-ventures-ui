@@ -443,10 +443,12 @@ const magupellDossierEs: CaseDossierLocale = {
       body: 'La alianza continúa en soporte y evolución mensual, con nuevas funcionalidades entrando en producción a partir del feedback real de los usuarios.',
     },
   ],
+  // SEO-01 §3.1 — primary term: "digitalización de inspección de calidad".
+  // "cobro" (billing summary), never "factura" — §0.3.
   meta: {
-    title: 'Magupell — Plataforma B2B en producción | Escala',
+    title: 'Caso Magupell — Inspección de calidad digitalizada',
     description:
-      'Cómo Escala construyó la plataforma de Magupell: 1.803 pruebas automatizadas, 4 roles, en producción en Google Cloud desde julio 2026.',
+      '216 requisitos, 1.803 pruebas automatizadas y siete meses de la primera reunión a producción. Un solo flujo, de la inspección al cobro.',
   },
   readoutGrid: MAGUPELL_READOUT_GRID_ES,
   narrative: MAGUPELL_NARRATIVE_ES,
@@ -583,10 +585,12 @@ const magupellDossierEn: CaseDossierLocale = {
       body: 'The alliance continues with monthly support and evolution, with new features entering production based on real user feedback.',
     },
   ],
+  // SEO-01 §3.2 — "billing summary", never "invoicing" (§0.3).
+  // EN number formatting: 1,803 (§8).
   meta: {
-    title: 'Magupell — B2B platform in production | Escala',
+    title: 'Magupell Case Study — Quality Inspection Digitised',
     description:
-      'How Escala built the Magupell platform: 1,803 automated tests, 4 roles, live on Google Cloud since July 2026.',
+      '216 requirements, 1,803 automated tests and seven months from first meeting to production. One flow, from inspection to billing summary.',
   },
   readoutGrid: MAGUPELL_READOUT_GRID_EN,
   narrative: MAGUPELL_NARRATIVE_EN,
@@ -723,10 +727,11 @@ const magupellDossierCa: CaseDossierLocale = {
       body: 'L\'aliança continua en suport i evolució mensual, amb noves funcionalitats entrant en producció a partir del feedback real dels usuaris.',
     },
   ],
+  // SEO-01 §3.3 — "cobrament" (billing summary), never "factura" (§0.3).
   meta: {
-    title: 'Magupell — Plataforma B2B en producció | Escala',
+    title: 'Cas Magupell — Inspecció de qualitat digitalitzada',
     description:
-      'Com Escala va construir la plataforma de Magupell: 1.803 proves automatitzades, 4 rols, en producció a Google Cloud des del juliol 2026.',
+      '216 requisits, 1.803 proves automatitzades i set mesos de la primera reunió a producció. Un sol flux, de la inspecció al cobrament.',
   },
   readoutGrid: MAGUPELL_READOUT_GRID_CA,
   narrative: MAGUPELL_NARRATIVE_CA,
@@ -838,10 +843,12 @@ const biozeroDossierEs: CaseDossierLocale = {
       body: 'BioZero acredita la capacidad de Escala para aplicar IA de forma útil y concreta en un sector regulado y sensible, y para llevar un producto desde el concepto hasta una primera versión funcional en manos del cliente.',
     },
   ],
+  // SEO-01 §3.1 — primary term: "IA aplicada en gestión clínica dental".
+  // Capability framing only — never medical diagnosis (§0.4 guardrail).
   meta: {
-    title: 'BioZero — Gestión clínica dental con IA | Escala',
+    title: 'Caso BioZero — Gestión clínica dental con IA aplicada',
     description:
-      'Cómo Escala construyó la plataforma de BioZero: historiales colaborativos, gamificación del paciente y análisis de imágenes con IA. V1 entregada.',
+      'Primera versión entregada: historiales clínicos colaborativos, gamificación y análisis de imágenes con modelos de visión en un sector regulado.',
   },
   // SPEC-CASE-01: BioZero migrated onto the canonical CaseDossier template.
   // Same copy as above, re-expressed as readoutGrid + narrative (capabilities variant).
@@ -940,10 +947,11 @@ const biozeroDossierEn: CaseDossierLocale = {
       body: 'BioZero demonstrates Escala\'s ability to apply AI in a useful and concrete way in a regulated and sensitive sector, and to take a product from concept to a first functional version in the client\'s hands.',
     },
   ],
+  // SEO-01 §3.2 — capability framing only, never medical diagnosis.
   meta: {
-    title: 'BioZero — Dental clinic management with AI | Escala',
+    title: 'BioZero Case Study — Dental Clinic Platform with AI',
     description:
-      'How Escala built the BioZero platform: collaborative records, patient gamification and AI image analysis. V1 delivered.',
+      'First version delivered: collaborative clinical records, patient gamification and image analysis with vision models, in a regulated sector.',
   },
   readoutGrid: [
     { key: 'DAT.01', label: 'STATUS', value: 'V1 DELIVERED', caption: 'foundation ready to evolve' },
@@ -1032,10 +1040,11 @@ const biozeroDossierCa: CaseDossierLocale = {
       body: 'BioZero acredita la capacitat d\'Escala per aplicar IA de forma útil i concreta en un sector regulat i sensible, i per portar un producte des del concepte fins a una primera versió funcional en mans del client.',
     },
   ],
+  // SEO-01 §3.3 — capability framing only, never medical diagnosis.
   meta: {
-    title: 'BioZero — Gestió clínica dental amb IA | Escala',
+    title: 'Cas BioZero — Gestió clínica dental amb IA aplicada',
     description:
-      'Com Escala va construir la plataforma de BioZero: historials col·laboratius, gamificació del pacient i anàlisi d\'imatges amb IA. V1 lliurada.',
+      'Primera versió lliurada: historials clínics col·laboratius, gamificació i anàlisi d\'imatges amb models de visió en un sector regulat.',
   },
   readoutGrid: [
     { key: 'DAT.01', label: 'ESTAT', value: 'V1 LLIURADA', caption: 'base preparada per evolucionar' },

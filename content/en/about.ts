@@ -7,18 +7,22 @@
  * Ownership rule (SPEC-FIX-01): no code-ownership wording.
  */
 import type { AboutDictionary } from '@/content/types'
+import { CANONICAL_DEFINITION } from '@/lib/seo/entity'
 
 export const aboutContent = {
+  // SEO-01 §3.2 — primary term: "product and technology studio Barcelona".
   meta: {
-    title: 'About Escala | Escala Digital Ventures',
+    title: 'About Escala — Technology Partner near Barcelona',
     description:
-      'DNA, values, the 10 principles and the experience behind Escala. Mataró, Barcelona.',
+      'Two decades building and leading enterprise software platforms used worldwide, now applied to a deliberately small number of growing companies.',
   },
 
   ceremonial: {
     kicker: 'A · ABOUT ESCALA · PRODUCT AND TECHNOLOGY STUDIO',
+    // H1 unchanged — brand asset (SEO-01 §0.2 / AC-3).
     h1: 'We build capabilities, not applications.',
-    sub: 'Escala Digital Ventures, S.L.U. is a product and technology studio based in Mataró (Barcelona), incorporated in 2026. We exist so that a select number of companies can grow through technology understood as business strategy.',
+    // SEO-01 §4.7 / AC-19 — canonical definition verbatim (imported, see ES).
+    sub: `${CANONICAL_DEFINITION.en} Incorporated in 2026, we exist so that a select number of companies can grow through technology understood as business strategy.`,
   },
 
   dna: {

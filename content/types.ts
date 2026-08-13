@@ -16,6 +16,35 @@ export interface PageMeta {
   readonly description: string
 }
 
+/**
+ * One visible question/answer pair (SEO-01 §5).
+ *
+ * The SAME object feeds the rendered FaqBlock and the FAQPage JSON-LD, so the
+ * visible text and the structured data cannot drift (SEO-01 AC-11).
+ *
+ * Answer rules (SEO-01 §5.3): answer-first — the opening sentence must answer
+ * the question completely and stand alone if quoted out of context; 40–80
+ * words; no preamble; every factual claim traceable to §0.4 or the Libro.
+ */
+export interface FaqEntry {
+  readonly question: string
+  readonly answer: string
+}
+
+/**
+ * The Q&A block carried by exactly three pages: services, method, alliance
+ * (SEO-01 §5.2). No other page may define one.
+ */
+export interface FaqBlockContent {
+  /** Mono section eyebrow, e.g. "C / PREGUNTAS FRECUENTES". */
+  readonly sectionEyebrow: string
+  /** Section index shown by SectionIndex, e.g. "C". */
+  readonly sectionIndex: string
+  /** H2 heading, e.g. "Preguntas frecuentes". */
+  readonly heading: string
+  readonly items: ReadonlyArray<FaqEntry>
+}
+
 // ---------------------------------------------------------------------------
 // Page-level dictionary interfaces
 // All dictionaries must have a `meta` property (used by generateMetadata).
@@ -67,6 +96,8 @@ export interface ServicesDictionary {
     readonly body: string
     readonly cta: string
   }
+  /** Visible Q&A block — SEO-01 §5.5. Required on this page. */
+  readonly faq: FaqBlockContent
 }
 
 /** Phase 2.1 — full Cómo trabajamos content. Spec: SPEC-P2.1 FR-8.1 */
@@ -153,6 +184,8 @@ export interface MethodDictionary {
     /** Four-column legend mapping to gobierno / ejecución / control / capitalización. */
     readonly legend: ReadonlyArray<{ readonly label: string; readonly text: string }>
   }
+  /** Visible Q&A block — SEO-01 §5.6. Required on this page. */
+  readonly faq: FaqBlockContent
 }
 
 /** Phase 2.3 — /casos-de-exito index page content. Spec: SPEC-P2.3 FR-6.1 */
@@ -254,6 +287,8 @@ export interface AllianceDictionary {
     /** Exactly 5 commitments. Length enforced in tests. Commitment[0].tag must be "A MEDIDA". */
     readonly items: ReadonlyArray<AllianceCommitment>
   }
+  /** Visible Q&A block — SEO-01 §5.7. Required on this page. */
+  readonly faq: FaqBlockContent
 }
 
 /**

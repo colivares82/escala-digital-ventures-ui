@@ -9,16 +9,18 @@
 import type { AllianceDictionary } from '@/content/types'
 
 export const allianceContent = {
+  // SEO-01 §3.1 — primary term: "socio tecnológico para pymes".
   meta: {
-    title: 'Modelo de alianza | Escala Digital Ventures',
+    title: 'Socio tecnológico para pymes: el modelo de alianza',
     description:
-      'Cinco alianzas activas. Dedicación completa. Tres planos: técnico, estratégico y visionario. Los compromisos de cada alianza.',
+      'Solo cinco alianzas activas. Acompañamiento técnico, estratégico y visionario, licencia de uso indefinida y propiedad total de tus datos.',
   },
 
   pageHeader: {
     eyebrow: 'A / MODELO DE ALIANZA',
     title: 'Cinco alianzas. Toda nuestra dedicación.',
-    lead: 'No buscamos proyectos; buscamos socios. Y elegimos a nuestros socios tanto como ellos nos eligen a nosotros.',
+    // SEO-01 §4.6 — must contain "socio tecnológico" explicitly.
+    lead: 'Trabajamos como socio tecnológico de un número reducido de empresas. No buscamos proyectos; buscamos socios. Y elegimos a nuestros socios tanto como ellos nos eligen a nosotros.',
   },
 
   whyFive: {
@@ -94,6 +96,47 @@ export const allianceContent = {
         n: '05',
         tag: 'MEDIDA',
         body: 'Un único indicador final: el crecimiento y la eficiencia de tu negocio.',
+      },
+    ],
+  },
+
+  /**
+   * Q&A block — SEO-01 §5.7.
+   *
+   * OWNERSHIP: answer 2 states the corrected model (Libro v2.2 / SPEC-FIX-01):
+   * the client owns their DATA and holds an indefinite use LICENCE; the IP and
+   * source code belong to Escala. Never say the client owns the code — the
+   * guard at tests/content/ownership-guard.test.ts enforces this.
+   */
+  faq: {
+    sectionEyebrow: 'E / PREGUNTAS FRECUENTES',
+    sectionIndex: 'E',
+    heading: 'Preguntas frecuentes',
+    items: [
+      {
+        question: '¿Por qué solo cinco clientes?',
+        answer:
+          'Porque la dedicación no se puede repartir indefinidamente. Con cinco alianzas activas podemos conocer cada negocio a fondo, responder rápido y acompañar en el plano técnico, el estratégico y el visionario. No es una limitación de capacidad: es el modelo de negocio, y es lo que separa a un socio de un proveedor.',
+      },
+      {
+        question: '¿De quién es el código y de quién son los datos?',
+        answer:
+          'Los datos son enteramente tuyos: los posees, los exportas cuando quieras y se te devuelven íntegros al terminar la relación. La propiedad intelectual y el código fuente son de Escala, y tú recibes una licencia de uso exclusiva, intransferible y por tiempo indefinido para operar tu plataforma con usuarios ilimitados.',
+      },
+      {
+        question: '¿Qué pasa si dejamos de trabajar juntos?',
+        answer:
+          'La licencia de uso sobrevive al final del soporte: nunca te quedas sin tu herramienta. Tus datos se te devuelven completos. Las obligaciones de confidencialidad y las restricciones sectoriales siguen vigentes después de que termine la relación.',
+      },
+      {
+        question: '¿Podríais trabajar con mi competencia?',
+        answer:
+          'No con el mismo sistema. Cada alianza incluye exclusividad sectorial: no reutilizamos tu plataforma ni sus mejoras para competidores tuyos en tu sector. Es la contrapartida natural de que la propiedad intelectual sea nuestra.',
+      },
+      {
+        question: '¿Qué incluye exactamente una alianza?',
+        answer:
+          'Diseño, construcción, despliegue y operación de tu plataforma; dirección externa de producto y tecnología para decidir qué construir y en qué orden; y perspectiva sobre qué automatizar después y qué datos empezar a capturar hoy. Todo con especificación previa, calidad verificable y facturación trazable del tiempo dedicado.',
       },
     ],
   },

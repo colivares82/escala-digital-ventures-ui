@@ -14,8 +14,9 @@ import type { LegalDictionary } from '@/content/types'
 export const legalContent = {
   meta: {
     title: 'Legal notice | Escala Digital Ventures',
+    // SEO-01 §3.4 — factual only, no marketing copy.
     description:
-      'Legal notice of Escala Digital Ventures, S.L.U. Legal information and identification of the owner in accordance with the LSSI-CE.',
+      'Legal information and identification of the owner of the Escala Digital Ventures, S.L.U. website, in accordance with the LSSI-CE.',
   },
   header: {
     eyebrow: '· LEGAL NOTICE',

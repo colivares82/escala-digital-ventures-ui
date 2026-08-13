@@ -6,10 +6,11 @@
 import type { CasesDictionary } from '@/content/types'
 
 export const casesContent = {
+  // SEO-01 §3.3 — primary term: "casos de digitalització de processos".
   meta: {
-    title: "Casos d'èxit | Escala Digital Ventures",
+    title: "Casos d'èxit: processos manuals fets plataforma",
     description:
-      "Projectes reals: Magupell i BioZero. Automatització amb resultats verificats.",
+      "Magupell i BioZero: dues empreses que van substituir l'operativa manual per una plataforma pròpia. Dades verificables, amb permís del client.",
   },
   pageHeader: {
     eyebrow: "A / CASOS D'ÈXIT",

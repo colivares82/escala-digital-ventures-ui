@@ -20,9 +20,11 @@ import { ServicesPage } from '@/components/pages/services'
 import { CasesPage } from '@/components/pages/cases'
 import { CaseDossier } from '@/components/case-dossier'
 import { SiteFooter, SiteHeader } from '@/components/site-chrome'
-import { SITE_URL } from '@/lib/config'
+import { JsonLd } from '@/components/json-ld'
 import { getDictionary } from '@/lib/i18n/dictionary'
-import { getAlternates, getPath, resolvePath } from '@/lib/i18n/routes'
+import { getPath, resolvePath } from '@/lib/i18n/routes'
+import { buildPageMetadata } from '@/lib/seo/page-meta'
+import { buildPageGraph } from '@/lib/seo/page-graph'
 import { getCase } from '@/content/data/cases'
 
 type RouteParams = { path?: string[] }
@@ -96,8 +98,6 @@ export async function generateMetadata({
 
   const { page, locale, params: pageParams } = resolution
   const dict = getDictionary(locale)
-  const canonicalPath = getPath(page, locale, pageParams)
-  const alternates = getAlternates(page, pageParams)
 
   // Select the page-specific meta object
   const pageMeta = (() => {
@@ -122,28 +122,14 @@ export async function generateMetadata({
     }
   })()
 
-  const ogLocale =
-    locale === 'ca' ? 'ca_ES' : locale === 'en' ? 'en_US' : 'es_ES'
-
-  return {
+  // Canonical, hreflang + x-default, full OG/Twitter set — SEO-01 §3 · §3.5.
+  return buildPageMetadata({
+    page,
+    locale,
+    params: pageParams,
     title: pageMeta.title,
     description: pageMeta.description,
-    alternates: {
-      canonical: `${SITE_URL}${canonicalPath}`,
-      languages: {
-        es: `${SITE_URL}${alternates.es}`,
-        en: `${SITE_URL}${alternates.en}`,
-        ca: `${SITE_URL}${alternates.ca}`,
-        'x-default': `${SITE_URL}${alternates.es}`,
-      },
-    },
-    openGraph: {
-      title: pageMeta.title,
-      description: pageMeta.description,
-      locale: ogLocale,
-      url: `${SITE_URL}${canonicalPath}`,
-    },
-  }
+  })
 }
 
 export default async function Page({
@@ -178,8 +164,12 @@ export default async function Page({
   const servicesHref = getPath('services', locale)
   const allianceHref = getPath('alliance', locale)
 
+  // Exactly one server-rendered JSON-LD @graph per page — SEO-01 §6 / AC-8.
+  const graph = buildPageGraph({ dict, page, locale, params: pageParams })
+
   return (
     <MotionRuntime>
+      <JsonLd graph={graph} />
       <a className="skip-link" href="#contenido">
         {shared.accessibility.skipToContent}
       </a>

@@ -8,10 +8,11 @@
 import type { MethodDictionary } from '@/content/types'
 
 export const methodContent = {
+  // SEO-01 §3.3 — primary term: "com es desenvolupa un programari a mida".
   meta: {
-    title: 'Com treballem | Escala Digital Ventures',
+    title: 'Com treballem: del procés manual a la plataforma',
     description:
-      "L'Escala Growth Framework: deu fases que connecten negoci, persones, processos i tecnologia.",
+      'Mètode dirigit per especificacions i assistit per IA amb criteri sènior: aproves un prototip abans de construir i la qualitat es demostra amb proves.',
   },
 
   pageHeader: {
@@ -116,6 +117,40 @@ export const methodContent = {
       { label: 'EXECUCIÓ', text: 'Agents de IA treballant en paral·lel, sempre dins d\'aquest marc.' },
       { label: 'CONTROL', text: 'Criteri sènior i qualitat verificable abans que res no surti a producció.' },
       { label: 'CAPITALITZACIÓ', text: 'Cada projecte real refina el sistema que governa el següent.' },
+    ],
+  },
+
+  /** Q&A block — SEO-01 §5.6 / §5.8. CA figures: 1.803. */
+  faq: {
+    sectionEyebrow: 'F / PREGUNTES FREQÜENTS',
+    sectionIndex: 'F',
+    heading: 'Preguntes freqüents',
+    items: [
+      {
+        question: 'Què és una especificació i per què l\'aprovo abans de construir?',
+        answer:
+          'És el document que descriu què es construirà abans d\'escriure codi: context de negoci, requisits numerats, casos límit i criteris d\'acceptació. Quan hi ha interfície, inclou un prototip visual navegable. L\'aproves tu. Així els malentesos es resolen quan costen una conversa, no quan costen un desenvolupament.',
+      },
+      {
+        question: 'Feu servir IA per desenvolupar? Això afecta la qualitat?',
+        answer:
+          'Sí que la fem servir, governada per una biblioteca interna d\'estàndards i patrons provats en producció, i sempre sota revisió sènior. L\'efecte és velocitat d\'un equip complet amb la coherència d\'una sola ment. El que no canvia és el criteri: decidir què es construeix i verificar que està bé construït continua sent humà.',
+      },
+      {
+        question: 'Com demostreu que el que lliureu funciona?',
+        answer:
+          'Amb fets verificables, no amb promeses: cobertura de proves automatitzades, entorns separats i estabilitat en producció. La plataforma de Magupell se sosté sobre 1.803 proves automatitzades i tres entorns amb desplegament protegit.',
+      },
+      {
+        question: 'Què passa després de la posada en producció?',
+        answer:
+          'Aquí comença la part llarga de la relació. Cada aliança en producció inclou suport i evolució continus amb traçabilitat completa de la feina: es recull el feedback real dels usuaris, es prioritza, s\'especifica i entra en producció en cicles curts. El producte millora cada mes.',
+      },
+      {
+        question: 'Quant temps hi ha de dedicar el meu equip?',
+        answer:
+          'Menys del que es tem, però no zero. Necessitem accés a qui coneix el procés de veritat, sobretot les primeres setmanes i a cada revisió d\'especificació. A partir d\'aquí, la càrrega es concentra a decidir i validar, no a gestionar.',
+      },
     ],
   },
 } as const satisfies MethodDictionary

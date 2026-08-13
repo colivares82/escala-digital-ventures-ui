@@ -9,16 +9,18 @@
 import type { AllianceDictionary } from '@/content/types'
 
 export const allianceContent = {
+  // SEO-01 §3.2 — primary term: "technology partner for SMEs".
   meta: {
-    title: 'Alliance model | Escala Digital Ventures',
+    title: 'Technology Partner for SMEs — The Alliance Model',
     description:
-      'Five active alliances. Full dedication. Three layers: technical, strategic and visionary. The commitments of each alliance.',
+      'Only five active alliances. Technical, strategic and visionary partnership, an indefinite licence to your platform and full ownership of your data.',
   },
 
   pageHeader: {
     eyebrow: 'A / ALLIANCE MODEL',
     title: 'Five alliances. Our full dedication.',
-    lead: 'We do not look for projects; we look for partners. And we choose our partners as much as they choose us.',
+    // SEO-01 §4.6 — must contain "technology partner" explicitly.
+    lead: 'We work as the technology partner of a small number of companies. We do not look for projects; we look for partners. And we choose our partners as much as they choose us.',
   },
 
   whyFive: {
@@ -90,6 +92,49 @@ export const allianceContent = {
         n: '05',
         tag: 'MEASURED',
         body: 'One single final indicator: the growth and efficiency of your business.',
+      },
+    ],
+  },
+
+  /**
+   * Q&A block — SEO-01 §5.7 / §5.8.
+   * OWNERSHIP: the client owns their DATA and holds an indefinite use LICENCE;
+   * IP and source code belong to Escala. Never say the client owns the code.
+   */
+  faq: {
+    sectionEyebrow: 'E / FREQUENTLY ASKED QUESTIONS',
+    sectionIndex: 'E',
+    heading: 'Frequently asked questions',
+    items: [
+      {
+        question: 'Why only five clients?',
+        answer:
+          'Because dedication cannot be divided indefinitely. With five active alliances we can know each business thoroughly, respond quickly and support it technically, strategically and with a view of what comes next. It is not a capacity limit: it is the business model, and it is what separates a partner from a supplier.',
+      },
+      {
+        // Phrased as "belongs to whom" rather than "who owns the code": the
+        // ownership guard (tests/content/i18n-coverage.test.ts) rightly blocks
+        // the latter pattern, and the guard stays strict — the question is
+        // reworded instead of the guard being relaxed. Same intent, and it
+        // reads closer to how a prospect actually asks it.
+        question: 'The platform we pay for — who does the code belong to, and the data?',
+        answer:
+          'The data is entirely yours: you own it, you can export it whenever you want, and it is returned to you in full when the relationship ends. Intellectual property and source code belong to Escala, and you receive an exclusive, non-transferable, indefinite licence to operate your platform with unlimited users.',
+      },
+      {
+        question: 'What happens if we stop working together?',
+        answer:
+          'The use licence survives the end of support: you are never left without your tool. Your data is returned to you in full. Confidentiality obligations and sector restrictions remain in force after the relationship ends.',
+      },
+      {
+        question: 'Could you work with my competitors?',
+        answer:
+          'Not with the same system. Every alliance includes sector exclusivity: we do not reuse your platform or its improvements for your competitors in your sector. That is the natural counterpart to the intellectual property being ours.',
+      },
+      {
+        question: 'What exactly does an alliance include?',
+        answer:
+          'Design, build, deployment and operation of your platform; external product and technology leadership to decide what to build and in what order; and perspective on what to automate next and which data to start capturing today. All of it with a specification up front, verifiable quality and traceable billing of the time spent.',
       },
     ],
   },

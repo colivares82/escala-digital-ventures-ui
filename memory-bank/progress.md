@@ -1,5 +1,31 @@
 # Progress
 
+## What works ✅ — SEO-01 (search & AI discoverability)
+
+| Feature | Status |
+|---------|--------|
+| All 27 page metas (9 × 3 locales) + 6 case-detail metas replaced with the §3 strings; every RENDERED title ≤60, every description ≤155 | Complete |
+| Double-brand title bug fixed — `layout.tsx` template `'%s \| Escala Digital Ventures'` → `'%s'`; new guard asserts the rendered title, closing the blind spot that let it ship | Complete |
+| `og:image` now actually emitted — the asset existed but `generateMetadata` was suppressing Next's file convention by returning `openGraph` without `images` | Complete |
+| Full OG/Twitter set: `og:type` (`article` on cases), `og:site_name`, `og:locale:alternate`, `summary_large_image`; EN corrected `en_US` → `en_GB` | Complete |
+| JSON-LD: exactly ONE `<script type="application/ld+json">` per page with an `@graph` — verified live (the apparent "2nd" match is React's RSC payload, not a tag) | Complete |
+| Graph nodes: Organization+ProfessionalService · Person · WebSite · WebPage/ContactPage · BreadcrumbList · Service×5 · Article · FAQPage — 11 nodes on `/que-hacemos`, zero duplicate `@id` | Complete |
+| AC-9 locality-only address · AC-10 no `sameAs` on Organization · no telephone · no `vatID` while `/aviso-legal` holds `{{...}}` placeholders — verified in live output | Complete |
+| `FaqBlock` — always expanded, no `<details>`, `<h3>`+`<p>`, tokens only, 360px-safe; 16 Q&A pairs × 3 locales on `/que-hacemos`, `/como-trabajamos`, `/modelo-de-alianza` | Complete |
+| FAQPage JSON-LD on exactly those 3 pages and nowhere else; text mirrors the visible dictionary object (same source, cannot drift) | Complete |
+| `/llms.txt` — new static route, `text/plain`, canonical definition ES+EN, verified facts only, billing summaries (never "invoice") | Complete |
+| `robots.txt` — 12 AI/search crawlers named explicitly; `/api/` + `/styleguide` disallowed; no crawl-delay | Complete |
+| `sitemap.xml` — 33 URLs, `x-default` on every entry, real content-derived `lastmod` (content mtime, never build time) | Complete |
+| Canonical + reciprocal hreflang + `x-default`→ES on every page (already correct pre-change; preserved) | Complete |
+| 404 returns HTTP 404 + `noindex`; `/styleguide` `noindex, nofollow` + disallowed (already correct; verified) | Complete |
+| AC-19: canonical definition byte-identical across `Organization.description`, `/llms.txt` and the `/sobre-escala` lead — enforced structurally by importing from `lib/seo/entity.ts` | Complete |
+| AC-3: every `H1` unchanged · AC-4: zero diff on all protected shared components | Complete |
+| Permanent `seo-prohibitions-guard` — sweeps all 3 locales + JSON-LD for `100+`/`200+`, invoicing, code-ownership, employers, Russian, `MAGUPELL`, colivares.com links, street address | Complete |
+| 70 test files · 1313 tests · 100% pass · tsc clean · eslint 0 errors · build clean · coverage 83.04/79.23/87.79/85.54 (gate 70) | Complete |
+| Vitest `.next` exclusion — `build && test:coverage` used to collect the suite twice (140 files/2048 tests) and skew coverage; pre-existing CI hazard, now closed | Complete |
+| §4.8 anchors + §4.9 image `alt` audited: **already compliant**, no change needed | Verified |
+| ⚠ DNS switch, canonical-host redirect, Search Console/Bing — **blocked, Carlos-side**; domain still serves GoDaddy parking | Blocked |
+
 ## What works ✅ — SPEC-POLISH-09 additions (`/modelo-de-alianza` constellation fix)
 
 | Feature | Status |

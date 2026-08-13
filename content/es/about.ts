@@ -12,18 +12,29 @@
  * Ownership rule (SPEC-FIX-01 / .clinerules): no code-ownership wording. See ownership-guard.test.ts.
  */
 import type { AboutDictionary } from '@/content/types'
+import { CANONICAL_DEFINITION } from '@/lib/seo/entity'
 
 export const aboutContent = {
+  // SEO-01 §3.1 — primary term: "estudio de producto y tecnología Barcelona".
   meta: {
-    title: 'Sobre Escala | Escala Digital Ventures',
+    title: 'Sobre Escala — Socio tecnológico en Mataró, Barcelona',
     description:
-      'ADN, valores, los 10 principios y la experiencia detrás de Escala. Mataró, Barcelona.',
+      'Más de dos décadas construyendo plataformas de software empresarial de alcance global, ahora al servicio de un número reducido de empresas en crecimiento.',
   },
 
   ceremonial: {
     kicker: 'A · SOBRE ESCALA · ESTUDIO DE PRODUCTO Y TECNOLOGÍA',
+    // H1 unchanged — brand asset (SEO-01 §0.2 / AC-3).
     h1: 'Construimos capacidades, no aplicaciones.',
-    sub: 'Escala Digital Ventures, S.L.U. es un estudio de producto y tecnología con sede en Mataró (Barcelona), constituido en 2026. Existimos para que un número reducido de empresas crezca mediante tecnología entendida como estrategia de negocio.',
+    /**
+     * SEO-01 §4.7 / AC-19 — the canonical entity definition VERBATIM, followed
+     * by the existing constitution sentence.
+     *
+     * Imported, not retyped: AC-19 requires this paragraph to be identical to
+     * Organization.description and /llms.txt. Composing it from the shared
+     * constant makes divergence impossible by construction.
+     */
+    sub: `${CANONICAL_DEFINITION.es} Constituida en 2026, existimos para que un número reducido de empresas crezca mediante tecnología entendida como estrategia de negocio.`,
   },
 
   dna: {

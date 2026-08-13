@@ -27,11 +27,19 @@ const ibmPlexMono = IBM_Plex_Mono({
  * Site-wide fallback metadata.
  * Per-page titles, descriptions, canonical, and hreflang are set in
  * generateMetadata inside app/[[...path]]/page.tsx.
+ *
+ * NO title template (SEO-01 §3 / AC-2).
+ * The previous `template: '%s | Escala Digital Ventures'` double-branded every
+ * page, because dictionary titles already carry their own brand suffix — the
+ * rendered output was e.g. "Qué hacemos | Escala Digital Ventures | Escala
+ * Digital Ventures", blowing past the 60-character budget on all 27 routes.
+ * Titles are now authored complete in content/{es,en,ca}/*.ts and emitted
+ * verbatim. `default` still covers routes with no dictionary meta.
  */
 export const metadata: Metadata = {
   title: {
     default: 'Escala Digital Ventures',
-    template: '%s | Escala Digital Ventures',
+    template: '%s',
   },
   description:
     'Estudio de producto y tecnología que automatiza operaciones y construye plataformas digitales.',

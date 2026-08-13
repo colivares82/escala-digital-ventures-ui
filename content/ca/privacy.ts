@@ -14,8 +14,9 @@ import type { PrivacyDictionary } from '@/content/types'
 export const privacyContent = {
   meta: {
     title: 'Privacitat | Escala Digital Ventures',
+    // SEO-01 §3.4 — factual only, no marketing copy.
     description:
-      'Política de privacitat d\'Escala Digital Ventures, S.L.U. Tractament de dades conforme al RGPD.',
+      'Política de privacitat d\'Escala Digital Ventures, S.L.U. Com es tracten les dades personals, conforme al RGPD.',
   },
   header: {
     eyebrow: '· PRIVACITAT',
