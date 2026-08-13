@@ -20,7 +20,7 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | R-1.6 | Architecture allows `/insights` without restructuring | ✅ | App Router supports adding routes without touching existing ones |
 | R-1.7 | Editorial: never name former employers | ✅ | Copy uses anonymized formulas throughout |
 | R-1.8 | Founder trajectory not on this site | ✅ | Footer mentions `colivares.com` as plain text, no `<a>` |
-| R-1.9 | Case studies use real names (MAGUPELL, BioZero) | ✅ | Both in `content/es/clients.ts` |
+| R-1.9 | Case studies use real names (Magupell, BioZero) | ✅ | Both in `content/data/cases.ts`. Spelling fixed to "Magupell" (SPEC-CASE-01). |
 | R-1.10 | Voice: direct, confident, business before technology | ✅ | All ES copy reviewed |
 
 ## §2 — Brand foundation
@@ -28,7 +28,7 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | ID | Requirement | Status | Notes |
 |----|-------------|--------|-------|
 | R-2.1 | 9 approved key claims — use verbatim in ES | ✅ | Claims 1–4 in `sharedContent.claims` marquee; remainder in page copy |
-| R-2.2 | MAGUPELL proof points: 100+ reqs, 200+ tests, live Jul 2026, invoicing | ✅ | Readouts in `homeContent.proof.figures` |
+| R-2.2 | Magupell proof points: verified figures, live Jul 2026, billing summaries | ✅ | Superseded by verified data (SPEC-POLISH-03 home; SPEC-CASE-01 case page): 167→216 reqs, 1.803/1,803 tests, 4 roles, 3 environments. `100+`/`200+`/invoicing retired — never state the platform issues invoices. |
 | R-2.3 | BioZero: v1 delivered, AI vision, clinical records, gamification | ✅ | In `content/es/clients.ts` |
 | R-2.4 | 20+ years experience, MIT certification (anonymized) | ✅ | Referenced in `/sobre-escala` (Phase 2.5) — anonymized per Libro Ch. 19 |
 
@@ -70,12 +70,12 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | R-5.1b | ProblemSection: H2, body, symptom list, diagram | ✅ | |
 | R-5.1c | ServicesPreview: 5 service cards + link | ✅ | |
 | R-5.1d | FrameworkStrip: PhaseCycle 10 phases + section title | ✅ | Interactive ring on desktop, static list on mobile |
-| R-5.1e | ProofSection: MAGUPELL readouts + 2 CaseStudyCards | ✅ | `Readout` ×4, `ClientChip` ×2 |
+| R-5.1e | ProofSection: Magupell readouts + 2 CaseStudyCards | ✅ | `Readout` ×6 (SPEC-POLISH-03 verified figures), `ClientChip` ×2 |
 | R-5.1f | AllianceTeaser: H2, body, constellation diagram | ✅ | |
 | R-5.1g | FinalCTA: H2, body, ContactForm | ✅ | |
 | R-5.2 | Qué hacemos `/que-hacemos` | ✅ | SPEC-P2.2 — ServiceFig (5 variants), ServiceRow, IdealClientNote. All 3 locale slugs. 366 tests. |
 | R-5.3 | Cómo trabajamos `/como-trabajamos` | ✅ | SPEC-P2.1 — PhaseCycle reuse, ExecutionPractices (5), AiBuildBlock. SPEC-POLISH-06 — Framework moved to last section (E), closed execution-cycle FIG.06 (`ExecutionCycleFig`), layered "how we build" FIG.12 (`HowWeBuildFig`), re-lettered A–E. All 3 locale slugs. |
-| R-5.4 | Casos de éxito index + MAGUPELL + BioZero | ✅ | SPEC-P2.3 — CaseCard, BrandHeader, ReadoutStrip, DossierField, CapabilityGrid, CaseDossier. All 3 locale slugs. |
+| R-5.4 | Casos de éxito index + Magupell + BioZero | ✅ | SPEC-P2.3 — CaseCard, BrandHeader, CaseDossier. All 3 locale slugs. **SPEC-CASE-01** rewrote the Magupell dossier onto a canonical `CaseReadoutGrid` + `CaseNarrative` template (verified figures, 2 new sections, 2 new figures, no invoicing language, "Magupell" spelling fixed) and migrated BioZero's rendering onto the same template (copy unchanged). |
 | R-5.5 | Modelo de alianza `/modelo-de-alianza` | ✅ | SPEC-P2.4 — AllianceConstellation, AlliancePlanes, CommitmentsBand. All 3 locale slugs. |
 | R-5.6 | Sobre Escala `/sobre-escala` | ✅ | SPEC-P2.5 — CeremonialHeader, DnaBlock, ValuesList, ExpertiseGrid, Manifesto. All 3 locale slugs. |
 | R-5.7 | Contacto `/contacto` — form + API | ✅ | SPEC-P2.6 — ContactForm (dossier variant), ContactSuccess, API route, rate limit, honeypot. All 3 locale slugs. |

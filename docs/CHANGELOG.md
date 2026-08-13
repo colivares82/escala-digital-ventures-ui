@@ -1,5 +1,122 @@
 # Changelog
 
+## [SPEC-CASE-01 hotfix] — August 2026 — CSS nesting bug that made the page render broken
+
+### Bug
+SPEC-CASE-01's CSS insert (~415 lines) landed *before* the closing `}` of a pre-existing
+`.not-found__cta` `@media (prefers-reduced-motion: reduce)` block instead of after it, silently
+wrapping the entire new `.case-readout-grid` / `.case-narrative` / `.case-flow-fig` /
+`.case-roles` / `.case-governance` / `.case-timeline-ladder` section inside that media query.
+Under normal (non-reduced-motion) conditions every one of those rules was unreachable, so
+`/casos-de-exito/magupell` (and BioZero, migrated onto the same components) rendered as
+unstyled/broken content — while every one of the 1051 existing tests still passed, because they
+only assert on markup and text, never on whether a CSS rule is actually reachable. The bug was
+found only by visually loading the live page after SPEC-CASE-01 had already been reported
+complete.
+
+### Fix
+Inserted the missing `}` immediately after the `.not-found__cta { transition: none; }` rule
+(closing the reduced-motion query at its original, correct boundary) and removed the resulting
+orphaned stray `}` left at the end of the file. No CSS rule content changed — only brace
+placement. Verified via: (1) brace-balance script across the whole file (depth returns to 0, no
+negative dips), (2) the production build's compiled CSS chunk showing `.case-readout-grid` etc.
+as top-level rules, not nested in any `@media`, and (3) the new regression test below, confirmed
+to fail against the original broken structure and pass against the fix.
+
+### Added — regression safeguard
+- `tests/content/css-structure-guard.test.ts` — parses `app/globals.css` as text (jsdom doesn't
+  apply real stylesheets, so `getComputedStyle` gives false confidence here) and asserts: total
+  brace balance; every canonical CaseDossier selector is reachable and not trapped inside
+  `prefers-reduced-motion: reduce`; every `case-*` className emitted by the 6 SPEC-CASE-01
+  components has a matching CSS rule; and the governance dark surface is owned by
+  `.case-narrative__section--governance` (the full-bleed section wrapper), not the inner
+  `.case-governance` card container — documenting a "transparent background" false alarm found
+  while investigating this bug so it isn't misdiagnosed as a regression later.
+- `content/data/cases.ts` — `getCase`'s unused `_locale` param renamed to `locale` with an
+  explicit `void locale` and a doc comment explaining it's intentionally unused (was a lint
+  warning; the parameter itself is kept because a test exercises the "locale doesn't affect
+  result" contract).
+
+### Verified
+1066/1066 tests passing (62 files, +15 from the new guard); `npx tsc --noEmit` clean; `eslint`
+0 errors; `npm run build` clean; coverage 78.72%/77.31%/85.71%/81.56%
+(lines/branches/functions/statements), above the 70% floor.
+
+## [SPEC-CASE-01] — August 2026 — Magupell case page rewrite (launch-safe version)
+
+### Summary
+Rewrote `/casos-de-exito/magupell` (ES/EN/CA) with verified production figures (167 → 216
+requirements, 1.803/1,803 automated tests, 7 months to production, 4 roles, 3 environments,
+live since July 2026), replacing the pre-launch placeholders (`100+`/`200+`) and every
+invoicing/billing-as-invoice reference with "resúmenes de cobro" / "billing summaries" /
+"resums de cobrament". Fixed the brand spelling "Magupell" (was "MAGUPELL") in every
+user-facing string on this page and its index card. Added two new numbered sections
+(04 "A medida de cada rol", 05 "Gobernanza" on the abisal surface) and two new figures
+(FIG. EXP-02 "El ciclo operativo", FIG. EXP-03 chronology ladder with per-milestone detail).
+
+### Approved deviation — CaseDossier is now the canonical case template
+Per explicit direction from Carlos during implementation, `CaseDossier` was upgraded to a
+richer canonical structure (`readoutGrid` + `narrative[]`, dispatched by `CaseNarrative`) and
+BioZero was migrated onto it, rather than building a Magupell-only template as the original
+spec's §0.2 shared-component freeze implied. BioZero's copy is byte-unchanged; only its
+rendering shape changed (readouts → `CaseReadoutGrid`, fields/capabilities → `CaseNarrative`
+prose + capabilities blocks). This supersedes SPEC-CASE-01 AC-9 ("BioZero byte-identical") by
+design — see DECISIONS.md. The template still falls back to the legacy `ReadoutStrip` /
+`DossierField` / `CapabilityGrid` rendering when a case supplies neither `readoutGrid` nor
+`narrative`, preserving AC-4 (a 3rd case needs data only, no component changes).
+
+### Resolved blockers
+- **Environments count (§2):** confirmed **3 entornos** (local, desarrollo, producción, con
+  pipelines protegidas) — matches the home page `proof.readouts` verbatim. DAT.05 and the
+  "CAMBIOS SEGUROS" governance card use this figure.
+- **FIG. EXP-02 caption collision:** BioZero's header `plate` string is also
+  `'FIG. EXP-02\nESCALA · PRIMER CLIENTE'`. Kept as-is — different surfaces (header plate vs.
+  in-page figure caption) — flagged rather than silently changed.
+
+### New files
+- `components/case-readout-grid.tsx` — canonical n-cell readout grid (`DAT.0N / LABEL` + amber
+  tick), page-local, not shared with the home `ProofSection` by design (SPEC-CASE-01 §3).
+- `components/case-narrative.tsx` — variant dispatcher for the canonical numbered narrative
+  (`prose` / `flow-fig` / `roles` / `governance` / `capabilities` / `timeline`).
+- `components/case-flow-fig.tsx` — FIG. EXP-02 "El ciclo operativo": 4 nodes, connectors
+  terminating at node borders (behind nodes, never overlapping), one-shot L→R traversal accent
+  on entry, full static fallback under `prefers-reduced-motion`, vertical stack <720px.
+- `components/case-roles-grid.tsx` — section 04, 2×2 role cards.
+- `components/case-governance.tsx` — section 05, abisal surface, 2×2 cards, AA-safe
+  `rgba(234,240,245,.82)` body text on `--abisal`.
+- `components/case-timeline-ladder.tsx` — FIG. EXP-03, 5-milestone strip with a detail line
+  per milestone (extends the home `ProofTimelineFig` concept; does not import/reuse it).
+
+### Changed files
+- `content/data/cases.ts` — new canonical types (`CaseReadoutCell`, `CaseNarrativeBlock` union,
+  `CaseFlowNode`, `CaseRole`, `CaseGovernanceCard`, `CaseTimelineMilestone`); Magupell rewritten
+  in all 3 locales (`readoutGrid` + `narrative[]`, new meta, new card copy,
+  `cardSubtitleByLocale`); BioZero migrated onto the canonical shape with unchanged copy.
+- `components/case-dossier.tsx` — prefers `readoutGrid`/`narrative` when present, falls back to
+  legacy `ReadoutStrip`/`DossierField`/`CapabilityGrid` otherwise.
+- `components/case-card.tsx` — uses `cardSubtitleByLocale` when present (ES fallback preserved).
+- `app/globals.css` — new `SPEC-CASE-01` section: `.case-readout-grid`, `.case-narrative`,
+  `.case-flow-fig` (+ traversal keyframe + reduced-motion override), `.case-roles`,
+  `.case-governance`, `.case-timeline-ladder`. Tokens only, no hardcoded hex.
+- `lib/motion-constants.ts` — `CASE_FLOW_MOBILE_BREAKPOINT_PX`, `CASE_FLOW_TRAVERSAL_DUR_S`.
+- `tests/content/cases-data.test.ts` — rewritten Magupell invariants for the canonical shape;
+  added content guardrails (no `factura|facturación|facturar|invoic`, no `MAGUPELL`, no
+  `100+|200+`) and a BioZero migration-parity test.
+
+### Tests
+6 new component test files (`case-readout-grid`, `case-flow-fig`, `case-roles-grid`,
+`case-governance`, `case-timeline-ladder`, `case-narrative`) plus a canonical-rendering
+integration file (`case-dossier-canonical.test.tsx`) against the real Magupell/BioZero data.
+1051/1051 tests passing (61 files); `npx tsc --noEmit` clean; `npm run build` clean; coverage
+78.69%/77.31%/85.71%/81.53% (lines/branches/functions/statements), above the 70% floor.
+
+### Out of scope (per spec §0.2, untouched)
+BioZero's own copy, the home page, all other interior pages, routing/i18n plumbing, design
+tokens, shared primitives (`PageHeader`, `Section`, `FinalCTA`, `GridBackground`,
+`AllianceConstellation`, `ServiceFig`, `ContactForm`), the Magupell logo asset and outbound
+link, and `/docs` sources (still carry the pre-launch `100+`/`200+`/invoicing/`MAGUPELL`
+narrative — reported per spec §8, not edited here).
+
 ## [SPEC-POLISH-06] — August 2026 — /como-trabajamos: execution cycle, build system, section order
 
 ### Changed

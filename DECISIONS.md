@@ -59,3 +59,45 @@
 - **Rate limiter: in-memory token bucket, ephemeral on Cloud Run.** Spec FR-3.3 notes that Cloud Run instances are ephemeral so the in-memory rate limit resets on cold-start. Decision: acceptable pre-launch. A `// TODO(P6): swap to durable store (Redis/Upstash)` comment is in `app/api/contact/route.ts`. The limit (5/min/IP, configurable via `RATE_LIMIT_PER_MIN`) prevents casual abuse; the ephemeral reset is an acceptable compromise at this traffic level.
 
 - **Phase 2 status: COMPLETE (2.6 = last missing piece).** All interior pages ship: method, services, cases (2), alliance, about, contact. Phase 3 is folded into 2.6. Next milestone is Phase 4 (legal pages + analytics).
+
+## SPEC-CASE-01 decisions (Magupell case page rewrite)
+
+- **`CaseDossier` promoted to the canonical case template — approved deviation from §0.2.**
+  SPEC-CASE-01 §0.2 froze all shared components, including `ReadoutStrip`, `DossierField`,
+  `CapabilityGrid` and `CaseDossier` itself, and instructed: "if a shared component cannot
+  render a new section as specified, stop and report rather than modifying it." The new
+  Magupell structure (2×3 readout grid, role cards, dark governance block, two new figures)
+  cannot render through the old per-mode (`data-forward`/`capability-forward`) template. Given
+  the choice between (a) a page-local `MagupellDossier` leaving `CaseDossier` untouched, or
+  (b) upgrading `CaseDossier` itself and migrating BioZero onto it, Carlos explicitly chose
+  (b): "Use this dossier as defined, and extend it to Biozero, moving forward for CaseDossier,
+  this will be the source of truth." This supersedes AC-9 ("BioZero page byte-identical") by
+  design — BioZero's *copy* is unchanged, but its *rendering* now goes through the same
+  `CaseReadoutGrid` + `CaseNarrative` path as Magupell.
+- **Backward-compatible canonical shape, not a breaking rewrite.** `CaseDossierLocale` gained
+  two new **optional** fields, `readoutGrid` and `narrative`. `CaseDossier` renders the
+  canonical path when both are present and falls back to the legacy `ReadoutStrip` /
+  `DossierField` / `CapabilityGrid` rendering otherwise. This keeps AC-4 (a 3rd case needs only
+  data, no component changes) true for both shapes and required no changes to `ReadoutStrip`,
+  `DossierField`, or `CapabilityGrid` themselves — they remain in use by `/styleguide` and by
+  the legacy fallback path.
+- **Environments count resolved as 3 (not 2).** Spec §2 flagged this as blocking and explicit:
+  "Do not implement DAT.05 or that governance card until this is confirmed. Ask." Carlos
+  confirmed **3 entornos — local, desarrollo y producción, con pipelines protegidas**, matching
+  `content/es/home.ts → proof.readouts[2]` verbatim (already published on the home page). This
+  keeps the site internally consistent between the home evidence grid and the case dossier.
+- **`FIG. EXP-02` caption reused despite BioZero's `plate` string collision.** BioZero's header
+  plate is the literal string `'FIG. EXP-02\nESCALA · PRIMER CLIENTE'` (a different UI surface —
+  the engineering plate in `BrandHeader`, not an in-page figure caption). The wireframe assigns
+  `FIG. EXP-02` to Magupell's new operational-flow figure caption. Decision: keep both as-is;
+  they render in visually distinct contexts and neither is a global figure-numbering violation
+  in the sense the site's FIG.01–FIG.12 convention addresses (that convention numbers the home/
+  interior-page figures; the `FIG. EXP-0N` series is a separate, case-dossier-scoped label).
+  Flagged in `docs/CHANGELOG.md` rather than silently resolved.
+- **`CaseFlowFig` and `CaseTimelineLadder` render as HTML/CSS grids, not SVG.** The home
+  `ProofTimelineFig` uses an SVG stair; the case page's chronology ladder needed a full prose
+  detail line per milestone (SPEC-CASE-01 §3), which reads far better as HTML text than as SVG
+  `<text>`. Both new figures use bordered CSS grids with a CSS keyframe traversal accent
+  (`case-flow-traversal`, gated by `[data-visible="true"]` and disabled entirely under
+  `prefers-reduced-motion: reduce`), consistent with the project's existing `DiagramReveal` +
+  `data-visible` reveal pattern rather than introducing a new animation primitive.

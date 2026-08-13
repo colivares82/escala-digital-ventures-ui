@@ -1,10 +1,48 @@
 # Active Context
 
-_Last updated: August 2026 (SPEC-POLISH-06 COMPLETE — /como-trabajamos execution cycle, build system, section order)_
+_Last updated: August 2026 (SPEC-CASE-01 hotfix — CSS nesting bug fixed + regression guard added; SPEC-CASE-01 itself already COMPLETE — Magupell case page rewrite, CaseDossier promoted to canonical template)_
 
 ## Current state
 
-**Phase 6 COMPLETE + SPEC-POLISH-02/03/04/05/06 COMPLETE.** Both Cloud Run environments are live. CI/CD pipeline is fully operational. `/como-trabajamos` had its Escala Growth Framework section moved to be the last content section before `FinalCTA`, its broken execution-flow figure replaced with a closed-cycle diagram (FIG.06), and its "how we build" section fully replaced with a layered-system diagram (FIG.12). Carlos is working on Phase 7 content/QA before DNS switch.
+**Phase 6 COMPLETE + SPEC-POLISH-02/03/04/05/06 COMPLETE + SPEC-CASE-01 COMPLETE (+ hotfix).** Both Cloud Run environments are live. CI/CD pipeline is fully operational. `/casos-de-exito/magupell` was rewritten in ES/EN/CA with verified production figures (was carrying pre-launch `100+`/`200+` placeholders and invoicing language); `CaseDossier` was promoted to a single canonical case template (approved deviation — see below) and BioZero was migrated onto it with unchanged copy. Carlos is working on Phase 7 content/QA before DNS switch.
+
+### Post-completion hotfix: SPEC-CASE-01's CSS was inert (found after being reported "complete")
+The `app/globals.css` insert for SPEC-CASE-01 (~415 lines) landed *before* the closing `}` of a
+pre-existing `.not-found__cta` reduced-motion media query instead of after it, silently
+nesting the entire new section inside `@media (prefers-reduced-motion: reduce)`. Under normal
+conditions the whole Magupell/BioZero case page rendered unstyled. **All 1051 existing tests
+still passed** because they only assert markup/text — none checked whether a CSS rule was
+actually reachable. Caught only by loading the live page. Fixed by restoring the correct brace
+boundary (no rule content changed). Full writeup: `docs/CHANGELOG.md` → "SPEC-CASE-01 hotfix".
+
+**Standing lesson (apply going forward):** verifying "CSS/styling was added" requires checking
+*structural reachability* (brace balance, at-rule nesting, or an actual rendered/computed-style
+check), not just that the expected class names and text exist in the source or in `curl`'d HTML.
+`tests/content/css-structure-guard.test.ts` now encodes this check for the case-page CSS and
+should be used as the template if another large CSS insert needs the same guard.
+
+## What was done in SPEC-CASE-01
+
+### Magupell case page rewrite — verified figures, no invoicing, two new sections
+- **Figures replaced:** `167 → 216` requisitos, `1.803`/`1,803` pruebas (1.042 backend + 761 frontend), `7 meses` a producción, `4 roles`, `3 entornos` (confirmed with Carlos — matches the home page), `REAL` operativa desde jul 2026. The retired `100+`/`200+` placeholders and every `factura/facturación/facturar/invoic` reference were replaced with "resúmenes de cobro" (ES) / "billing summaries" (EN) / "resums de cobrament" (CA).
+- **Spelling fixed:** "Magupell" (was "MAGUPELL") in every user-facing string on this page and its index card, in all 3 locales. The legal form "Magupell, S.L." is used once in section 01.
+- **Two new sections:** 04 "A medida de cada rol" (2×2 role cards: Administración, Inspector, Cliente, Proveedor) and 05 "Gobernanza" (rendered on the abisal dark surface, 2×2 cards: Acceso, Trazabilidad, Datos en la UE, Cambios seguros).
+- **Two new figures:** FIG. EXP-02 "El ciclo operativo" (`CaseFlowFig` — 4 nodes Catálogo→Inspección→Revisión y envío→Cobro, connectors terminating at node borders, one-shot L→R traversal on entry, full static fallback under `prefers-reduced-motion`, vertical stack <720px) and FIG. EXP-03 chronology ladder (`CaseTimelineLadder` — 5 milestones with an added detail line each, extends the home `ProofTimelineFig` concept without importing it).
+- **Readout grid:** replaced the 4-cell `ReadoutStrip` with a page-local 6-cell `CaseReadoutGrid` (`DAT.0N / LABEL` mono keys + amber tick), deliberately not shared with the home `ProofSection` per spec §3.
+
+### Approved deviation — CaseDossier is the canonical case template (important precedent)
+- The spec's §0.2 froze all shared components (`ReadoutStrip`, `DossierField`, `CapabilityGrid`, `CaseDossier`) and said to stop and report rather than modify them. The new Magupell structure could not render through the old per-mode template.
+- **Carlos's explicit ruling, mid-implementation:** *"Use this dossier as defined, and extend it to Biozero, moving forward for CaseDossier, this will be the source of truth."* This supersedes the original spec's AC-9 ("BioZero byte-identical") by design.
+- **Implementation:** `CaseDossierLocale` gained two new **optional** fields — `readoutGrid: CaseReadoutCell[]` and `narrative: CaseNarrativeBlock[]` (a discriminated union: `prose | flow-fig | roles | governance | capabilities | timeline`). `CaseDossier` renders the canonical path (`CaseReadoutGrid` + `CaseNarrative`) when both are present, and falls back to the legacy `ReadoutStrip`/`DossierField`/`CapabilityGrid` rendering otherwise. This means: (a) BioZero's copy is byte-unchanged, only re-expressed in the canonical shape; (b) `ReadoutStrip`/`DossierField`/`CapabilityGrid` needed zero changes — they remain used by `/styleguide` and by the legacy fallback; (c) AC-4 ("a 3rd case needs only data") holds for both shapes.
+- **Precedent for future case studies:** any new case going forward should be authored directly in the canonical `readoutGrid` + `narrative` shape. The legacy shape is a compatibility fallback, not the preferred path.
+- Full rationale recorded in `DECISIONS.md` → "SPEC-CASE-01 decisions".
+
+### Resolved blockers
+- **Environments count:** confirmed **3 entornos** (local, desarrollo, producción, con pipelines protegidas) — matches `content/es/home.ts → proof.readouts[2]` verbatim.
+- **FIG. EXP-02 caption collision:** BioZero's `BrandHeader` plate is also the literal string `FIG. EXP-02\nESCALA · PRIMER CLIENTE` — a different UI surface (header plate vs. in-page figure caption). Kept both as-is; flagged in `docs/CHANGELOG.md`.
+
+### Diff scope
+`content/data/cases.ts` (canonical types + Magupell rewrite ×3 locales + BioZero migration ×3 locales), `components/case-dossier.tsx` (canonical/legacy branch), `components/case-card.tsx` (`cardSubtitleByLocale`), 6 new components (`case-readout-grid.tsx`, `case-narrative.tsx`, `case-flow-fig.tsx`, `case-roles-grid.tsx`, `case-governance.tsx`, `case-timeline-ladder.tsx`), `app/globals.css` (new `SPEC-CASE-01` section), `lib/motion-constants.ts` (additive). `/docs` source narratives (Libro, Content Spec) still carry the pre-launch figures/invoicing/`MAGUPELL` spelling — known debt, reported not fixed, per spec §8.
 
 ## What was done in SPEC-POLISH-06
 
