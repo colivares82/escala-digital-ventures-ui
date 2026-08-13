@@ -8,10 +8,11 @@ import { clients } from '@/content/es/clients'
 import type { HomePageDictionary } from '@/content/types'
 
 export const homeContent = {
+  // SEO-01 §3.3 — primary term: "automatització de processos".
   meta: {
-    title: 'Escala Digital Ventures | Producte i tecnologia',
+    title: 'Automatització de processos i programari a mida | Escala',
     description:
-      'Estudi de producte i tecnologia que automatitza operacions i construeix plataformes digitals per a empreses en creixement.',
+      'Convertim els processos manuals de la teva empresa en una plataforma pròpia a mida. Soci tecnològic per a pimes. Cinc aliances, tota la dedicació.',
   },
 
   header: sharedContent.header,
@@ -55,11 +56,14 @@ export const homeContent = {
   },
 
   hero: {
-    eyebrow:
-      'Escala Digital Ventures · Estudi de producte i tecnologia · Mataró, Barcelona',
+    // SEO-01 §4.2 — category + locality lead the eyebrow.
+    eyebrow: 'Estudi de producte i tecnologia · Mataró, Barcelona',
+    // H1 is a brand asset — UNCHANGED (SEO-01 §0.2 / AC-3).
     title: 'Automatitzem el teu negoci. Escalem amb tu.',
+    // SEO-01 §4.1 — carries "processos manuals", "plataforma a mida",
+    // "automatitzem".
     description:
-      'Convertim processos manuals en plataformes pròpies que creixen amb tu, amb la disciplina del programari empresarial global.',
+      'Automatitzem els processos manuals de la teva empresa i els convertim en una plataforma pròpia, feta a mida, sobre la qual pots créixer.',
     primaryCta: 'Parlem del teu negoci',
     secondaryCta: 'Com treballem',
   },

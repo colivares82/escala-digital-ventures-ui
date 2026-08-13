@@ -8,6 +8,19 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./tests/setup.ts'],
+    /**
+     * `next build` with `output: 'standalone'` copies the project — tests
+     * included — into .next/standalone/. Without this exclusion, running the
+     * suite after a build collects every spec twice (once from source, once
+     * from the build artefact), which double-counts tests and skews coverage.
+     * Defaults are restated because supplying `exclude` overrides them.
+     */
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/.next/**',
+      '**/.{idea,git,cache,output,temp}/**',
+    ],
     coverage: {
       provider: 'v8',
       include: ['components/**', 'lib/**', 'content/**'],
@@ -15,6 +28,8 @@ export default defineConfig({
           '**/__tests__/**',
           '**/*.test.*',
           'tests/**',
+          // Build artefact copy of the source — see the note on test.exclude.
+          '.next/**',
           // Type-only file — interface declarations only, no runtime code
           'content/types.ts',
           // Locale stub files — intentionally empty pending translation review (Phase 5)

@@ -3,10 +3,11 @@ import { sharedContent } from '@/content/es/shared'
 import type { HomePageDictionary } from '@/content/types'
 
 export const homeContent = {
+  // SEO-01 §3.1 — primary term: "automatización de procesos para empresas".
   meta: {
-    title: 'Escala Digital Ventures | Producto y tecnología',
+    title: 'Automatización de procesos y software a medida | Escala',
     description:
-      'Estudio de producto y tecnología que automatiza operaciones y construye plataformas digitales para empresas en crecimiento.',
+      'Convertimos los procesos manuales de tu empresa en una plataforma propia a medida. Socio tecnológico para pymes en España. Solo cinco alianzas activas.',
   },
 
   header: sharedContent.header,
@@ -61,11 +62,17 @@ export const homeContent = {
   },
 
   hero: {
+    // SEO-01 §4.2 — eyebrow carries the category + locality. Mono styling and
+    // length unchanged; the brand name is dropped so the category leads.
     eyebrow:
-      'Escala Digital Ventures · Estudio de producto y tecnología · Mataró, Barcelona',
+      'Estudio de producto y tecnología · Mataró, Barcelona',
+    // H1 is a brand asset — UNCHANGED (SEO-01 §0.2 / AC-3).
     title: 'Automatizamos tu negocio. Escalamos contigo.',
+    // SEO-01 §4.1 — sub-line must carry "procesos manuales", "plataforma
+    // a medida" and "automatización" naturally. This is the searchable
+    // vocabulary the untouched H1 cannot carry.
     description:
-      'Convertimos procesos manuales en plataformas propias que crecen contigo, con la disciplina del software empresarial global.',
+      'Automatizamos los procesos manuales de tu empresa y los convertimos en una plataforma propia, hecha a medida, sobre la que puedes crecer.',
     primaryCta: 'Hablemos de tu negocio',
     secondaryCta: 'Cómo trabajamos',
   },

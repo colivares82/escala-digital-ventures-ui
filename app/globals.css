@@ -5617,6 +5617,63 @@ h1, h2, h3, h4, p {
   color: rgb(22 24 29 / 0.55);
   text-transform: uppercase;
 }
+/* ==========================================================================
+   FaqBlock — always-expanded Q&A section (SEO-01 §5.4)
+   Tokens only: no new colours, no new fonts, no new spacing values.
+   Reads correctly down to 360px (AC-24); no motion, so prefers-reduced-motion
+   needs no handling here.
+   ========================================================================== */
+.faq-block {
+  background: var(--paper);
+  padding: var(--space-section) 0;
+}
+.faq-block__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.faq-block__heading {
+  font-family: var(--font-archivo);
+  font-stretch: 112%;
+  font-weight: 600;
+  font-size: var(--text-display-lg);
+  line-height: 1.08;
+  color: var(--ink);
+  margin-bottom: 2rem;
+}
+/* Two columns on wide viewports; the 1px rules read as a technical index. */
+.faq-block__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 3.5rem;
+  row-gap: 0;
+}
+.faq-block__item {
+  border-top: 1px solid var(--line);
+  padding: 1.5rem 0;
+  /* Long questions must not push the answer out of the measure. */
+  min-width: 0;
+}
+.faq-block__question {
+  font-family: var(--font-archivo);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  line-height: 1.25;
+  color: var(--ink);
+  margin: 0 0 0.625rem;
+  /* Balance two-line questions so the second line is not a single word. */
+  text-wrap: balance;
+}
+.faq-block__answer {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--ink);
+  opacity: 0.85;
+  margin: 0;
+  max-width: 60ch;
+}
+
+
 
 @media (max-width: 767px) {
   .case-timeline-ladder__steps {
@@ -5780,6 +5837,15 @@ h1, h2, h3, h4, p {
   .mobile-menu {
     animation: none;
   }
+}
+
+/* FaqBlock — single column below 768px so answers keep a readable measure
+   down to 360px (SEO-01 AC-24). */
+.faq-block__list {
+  grid-template-columns: 1fr;
+}
+.faq-block__heading {
+  margin-bottom: 1.25rem;
 }
 
 }

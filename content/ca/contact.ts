@@ -6,10 +6,11 @@
 import type { ContactDictionary } from '@/content/types'
 
 export const contactContent = {
+  // SEO-01 §3.3 — primary term: "contactar soci tecnològic".
   meta: {
-    title: 'Parlem | Escala Digital Ventures',
+    title: 'Contacte — Parlem del teu negoci | Escala',
     description:
-      'Explica\'ns què frena el teu creixement. Escoltem abans de proposar — si encaixem, ho diem amb honestedat.',
+      'Explica\'ns què frena el creixement de la teva empresa. Escoltem abans de proposar i et diem amb honestedat si podem ajudar-te i si encaixem com a socis.',
   },
   pageHeader: {
     eyebrow: 'A / CONVERSA',

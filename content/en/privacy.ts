@@ -14,8 +14,9 @@ import type { PrivacyDictionary } from '@/content/types'
 export const privacyContent = {
   meta: {
     title: 'Privacy | Escala Digital Ventures',
+    // SEO-01 §3.4 — factual only, no marketing copy.
     description:
-      'Privacy policy of Escala Digital Ventures, S.L.U. Data processing in accordance with the GDPR.',
+      'Privacy policy of Escala Digital Ventures, S.L.U. How personal data is processed, in accordance with the GDPR.',
   },
   header: {
     eyebrow: '· PRIVACY',

@@ -16,13 +16,34 @@ Items ordered by PLAN.md phase. The first open item in the first open phase is a
 - `content/en/*` + `content/ca/*` — per-page re-exports; `TODO(P5)` markers; professional review deferred to Phase 5
 - `docs/adding-a-page.md` — adding a page = interface + ES dict + route entry + component
 
-### [SEO-01] Remaining metadata tasks (Phase 1 delivered: meta, sitemap, robots)
-- ~~`title ≤ 60 chars`, `description ≤ 155 chars` — done; enforced by test (42 tests)~~ ✅
-- ~~`sitemap.xml` with locale alternates — done (`app/sitemap.ts`)~~ ✅
-- ~~`robots.txt` — done (`app/robots.ts`)~~ ✅
-- ~~`hreflang` + `x-default` — done in `generateMetadata`~~ ✅
-- ⬜ OG image with identity (abisal bg, Archivo claim, ambre accent) — Phase 4
-- ⬜ Structured data: `Organization` + `ProfessionalService` on home; `BreadcrumbList` on inner pages — Phase 7
+### ~~[SEO-01] Search & AI discoverability~~ ✅ Done (August 2026)
+- ~~`title ≤ 60 chars`, `description ≤ 155 chars` — enforced on the RENDERED title~~ ✅
+- ~~`sitemap.xml` with locale alternates + `x-default` + real `lastmod`~~ ✅
+- ~~`robots.txt` — 12 AI crawlers named; `/api/` + `/styleguide` disallowed~~ ✅
+- ~~`hreflang` + `x-default` — in `generateMetadata`~~ ✅
+- ~~OG image referenced from every page (the asset existed but was never emitted)~~ ✅
+- ~~Structured data: full `@graph` per page — `Organization`+`ProfessionalService`, `Person`,
+  `WebSite`, `WebPage`/`ContactPage`, `BreadcrumbList`, `Service`×5, `Article`, `FAQPage`~~ ✅
+- ~~Q&A blocks on `/que-hacemos`, `/como-trabajamos`, `/modelo-de-alianza` × 3 locales~~ ✅
+- ~~`/llms.txt`~~ ✅
+
+**Open — Carlos, not code (see SEO-01 §7.4 / §9):**
+- ⬜ **DNS switch.** `escaladigitalventures.com` still serves GoDaddy parking, so AC-17
+  (one canonical host; `www`/apex and `http`/`https` redirects) cannot be satisfied yet.
+  GoDaddy's parked `robots.txt` also advertises `Disallow-Training: /`, contradicting the
+  §7.1 decision to permit AI crawlers.
+- ⬜ Google Search Console — domain property, DNS TXT verification, submit sitemap.
+- ⬜ Bing Webmaster Tools — verify, import from GSC, submit sitemap.
+- ⬜ Resolve `{{NIF_B88767520}}` / `{{REGISTRO_MERCANTIL}}` in `/aviso-legal` if `vatID`
+  should appear in `Organization` (deliberately omitted while placeholders remain).
+- ⬜ Company LinkedIn URL → `Organization.sameAs` (currently omitted, never a personal profile).
+
+### [SEO-02] Deferred (SEO-01 §13 — do not pre-build)
+- ⬜ Per-page generated OG images
+- ⬜ Per-service / per-vertical landing pages
+- ⬜ `/insights` section
+- ⬜ Q&A blocks on home + case studies
+- ⬜ IndexNow automation on deploy
 - **Dependencies (remaining):** interior pages must exist before per-page OG images make sense
 
 ---

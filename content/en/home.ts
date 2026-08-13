@@ -8,10 +8,11 @@ import { clients } from '@/content/es/clients'
 import type { HomePageDictionary } from '@/content/types'
 
 export const homeContent = {
+  // SEO-01 §3.2 — primary term: "business process automation".
   meta: {
-    title: 'Escala Digital Ventures | Product & Technology',
+    title: 'Business Process Automation & Custom Software | Escala',
     description:
-      'Product and technology studio that automates operations and builds digital platforms for growing businesses.',
+      'We turn your company’s manual processes into a custom platform of its own. Technology partner for SMEs across Europe. Five alliances, full dedication.',
   },
 
   header: sharedContent.header,
@@ -55,11 +56,13 @@ export const homeContent = {
   },
 
   hero: {
-    eyebrow:
-      'Escala Digital Ventures · Product and Technology Studio · Mataró, Barcelona',
+    // SEO-01 §4.2 — category + locality lead the eyebrow.
+    eyebrow: 'Product and Technology Studio · Mataró, Barcelona',
+    // H1 is a brand asset — UNCHANGED (SEO-01 §0.2 / AC-3).
     title: 'We automate your business. We scale with you.',
+    // SEO-01 §4.1 — carries "manual processes", "custom platform", "automate".
     description:
-      'We turn manual processes into your own platforms that grow with you, with the discipline of global enterprise software.',
+      'We automate your company\u2019s manual processes and turn them into a custom platform of your own, one you can grow on.',
     primaryCta: "Let's talk about your business",
     secondaryCta: 'How we work',
   },

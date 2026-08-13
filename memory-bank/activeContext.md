@@ -1,6 +1,55 @@
 # Active Context
 
-_Last updated: August 2026 (SPEC-POLISH-10 COMPLETE — /modelo-de-alianza "Por qué solo cinco" split layout)_
+_Last updated: August 2026 (SEO-01 COMPLETE — search & AI discoverability)_
+
+### SEO-01 — Search & AI discoverability (COMPLETE)
+
+Surgical SEO pass. **No layout change, no shared component touched, every `H1`
+byte-identical** (verified by empty `git diff` on the protected list and by reading the
+rendered H1 of every page).
+
+**Three real bugs found and fixed — all pre-existing, none introduced by this spec:**
+1. **Every title was double-branded.** `layout.tsx` applied
+   `template: '%s | Escala Digital Ventures'` on top of dictionary titles that already
+   carried that suffix → `Qué hacemos | Escala Digital Ventures | Escala Digital Ventures`
+   on all 27 routes, well past 60 chars. **The existing ≤60 test never caught it because it
+   measured the dictionary string, not the rendered title.** New guard asserts the rendered
+   value; template is now `'%s'`.
+2. **`og:image` was never emitted.** `app/opengraph-image.tsx` existed and returned 200, but
+   returning an `openGraph` object without `images` from `generateMetadata` suppresses Next's
+   file-convention injection. Fixed by not overriding it.
+3. **Vitest double-collected after a build.** `output: 'standalone'` copies `tests/` into
+   `.next/standalone/`; no `.next` exclusion existed, so `build && test:coverage` ran 140
+   files / 2048 tests. Excluded in `vitest.config.ts`. Latent CI hazard, now closed.
+
+**Delivered:** all 27 page metas + 6 case metas replaced · full OG/Twitter set (`en_GB`, not
+`en_US`) · JSON-LD `@graph` per page (`lib/seo/`, `components/json-ld.tsx`) · `FaqBlock` +
+16 Q&A pairs × 3 locales on the three §5.2 pages · `/llms.txt` · robots with 12 named AI
+crawlers · sitemap `x-default` + content-derived `lastmod` · 6 new test files (+198 tests).
+
+**Key structural decision:** the §2.1 canonical entity definition lives once in
+`lib/seo/entity.ts` and is **imported** by `Organization.description`, `/llms.txt` and the
+`/sobre-escala` lead — AC-19 requires the three to be identical, so composing them from one
+constant makes drift impossible rather than merely unlikely. Verified live: all three byte-identical.
+
+**Audited and already compliant — no change needed:** §4.8 generic anchor text (none found),
+§4.9 image `alt` (both logos already descriptive; all figures use `aria-label`/`aria-hidden`).
+
+**Documented deviation:** §5.4 says "reuse `Section`"; **no such shared component exists** in
+this repo. `FaqBlock` follows the established `<section>` + `.page-shell` + `SectionIndex`
+BEM pattern (same shape as `CommitmentsBand`). No shared component was created or modified.
+
+**Guard rewrites worth remembering:** two of my first-pass assertions were wrong, not the code —
+(a) `/\{\{|\}\}/` matches JSON's own nested `}}`, so the placeholder guard now matches
+`{{IDENTIFIER}}`; (b) `/client owns/i` blocked the *required* "client owns their data", so the
+ownership guards now bind to code/IP nouns. The EN FAQ question was reworded
+("who does the code belong to") rather than relaxing `i18n-coverage`'s ownership guard.
+
+**⚠ Blocking, not code:** `escaladigitalventures.com` still resolves to **GoDaddy parking**
+(`3.33.130.190`, NS `domaincontrol.com`, JS redirect to `/lander`). The site is NOT live at
+the domain — it lives at `escala-web-prod-…run.app`. AC-17 (one canonical host) and §9
+(Search Console / Bing) cannot be satisfied until the DNS switch. GoDaddy's parked
+`robots.txt` currently advertises `Disallow-Training: /`, the opposite of our §7.1 policy.
 
 ## Current state
 

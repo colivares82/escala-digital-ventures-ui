@@ -17,10 +17,12 @@
 import type { LegalDictionary } from '@/content/types'
 
 export const legalContent = {
+  // SEO-01 §3.4 — legal pages stay indexable with minimal, factual metadata.
+  // No marketing copy here.
   meta: {
     title: 'Aviso legal | Escala Digital Ventures',
     description:
-      'Aviso legal de Escala Digital Ventures, S.L.U. Información legal e identificación del titular conforme a la LSSI-CE.',
+      'Información legal e identificación del titular del sitio web de Escala Digital Ventures, S.L.U. conforme a la LSSI-CE.',
   },
   header: {
     eyebrow: '· AVISO LEGAL',

@@ -9,16 +9,18 @@
 import type { AllianceDictionary } from '@/content/types'
 
 export const allianceContent = {
+  // SEO-01 §3.3 — primary term: "soci tecnològic per a pimes".
   meta: {
-    title: "Model d'aliança | Escala Digital Ventures",
+    title: "Soci tecnològic per a pimes: el model d'aliança",
     description:
-      "Cinc aliances actives. Dedicació completa. Tres plans: tècnic, estratègic i visionari. Els compromisos de cada aliança.",
+      "Només cinc aliances actives. Acompanyament tècnic, estratègic i visionari, llicència d'ús indefinida sobre la plataforma i propietat de les teves dades.",
   },
 
   pageHeader: {
     eyebrow: "A / MODEL D'ALIANÇA",
     title: 'Cinc aliances. Tota la nostra dedicació.',
-    lead: 'No busquem projectes; busquem socis. I triem els nostres socis tant com ells ens trien a nosaltres.',
+    // SEO-01 §4.6 — must contain "soci tecnològic" explicitly.
+    lead: 'Treballem com a soci tecnològic d\'un nombre reduït d\'empreses. No busquem projectes; busquem socis. I triem els nostres socis tant com ells ens trien a nosaltres.',
   },
 
   whyFive: {
@@ -90,6 +92,44 @@ export const allianceContent = {
         n: '05',
         tag: 'MESURA',
         body: 'Un únic indicador final: el creixement i l\'eficiència del teu negoci.',
+      },
+    ],
+  },
+
+  /**
+   * Q&A block — SEO-01 §5.7 / §5.8.
+   * OWNERSHIP: the client owns their DATA and holds an indefinite use LICENCE;
+   * IP and source code belong to Escala. Never say the client owns the code.
+   */
+  faq: {
+    sectionEyebrow: 'E / PREGUNTES FREQÜENTS',
+    sectionIndex: 'E',
+    heading: 'Preguntes freqüents',
+    items: [
+      {
+        question: 'Per què només cinc clients?',
+        answer:
+          'Perquè la dedicació no es pot repartir indefinidament. Amb cinc aliances actives podem conèixer cada negoci a fons, respondre ràpid i acompanyar en el pla tècnic, l\'estratègic i el visionari. No és una limitació de capacitat: és el model de negoci, i és el que separa un soci d\'un proveïdor.',
+      },
+      {
+        question: 'De qui és el codi i de qui són les dades?',
+        answer:
+          'Les dades són enterament teves: les posseeixes, les exportes quan vulguis i se\'t retornen íntegres al final de la relació. La propietat intel·lectual i el codi font són d\'Escala, i tu reps una llicència d\'ús exclusiva, intransferible i per temps indefinit per operar la teva plataforma amb usuaris il·limitats.',
+      },
+      {
+        question: 'Què passa si deixem de treballar junts?',
+        answer:
+          'La llicència d\'ús sobreviu al final del suport: mai no et quedes sense la teva eina. Les teves dades se\'t retornen completes. Les obligacions de confidencialitat i les restriccions sectorials continuen vigents després que acabi la relació.',
+      },
+      {
+        question: 'Podríeu treballar amb la meva competència?',
+        answer:
+          'No amb el mateix sistema. Cada aliança inclou exclusivitat sectorial: no reutilitzem la teva plataforma ni les seves millores per a competidors teus en el teu sector. És la contrapartida natural que la propietat intel·lectual sigui nostra.',
+      },
+      {
+        question: 'Què inclou exactament una aliança?',
+        answer:
+          'Disseny, construcció, desplegament i operació de la teva plataforma; direcció externa de producte i tecnologia per decidir què construir i en quin ordre; i perspectiva sobre què automatitzar després i quines dades començar a capturar avui. Tot amb especificació prèvia, qualitat verificable i facturació traçable del temps dedicat.',
       },
     ],
   },

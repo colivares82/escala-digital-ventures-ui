@@ -9,6 +9,7 @@
 import type { MetadataRoute } from 'next'
 import { SITE_URL } from '@/lib/config'
 import { getAlternates, getPath } from '@/lib/i18n/routes'
+import { getLastModified } from '@/lib/seo/lastmod'
 import { LOCALES } from '@/lib/i18n/types'
 import type { PageId, PageParams } from '@/lib/i18n/types'
 
@@ -43,11 +44,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     LOCALES.forEach((locale) => {
       languageAlternates[locale] = `${SITE_URL}${alternates[locale]}`
     })
+    // x-default → the ES URL, matching the hreflang emitted in <head>.
+    // SEO-01 §7.2 / AC-13.
+    languageAlternates['x-default'] = `${SITE_URL}${alternates.es}`
+
+    // Real, content-derived lastmod — never build time (SEO-01 §7.2).
+    const lastModified = getLastModified(page)
 
     // One sitemap entry per locale URL, each with full language alternates
     LOCALES.forEach((locale) => {
       entries.push({
         url: `${SITE_URL}${getPath(page, locale, params)}`,
+        ...(lastModified ? { lastModified } : {}),
         alternates: {
           languages: languageAlternates,
         },
