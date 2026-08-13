@@ -46,16 +46,23 @@ export const sharedContent = {
     claim: 'We automate your business. We scale with you.',
     company: 'Escala Digital Ventures, S.L.U. · Mataró, Barcelona',
     direction: 'General management: reference at colivares.com',
+    col: {
+      navigation: 'Navigation',
+      contact: 'Contact',
+      legal: 'Legal',
+    },
     navigation: [
       { label: 'What we do', href: '/en/what-we-do' },
       { label: 'How we work', href: '/en/how-we-work' },
       { label: 'Case studies', href: '/en/case-studies' },
       { label: 'Alliance model', href: '/en/alliance-model' },
+      { label: 'About Escala', href: '/en/about-escala' },
     ],
     legal: [
       { label: 'Legal notice', href: '/en/legal-notice' },
       { label: 'Privacy', href: '/en/privacy' },
     ],
+    noTracking: 'No tracking cookies',
   },
   finalCta: {
     title: "Let's talk about your business.",

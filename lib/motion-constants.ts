@@ -156,3 +156,13 @@ export const HEADER_DESKTOP_MEDIA_QUERY = `(min-width: ${HEADER_MOBILE_BREAKPOIN
 /** Mobile menu overlay open/close transition duration (ms). Disabled entirely
  *  under prefers-reduced-motion (AC-11), so this only governs full-motion users. */
 export const MOBILE_MENU_TRANSITION_MS = 200
+
+// ── Footer calibrated rule (SPEC-POLISH-08) ────────────────────────────────────
+
+/** Number of minor ticks drawn across the footer's opening calibrated rule.
+ *  Purely decorative/static — no motion (AC-14). Every 5th tick renders taller;
+ *  the first tick is always the accent color, per spec §2 Band 0. */
+export const FOOTER_RULE_TICK_COUNT = 40
+
+/** Every Nth tick (1-indexed) renders as a taller "major" tick. */
+export const FOOTER_RULE_MAJOR_TICK_INTERVAL = 5

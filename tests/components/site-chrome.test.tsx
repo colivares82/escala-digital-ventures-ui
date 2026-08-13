@@ -215,30 +215,56 @@ describe('SiteHeader', () => {
 })
 
 describe('SiteFooter', () => {
+  const footerProps = {
+    content: footer,
+    accessibility,
+    brand: header.brand,
+    contactLabel: header.contact,
+    email: finalCta.email,
+    location: finalCta.location,
+    languages: finalCta.languages,
+  }
+
   it('renders the primary claim', () => {
-    render(<SiteFooter content={footer} accessibility={accessibility} />)
+    render(<SiteFooter {...footerProps} />)
     expect(screen.getByText(footer.claim)).toBeInTheDocument()
   })
 
-  it('renders the company line', () => {
-    render(<SiteFooter content={footer} accessibility={accessibility} />)
+  it('renders the brand slot as a landmark link', () => {
+    render(<SiteFooter {...footerProps} />)
+    expect(screen.getByRole('link', { name: accessibility.homeLabel })).toBeInTheDocument()
+  })
+
+  it('renders the company line in the meta band', () => {
+    render(<SiteFooter {...footerProps} />)
     expect(screen.getByText(footer.company)).toBeInTheDocument()
   })
 
-  it('renders the direction reference (no link)', () => {
-    render(<SiteFooter content={footer} accessibility={accessibility} />)
-    expect(screen.getByText(footer.direction)).toBeInTheDocument()
+  it('renders the direction reference (no link, plain text)', () => {
+    render(<SiteFooter {...footerProps} />)
+    const direction = screen.getByText(footer.direction)
+    expect(direction).toBeInTheDocument()
+    expect(direction.tagName).not.toBe('A')
+    expect(screen.queryByRole('link', { name: footer.direction })).not.toBeInTheDocument()
   })
 
-  it('renders all footer navigation links', () => {
-    render(<SiteFooter content={footer} accessibility={accessibility} />)
+  it('renders the three column headings', () => {
+    render(<SiteFooter {...footerProps} />)
+    expect(screen.getByText(footer.col.navigation)).toBeInTheDocument()
+    expect(screen.getByText(footer.col.contact)).toBeInTheDocument()
+    expect(screen.getByText(footer.col.legal)).toBeInTheDocument()
+  })
+
+  it('renders all footer navigation links plus the contact CTA', () => {
+    render(<SiteFooter {...footerProps} />)
     footer.navigation.forEach((item) => {
       expect(screen.getByRole('link', { name: item.label })).toBeInTheDocument()
     })
+    expect(screen.getByRole('link', { name: header.contact })).toBeInTheDocument()
   })
 
   it('renders the footer navigation landmark', () => {
-    render(<SiteFooter content={footer} accessibility={accessibility} />)
+    render(<SiteFooter {...footerProps} />)
     expect(
       screen.getByRole('navigation', {
         name: accessibility.footerNavigation,
@@ -246,14 +272,91 @@ describe('SiteFooter', () => {
     ).toBeInTheDocument()
   })
 
-  it('renders both legal links with correct hrefs', () => {
-    render(<SiteFooter content={footer} accessibility={accessibility} />)
-    const legal = footer.legal
-    legal.forEach((item) => {
-      expect(screen.getByRole('link', { name: item.label })).toHaveAttribute(
-        'href',
-        item.href,
-      )
+  it('renders both legal links resolved through the locale-aware route map', () => {
+    render(<SiteFooter {...footerProps} />)
+    expect(screen.getByRole('link', { name: footer.legal[0].label })).toHaveAttribute(
+      'href',
+      '/aviso-legal',
+    )
+    expect(screen.getByRole('link', { name: footer.legal[1].label })).toHaveAttribute(
+      'href',
+      '/privacidad',
+    )
+  })
+
+  it('resolves footer nav hrefs through getPath for a non-ES locale', () => {
+    render(<SiteFooter {...footerProps} locale="en" currentPage="home" />)
+    expect(screen.getByRole('link', { name: footer.navigation[0].label })).toHaveAttribute(
+      'href',
+      '/en/what-we-do',
+    )
+  })
+
+  it('renders the email as a mailto link', () => {
+    render(<SiteFooter {...footerProps} />)
+    expect(screen.getByRole('link', { name: finalCta.email })).toHaveAttribute(
+      'href',
+      `mailto:${finalCta.email}`,
+    )
+  })
+
+  it('renders the location and languages lines', () => {
+    render(<SiteFooter {...footerProps} />)
+    expect(screen.getByText(finalCta.location)).toBeInTheDocument()
+    expect(screen.getByText(finalCta.languages)).toBeInTheDocument()
+  })
+
+  it('renders the no-tracking-cookies note', () => {
+    render(<SiteFooter {...footerProps} />)
+    expect(screen.getByText(footer.noTracking)).toBeInTheDocument()
+  })
+
+  it('never renders a link to colivares.com', () => {
+    render(<SiteFooter {...footerProps} />)
+    const links = screen.getAllByRole('link')
+    links.forEach((link) => {
+      expect(link.getAttribute('href')).not.toMatch(/colivares\.com/)
     })
+  })
+
+  it('renders no physical address', () => {
+    render(<SiteFooter {...footerProps} />)
+    expect(screen.queryByText(/calle|avenida|c\/|cp \d{5}/i)).not.toBeInTheDocument()
+  })
+
+  it('renders the meta separators as decorative (aria-hidden)', () => {
+    const { container } = render(<SiteFooter {...footerProps} />)
+    const dots = container.querySelectorAll('.site-footer__dot')
+    expect(dots.length).toBeGreaterThan(0)
+    dots.forEach((dot) => {
+      expect(dot).toHaveAttribute('aria-hidden', 'true')
+    })
+  })
+
+  it('renders the calibrated rule as decorative (aria-hidden)', () => {
+    const { container } = render(<SiteFooter {...footerProps} />)
+    const rule = container.querySelector('.calibrated-rule')
+    expect(rule).toHaveAttribute('aria-hidden', 'true')
+  })
+
+  it('renders a dimensioned brand slot', () => {
+    const { container } = render(<SiteFooter {...footerProps} />)
+    const brandSlot = container.querySelector('.site-footer__brand')
+    expect(brandSlot).toBeInTheDocument()
+  })
+
+  it('renders the locale switcher in the meta band', () => {
+    render(<SiteFooter {...footerProps} />)
+    expect(screen.getByText('ES')).toBeInTheDocument()
+    expect(screen.getByText('EN')).toBeInTheDocument()
+    expect(screen.getByText('CA')).toBeInTheDocument()
+  })
+
+  it('is a footer landmark with labelled column groups', () => {
+    const { container } = render(<SiteFooter {...footerProps} />)
+    expect(container.querySelector('footer')).toBeInTheDocument()
+    expect(container.querySelector('[aria-labelledby="footer-col-nav"]')).toBeInTheDocument()
+    expect(container.querySelector('[aria-labelledby="footer-col-contact"]')).toBeInTheDocument()
+    expect(container.querySelector('[aria-labelledby="footer-col-legal"]')).toBeInTheDocument()
   })
 })

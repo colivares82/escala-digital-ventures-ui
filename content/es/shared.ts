@@ -40,16 +40,29 @@ export const sharedContent = {
     claim: 'Automatizamos tu negocio. Escalamos contigo.',
     company: 'Escala Digital Ventures, S.L.U. · Mataró, Barcelona',
     direction: 'Dirección general: referencia en colivares.com',
+    // SPEC-POLISH-08 §4 — column headings, the only new copy this spec adds
+    // besides `noTracking` (no reusable key existed for it — see spec §0).
+    col: {
+      navigation: 'Navegación',
+      contact: 'Contacto',
+      legal: 'Legal',
+    },
+    // SPEC-POLISH-08 §2 Band 2 — 5th link ("Sobre Escala") added to reach page
+    // parity with the header nav; label reused from `header.nav`, no new copy.
     navigation: [
       { label: 'Qué hacemos', href: '/que-hacemos' },
       { label: 'Cómo trabajamos', href: '/como-trabajamos' },
       { label: 'Casos de éxito', href: '/casos-de-exito' },
       { label: 'Modelo de alianza', href: '/modelo-de-alianza' },
+      { label: 'Sobre Escala', href: '/sobre-escala' },
     ],
     legal: [
       { label: 'Aviso legal', href: '/aviso-legal' },
       { label: 'Privacidad', href: '/privacidad' },
     ],
+    // SPEC-POLISH-08 §2 Band 2 — short mono note; no reusable key existed
+    // (privacy.ts carries only a full paragraph), so this is new copy.
+    noTracking: 'Sin cookies de seguimiento',
   },
   /**
    * Canonical FinalCTA content — single source for all pages.
