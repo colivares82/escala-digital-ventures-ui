@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>POLISH-06 · FIG.06 — El ciclo de ejecución</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..700&family=Instrument+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F7F4;
+    --ink:#16181D;
+    --mar:#0E3A5D;
+    --abisal:#0A2B45;
+    --deep:#082238;
+    --amber:#FFB703;
+    --line:rgba(247,247,244,.22);
+    --line-soft:rgba(247,247,244,.12);
+    --dim:rgba(247,247,244,.55);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--abisal);color:var(--paper);
+    font-family:"Instrument Sans",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .flag{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;
+    color:rgba(247,247,244,.45);padding:14px 48px;border-bottom:1px solid var(--line-soft);
+  }
+  .wrap{max-width:1240px;margin:0 auto;padding:96px 48px 120px}
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;
+    color:var(--dim);margin:0 0 56px;
+  }
+  .eyebrow b{color:var(--amber);font-weight:400;margin-right:14px}
+  h2{
+    font-family:"Archivo",sans-serif;font-stretch:112%;font-weight:600;
+    font-size:clamp(2.2rem,4.4vw,3.4rem);line-height:1.05;letter-spacing:-.02em;
+    margin:0 0 12px;max-width:16ch;
+  }
+  .lead{
+    max-width:52ch;font-size:1.0625rem;line-height:1.6;
+    color:rgba(247,247,244,.78);margin:0 0 64px;
+  }
+  figure{margin:0}
+  svg{width:100%;height:auto;display:block}
+  figcaption{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
+    color:rgba(247,247,244,.45);margin-top:36px;
+  }
+
+  .lbl{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;fill:var(--paper)}
+  .sub{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.08em;fill:rgba(247,247,244,.5)}
+  .core{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;fill:rgba(247,247,244,.62)}
+  .arc-lbl{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;fill:var(--amber)}
+  .box{fill:var(--deep);stroke:var(--line);stroke-width:1}
+  .box-client{stroke:rgba(255,183,3,.5)}
+  .tick{stroke:var(--line);stroke-width:1}
+  .ring{fill:none;stroke:var(--line);stroke-width:1}
+  .ring-return{fill:none;stroke:var(--amber);stroke-width:1.5}
+  .chev{fill:none;stroke:rgba(247,247,244,.4);stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+  .chev-a{stroke:var(--amber)}
+  .node-dot{fill:var(--paper)}
+  .node-dot-client{fill:var(--amber)}
+
+  .station{opacity:.62}
+  @keyframes st{0%,7%{opacity:1}13%,100%{opacity:.62}}
+  @media (prefers-reduced-motion:no-preference){
+    .station{animation:st 12s linear infinite}
+    #s1{animation-delay:0s}#s2{animation-delay:2.4s}#s3{animation-delay:4.8s}
+    #s4{animation-delay:7.2s}#s5{animation-delay:9.6s}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .station{opacity:1}
+    #pulse{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="flag">WIREFRAME · POLISH-06 · /COMO-TRABAJAMOS · SECCIÓN D · FIG. 06</div>
+
+<div class="wrap">
+  <p class="eyebrow"><b>D</b>/ EL FLUJO DE EJECUCIÓN</p>
+  <h2>De la especificación al feedback</h2>
+  <p class="lead">Cada incremento recorre el mismo camino, y el camino no termina: lo que aprenden tus usuarios entra en la siguiente especificación.</p>
+
+  <figure>
+  <svg viewBox="0 0 1100 530" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ciclo cerrado de ejecución con cinco estaciones: especificación, aprobación del cliente, construcción, producción y uso real, con retorno del feedback a la especificación.">
+
+    <circle class="ring" cx="550" cy="300" r="180"/>
+    <path class="ring-return" d="M378.8,244.4 A180,180 0 0,1 550,120"/>
+
+    <g class="chev"><path d="M-5,-5 L5,0 L-5,5" transform="translate(655.8,154.4) rotate(36)"/></g>
+    <g class="chev"><path d="M-5,-5 L5,0 L-5,5" transform="translate(721.2,355.6) rotate(108)"/></g>
+    <g class="chev"><path d="M-5,-5 L5,0 L-5,5" transform="translate(550,480) rotate(180)"/></g>
+    <g class="chev"><path d="M-5,-5 L5,0 L-5,5" transform="translate(378.8,355.6) rotate(252)"/></g>
+    <g class="chev chev-a"><path d="M-5,-5 L5,0 L-5,5" transform="translate(444.2,154.4) rotate(324)"/></g>
+
+    <text class="core" x="550" y="292" text-anchor="middle">CICLOS CORTOS</text>
+    <text class="core" x="550" y="312" text-anchor="middle">MEJORA CONTINUA</text>
+
+    <text class="arc-lbl" x="415" y="128" text-anchor="end">EL FEEDBACK SE PRIORIZA</text>
+    <text class="arc-lbl" x="415" y="142" text-anchor="end">Y ENTRA EN EL SIGUIENTE CICLO</text>
+
+    <line class="tick" x1="550" y1="120" x2="550" y2="87"/>
+    <line class="tick" x1="721.2" y1="244.4" x2="751" y2="238"/>
+    <line class="tick" x1="655.8" y1="445.6" x2="690" y2="462"/>
+    <line class="tick" x1="444.2" y1="445.6" x2="410" y2="462"/>
+    <line class="tick" x1="378.8" y1="244.4" x2="349" y2="238"/>
+
+    <g class="station" id="s1">
+      <rect class="box" x="440" y="33" width="220" height="54"/>
+      <text class="lbl" x="550" y="55" text-anchor="middle">ESPECIFICACIÓN</text>
+      <text class="sub" x="550" y="72" text-anchor="middle">REQUISITOS + PROTOTIPO</text>
+      <circle class="node-dot" cx="550" cy="120" r="5"/>
+    </g>
+
+    <g class="station" id="s2">
+      <rect class="box box-client" x="751" y="208" width="220" height="54"/>
+      <text class="lbl" x="861" y="230" text-anchor="middle">APROBACIÓN</text>
+      <text class="sub" x="861" y="247" text-anchor="middle">EL CLIENTE VALIDA ANTES</text>
+      <circle class="node-dot-client" cx="721.2" cy="244.4" r="5"/>
+    </g>
+
+    <g class="station" id="s3">
+      <rect class="box" x="690" y="443" width="220" height="54"/>
+      <text class="lbl" x="800" y="465" text-anchor="middle">CONSTRUCCIÓN</text>
+      <text class="sub" x="800" y="482" text-anchor="middle">PRUEBAS · ENTORNOS</text>
+      <circle class="node-dot" cx="655.8" cy="445.6" r="5"/>
+    </g>
+
+    <g class="station" id="s4">
+      <rect class="box" x="190" y="443" width="220" height="54"/>
+      <text class="lbl" x="300" y="465" text-anchor="middle">PRODUCCIÓN</text>
+      <text class="sub" x="300" y="482" text-anchor="middle">DESPLIEGUE CONTINUO</text>
+      <circle class="node-dot" cx="444.2" cy="445.6" r="5"/>
+    </g>
+
+    <g class="station" id="s5">
+      <rect class="box box-client" x="129" y="208" width="220" height="54"/>
+      <text class="lbl" x="239" y="230" text-anchor="middle">USO REAL</text>
+      <text class="sub" x="239" y="247" text-anchor="middle">TUS USUARIOS, CADA DÍA</text>
+      <circle class="node-dot-client" cx="378.8" cy="244.4" r="5"/>
+    </g>
+
+    <circle id="pulse" r="6" fill="#FFB703">
+      <animateMotion dur="12s" repeatCount="indefinite"
+        path="M550,120 A180,180 0 0,1 550,480 A180,180 0 0,1 550,120"
+        keyPoints="0;0.10;0.20;0.30;0.40;0.50;0.60;0.70;0.80;0.90;1"
+        keyTimes="0;0.13;0.20;0.33;0.40;0.53;0.60;0.73;0.80;0.93;1"
+        calcMode="linear"/>
+    </circle>
+
+  </svg>
+  <figcaption>FIG. 06 — EL CICLO DE EJECUCIÓN: DE LA ESPECIFICACIÓN AL USO REAL, Y VUELTA A EMPEZAR</figcaption>
+  </figure>
+</div>
+
+</body>
+</html>

@@ -108,3 +108,29 @@ export const SERVICE_FIG_AI_CONNECTOR_PULSE_DUR_S = 1.1
 
 /** FIG.11 — duration for the ambre arc to complete one full loop. */
 export const SERVICE_FIG_EVOLVE_ARC_DUR_S = 4
+
+// ── ExecutionCycleFig — FIG.06 closed cycle (SPEC-POLISH-06) ──────────────────
+
+/** Breakpoint (px) below which the ring collapses to a vertical station list. */
+export const EXEC_CYCLE_MOBILE_BREAKPOINT_PX = 720
+
+/** Duration (s) for one full clockwise loop of the ambre pulse around the ring. */
+export const EXEC_CYCLE_PULSE_DUR_S = 12
+
+/** Stagger delay (s) between successive station highlight activations (12s / 5). */
+export const EXEC_CYCLE_STATION_STAGGER_S = 2.4
+
+// ── HowWeBuildFig — FIG.12 layered system (SPEC-POLISH-06) ────────────────────
+
+/** Duration (s) for one pulse to travel from entry through a lane to production. */
+export const HOW_WE_BUILD_PULSE_DUR_S = 7
+
+/** Stagger delay (s) between the three parallel-lane pulses entering the frame. */
+export const HOW_WE_BUILD_PULSE_STAGGER_S = 0.35
+
+/** Offset (s) between the "Criterio senior" and "Calidad verificable" gate flashes,
+ *  so the two reads as sequential checks rather than a simultaneous blink. */
+export const HOW_WE_BUILD_GATE_OFFSET_S = 0.5
+
+/** Duration (s) for the dimmer return-path pulse from Producción back into the frame. */
+export const HOW_WE_BUILD_RETURN_PULSE_DUR_S = 7

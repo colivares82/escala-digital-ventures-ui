@@ -1,5 +1,73 @@
 # Changelog
 
+## [SPEC-POLISH-06] — August 2026 — /como-trabajamos: execution cycle, build system, section order
+
+### Changed
+- **Section order** — the Escala Growth Framework (`PhaseCycle`) moved from section B to the
+  **last content section (E)**, immediately before `FinalCTA`. Final order (after a post-
+  implementation addendum, see below): A·PageHeader → B·ExecutionCycleFig (FIG.06) →
+  C·ExecutionPractices → D·AiBuildBlock (FIG.12) → E·PhaseCycle → FinalCTA. Re-lettered in
+  all 3 locales; the Framework's own copy, component and figure are unchanged — only its
+  position and section letter moved.
+- **Addendum — B/C swap (post-implementation, Carlos's request):** the initial
+  implementation ordered B·ExecutionPractices → C·ExecutionCycleFig, matching SPEC-POLISH-06
+  §1.1. Carlos requested "El flujo de ejecución" precede "La ejecución, en el día a día" once
+  live — swapped to B·ExecutionCycleFig → C·ExecutionPractices, re-lettered accordingly
+  (`pipeline.sectionIndex` C→B, `executionPractices.sectionIndex` B→C) in all 3 locales. This
+  is a deliberate, approved deviation from §1.1's exact order — recorded here rather than left
+  as a silent mismatch between spec and code. Surfaces were intentionally left unchanged
+  (pure reorder); Carlos will review the resulting paper→dark→paper→dark→dark rhythm live and
+  decide separately whether `ExecutionPractices` should move to the dark surface.
+- **Figure numbering** — kept FIG.06 for the execution-cycle figure; the new "how we build"
+  figure takes **FIG.12** (next free global number), not FIG.07 — FIG.07 is already used by
+  `/que-hacemos` and the site numbers figures globally, not per page. `/que-hacemos` FIG.07–11
+  are untouched.
+- **`ExecutionPipelineFig` (open-ended pipeline, FIG.06) replaced by `ExecutionCycleFig`** — a
+  single closed ring with 5 stations clockwise from 12 o'clock (Especificación → Aprobación →
+  Construcción → Producción → Uso real), an amber return edge (station 5 → 1) whose chevron
+  arrowhead stops at station 1's marker, 5 always-visible direction chevrons, and a phase-locked
+  12s ambre pulse. Client-owned stations (Aprobación, Uso real) get the amber marker treatment;
+  quality is not a station (support line under Construcción only, per Libro Ch. 6). <720px
+  fallback: vertical station list (same pattern as `PhaseCycle`'s static list).
+- **`AiBuildBlock` full replacement** — heading/body now "Ingeniería con criterio, acelerada
+  por agentes" (was "La IA también en cómo construimos"); the copy-left/figure-right split is
+  replaced by heading + body full width → new `HowWeBuildFig` (FIG.12) full content width →
+  4-column legend (gobierno/ejecución/control/capitalización, collapses to 2 cols <900px, 1 col
+  <560px).
+- **`HowWeBuildFig` (new)** — a layered system diagram: a dashed governing frame containing the
+  approved-specification entry, 3 named parallel agent lanes (Implementación · Pruebas ·
+  Documentación) and 2 amber gates (Criterio senior, Calidad verificable); Producción sits
+  **outside** the frame; an amber return path re-enters it. Three staggered 7s pulses per lane,
+  gate flashes offset 0.5s to read as sequential checks, dimmer return pulse.
+
+### Added
+- `components/execution-cycle-fig.tsx`, `components/how-we-build-fig.tsx` — new page-scoped
+  figure components for `/como-trabajamos` only.
+- `EXEC_CYCLE_*`, `HOW_WE_BUILD_*` constants in `lib/motion-constants.ts` — additive only.
+- `tests/components/execution-cycle-fig.test.tsx`, `tests/components/how-we-build-fig.test.tsx`.
+- Content-integrity guards: exactly 5 stations, exactly 2 client-owned, no station labelled
+  "Calidad", sections lettered A–E with no gap/duplicate.
+
+### Removed
+- `components/execution-pipeline-fig.tsx` and its test — fully replaced by `ExecutionCycleFig`.
+
+### Not changed
+- `PageHeader`, `Section`, `FinalCTA`, `GridBackground`, `AllianceConstellation`, `ServiceFig`,
+  `ContactForm`, `PhaseCycle` (component internals) — byte-identical.
+- Every other page (`/`, `/que-hacemos`, `/casos-de-exito*`, `/modelo-de-alianza`,
+  `/sobre-escala`, `/contacto`, legal, 404) — byte-identical.
+
+### Deviations from §0 scope guard (reported, not silent)
+- `app/globals.css` — no per-component stylesheets exist in this project; new BEM blocks added,
+  dead `.pipeline-*`/`.ai-diagram*` rules removed.
+- `app/styleguide/page.tsx` — renders both changed components; updated to the new prop shapes.
+- `lib/motion-constants.ts` — additive timing constants only (no-magic-numbers rule).
+
+### Test results
+- 54 test files · 991 tests · 100% pass · build clean · TypeScript strict clean · lint clean
+  (0 new errors) · coverage 77.96%/76.14%/84.71%/80.85% (well above the 70% floor) · 0
+  hardcoded hex in the two new components.
+
 ## [SPEC-POLISH-05] — August 2026 — /que-hacemos: FIG.08/09/11 overlap & layering fixes
 
 ### Fixed

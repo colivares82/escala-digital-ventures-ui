@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>POLISH-06 · FIG.07 — Ingeniería con criterio, acelerada por agentes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..700&family=Instrument+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F7F4;
+    --abisal:#0A2B45;
+    --deep:#082238;
+    --amber:#FFB703;
+    --line:rgba(247,247,244,.22);
+    --line-soft:rgba(247,247,244,.12);
+    --dim:rgba(247,247,244,.55);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--abisal);color:var(--paper);
+    font-family:"Instrument Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+  }
+  .flag{
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;
+    color:rgba(247,247,244,.45);padding:14px 48px;border-bottom:1px solid var(--line-soft);
+  }
+  .wrap{max-width:1240px;margin:0 auto;padding:96px 48px 120px}
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;
+    color:var(--dim);margin:0 0 56px;
+  }
+  .eyebrow b{color:var(--amber);font-weight:400;margin-right:14px}
+  h2{
+    font-family:"Archivo",sans-serif;font-stretch:112%;font-weight:600;
+    font-size:clamp(2.2rem,4.4vw,3.4rem);line-height:1.05;letter-spacing:-.02em;
+    margin:0 0 24px;max-width:18ch;
+  }
+  .lead{max-width:60ch;font-size:1.0625rem;line-height:1.65;color:rgba(247,247,244,.78);margin:0 0 64px}
+  figure{margin:0}
+  svg{width:100%;height:auto;display:block}
+  figcaption{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
+    color:rgba(247,247,244,.45);margin-top:36px;
+  }
+  .legend{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:32px;
+    margin-top:64px;padding-top:32px;border-top:1px solid var(--line-soft);
+  }
+  .legend h3{
+    font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;
+    font-weight:500;color:var(--amber);margin:0 0 10px;
+  }
+  .legend p{margin:0;font-size:.9375rem;line-height:1.5;color:rgba(247,247,244,.72)}
+  @media(max-width:900px){.legend{grid-template-columns:1fr 1fr}}
+
+  .lbl{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;fill:var(--paper)}
+  .sub{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.08em;fill:rgba(247,247,244,.5)}
+  .frame-lbl{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;fill:rgba(247,247,244,.55)}
+  .gate-lbl{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.12em;fill:var(--amber)}
+  .ret-lbl{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;fill:rgba(255,183,3,.85)}
+  .box{fill:var(--deep);stroke:var(--line);stroke-width:1}
+  .frame{fill:none;stroke:rgba(247,247,244,.28);stroke-width:1;stroke-dasharray:3 5}
+  .wire{stroke:var(--line);stroke-width:1;fill:none}
+  .ret{stroke:rgba(255,183,3,.55);stroke-width:1;fill:none}
+  .gate{fill:var(--amber);opacity:.35}
+  @keyframes gateOn{0%,42%{opacity:.35}46%,52%{opacity:1}58%,100%{opacity:.35}}
+  @media (prefers-reduced-motion:no-preference){
+    #g1{animation:gateOn 7s linear infinite}
+    #g2{animation:gateOn 7s linear infinite;animation-delay:.5s}
+  }
+  @media (prefers-reduced-motion:reduce){.pulse{display:none}}
+</style>
+</head>
+<body>
+
+<div class="flag">WIREFRAME · POLISH-06 · /COMO-TRABAJAMOS · SECCIÓN E · FIG. 07</div>
+
+<div class="wrap">
+  <p class="eyebrow"><b>E</b>/ CÓMO CONSTRUIMOS</p>
+  <h2>Ingeniería con criterio, acelerada por agentes</h2>
+  <p class="lead">No construimos más rápido por usar IA: construimos más rápido porque cada decisión ocurre dentro de un sistema. Una biblioteca propia de estándares, reglas y patrones probados en producción gobierna el trabajo; los agentes ejecutan en paralelo dentro de ese marco; y nada llega a producción sin pasar por criterio senior y calidad verificable. La velocidad de un equipo completo, con la coherencia de una sola mente.</p>
+
+  <figure>
+  <svg viewBox="0 0 1100 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="La especificación aprobada entra en una biblioteca de estándares que gobierna el trabajo, se ejecuta en tres carriles paralelos de agentes, atraviesa las puertas de criterio senior y calidad verificable, sale a producción y devuelve patrones refinados a la biblioteca.">
+
+    <rect class="frame" x="40" y="80" width="760" height="330"/>
+    <text class="frame-lbl" x="60" y="108">BIBLIOTECA DE ESTÁNDARES, REGLAS Y PATRONES PROBADOS EN PRODUCCIÓN</text>
+
+    <rect class="box" x="70" y="220" width="180" height="50"/>
+    <text class="lbl" x="160" y="241" text-anchor="middle">ESPECIFICACIÓN</text>
+    <text class="sub" x="160" y="257" text-anchor="middle">APROBADA</text>
+
+    <line class="wire" x1="250" y1="245" x2="272" y2="245"/>
+    <line class="wire" x1="272" y1="175" x2="272" y2="315"/>
+    <line class="wire" x1="272" y1="175" x2="300" y2="175"/>
+    <line class="wire" x1="272" y1="245" x2="300" y2="245"/>
+    <line class="wire" x1="272" y1="315" x2="300" y2="315"/>
+
+    <rect class="box" x="300" y="150" width="200" height="50"/>
+    <text class="lbl" x="400" y="171" text-anchor="middle">AGENTE</text>
+    <text class="sub" x="400" y="187" text-anchor="middle">IMPLEMENTACIÓN</text>
+
+    <rect class="box" x="300" y="220" width="200" height="50"/>
+    <text class="lbl" x="400" y="241" text-anchor="middle">AGENTE</text>
+    <text class="sub" x="400" y="257" text-anchor="middle">PRUEBAS</text>
+
+    <rect class="box" x="300" y="290" width="200" height="50"/>
+    <text class="lbl" x="400" y="311" text-anchor="middle">AGENTE</text>
+    <text class="sub" x="400" y="327" text-anchor="middle">DOCUMENTACIÓN</text>
+
+    <line class="wire" x1="500" y1="175" x2="540" y2="175"/>
+    <line class="wire" x1="500" y1="245" x2="540" y2="245"/>
+    <line class="wire" x1="500" y1="315" x2="540" y2="315"/>
+    <line class="wire" x1="540" y1="175" x2="540" y2="315"/>
+    <line class="wire" x1="540" y1="245" x2="844" y2="245"/>
+    <path class="wire" d="M838,239 L850,245 L838,251"/>
+
+    <rect class="gate" id="g1" x="600" y="160" width="6" height="170"/>
+    <text class="gate-lbl" x="603" y="150" text-anchor="middle">CRITERIO SENIOR</text>
+
+    <rect class="gate" id="g2" x="690" y="160" width="6" height="170"/>
+    <text class="gate-lbl" x="693" y="352" text-anchor="middle">CALIDAD VERIFICABLE</text>
+    <text class="sub" x="693" y="368" text-anchor="middle">PRUEBAS · CI/CD · ENTORNOS</text>
+
+    <rect class="box" x="850" y="220" width="210" height="50"/>
+    <text class="lbl" x="955" y="241" text-anchor="middle">PRODUCCIÓN</text>
+    <text class="sub" x="955" y="257" text-anchor="middle">MODULAR · ESCALABLE</text>
+
+    <path class="ret" d="M955,270 L955,465 L170,465 L170,416"/>
+    <path class="ret" d="M164,422 L170,410 L176,422"/>
+    <text class="ret-lbl" x="562" y="452" text-anchor="middle">CADA PROYECTO EN PRODUCCIÓN REFINA LOS PATRONES QUE GOBIERNAN EL SIGUIENTE</text>
+
+    <circle class="pulse" r="5" fill="#FFB703">
+      <animateMotion dur="7s" repeatCount="indefinite" path="M250,245 L272,245 L272,175 L540,175 L540,245 L850,245"/>
+    </circle>
+    <circle class="pulse" r="5" fill="#FFB703">
+      <animateMotion dur="7s" begin="0.35s" repeatCount="indefinite" path="M250,245 L850,245"/>
+    </circle>
+    <circle class="pulse" r="5" fill="#FFB703">
+      <animateMotion dur="7s" begin="0.7s" repeatCount="indefinite" path="M250,245 L272,245 L272,315 L540,315 L540,245 L850,245"/>
+    </circle>
+    <circle class="pulse" r="4" fill="rgba(255,183,3,.7)">
+      <animateMotion dur="7s" begin="3s" repeatCount="indefinite" path="M955,270 L955,465 L170,465 L170,410"/>
+    </circle>
+
+  </svg>
+  <figcaption>FIG. 07 — EL SISTEMA QUE GOBIERNA CÓMO CONSTRUIMOS</figcaption>
+  </figure>
+
+  <div class="legend">
+    <div><h3>GOBIERNO</h3><p>Una biblioteca propia de estándares, reglas y patrones probados en producción.</p></div>
+    <div><h3>EJECUCIÓN</h3><p>Agentes de IA trabajando en paralelo, siempre dentro de ese marco.</p></div>
+    <div><h3>CONTROL</h3><p>Criterio senior y calidad verificable antes de que nada salga a producción.</p></div>
+    <div><h3>CAPITALIZACIÓN</h3><p>Cada proyecto real refina el sistema que gobierna el siguiente.</p></div>
+  </div>
+</div>
+
+</body>
+</html>

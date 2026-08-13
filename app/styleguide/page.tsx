@@ -10,7 +10,7 @@ import { ClientChip } from '@/components/client-chip'
 import { CommitmentsBand } from '@/components/commitments-band'
 import { ContactForm } from '@/components/contact-form'
 import { DossierField } from '@/components/dossier-field'
-import { ExecutionPipelineFig } from '@/components/execution-pipeline-fig'
+import { ExecutionCycleFig } from '@/components/execution-cycle-fig'
 import { ExecutionPractices } from '@/components/execution-practices'
 import { FinalCTA } from '@/components/final-cta'
 import { IdealClientNote } from '@/components/ideal-client-note'
@@ -225,7 +225,7 @@ export default function StyleGuidePage() {
         <div className="page-shell" style={{ paddingBlock: '3rem' }}>
           <SectionIndex index="06" label="COMPONENTES FASE 2.1" />
           <p style={{ fontFamily: 'var(--font-ibm-plex-mono)', fontSize: '0.65rem', letterSpacing: '0.1em', color: 'var(--mar)', marginBottom: '2rem' }}>
-            ExecutionPractices · ExecutionPipelineFig · AiBuildBlock — SPEC-P2.1 AC-8.
+            ExecutionPractices · ExecutionCycleFig · AiBuildBlock — SPEC-POLISH-06.
           </p>
         </div>
 
@@ -238,26 +238,27 @@ export default function StyleGuidePage() {
           practices={methodContent.executionPractices.practices.slice(0, 2)}
         />
 
-        {/* ExecutionPipelineFig — FIG.06 (PROVISIONAL VISUAL) */}
-        <ExecutionPipelineFig
+        {/* ExecutionCycleFig — FIG.06 closed execution cycle */}
+        <ExecutionCycleFig
           sectionIndex={methodContent.pipeline.sectionIndex}
           sectionLabel={methodContent.pipeline.sectionEyebrow}
           sectionTitle={methodContent.pipeline.sectionTitle}
-          nodes={methodContent.pipeline.nodes}
+          lead={methodContent.pipeline.lead}
+          stations={methodContent.pipeline.stations}
+          centre={methodContent.pipeline.centre}
+          returnLabel={methodContent.pipeline.returnLabel}
           caption={methodContent.pipeline.caption}
-          legend={methodContent.pipeline.legend}
           ariaLabel={methodContent.pipeline.ariaLabel}
-          returnArcLabel={methodContent.pipeline.returnArcLabel}
         />
 
-        {/* AiBuildBlock — sober, no protagonist */}
+        {/* AiBuildBlock — layered system figure, FIG.12 */}
         <AiBuildBlock
           sectionIndex={methodContent.aiBuild.sectionIndex}
           sectionLabel={methodContent.aiBuild.sectionEyebrow}
           title={methodContent.aiBuild.title}
-          lead={methodContent.aiBuild.lead}
-          points={methodContent.aiBuild.points}
-          diagram={methodContent.aiBuild.diagram}
+          body={methodContent.aiBuild.body}
+          figure={methodContent.aiBuild.figure}
+          legend={methodContent.aiBuild.legend}
         />
       </section>
 
