@@ -142,3 +142,17 @@ export const CASE_FLOW_MOBILE_BREAKPOINT_PX = 720
 
 /** Duration (s) for one left→right traversal pulse across all 4 nodes, once on entry. */
 export const CASE_FLOW_TRAVERSAL_DUR_S = 2.4
+
+// ── Header nav + mobile menu (SPEC-POLISH-07) ──────────────────────────────────
+
+/** Viewport width (px) at which the header switches between inline nav and the
+ *  mobile trigger/overlay. Below this: trigger + overlay. At or above: inline nav. */
+export const HEADER_MOBILE_BREAKPOINT_PX = 1024
+
+/** Media query string matching desktop nav width — used by the resize guard that
+ *  force-closes the mobile overlay if the viewport crosses into desktop while open. */
+export const HEADER_DESKTOP_MEDIA_QUERY = `(min-width: ${HEADER_MOBILE_BREAKPOINT_PX}px)`
+
+/** Mobile menu overlay open/close transition duration (ms). Disabled entirely
+ *  under prefers-reduced-motion (AC-11), so this only governs full-motion users. */
+export const MOBILE_MENU_TRANSITION_MS = 200

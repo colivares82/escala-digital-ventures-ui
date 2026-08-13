@@ -131,6 +131,18 @@ describe('app/globals.css structural integrity (SPEC-CASE-01 regression guard)',
     '.case-roles__grid',
     '.case-roles__card',
     '.case-timeline-ladder__steps',
+    // SPEC-POLISH-07 — header nav + mobile menu overlay.
+    // Note: .mobile-menu itself is excluded — it has a second, *legitimately*
+    // nested occurrence inside `@media (prefers-reduced-motion: reduce)` that
+    // only disables the open/close animation (AC-11), not the overlay itself.
+    '.site-header__sep',
+    '.site-header__trigger',
+    '.mobile-menu__bar',
+    '.mobile-menu__nav',
+    '.mobile-menu__item',
+    '.mobile-menu__foot',
+    '.mobile-menu__cta',
+    '.mobile-menu__mail',
   ])('%s is reachable under normal conditions (not trapped in prefers-reduced-motion: reduce)', (selector) => {
     const contexts = findEnclosingAtRules(css, selector)
     expect(contexts.length).toBeGreaterThan(0)

@@ -92,7 +92,7 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | R-6.3 | `ScaleRule` / `PhaseCycle` — ring + interactive phases | ✅ | `phase-cycle.tsx` |
 | R-6.4 | `Readout` — instrument-style figure with sparkline | ✅ | `readout.tsx` |
 | R-6.5 | `CaseStudyCard` — eyebrow, title, impact, readout row | ✅ | `client-chip.tsx` (simplified v1 version) |
-| R-6.6 | `SiteHeader` + `SiteFooter` | ✅ | `site-chrome.tsx` |
+| R-6.6 | `SiteHeader` + `SiteFooter` | ✅ | `site-chrome.tsx`. SPEC-POLISH-07: nav raised to 0.80rem with `·` separators, dimensioned brand slot, and a full-screen mobile menu (`components/mobile-menu.tsx`) below 1024px replacing the previous no-nav dead end on mobile. |
 | R-6.7 | `/styleguide` route (noindex) | ✅ | `app/styleguide/page.tsx`; Phase 4 added section 11 "Legal Doc" — LegalDoc + AnchorNav |
 
 ## §7 — i18n content workflow

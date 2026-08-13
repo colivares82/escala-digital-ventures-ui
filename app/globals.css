@@ -185,14 +185,19 @@ h1, h2, h3, h4, p {
   min-height: 4rem;
 }
 
-/* Logo mark */
+/* Logo mark — dimensioned brand slot (SPEC-POLISH-07 §3): 132×32 desktop.
+   Contents (symbol + wordmark) are unchanged; only the box is now fixed-size
+   so the logo (next spec) drops in without re-specifying the header. */
 .site-brand {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  width: 132px;
+  height: 32px;
   color: inherit;
   text-decoration: none;
   font: 600 1rem var(--font-archivo);
+  flex-shrink: 0;
 }
 .site-brand > span {
   position: relative;
@@ -213,8 +218,15 @@ h1, h2, h3, h4, p {
   border-color: var(--ambre);
 }
 
-/* Nav + locale switcher */
-.site-header nav,
+/* Nav + locale switcher.
+   POLISH-07 bugfix: this used to be `.site-header nav` (bare element+descendant),
+   which matches EVERY <nav> inside the header — including `.locale-switcher` and,
+   before it was moved out, the mobile overlay's own <nav>. That's what zeroed the
+   locale switcher's gap (nav gap:0 below outranked .locale-switcher's own gap by
+   specificity) and, combined with the 1023px breakpoint hiding `.site-header nav`,
+   also hid the overlay nav when it lived inside <header>. Scoped to the explicit
+   `.site-header__nav` class the primary nav now carries, so it can never leak. */
+.site-header__nav,
 .site-header__actions,
 .site-header__actions p {
   display: flex;
@@ -225,17 +237,56 @@ h1, h2, h3, h4, p {
   color: inherit;
   text-decoration: none;
 }
-.site-header nav a {
+/* POLISH-07: nav gap now owned by .site-header__sep padding, not a flex gap,
+   so the separator sits symmetrically between links (§2). */
+.site-header__nav {
+  gap: 0;
+}
+.site-header__nav a {
   padding-block: 0.5rem;
   color: rgb(247 247 244 / 0.7);
-  font: 500 0.66rem var(--font-ibm-plex-mono);
+  font: 500 0.8rem / 1.2 var(--font-ibm-plex-mono);
+  white-space: nowrap;
 }
-.site-header nav a:hover {
+.site-header__nav a:hover {
   color: var(--ambre);
+}
+/* Decorative middle-dot separator between nav links — SPEC-POLISH-07 §2/AC-5.
+   aria-hidden in markup; user-select/pointer-events guard against it being
+   picked up as text or as part of a link's hit area. */
+.site-header__nav-item {
+  display: inline-flex;
+  align-items: center;
+}
+.site-header__sep {
+  padding-inline: 1rem; /* 16px each side, ≥1200px */
+  color: rgb(247 247 244 / 0.34);
+  font: 500 0.8rem var(--font-ibm-plex-mono);
+  user-select: none;
+  pointer-events: none;
+}
+/* SPEC-POLISH-07 §2: tightened rhythm between 1024–1200px — separator
+   compresses to 11px/side, and the nav↔switcher / switcher↔button gaps
+   compress from 28/22px to 20/16px. Nothing wraps at this width (AC-4). */
+@media (min-width: 1024px) and (max-width: 1199.98px) {
+  .site-header__sep {
+    padding-inline: 0.6875rem; /* 11px */
+  }
+  .site-header__actions {
+    gap: 1rem; /* 16px */
+    margin-left: 1.25rem; /* 20px from nav */
+  }
+}
+@media (min-width: 1200px) {
+  .site-header__actions {
+    gap: 1.375rem; /* 22px */
+    margin-left: 1.75rem; /* 28px from nav */
+  }
 }
 
 /* Focus rings on dark backgrounds */
 .site-header a:focus-visible,
+.site-header__trigger:focus-visible,
 .case-card a:focus-visible,
 .contact-meta a:focus-visible,
 .contact-consent a:focus-visible,
@@ -257,6 +308,10 @@ h1, h2, h3, h4, p {
   margin: 0;
   padding: 0;
   list-style: none;
+  /* POLISH-07 §2: switcher raised to 0.80rem alongside nav + CTA. LocaleSwitcher
+     is header-only (also reused inside .mobile-menu__foot, sized there instead —
+     see the mobile-menu block), so scoping the size here is safe. */
+  font-size: 0.8rem;
 }
 
 .locale-switcher__link {
@@ -285,6 +340,28 @@ h1, h2, h3, h4, p {
   border-radius: 1px;
 }
 
+/* Mobile trigger — three left-aligned bars of decreasing length (SPEC-POLISH-07
+   §4.1). Hidden ≥1024px; shown in the max-width:1023px breakpoint block below. */
+.site-header__trigger {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  margin-left: auto;
+  padding: 8px 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.site-header__trigger i {
+  display: block;
+  height: 2.5px;
+  background: var(--paper);
+}
+.site-header__trigger i:nth-child(1) { width: 24px; }
+.site-header__trigger i:nth-child(2) { width: 17px; }
+.site-header__trigger i:nth-child(3) { width: 11px; }
+
 /* Header CTA + primary link — rectangular, 1px border, mono type */
 .header-cta,
 .primary-link {
@@ -296,6 +373,11 @@ h1, h2, h3, h4, p {
   padding-inline: 1rem;
   border: 1px solid currentColor;
   font: 500 0.68rem var(--font-ibm-plex-mono);
+}
+/* POLISH-07 §2: header CTA label raised to 0.80rem — scoped to .header-cta only
+   so .primary-link (used outside the header) is untouched, per §0 stop condition. */
+.header-cta {
+  font-size: 0.8rem;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────── */
@@ -2149,8 +2231,19 @@ h1, h2, h3, h4, p {
 
 /* ── Tablet: 1024px and below ── */
 @media (max-width: 1023px) {
-  .site-header nav {
+  /* POLISH-07 §4: inline nav + actions replaced by the mobile trigger; the
+     overlay (owned by MobileMenu, a header SIBLING — not a descendant) carries
+     nav, locale switcher and CTA instead, so it is unaffected by this rule. */
+  .site-header__nav,
+  .site-header__actions {
     display: none;
+  }
+  .site-header__trigger {
+    display: flex;
+  }
+  .site-brand {
+    width: 112px;
+    height: 28px;
   }
   .problem-layout {
     gap: 2rem;
@@ -2282,14 +2375,11 @@ h1, h2, h3, h4, p {
   .page-shell {
     width: calc(100% - 2rem);
   }
-  .locale-switcher {
-    display: none;
-  }
+  /* POLISH-07: .locale-switcher (desktop, display:none rule) and .header-cta
+     padding tweak removed here — both elements are already hidden below
+     1024px (folded into .site-header__actions), so these rules were dead. */
   .site-header__inner {
     gap: 1rem;
-  }
-  .header-cta {
-    padding-inline: 0.75rem;
   }
   .hero__grid {
     display: flex;
@@ -2404,7 +2494,7 @@ h1, h2, h3, h4, p {
 }
 
 /* Active nav state (AC-11) */
-.site-header nav a[aria-current="page"] {
+.site-header__nav a[aria-current="page"] {
   color: var(--ambre);
   border-bottom: 1px solid var(--ambre);
 }
@@ -5317,4 +5407,157 @@ h1, h2, h3, h4, p {
   .case-timeline-ladder__step:last-child {
     border-bottom: none;
   }
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* MOBILE MENU — full-screen overlay < 1024px (SPEC-POLISH-07 §4)               */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 50; /* above .site-header (z-index: 40) */
+  display: flex;
+  flex-direction: column;
+  background: var(--abisal);
+  color: var(--paper);
+  overflow-y: auto;
+  animation: mobile-menu-in var(--mobile-menu-duration, 200ms) ease-out;
+}
+
+@keyframes mobile-menu-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.mobile-menu__bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  height: 5rem; /* matches .site-header__inner min-height — no brand jump on open */
+  padding-inline: max(1.5rem, calc((100vw - 88rem) / 2 + 1.5rem));
+  border-bottom: 1px solid var(--line-light);
+  flex-shrink: 0;
+}
+
+.mobile-menu__brand-slot {
+  /* Reuses .site-brand box sizing (112×28 mobile) — see .site-brand rule and
+     its max-width:1023px override; no separate dimensions declared here. */
+  margin-right: auto;
+}
+
+.mobile-menu__close {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.mobile-menu__close i {
+  position: absolute;
+  left: 3px;
+  top: 14px;
+  display: block;
+  width: 24px;
+  height: 2.5px;
+  background: var(--paper);
+}
+.mobile-menu__close i:first-child { transform: rotate(45deg); }
+.mobile-menu__close i:last-child { transform: rotate(-45deg); }
+.mobile-menu__close:focus-visible {
+  outline: 2px solid var(--ambre);
+  outline-offset: 4px;
+}
+
+
+.mobile-menu__nav {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  padding-inline: max(1.5rem, calc((100vw - 88rem) / 2 + 1.5rem));
+  padding-top: 0.5rem;
+  flex: 1;
+}
+
+.mobile-menu__item {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: 1.0625rem;
+  border-bottom: 1px solid var(--line-light);
+  color: var(--paper);
+  text-decoration: none;
+}
+
+.mobile-menu__idx {
+  font: 500 0.72rem var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  color: var(--ambre);
+}
+
+.mobile-menu__txt {
+  font: 500 1.45rem / 1.15 var(--font-archivo);
+  letter-spacing: -0.015em;
+}
+
+.mobile-menu__item[aria-current='page'] .mobile-menu__txt {
+  color: var(--ambre);
+}
+
+.mobile-menu__item:focus-visible {
+  outline: 2px solid var(--ambre);
+  outline-offset: -2px;
+}
+
+.mobile-menu__foot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.125rem;
+  padding: 1.375rem max(1.5rem, calc((100vw - 88rem) / 2 + 1.5rem)) 1.625rem;
+  flex-shrink: 0;
+}
+
+.mobile-menu__cta {
+  font: 500 0.85rem var(--font-ibm-plex-mono);
+  border: 1px solid var(--paper);
+  padding: 14px 20px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--paper);
+}
+.mobile-menu__cta:focus-visible {
+  outline: 2px solid var(--ambre);
+  outline-offset: 4px;
+}
+
+/* Reuse LocaleSwitcher inside the overlay foot at the larger overlay type size. */
+.mobile-menu__foot .locale-switcher {
+  font-size: 0.85rem;
+}
+
+.mobile-menu__mail {
+  align-self: flex-start;
+  font: 500 0.75rem var(--font-ibm-plex-mono);
+  color: rgb(247 247 244 / 0.7);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line-light);
+  padding-bottom: 2px;
+}
+.mobile-menu__mail:focus-visible {
+  outline: 2px solid var(--ambre);
+  outline-offset: 4px;
+}
+
+/* Reduced motion (AC-11): overlay still opens/closes, just with no transition. */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu {
+    animation: none;
+  }
+}
+
 }
