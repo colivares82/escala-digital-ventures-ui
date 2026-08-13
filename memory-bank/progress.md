@@ -102,8 +102,10 @@
 | `MethodDictionary` full interface (types.ts) | Complete |
 | `content/es/method.ts` — verbatim Libro Ch. 7/9 copy | Complete |
 | `ExecutionPractices` — 5 sticky panels, mobile fallback | Complete |
-| `ExecutionPipelineFig` — FIG.06 provisional, isolated, swappable | Complete |
-| `AiBuildBlock` — sober, editorial guardrail enforced | Complete |
+| `ExecutionCycleFig` — FIG.06 closed cycle, replaces `ExecutionPipelineFig` (SPEC-POLISH-06) | Complete |
+| `HowWeBuildFig` — FIG.12 layered system diagram (SPEC-POLISH-06) | Complete |
+| `AiBuildBlock` — full replacement: heading/body/figure/legend (SPEC-POLISH-06) | Complete |
+| Section order: Escala Growth Framework moved to last section (E), before FinalCTA | Complete |
 | PhaseCycle: `sectionIndex` + optional `action` (no home regression) | Complete |
 | Header nav: "Cómo trabajamos" → true route; `aria-current="page"` | Complete |
 | Brand link: route-aware (home anchor on home, `/` on interior pages) | Complete |

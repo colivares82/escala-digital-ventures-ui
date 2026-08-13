@@ -103,30 +103,55 @@ export interface MethodDictionary {
       readonly tie: string
     }>
   }
+  /** SPEC-POLISH-06 §2 — closed execution cycle (FIG. 06). */
   readonly pipeline: {
-    /** Section letter eyebrow (e.g. "D / EL FLUJO DE EJECUCIÓN"). */
+    /** Section letter eyebrow (e.g. "C / EL FLUJO DE EJECUCIÓN"). */
     readonly sectionEyebrow: string
     readonly sectionIndex: string
     readonly sectionTitle: string
-    /** Six labeled pipeline nodes (left → right). Length must be exactly 6. */
-    readonly nodes: ReadonlyArray<{ readonly label: string }>
+    /** Lead paragraph below the heading (§2.5). */
+    readonly lead: string
+    /** Exactly 5 stations, clockwise from 12 o'clock. Exactly 2 must be 'client'. */
+    readonly stations: ReadonlyArray<{
+      readonly label: string
+      readonly sub: string
+      readonly actor: 'escala' | 'client'
+    }>
+    /** Centre mono lines: ["CICLOS CORTOS", "MEJORA CONTINUA"]. */
+    readonly centre: readonly [string, string]
+    /** Return-edge label: station 5 → station 1 (amber). */
+    readonly returnLabel: string
     readonly caption: string
-    readonly legend: string
     readonly ariaLabel: string
-    /** Return-arc label (dashed, ambre). */
-    readonly returnArcLabel: string
   }
+  /** SPEC-POLISH-06 §3 — "how we build" layered system (FIG. 12). */
   readonly aiBuild: {
-    /** Section letter eyebrow (e.g. "E / CÓMO CONSTRUIMOS"). */
+    /** Section letter eyebrow (e.g. "D / CÓMO CONSTRUIMOS"). */
     readonly sectionEyebrow: string
     readonly sectionIndex: string
     readonly title: string
-    /** Lead paragraph — verbatim from Libro Ch. 7 "IA también en cómo se construye". */
-    readonly lead: string
-    /** 3–4 mono points. Only Libro Ch. 7 / Ch. 9 language. */
-    readonly points: ReadonlyArray<string>
-    /** Small inline diagram labels (left → right). */
-    readonly diagram: ReadonlyArray<string>
+    /** Body paragraph — §3.2. */
+    readonly body: string
+    readonly figure: {
+      /** Outer dashed governing-layer label. */
+      readonly frame: string
+      /** Entry node label + sub-label. */
+      readonly entry: string
+      readonly entrySub: string
+      /** Lane prefix ("AGENTE") + 3 lane names (Implementación · Pruebas · Documentación). */
+      readonly lanePrefix: string
+      readonly lanes: readonly [string, string, string]
+      readonly gate1: string
+      readonly gate2: string
+      readonly gate2Sub: string
+      readonly exit: string
+      readonly exitSub: string
+      readonly returnLabel: string
+      readonly caption: string
+      readonly ariaLabel: string
+    }
+    /** Four-column legend mapping to gobierno / ejecución / control / capitalización. */
+    readonly legend: ReadonlyArray<{ readonly label: string; readonly text: string }>
   }
 }
 

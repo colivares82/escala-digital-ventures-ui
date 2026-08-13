@@ -1,10 +1,23 @@
 # Active Context
 
-_Last updated: August 2026 (SPEC-POLISH-05 COMPLETE — /que-hacemos FIG.08/09/11 overlap & layering fixes)_
+_Last updated: August 2026 (SPEC-POLISH-06 COMPLETE — /como-trabajamos execution cycle, build system, section order)_
 
 ## Current state
 
-**Phase 6 COMPLETE + SPEC-POLISH-02/03/04/05 COMPLETE.** Both Cloud Run environments are live. CI/CD pipeline is fully operational. `/que-hacemos` FIG.08 (arquitectura modular), FIG.09 (IA en el proceso), and FIG.11 (evolución continua) had overlap/layering defects (text spilling, flow line crossing text, misplaced label, nodes under the line) — all three fixed surgically in `ServiceFig`, with animations preserved/corrected. Carlos is working on Phase 7 content/QA before DNS switch.
+**Phase 6 COMPLETE + SPEC-POLISH-02/03/04/05/06 COMPLETE.** Both Cloud Run environments are live. CI/CD pipeline is fully operational. `/como-trabajamos` had its Escala Growth Framework section moved to be the last content section before `FinalCTA`, its broken execution-flow figure replaced with a closed-cycle diagram (FIG.06), and its "how we build" section fully replaced with a layered-system diagram (FIG.12). Carlos is working on Phase 7 content/QA before DNS switch.
+
+## What was done in SPEC-POLISH-06
+
+### /como-trabajamos: section order, execution cycle, build system
+- **Section order** — Escala Growth Framework (`PhaseCycle`) moved B → E (last content section, immediately before `FinalCTA`). Final order: A·PageHeader → B·ExecutionCycleFig → C·ExecutionPractices → D·AiBuildBlock → E·PhaseCycle → FinalCTA. Re-lettered in all 3 locales (ES/EN/CA); the Framework's own copy/component/figure content is byte-unchanged — only its position and section letter moved.
+- **Post-implementation addendum (approved deviation from §1.1):** Carlos requested B/C swapped after reviewing the initial implementation — "El flujo de ejecución" (ExecutionCycleFig) now precedes "La ejecución, en el día a día" (ExecutionPractices), reversing SPEC-POLISH-06 §1.1's exact order. Re-lettered (`pipeline` C→B, `executionPractices` B→C) in all 3 locales; pure reorder, no surface changes. This creates a paper→dark→paper→dark→dark surface rhythm that Carlos will review live before deciding whether to move `ExecutionPractices` to the dark surface — noted as an open decision below.
+- **Figure numbering** — kept FIG.06 for the execution-cycle figure; the new "how we build" figure took **FIG.12** (next free global number) rather than the wireframe's placeholder FIG.07, because FIG.07 is already used by `/que-hacemos` and the site numbers figures globally, not per page. This was an explicit user decision after being shown the alternative (renumbering `/que-hacemos` 07–11 → 08–12), which was rejected to keep `/que-hacemos` untouched and `git diff --stat` scoped to this page only.
+- **`ExecutionCycleFig` (new)** replaces `ExecutionPipelineFig` (deleted) — closed ring, 5 stations clockwise from 12 o'clock (Especificación → Aprobación → Construcción → Producción → Uso real), amber return edge with a chevron-arrowhead stopping at station 1's marker, 5 always-visible direction chevrons, phase-locked 12s pulse, `<720px` vertical-list fallback (same DOM-toggle pattern as `PhaseCycle`'s static list, not a scaled-down SVG). Quality is explicitly NOT a station (Libro Ch. 6 "calidad integrada, no inspeccionada") — it's a support line under Construcción only.
+- **`AiBuildBlock` full replacement + `HowWeBuildFig` (new)** — heading/body now "Ingeniería con criterio, acelerada por agentes"; a dashed governing frame contains the approved-spec entry, 3 named parallel agent lanes, and 2 amber gates (Criterio senior, Calidad verificable); Producción sits outside the frame; an amber return path re-enters it. Full-content-width figure below the copy, 4-column legend below that (2 cols <900px, 1 col <560px).
+- **Diff scope** — confined to `components/execution-cycle-fig.tsx` (new), `components/how-we-build-fig.tsx` (new), `components/ai-build-block.tsx`, `components/pages/method.tsx`, `content/{es,en,ca}/method.ts`, `content/types.ts`, plus the flagged-and-reported consequential edits: `app/globals.css` (no per-component stylesheets exist), `app/styleguide/page.tsx` (renders both changed components), `lib/motion-constants.ts` (additive constants only). `execution-pipeline-fig.tsx` deleted. No shared component (`PageHeader`, `Section`, `FinalCTA`, `GridBackground`, `AllianceConstellation`, `ServiceFig`, `ContactForm`, `PhaseCycle` internals) modified. No other page touched.
+
+### Test results
+- 54 test files · 991 tests · 100% pass · build clean · TypeScript strict clean · lint clean (0 new errors) · coverage 77.96%/76.14%/84.71%/80.85% (well above the 70% floor) · 0 hardcoded hex in the two new components.
 
 ## What was done in SPEC-POLISH-05
 
@@ -144,3 +157,5 @@ Carlos is working on content/QA over the next few days. When ready:
 - **Resend account:** not yet created. EMAIL_DRY_RUN=true on both envs until set up.
 - **Google Workspace:** not yet set up. Inbound email to hola@escaladigitalventures.com pending.
 - **Next polish:** section 05 "Alianza" or section 02 "Capacidades" — Carlos to decide.
+- **Figure numbering convention confirmed:** figures are numbered globally across the site (01–12+), never reset per page. When a page spec's wireframe suggests a number already taken elsewhere, the next free global number is used instead and the wireframe number is treated as a placeholder (per SPEC-POLISH-06 §1.3 precedent).
+- **`/como-trabajamos` surface rhythm — pending Carlos review:** after the B/C swap, the page runs paper(A) → dark(B) → paper(C) → dark(D) → dark(E), sandwiching the light `ExecutionPractices` section between two dark ones. Carlos to review live and decide whether to flip `ExecutionPractices` to the dark abisal surface for a cleaner paper→dark×4 rhythm, or leave it as is.

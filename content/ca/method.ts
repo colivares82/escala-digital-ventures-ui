@@ -20,15 +20,18 @@ export const methodContent = {
     lead: 'Un marc estratègic propi i una pràctica d\'execució disciplinada. L\'objectiu mai no és lliurar programari: és augmentar la capacitat de creixement del teu negoci.',
   },
 
+  // SPEC-POLISH-06 §1: Escala Growth Framework moved to last content section (E), before FinalCTA.
   phaseCycle: {
     sectionEyebrow: 'EL CICLE DE CREIXEMENT',
-    sectionIndex: 'B',
+    sectionIndex: 'E',
     title: "Un mètode propi: l'Escala Growth Framework",
     lead: 'DEU FASES · UN CICLE CONTINU DE MILLORA',
     ariaLabel: 'Cicle de creixement de deu fases',
     phasePrefix: 'FASE',
   },
 
+  // SPEC-POLISH-06 addendum: swapped B/C order at Carlos's request post-implementation —
+  // "El flux d'execució" now precedes "L'execució, dia a dia".
   executionPractices: {
     sectionEyebrow: "L'EXECUCIÓ, DIA A DIA",
     sectionIndex: 'C',
@@ -68,40 +71,51 @@ export const methodContent = {
     ],
   },
 
+  // SPEC-POLISH-06 §2 — closed execution cycle, FIG. 06.
   pipeline: {
     sectionEyebrow: 'EL FLUX D\'EXECUCIÓ',
-    sectionIndex: 'D',
+    sectionIndex: 'B',
     sectionTitle: 'De l\'especificació al feedback',
-    nodes: [
-      { label: 'ESPECIFICACIÓ' },
-      { label: 'PROTOTIP' },
-      { label: 'CONSTRUCCIÓ' },
-      { label: 'QUALITAT' },
-      { label: 'PRODUCCIÓ' },
-      { label: 'FEEDBACK' },
+    lead: 'Cada increment recorre el mateix camí, i el camí no s\'acaba: el que aprenen els teus usuaris entra a la següent especificació.',
+    stations: [
+      { label: 'ESPECIFICACIÓ', sub: 'REQUISITS + PROTOTIP', actor: 'escala' },
+      { label: 'APROVACIÓ', sub: 'EL CLIENT VALIDA ABANS', actor: 'client' },
+      { label: 'CONSTRUCCIÓ', sub: 'PROVES · ENTORNS', actor: 'escala' },
+      { label: 'PRODUCCIÓ', sub: 'DESPLEGAMENT CONTINU', actor: 'escala' },
+      { label: 'ÚS REAL', sub: 'ELS TEUS USUARIS, CADA DIA', actor: 'client' },
     ],
-    caption: 'FIG. 06 — DE L\'ESPECIFICACIÓ AL FEEDBACK EN CICLES CURTS',
-    legend: 'CICLE CONTINU · EL FEEDBACK REALIMENTA LA SEGÜENT ESPECIFICACIÓ',
-    ariaLabel: 'Diagrama del flux d\'execució: especificació, prototip, construcció, qualitat, producció i feedback en cicle continu',
-    returnArcLabel: 'RETORN A L\'ORIGEN',
+    centre: ['CICLES CURTS', 'MILLORA CONTÍNUA'],
+    returnLabel: 'EL FEEDBACK ES PRIORITZA I ENTRA AL SEGÜENT CICLE',
+    caption: 'FIG. 06 — EL CICLE D\'EXECUCIÓ: DE L\'ESPECIFICACIÓ A L\'ÚS REAL, I TORNEM A COMENÇAR',
+    ariaLabel: 'Cicle tancat d\'execució amb cinc estacions: especificació, aprovació del client, construcció, producció i ús real, amb retorn del feedback a l\'especificació.',
   },
 
+  // SPEC-POLISH-06 §3 — "how we build" layered system, FIG. 12.
   aiBuild: {
     sectionEyebrow: 'COM CONSTRUÏM',
-    sectionIndex: 'E',
-    title: 'La IA també en com construïm',
-    lead: 'Escala no només integra IA en els productes dels seus clients: la utilitza en el seu propi procés de creació. Un flux de treball propi d\'enginyeria assistida per agents de IA, governat per una biblioteca interna d\'estàndards, regles i patrons provats en producció, multiplica la velocitat d\'execució, mentre que el criteri sènior de producte i enginyeria garanteix que el que es construeix és el correcte i que es construeix bé.',
-    points: [
-      'BIBLIOTECA INTERNA D\'ESTÀNDARDS, REGLES I PATRONS PROVATS EN PRODUCCIÓ',
-      'FLUX D\'ENGINYERIA ASSISTIDA PER AGENTS DE IA',
-      'CRITERI SÈNIOR DE PRODUCTE I ENGINYERIA EN CADA DECISIÓ',
-      'CONSISTÈNCIA ENTRE PROJECTES · VELOCITAT D\'UN EQUIP COMPLET',
-    ],
-    diagram: [
-      'BIBLIOTECA DE REGLES',
-      'AGENT',
-      'CRITERI SÈNIOR',
-      'PRODUCCIÓ',
+    sectionIndex: 'D',
+    title: 'Enginyeria amb criteri, accelerada per agents',
+    body: 'No construïm més ràpid per fer servir IA: construïm més ràpid perquè cada decisió passa dins d\'un sistema. Una biblioteca pròpia d\'estàndards, regles i patrons provats en producció governa la feina; els agents executen en paral·lel dins d\'aquest marc; i res no arriba a producció sense passar pel criteri sènior i la qualitat verificable. La velocitat d\'un equip complet, amb la coherència d\'una sola ment.',
+    figure: {
+      frame: 'BIBLIOTECA D\'ESTÀNDARDS, REGLES I PATRONS PROVATS EN PRODUCCIÓ',
+      entry: 'ESPECIFICACIÓ',
+      entrySub: 'APROVADA',
+      lanePrefix: 'AGENT',
+      lanes: ['IMPLEMENTACIÓ', 'PROVES', 'DOCUMENTACIÓ'],
+      gate1: 'CRITERI SÈNIOR',
+      gate2: 'QUALITAT VERIFICABLE',
+      gate2Sub: 'PROVES · CI/CD · ENTORNS',
+      exit: 'PRODUCCIÓ',
+      exitSub: 'MODULAR · ESCALABLE',
+      returnLabel: 'CADA PROJECTE EN PRODUCCIÓ REFINA ELS PATRONS QUE GOVERNEN EL SEGÜENT',
+      caption: 'FIG. 12 — EL SISTEMA QUE GOVERNA COM CONSTRUÏM',
+      ariaLabel: 'L\'especificació aprovada entra en una biblioteca d\'estàndards que governa la feina, s\'executa en tres carrils paral·lels d\'agents, travessa les portes de criteri sènior i qualitat verificable, surt a producció i retorna patrons refinats a la biblioteca.',
+    },
+    legend: [
+      { label: 'GOVERN', text: 'Una biblioteca pròpia d\'estàndards, regles i patrons provats en producció.' },
+      { label: 'EXECUCIÓ', text: 'Agents de IA treballant en paral·lel, sempre dins d\'aquest marc.' },
+      { label: 'CONTROL', text: 'Criteri sènior i qualitat verificable abans que res no surti a producció.' },
+      { label: 'CAPITALITZACIÓ', text: 'Cada projecte real refina el sistema que governa el següent.' },
     ],
   },
 } as const satisfies MethodDictionary

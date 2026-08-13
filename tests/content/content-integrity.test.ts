@@ -167,13 +167,26 @@ describe('methodContent — Phase 2.1 (SPEC-P2.1 AC-7)', () => {
     expect(bodies).toContain('prototipo visual navegable')
   })
 
-  it('has exactly 6 pipeline nodes', () => {
-    expect(methodContent.pipeline.nodes).toHaveLength(6)
+  it('has exactly 5 execution-cycle stations (SPEC-POLISH-06 §2.2)', () => {
+    expect(methodContent.pipeline.stations).toHaveLength(5)
   })
 
-  it('every pipeline node has a label', () => {
-    methodContent.pipeline.nodes.forEach((node) => {
-      expect(node.label).toBeTruthy()
+  it('every station has a label, sub-label and actor', () => {
+    methodContent.pipeline.stations.forEach((station) => {
+      expect(station.label).toBeTruthy()
+      expect(station.sub).toBeTruthy()
+      expect(['escala', 'client']).toContain(station.actor)
+    })
+  })
+
+  it('exactly 2 stations are client-owned (approval + real use)', () => {
+    const clientStations = methodContent.pipeline.stations.filter((s) => s.actor === 'client')
+    expect(clientStations).toHaveLength(2)
+  })
+
+  it('no station is labelled "Calidad" — quality is not a station (§2.2)', () => {
+    methodContent.pipeline.stations.forEach((station) => {
+      expect(station.label.toLowerCase()).not.toContain('calidad')
     })
   })
 
@@ -181,13 +194,31 @@ describe('methodContent — Phase 2.1 (SPEC-P2.1 AC-7)', () => {
     expect(methodContent.pipeline.caption).toContain('FIG. 06')
   })
 
-  it('aiBuild has between 3 and 4 points', () => {
-    expect(methodContent.aiBuild.points.length).toBeGreaterThanOrEqual(3)
-    expect(methodContent.aiBuild.points.length).toBeLessThanOrEqual(4)
+  it('aiBuild figure caption references FIG. 12', () => {
+    expect(methodContent.aiBuild.figure.caption).toContain('FIG. 12')
   })
 
-  it('aiBuild lead is verbatim from Libro Ch. 7', () => {
-    expect(methodContent.aiBuild.lead).toContain('ingeniería asistida por agentes de IA')
+  it('aiBuild has exactly 3 named lanes and a four-item legend', () => {
+    expect(methodContent.aiBuild.figure.lanes).toHaveLength(3)
+    expect(methodContent.aiBuild.legend).toHaveLength(4)
+  })
+
+  it('aiBuild body reflects the engineering-judgement thesis (§3.2)', () => {
+    expect(methodContent.aiBuild.body).toContain('criterio senior')
+  })
+
+  it('method sections are lettered B–E in page reading order, no gap or duplicate', () => {
+    // Reading order on the page (SPEC-POLISH-06 + swap addendum):
+    // A·PageHeader → B·pipeline (flujo) → C·executionPractices → D·aiBuild → E·phaseCycle.
+    const lettersInReadingOrder = [
+      methodContent.pipeline.sectionIndex,
+      methodContent.executionPractices.sectionIndex,
+      methodContent.aiBuild.sectionIndex,
+      methodContent.phaseCycle.sectionIndex,
+    ]
+    expect(lettersInReadingOrder).toEqual(['B', 'C', 'D', 'E'])
+    // No duplicate letters regardless of order.
+    expect(new Set(lettersInReadingOrder).size).toBe(lettersInReadingOrder.length)
   })
 
   it('contains no Russian language (AC-7 grep guard)', () => {
