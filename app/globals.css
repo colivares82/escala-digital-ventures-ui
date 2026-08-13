@@ -1409,6 +1409,26 @@ h1, h2, h3, h4, p {
   }
 }
 
+/*
+ * POLISH-09 — /modelo-de-alianza reuses the protagonist constellation
+ * wrapped in DiagramReveal (scroll-triggered), unlike the home page where
+ * it renders immediately with no reveal wrapper. The rule above
+ * (`.alliance-constellation--protagonist .ac-draw { opacity: 1 }`) is
+ * needed for home and must stay; these page-scoped rules (higher
+ * specificity, and unreachable outside .alliance-why__stage) restore the
+ * fade-in for this page only. Reduced-motion still resolves to visible via
+ * the global rule further below (data-visible is set synchronously in
+ * that case) — no separate handling needed here.
+ */
+.alliance-why__stage .diagram-reveal:not([data-visible='true']) .alliance-constellation--protagonist .ac-draw {
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-out);
+  transition-delay: var(--ac-delay, 0s);
+}
+.alliance-why__stage .diagram-reveal[data-visible='true'] .alliance-constellation--protagonist .ac-draw {
+  opacity: 1;
+}
+
 /* ── Legacy figure (fallback when allianceFigure not provided) ── */
 .alliance-figure {
   width: min(100%, 45rem);
@@ -3880,17 +3900,11 @@ h1, h2, h3, h4, p {
   margin-bottom: 0.5rem;
 }
 
-.alliance-why__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5vw;
-  align-items: center;
-}
-
 .alliance-why__text {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  max-width: 68ch;
 }
 
 .alliance-why__heading {
@@ -3909,10 +3923,59 @@ h1, h2, h3, h4, p {
   max-width: 52ch;
 }
 
-.alliance-why__figure {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/*
+ * Constellation stage — full section width, protagonist below the text
+ * block (POLISH-09). Mirrors .alliance-stage on the home page so both
+ * renderings match; padding-inline clears the outermost labels at 360px.
+ */
+.alliance-why__stage {
+  margin-top: 1.5rem;
+  max-width: 900px;
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+/*
+ * POLISH-10 — side-by-side composition at ≥1024px. Below that the section
+ * keeps the POLISH-09 stacked behaviour (flex-column above) unchanged. Placed
+ * after the base .alliance-why__* rules above so it wins the cascade at equal
+ * specificity (media query alone does not raise specificity).
+ * minmax(0, …) on both tracks is required: without it AllianceConstellation's
+ * intrinsic width (protagonist size, width:100%) can push the grid past the
+ * container (AC-7).
+ */
+@media (min-width: 1024px) {
+  .alliance-why {
+    padding: 6rem 0;
+  }
+
+  .alliance-why__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 40fr) minmax(0, 60fr);
+    column-gap: 56px;
+    align-items: center;
+  }
+
+  /* Eyebrow spans both columns, stays above the split (no markup change). */
+  .alliance-why__eyebrow {
+    grid-column: 1 / -1;
+  }
+
+  /* Text keeps its reading measure inside the narrower column. */
+  .alliance-why__text {
+    max-width: none;
+  }
+  .alliance-why__body {
+    max-width: 46ch;
+  }
+
+  /* Stage fills its column — this is where the diagram gains width. */
+  .alliance-why__stage {
+    max-width: none;
+    margin-top: 0;
+    padding-inline: 0;
+  }
 }
 
 /* ── Section C: AlliancePlanes (abisal, continuation of dark band) ── */
@@ -4107,15 +4170,23 @@ h1, h2, h3, h4, p {
   padding-top: 1rem;
 }
 
+/*
+ * POLISH-10 — stacked range (640–1023px): cap the diagram so it doesn't
+ * dominate relative to the text block still stacked above it. Below 640px
+ * the diagram takes full content width (existing ≤767px rule below already
+ * covers the sub-640px case for padding; no separate cap needed there).
+ */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .alliance-why__stage {
+    max-width: 620px;
+  }
+}
+
 /* ── Phase 2.4 responsive (≤767px) ── */
 @media (max-width: 767px) {
-  /* WhyFive: stack text above constellation */
-  .alliance-why__grid {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-  .alliance-why__figure {
-    order: -1; /* constellation appears above text on mobile */
+  /* WhyFive: tighten stage padding so labels clear the viewport edge */
+  .alliance-why__stage {
+    padding-inline: 0.75rem;
   }
 
   /* AlliancePlanes: single column stack */

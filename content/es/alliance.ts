@@ -31,7 +31,7 @@ export const allianceContent = {
   // Exactly 5 seats. Enforced in tests. (SPEC-P2.4 FR-3.2)
   seats: [
     { name: 'Magupell', state: 'occupied' },
-    { name: 'BIOZERO',  state: 'occupied' },
+    { name: 'BioZero',  state: 'occupied' },
     { name: 'DISPONIBLE', state: 'free' },
     { name: 'DISPONIBLE', state: 'free' },
     { name: 'DISPONIBLE', state: 'free' },

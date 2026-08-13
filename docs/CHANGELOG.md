@@ -1,5 +1,67 @@
 # Changelog
 
+## [SPEC-POLISH-10] — August 2026 — `/modelo-de-alianza` "Por qué solo cinco" split layout
+
+CSS-only change (`app/globals.css`, one file, +54 lines). At ≥1024px the section is now a
+40/60 grid (text left, `AllianceConstellation` right, 56px gap, vertically centred)
+instead of the POLISH-09 stacked layout; below 1024px it still stacks, with a new 620px
+cap on the diagram between 640–1023px. Section padding at ≥1024px reduced 8rem → 6rem.
+No TSX or content changed — `AllianceConstellation`, `GridBackground`,
+`components/pages/alliance.tsx`, and all `content/**` are untouched.
+
+Verified live over CDP: 40/60 split exact at 1024/1440/1920px, zero clipped labels at
+360–1920px × ES/EN/CA, heading doesn't overflow its column at 1024px in any locale,
+section height at 1440px down from 1154.4px to 767.7px (−33%), home page unaffected,
+scroll-reveal and reduced-motion both still correct. One deviation: the diagram's
+rendered width at 1440px (801.6px) came out narrower than POLISH-09's flat 900px cap
+(852px) — the literal arithmetic result of the mandated 40/60 split against the sitewide
+`.page-shell` max-width. Implemented exactly as specified rather than patched around; see
+`specs/spec-polish-10-why-five-layout.md` §3.
+
+## [SPEC-POLISH-09] — August 2026 — `/modelo-de-alianza` constellation clipping fix
+
+### Bug
+"Por qué solo cinco" rendered the shared `AllianceConstellation` at `size="large"`
+(fixed 420×420 viewBox) inside a cramped `1fr 1fr` grid column. The pentagon's widest
+points left only 60px of margin for outward-anchored labels needing ~55-60px, so
+`BIOZERO` and `DISPONIBLE` were clipped by the SVG's default `overflow: hidden` — reading
+as `BIOZE` / `ONIBLE` in production.
+
+### Fix
+- `components/pages/alliance.tsx` — switched to `size="protagonist"` (the same
+  responsive 960×620 variant already used on the home page, with 280px of margin per
+  side); removed the side-by-side `.alliance-why__grid`, restructured to text above,
+  full-width constellation stage below.
+- `app/globals.css` — replaced `.alliance-why__grid`/`.alliance-why__figure` with
+  `.alliance-why__stage`; added a page-scoped counter-rule so the existing
+  `DiagramReveal` scroll-reveal (already used elsewhere) applies correctly to the
+  protagonist variant on this page without touching the home page's own always-visible
+  rule for the same CSS classes.
+- `content/{es,en,ca}/alliance.ts` — corrected `BIOZERO` → `BioZero` in the seats array
+  to match the home page's casing exactly (home is the canonical source per spec).
+
+### Added — regression tests
+`tests/components/alliance-page.test.tsx` (8 tests, new file, 100% coverage of
+`components/pages/alliance.tsx`): protagonist size used (not large), legacy grid wrapper
+gone, constellation still wrapped in the scroll-reveal, all 5 seat labels render in full
+(no truncation), no `coreSubLabel` rendered (no such copy exists for this page), other
+alliance sections unaffected. `tests/content/content-integrity.test.ts`: updated 2
+existing `BIOZERO` assertions to `BioZero`; added a permanent test asserting the alliance
+dictionary's occupied-seat names always match the home dictionary's.
+
+### Verified
+`AllianceConstellation` and `GridBackground` byte-identical (`git diff` empty on both).
+Live re-check via headless Chrome over CDP at 360/390/768/1024/1440/1920px × ES/EN/CA,
+asserting **SVG label geometry** (`getBBox()` against the viewBox) rather than DOM
+presence: zero out-of-bounds labels post-fix (was 4/5 clipped per locale before). Home
+page measured unaffected (`900×581.25` rect, `960×620` viewBox, unchanged classes/labels/
+caption). Connector geometry unchanged (`d1FromCoreCenter === coreRadius` for all 5
+seats). Reveal confirmed live: forced below-the-fold → `opacity: 0`; scrolled into view →
+`opacity: 1`. `prefers-reduced-motion: reduce` confirmed fully static/visible. A
+pre-existing, site-wide 8px overflow at 360px from `.site-header`/`.page-header__*`
+(present on every `PageHeader` page, not introduced here) remains and is flagged as a
+follow-up — see `specs/spec-polish-09-alliance-constellation.md` §5.
+
 ## [SPEC-POLISH-07 hotfix] — August 2026 — locale-switcher spacing, invisible mobile nav, missing wordmark
 
 ### Bugs (found in live QA screenshots, after SPEC-POLISH-07 was reported complete)

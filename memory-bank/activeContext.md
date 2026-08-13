@@ -1,10 +1,39 @@
 # Active Context
 
-_Last updated: August 2026 (SPEC-POLISH-07 hotfix — locale-switcher spacing, invisible mobile nav, missing overlay wordmark, all fixed; SPEC-POLISH-07 itself already COMPLETE)_
+_Last updated: August 2026 (SPEC-POLISH-10 COMPLETE — /modelo-de-alianza "Por qué solo cinco" split layout)_
 
 ## Current state
 
-**Phase 6 COMPLETE + SPEC-POLISH-02/03/04/05/06/07 COMPLETE (+ hotfix) + SPEC-CASE-01 COMPLETE (+ hotfix).** Both Cloud Run environments are live. CI/CD pipeline is fully operational. `/casos-de-exito/magupell` was rewritten in ES/EN/CA with verified production figures (was carrying pre-launch `100+`/`200+` placeholders and invoicing language); `CaseDossier` was promoted to a single canonical case template (approved deviation — see below) and BioZero was migrated onto it with unchanged copy. Carlos is working on Phase 7 content/QA before DNS switch.
+**Phase 6 COMPLETE + SPEC-POLISH-02/03/04/05/06/07/09/10 COMPLETE (+ POLISH-07 hotfix) + SPEC-CASE-01 COMPLETE (+ hotfix).** Both Cloud Run environments are live. CI/CD pipeline is fully operational. `/casos-de-exito/magupell` was rewritten in ES/EN/CA with verified production figures (was carrying pre-launch `100+`/`200+` placeholders and invoicing language); `CaseDossier` was promoted to a single canonical case template (approved deviation — see below) and BioZero was migrated onto it with unchanged copy. Carlos is working on Phase 7 content/QA before DNS switch.
+
+### SPEC-POLISH-10 — `/modelo-de-alianza` "Por qué solo cinco" split layout (COMPLETE)
+CSS-only (`app/globals.css`, +54 lines, one file). At ≥1024px the section is now a 40/60
+grid (text/diagram, 56px gap, centred) instead of POLISH-09's stacked layout; below that
+it still stacks. Section height at 1440px down 1154.4px → 767.7px (−33%). One deviation:
+diagram width at 1440px (801.6px) is narrower than POLISH-09's flat 900px cap (852px) —
+the literal result of the mandated 40/60 ratio against the sitewide `.page-shell` cap;
+implemented as specified rather than patched. Full writeup:
+`specs/spec-polish-10-why-five-layout.md`.
+
+### SPEC-POLISH-09 — `/modelo-de-alianza` constellation clipping fix (COMPLETE)
+"Por qué solo cinco" rendered `AllianceConstellation` at `size="large"` (fixed 420×420
+viewBox) inside a cramped side-by-side grid; the pentagon's widest points left only 60px
+of margin for outward labels needing ~55-60px, so `BIOZERO`/`DISPONIBLE` were clipped to
+`BIOZE`/`ONIBLE` by the SVG's default `overflow:hidden`. Fixed by switching the page to
+`size="protagonist"` (the same 960×620 responsive variant already used on home, 280px of
+margin per side) and restructuring the section to text-above/full-width-diagram-below —
+**zero changes to `AllianceConstellation` or `GridBackground` themselves** (verified via
+empty `git diff`). Also corrected a pre-existing casing mismatch: the alliance
+dictionaries said `BIOZERO`, home said `BioZero` — home wins per spec, alliance
+dictionaries corrected (one-token data change, prose copy untouched). A page-scoped CSS
+counter-rule restores the scroll-reveal for the protagonist variant on this page without
+touching home's own always-visible rule for the same classes. Live-verified over CDP
+(label `getBBox()` geometry, not DOM presence, per the standing lesson below): zero
+clipped labels post-fix at 360-1920px × ES/EN/CA, home page unaffected, connector geometry
+unchanged, reveal fires correctly, reduced-motion fully static. One pre-existing,
+out-of-scope defect flagged: an 8px horizontal overflow at 360px from
+`.site-header`/`.page-header__*`, present on every `PageHeader` page (not introduced by
+this change). Full writeup: `specs/spec-polish-09-alliance-constellation.md`.
 
 ### Post-completion hotfix: three POLISH-07 bugs found in live screenshots (found after being reported "complete")
 `.site-header nav` (a bare element+descendant selector) matched **every** `<nav>`
@@ -242,6 +271,7 @@ Carlos is working on content/QA over the next few days. When ready:
 - **Rate limit store:** in-memory. Swap to Redis/Upstash if abuse observed.
 - **Resend account:** not yet created. EMAIL_DRY_RUN=true on both envs until set up.
 - **Google Workspace:** not yet set up. Inbound email to hola@escaladigitalventures.com pending.
-- **Next polish:** section 05 "Alianza" or section 02 "Capacidades" — Carlos to decide.
+- **Next polish:** section 02 "Capacidades" — Carlos to decide (section 05 "Alianza" clipping fixed by SPEC-POLISH-09).
+- **New follow-up candidate:** pre-existing 8px horizontal overflow at 360px viewport width caused by `.site-header`/`.page-header__*`, present on every page using `PageHeader` (`/como-trabajamos`, `/casos-de-exito`, `/modelo-de-alianza`). Found during SPEC-POLISH-09 live QA; out of that spec's scope (`PageHeader` protected). Not yet triaged into the backlog.
 - **Figure numbering convention confirmed:** figures are numbered globally across the site (01–12+), never reset per page. When a page spec's wireframe suggests a number already taken elsewhere, the next free global number is used instead and the wireframe number is treated as a placeholder (per SPEC-POLISH-06 §1.3 precedent).
 - **`/como-trabajamos` surface rhythm — pending Carlos review:** after the B/C swap, the page runs paper(A) → dark(B) → paper(C) → dark(D) → dark(E), sandwiching the light `ExecutionPractices` section between two dark ones. Carlos to review live and decide whether to flip `ExecutionPractices` to the dark abisal surface for a cleaner paper→dark×4 rhythm, or leave it as is.
