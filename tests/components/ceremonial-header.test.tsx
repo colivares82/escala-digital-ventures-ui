@@ -1,11 +1,15 @@
 /**
  * CeremonialHeader — unit tests.
- * Spec: SPEC-P2.5 FR-2 / AC-3
+ * Spec: SPEC-P2.5 FR-2 / AC-3 · BRAND-01 Z4
  */
 
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
 import { CeremonialHeader } from '@/components/ceremonial-header'
+import {
+  BRAND_SEAL_HEIGHT_PX,
+  BRAND_SEAL_WIDTH_PX,
+} from '@/lib/brand-constants'
 
 const PROPS = {
   kicker: 'A · SOBRE ESCALA · ESTUDIO DE PRODUCTO Y TECNOLOGÍA',
@@ -45,5 +49,54 @@ describe('CeremonialHeader', () => {
   it('does NOT use a standard page-header class (brand-document distinction)', () => {
     const { container } = render(<CeremonialHeader {...PROPS} />)
     expect(container.querySelector('.page-header')).toBeNull()
+  })
+
+  // ── BRAND-01 Z4 · decorative seal ─────────────────────────────────────────
+
+  describe('brand seal (BRAND-01 Z4)', () => {
+    it('renders the L01 seal image', () => {
+      const { container } = render(<CeremonialHeader {...PROPS} />)
+      const img = container.querySelector('.ceremonial-header__seal-img')
+      expect(img).not.toBeNull()
+      expect(img!.tagName).toBe('IMG')
+    })
+
+    it('is DECORATIVE: empty alt and hidden from assistive technology', () => {
+      // §6 is explicit: the seal carries no information the copy does not
+      // already carry, so it must NOT get descriptive alt text.
+      const { container } = render(<CeremonialHeader {...PROPS} />)
+      expect(container.querySelector('.ceremonial-header__seal-img')).toHaveAttribute('alt', '')
+      expect(container.querySelector('.ceremonial-header__seal')).toHaveAttribute(
+        'aria-hidden',
+        'true',
+      )
+    })
+
+    it('exposes no extra accessible image to assistive technology', () => {
+      // A decorative image must not surface as an img role.
+      render(<CeremonialHeader {...PROPS} />)
+      expect(screen.queryAllByRole('img')).toHaveLength(0)
+    })
+
+    it('declares intrinsic dimensions so CLS does not regress (AC-8)', () => {
+      const { container } = render(<CeremonialHeader {...PROPS} />)
+      const img = container.querySelector('.ceremonial-header__seal-img')
+      expect(img).toHaveAttribute('width', String(BRAND_SEAL_WIDTH_PX))
+      expect(img).toHaveAttribute('height', String(BRAND_SEAL_HEIGHT_PX))
+    })
+
+    it('keeps the copy in its own column beside the seal', () => {
+      // The grid wrapper must hold both the text column and the seal column,
+      // and the H1 must stay inside the text column (still the only H1).
+      const { container } = render(<CeremonialHeader {...PROPS} />)
+      const inner = container.querySelector('.ceremonial-header__inner')
+      expect(inner!.querySelector('.ceremonial-header__text h1')).not.toBeNull()
+      expect(inner!.querySelector('.ceremonial-header__seal')).not.toBeNull()
+    })
+
+    it('still renders exactly one H1 after the grid change (AC-3)', () => {
+      const { container } = render(<CeremonialHeader {...PROPS} />)
+      expect(container.querySelectorAll('h1')).toHaveLength(1)
+    })
   })
 })

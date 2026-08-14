@@ -1,0 +1,87 @@
+[
+  {
+    "id": "L01",
+    "slug": "logo-01-seal",
+    "kind": "raster",
+    "native": [
+      289,
+      295
+    ],
+    "aspect": 0.9797,
+    "display_widths": [
+      288,
+      576
+    ]
+  },
+  {
+    "id": "L02",
+    "slug": "logo-02-lockup",
+    "kind": "raster",
+    "native": [
+      447,
+      119
+    ],
+    "aspect": 3.7563,
+    "display_widths": [
+      200,
+      400
+    ]
+  },
+  {
+    "id": "L04",
+    "slug": "logo-04-wordmark",
+    "kind": "raster",
+    "native": [
+      353,
+      46
+    ],
+    "aspect": 7.6739,
+    "display_widths": [
+      160,
+      320
+    ]
+  },
+  {
+    "id": "L05",
+    "slug": "logo-05-lockup-compact",
+    "kind": "raster",
+    "native": [
+      386,
+      64
+    ],
+    "aspect": 6.0312,
+    "display_widths": [
+      180,
+      360
+    ]
+  },
+  {
+    "id": "L06",
+    "slug": "logo-06-stacked",
+    "kind": "raster",
+    "native": [
+      337,
+      82
+    ],
+    "aspect": 4.1098,
+    "display_widths": [
+      140,
+      280
+    ]
+  },
+  {
+    "id": "L03",
+    "slug": "escala-icon",
+    "kind": "vector",
+    "geometry": {
+      "bar_widths": [
+        100.0,
+        73.0,
+        49.0
+      ],
+      "bar_thickness": 14.0,
+      "pitch": 30.0,
+      "symbol_aspect": 1.3514
+    }
+  }
+]
