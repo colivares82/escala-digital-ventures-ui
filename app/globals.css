@@ -60,6 +60,22 @@
   --motion-fast: 180ms;
   --motion-base: 400ms;
   --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+
+  /*
+   * Brand asset render sizes (BRAND-01 §2). Dimensions ONLY — the paper/ink
+   * colour choice lives in the asset files, so this change introduces no new
+   * colour value (AC-3). Mirrored in lib/brand-constants.ts, which is the
+   * source consumed by the components' intrinsic width/height attributes.
+   */
+  --brand-lockup-w:      162px; /* Z1 desktop header — L02 */
+  --brand-lockup-h:      43px;
+  --brand-symbol-box:    30px;  /* Z2 mobile — square box, ~26×19 visible ink */
+  --brand-footer-w:      180px; /* Z3 footer — L05, 1:1 with its @1x file */
+  --brand-footer-h:      30px;
+  --brand-seal-w:        280px; /* Z4 /sobre-escala — L01 seal */
+  --brand-seal-h:        286px;
+  --brand-seal-narrow-w: 200px; /* Z4 below the 767px collapse */
+  --brand-seal-narrow-h: 204px;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────── */
@@ -185,37 +201,37 @@ h1, h2, h3, h4, p {
   min-height: 4rem;
 }
 
-/* Logo mark — dimensioned brand slot (SPEC-POLISH-07 §3): 132×32 desktop.
-   Contents (symbol + wordmark) are unchanged; only the box is now fixed-size
-   so the logo (next spec) drops in without re-specifying the header. */
+/* Logo mark — brand slot (SPEC-POLISH-07 §3 · BRAND-01 Z1/Z2).
+   BRAND-01: the provisional contents (three bordered `<i>` squares + the
+   "ESCALA" text wordmark) are GONE — the slot now holds the real L02 lockup
+   image on desktop and the standalone symbol in the mobile menu bar. The box
+   is sized to the image itself rather than a fixed 132×32, so the lockup is
+   never letterboxed or cropped. */
 .site-brand {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  width: 132px;
-  height: 32px;
+  width: var(--brand-lockup-w);
+  height: var(--brand-lockup-h);
   color: inherit;
   text-decoration: none;
-  font: 600 1rem var(--font-archivo);
   flex-shrink: 0;
 }
-.site-brand > span {
-  position: relative;
-  width: 1.5rem;
-  height: 1.5rem;
+
+/* Z1 — desktop header lockup. Fixed size: does not scale with the viewport
+   (§3). Optically centred in the header by the flex alignment above. */
+.site-brand__lockup {
+  display: block;
+  width: var(--brand-lockup-w);
+  height: var(--brand-lockup-h);
 }
-.site-brand i {
-  position: absolute;
-  width: 0.5rem;
-  height: 0.5rem;
-  border: 1px solid currentColor;
-}
-.site-brand i:nth-child(1) { inset: 0 auto auto 0; }
-.site-brand i:nth-child(2) { inset: 0.5rem 0.5rem auto auto; }
-.site-brand i:nth-child(3) {
-  inset: auto 0 0 auto;
-  background: var(--ambre);
-  border-color: var(--ambre);
+
+/* Z2 — mobile menu bar symbol. The source PNG is a square canvas with
+   transparent padding, so the 30px box renders ~26×19 of visible ink; see
+   lib/brand-constants.ts for the arithmetic. */
+.site-brand__symbol {
+  display: block;
+  width: var(--brand-symbol-box);
+  height: var(--brand-symbol-box);
 }
 
 /* Nav + locale switcher.
@@ -1800,13 +1816,20 @@ h1, h2, h3, h4, p {
   gap: 2.5rem;
   padding-block: 2.4rem 1.9rem;
 }
+/* BRAND-01 Z3 — footer brand slot now holds the L05 compact lockup image
+   instead of the "ESCALA" text wordmark, so the box is sized to the asset
+   (180×30) and the font declaration is no longer needed. */
 .site-footer__brand {
   display: flex;
   align-items: center;
-  width: 196px;
-  height: 46px;
+  width: var(--brand-footer-w);
+  height: var(--brand-footer-h);
   flex-shrink: 0;
-  font: 600 1rem var(--font-archivo);
+}
+.site-footer__lockup {
+  display: block;
+  width: var(--brand-footer-w);
+  height: var(--brand-footer-h);
 }
 .site-footer__claim {
   margin: 0;
@@ -2376,10 +2399,11 @@ h1, h2, h3, h4, p {
   .site-header__trigger {
     display: flex;
   }
-  .site-brand {
-    width: 112px;
-    height: 28px;
-  }
+  /* BRAND-01 Z1: the brand slot keeps its natural lockup size below the
+     desktop breakpoint. The old 112×28 override existed to shrink the text
+     wordmark; applying it to the image would crop the lockup, and §3 fixes the
+     rendered size at 162×43 regardless of viewport. The mobile MENU BAR uses
+     the standalone symbol instead (.site-brand__symbol, Z2). */
   .problem-layout {
     gap: 2rem;
   }
@@ -2612,10 +2636,9 @@ h1, h2, h3, h4, p {
     gap: 1.25rem;
     padding-block: 1.75rem 1.5rem;
   }
-  .site-footer__brand {
-    width: 168px;
-    height: 40px;
-  }
+  /* BRAND-01 Z3: no size override — the compact lockup renders at a fixed
+     180×30 (1:1 with its @1x file) at every width. The previous 168×40 box was
+     sized for the text wordmark it replaced. */
   .site-footer__claim {
     text-align: left;
     font-size: 1.25rem;
@@ -4258,8 +4281,38 @@ h1, h2, h3, h4, p {
   padding: 6rem 0 5rem;
 }
 
+/* BRAND-01 Z4 — two-column grid: text left, decorative seal right.
+   The 1.35fr/.65fr ratio comes from the wireframe. `align-items: start` keeps
+   the seal from stretching, and the seal's own padding-top aligns it to the
+   start of the body paragraph rather than the H1 (§6). */
 .ceremonial-header__inner {
   /* inherits page-shell padding */
+  display: grid;
+  grid-template-columns: 1.35fr 0.65fr;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  align-items: start;
+}
+
+.ceremonial-header__text {
+  min-width: 0; /* lets the oversized H1 wrap instead of forcing overflow */
+}
+
+/* Horizontally centred within its column (§6). */
+.ceremonial-header__seal {
+  display: flex;
+  justify-content: center;
+  padding-top: 3.25rem;
+}
+
+.ceremonial-header__seal-img {
+  display: block;
+  /* Width drives the box; height follows from the intrinsic aspect ratio so the
+     seal never distorts, and max-width lets it shrink inside a narrow column
+     instead of overflowing. The intrinsic width/height attributes on the <img>
+     still reserve space, so CLS does not regress (AC-8). */
+  width: var(--brand-seal-w);
+  max-width: 100%;
+  height: auto;
 }
 
 .ceremonial-header__kicker {
@@ -4655,6 +4708,20 @@ h1, h2, h3, h4, p {
 
 /* ── Phase 2.5 responsive (≤767px) ── */
 @media (max-width: 767px) {
+  /* BRAND-01 Z4 — CeremonialHeader collapses to one column: the seal moves
+     BELOW the text, horizontally centred, at the smaller 200×204 size (§6).
+     767px is this project's existing Phase-2.5 breakpoint; the wireframe's
+     900px is not used anywhere in this stylesheet. */
+  .ceremonial-header__inner {
+    grid-template-columns: 1fr;
+  }
+  .ceremonial-header__seal {
+    padding-top: 2.5rem;
+  }
+  .ceremonial-header__seal-img {
+    width: var(--brand-seal-narrow-w);
+  }
+
   /* DnaBlock: stack columns */
   .dna-block__grid {
     grid-template-columns: 1fr;
@@ -5720,8 +5787,11 @@ h1, h2, h3, h4, p {
 }
 
 .mobile-menu__brand-slot {
-  /* Reuses .site-brand box sizing (112×28 mobile) — see .site-brand rule and
-     its max-width:1023px override; no separate dimensions declared here. */
+  /* BRAND-01 Z2 — holds the standalone symbol, so this slot is sized to the
+     symbol's square box rather than inheriting the wider lockup dimensions
+     that `.site-brand` now carries. */
+  width: var(--brand-symbol-box);
+  height: var(--brand-symbol-box);
   margin-right: auto;
 }
 

@@ -23,6 +23,10 @@ export const sharedContent = {
     // SPEC-POLISH-07 §5 — mobile menu trigger/close accessible labels.
     menuOpen: 'Open menu',
     menuClose: 'Close menu',
+    // BRAND-01 §8 — alt text for the header brand lockup (desktop + mobile).
+    // The footer lockup is decorative (its anchor already carries `homeLabel`),
+    // so it takes an empty alt and deliberately has no key here.
+    logoAlt: 'Escala Digital Ventures — Home',
   },
   header: {
     brand: 'ESCALA',

@@ -1,5 +1,22 @@
 # Progress
 
+## What works ✅ — BRAND-01 (brand asset integration)
+
+| Feature | Status |
+|---------|--------|
+| Z1 desktop header — L02 `paper` lockup, 162×43, fixed size, `@2x` srcset via static import | Complete |
+| Z2 mobile menu bar — standalone symbol, no disc/plate; 30×30 box → 26.25×19.38 visible ink | Complete |
+| Z3 footer — L05 `paper` compact lockup, 180×30 (1:1 with its @1x file), decorative `alt=""` | Complete |
+| Z4 `/sobre-escala` section A — L01 `ink` seal 280×286, `aria-hidden`, → 200×204 below 767px | Complete |
+| Z5 — `favicon.ico` (real multi-size ICO) + 6 favicon PNGs + apple-touch 180×180 + OG 1200×630 | Complete |
+| Provisional mark gone: `<i>` squares, `.site-brand i` CSS, `{content.brand}` render, `app/icon.svg`, generated `opengraph-image.tsx` | Complete |
+| `accessibility.logoAlt` in es/en/ca — the only new copy; i18n coverage guard green | Complete |
+| `lib/brand-constants.ts` + `--brand-*` tokens — every size named, zero new colour values | Complete |
+| **Fixed: `og:image` + `apple-touch-icon` never emitted** (pre-existing; file convention can't reach the optional catch-all) — now explicit from `lib/constants/seo.ts`, verified live on es/en/ca | Complete |
+| `brand-assets-guard` — 30 assertions: asset existence + exact pixel sizes, ICO validity, no hardcoded alt/colour, no PWA manifest, unused variants unreferenced | Complete |
+| 71 test files · 1363 tests · 100% pass · coverage 83.24/79.23/87.83/85.71 (gate 70) · tsc clean · lint 0 errors · build clean | Complete |
+| Scope guard held: no token file, font config, `routes.ts`, sitemap, robots, FIG component, animation or contact form touched | Verified |
+
 ## What works ✅ — SEO-01 (search & AI discoverability)
 
 | Feature | Status |
@@ -377,5 +394,5 @@
 | Logo-display permission (BioZero) | Low | Pending Carlos confirmation before go-live (Phase 7 checklist). FR-3.6. |
 | Legal placeholders unresolved | Medium | `{{FECHA_ACTUALIZACION}}`, `{{REGISTRO_MERCANTIL}}`, `{{NIF_B88767520}}`, `{{JURISDICCION}}`, `{{REGION_EU_GOOGLE_CLOUD}}` — Carlos must fill before go-live. Visible as ambre highlights in dev. |
 | Legal advisor review required | Medium | Legal copy drafted from MAGUPELL contract + LSSI-CE/RGPD. Not legal advice. Advisor must review before go-live. |
-| Favicon artwork is a draft | Low | `app/icon.svg` — Carlos to review and replace with final approved logomark before launch. |
+| ~~Favicon artwork is a draft~~ | — | **Resolved by BRAND-01.** `app/icon.svg` deleted; real `favicon.ico` + 6 PNG sizes + apple-touch icon shipped from the delivered bundle. |
 | 8px horizontal overflow at 360px on `PageHeader` pages | Low | `.site-header`/`.page-header__*` overflow slightly at the narrowest tested width, on every page using `PageHeader` (`/como-trabajamos`, `/casos-de-exito`, `/modelo-de-alianza`). Found during SPEC-POLISH-09 live QA; pre-existing, not introduced by that change. Not yet triaged into the backlog. |

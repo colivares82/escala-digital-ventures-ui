@@ -1,6 +1,57 @@
 # Active Context
 
-_Last updated: August 2026 (SEO-01 COMPLETE — search & AI discoverability)_
+_Last updated: August 2026 (BRAND-01 COMPLETE — brand asset integration)_
+
+### BRAND-01 — Brand asset integration (COMPLETE)
+
+Provisional mark (3 bordered squares + "ESCALA" in mono) replaced by the delivered identity in
+all four visible places, plus metadata. **No redesign** — tokens, typography, grid and every FIG
+untouched. 1363 tests pass · coverage 83.24/79.23/87.83/85.71 (gate 70) · tsc clean · lint 0
+errors · build clean.
+
+**Where each zone landed:** Z1 desktop header + Z3 footer → `components/site-chrome.tsx` ·
+Z2 mobile bar → `components/mobile-menu.tsx` · Z4 seal → `components/ceremonial-header.tsx` ·
+Z5 → `app/layout.tsx` + `lib/constants/seo.ts` + `lib/seo/page-meta.ts` · alt keys →
+`content/{es,en,ca}/shared.ts`.
+
+**Real bug found and fixed — pre-existing, not caused by this spec:**
+**`og:image` and `apple-touch-icon` had NEVER been emitted on any page.** SEO-01's changelog
+records the og:image bug as fixed by not overriding `openGraph.images`; that was correct but
+protected an injection that never arrived. `app/opengraph-image.*` applies only to its own
+segment, and every page renders from the optional catch-all `app/[[...path]]/` — which Next
+refuses to host a metadata file inside. Verified by building the pre-BRAND-01 commit: zero
+og:image tags. Both now declared from `lib/constants/seo.ts` and asserted end-to-end. **The old
+guard passed while the output was broken because it only asserted the override was absent, never
+that the tag was present** — the same class of blind spot as SEO-01's title bug.
+
+**Three spec inaccuracies recorded rather than rediscovered later:**
+1. **§1's native-resolution table is wrong.** Delivered lockups are pre-scaled: L02 is 200×53
+   (@2x 400×106), not 445×119; L05 is 180×30 (@2x 360×60), not 386×64. All render sizes still
+   fit within the real @2x widths, so nothing is upscaled.
+2. **§2's "26×19" mobile symbol is the visible INK, not the file.** `symbol-paper-96.png` is a
+   square 96×96 canvas with 84×62 of ink. A 26×19 element would squash it ~26%; a 30×30 box
+   gives ink of 26.25×19.38. Arithmetic in `lib/brand-constants.ts`.
+3. **§6's "right-hand column ... already allocated and currently empty" did not exist.**
+   `CeremonialHeader` was single-column. Adding the grid was unavoidable and was approved by
+   Carlos before implementing (§0 requires stopping rather than widening scope).
+
+**Decisions:** assets in `app/assets/escala-brand/` (Phase-2.3 precedent — static import gives
+AC-8 intrinsic dimensions for free); favicon PNGs + apple-touch in `public/brand/` (need stable
+URLs); footer logo `alt=""` keeping the anchor's `aria-label`, so the §8 footer key was **not**
+added (unused-key precedent from SPEC-POLISH-07); header at **162px** per §3 despite the bundle
+README recommending 200px (Carlos chose); Z4 collapse at the existing **767px**, never 900px.
+Full rationale in `DECISIONS.md`.
+
+**Kept deliberately:** `sharedContent.header.brand` — still consumed by
+`lib/seo/page-graph.ts` breadcrumbs and passed as `SiteFooter`'s `brand` prop. Removing it would
+touch SEO data and the page call site, outside §0's scope guard.
+
+**Unused by design (§2/§10):** L04, L06, all `mar` variants, the icon SVGs, and
+`maskable-{192,512}.png`. Copied into the repo, referenced nowhere. **No PWA manifest created** —
+the bundle's `manifest.json` is asset metadata, not a web manifest, so §7's "if one exists"
+resolves to no.
+
+_Previous: SEO-01 (search & AI discoverability)_
 
 ### SEO-01 — Search & AI discoverability (COMPLETE)
 
@@ -311,7 +362,12 @@ Carlos is working on content/QA over the next few days. When ready:
 - **Legal data:** `{{REGISTRO_MERCANTIL}}`, `{{JURISDICCION}}`, `{{FECHA_ACTUALIZACION}}` — Carlos to provide
 - **NIF confirmation:** `{{NIF_B88767520}}` pre-filled from MAGUPELL contract — Carlos to confirm
 - **EU region:** `{{REGION_EU_GOOGLE_CLOUD}}` = **europe-west1 (Belgium)** — confirmed ✅
-- **Favicon artwork:** Carlos to review draft and replace with final approved logomark
+- ~~**Favicon artwork:** Carlos to review draft~~ — **resolved by BRAND-01** (real bundle shipped)
+- **Header lockup size:** rendered at 162px per spec §3; the bundle README recommends 200px for
+  the header. Carlos chose 162px knowing the tagline sits at the edge of legibility at 1x.
+  Revisit only if it reads poorly on a real 1x display.
+- **Unplaced brand assets:** L04 wordmark, L06 stacked, all `mar` variants and `maskable-*` are
+  in the repo but referenced nowhere — no placement assigned yet (BRAND-01 §2/§10).
 - **EN/CA copy register:** Carlos to review and sign off (AC-9)
 - **Real imagery:** case-study context images pending from clients
 - **ServiceFig variants:** FIG.08/09/11 geometry fixed (SPEC-POLISH-05); FIG.07/FIG.10 canvas-normalised only. Still DRAFT VISUAL overall — Carlos may iterate further after live review

@@ -9,7 +9,10 @@
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/config'
 import {
+  APPLE_TOUCH_ICON,
   BRAND_TITLE_SUFFIX,
+  FAVICON_ICONS,
+  OG_IMAGE,
   OG_LOCALE,
   OG_SITE_NAME,
   TWITTER_CARD_TYPE,
@@ -80,11 +83,23 @@ export function buildPageMetadata(input: PageMetadataInput): Metadata {
       type: ARTICLE_PAGES.includes(page) ? 'article' : 'website',
       locale: OG_LOCALE[locale],
       alternateLocale: alternateOgLocales(locale),
+      // BRAND-01 Z5: declared explicitly because app/opengraph-image.* cannot
+      // reach the optional catch-all these pages render from — see OG_IMAGE.
+      // One text-free image for all three locales (§7).
+      images: [OG_IMAGE],
     },
     twitter: {
       card: TWITTER_CARD_TYPE,
       title: ogTitle(title),
       description,
+      images: [OG_IMAGE.url],
+    },
+    // BRAND-01 Z5 — declared per-route for the same reason as the OG image:
+    // `app/icon.*` / `app/apple-icon.*` do not apply to the optional catch-all.
+    // app/favicon.ico is still picked up automatically and complements these.
+    icons: {
+      icon: FAVICON_ICONS,
+      apple: [APPLE_TOUCH_ICON],
     },
   }
 }

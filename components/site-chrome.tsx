@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { CalibratedRule } from '@/components/calibrated-rule'
 import { LocaleSwitcher } from '@/components/locale-switcher'
@@ -13,6 +14,14 @@ import {
 } from '@/lib/motion-constants'
 import { ANCHORS, ROUTES } from '@/lib/routes'
 import { getPath } from '@/lib/i18n/routes'
+import headerLockup from '@/app/assets/escala-brand/logo-02-lockup-paper.png'
+import footerLockup from '@/app/assets/escala-brand/logo-05-lockup-compact-paper.png'
+import {
+  BRAND_FOOTER_LOCKUP_HEIGHT_PX,
+  BRAND_FOOTER_LOCKUP_WIDTH_PX,
+  BRAND_HEADER_LOCKUP_HEIGHT_PX,
+  BRAND_HEADER_LOCKUP_WIDTH_PX,
+} from '@/lib/brand-constants'
 
 type HeaderContent = typeof homeContent.header
 type FooterContent = typeof homeContent.footer
@@ -117,13 +126,19 @@ export function SiteHeader({
     <>
     <header className={headerClass}>
       <div className="page-shell site-header__inner">
+        {/* BRAND-01 Z1 — L02 lockup, `paper` variant on the dark abisal header.
+            Replaces the provisional geometric placeholder + "ESCALA" wordmark.
+            Intrinsic width/height come from the static import (AC-8); next/image
+            emits the @2x srcset, so no new pipeline is needed (§3). */}
         <a className="site-brand" href={brandHref} aria-label={accessibility.homeLabel}>
-          <span aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </span>
-          {content.brand}
+          <Image
+            src={headerLockup}
+            alt={accessibility.logoAlt}
+            width={BRAND_HEADER_LOCKUP_WIDTH_PX}
+            height={BRAND_HEADER_LOCKUP_HEIGHT_PX}
+            className="site-brand__lockup"
+            priority
+          />
         </a>
 
         <nav className="site-header__nav" aria-label={accessibility.primaryNavigation}>
@@ -200,7 +215,8 @@ export function SiteHeader({
 export function SiteFooter({
   content,
   accessibility,
-  brand,
+  // `brand` is accepted but deliberately NOT destructured — see the prop's
+  // docblock below (BRAND-01 Z3): the footer slot now renders the L05 lockup.
   contactLabel,
   email,
   location,
@@ -212,7 +228,16 @@ export function SiteFooter({
   content: FooterContent
   /** Locale-aware accessibility labels from shared dictionary. */
   accessibility: Accessibility
-  /** Header brand wordmark, reused for the footer's brand slot (SPEC-POLISH-08 §2 Band 1). */
+  /**
+   * Header brand wordmark ("ESCALA").
+   *
+   * BRAND-01 Z3: no longer rendered — the footer brand slot now holds the L05
+   * lockup image instead of this text. The prop is intentionally KEPT so the
+   * call site in `app/[[...path]]/page.tsx` (and the `shared.header.brand`
+   * dictionary key, still consumed by `lib/seo/page-graph.ts` breadcrumbs)
+   * stay byte-identical; removing it would widen the diff beyond §0's scope
+   * guard for no functional gain.
+   */
   brand: string
   /** "Hablemos" / "Let's talk" — reused from `header.contact` (no new copy). */
   contactLabel: string
@@ -238,8 +263,19 @@ export function SiteFooter({
         <CalibratedRule className="site-footer__rule" />
 
         <div className="site-footer__top">
+          {/* BRAND-01 Z3 — L05 compact lockup, `paper` variant on the dark footer.
+              Decorative alt (§8): the anchor already carries `homeLabel` as its
+              accessible name, so a non-empty alt here would be overridden by the
+              aria-label anyway and risks duplicating the name. Renders 1:1 with
+              its 180×30 @1x file. */}
           <a className="site-footer__brand" href={brandHref} aria-label={accessibility.homeLabel}>
-            {brand}
+            <Image
+              src={footerLockup}
+              alt=""
+              width={BRAND_FOOTER_LOCKUP_WIDTH_PX}
+              height={BRAND_FOOTER_LOCKUP_HEIGHT_PX}
+              className="site-footer__lockup"
+            />
           </a>
           <p className="site-footer__claim">{content.claim}</p>
         </div>
