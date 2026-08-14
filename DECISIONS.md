@@ -153,6 +153,29 @@
 
 ## BRAND-01 decisions (brand asset integration)
 
+- **Spec §2 is factually wrong about the footer's surface; the footer takes `ink`, not `paper`.**
+  §2 asserts "The header and footer are `abisal`, so both take `paper`." The header is `abisal`
+  (`globals.css` line ~175), but **`.site-footer` is `background: var(--paper)`** — a light
+  surface. Following the worked example instead of the rule above it shipped the light `paper`
+  lockup onto a light background: measured mean ink luminance **246 against a 247 background**,
+  i.e. invisible. The `ink` variant measures **25** on the same background. Resolution: trust
+  §2's *rule* (`ink` on `paper`, `paper` on dark) over its *example*, and derive the expectation
+  from `globals.css` rather than from prose. Two regression guards now do exactly that — both
+  verified to fail when the bug is reintroduced.
+  **Process lesson:** the original §11 report claimed Z3 was "verified live". It was not — the
+  DOM assertions (correct `alt`, dimensions, link target) all passed while the mark was
+  invisible. Element-presence checks cannot detect a contrast failure; only rendered-pixel
+  inspection or a human can. The guard now asserts the variant-to-surface pairing instead.
+
+- **Z4 seal is vertically centred against the text block, not top-aligned to the body copy.**
+  §6 says "top-aligned to the start of the body paragraph — not to the H1". Implemented first as
+  a fixed `padding-top: 3.25rem`, which could not track the H1's fluid
+  `clamp(3rem, 7vw, 6rem)` at `line-height: 1` wrapping to 2–3 lines: the wider the viewport,
+  the further the seal drifted above the text block's optical centre. Replaced with
+  `align-items: center` on the grid, which self-adjusts at every width and removes the magic
+  number. Approved by Carlos after seeing it live. Below 767px the grid is a single column, so
+  `align-items` reverts to `start` and the seal's own `padding-top: 2.5rem` does the separating.
+
 - **Asset location `app/assets/escala-brand/` (not `public/brand/`) for in-page marks.** Spec §2
   suggests `public/brand/` but defers to "whatever convention the project already uses". The
   Phase 2.3 decision above already settled this for logos: static import via `next/image` gives

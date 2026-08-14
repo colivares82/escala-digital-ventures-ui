@@ -15,7 +15,19 @@ import {
 import { ANCHORS, ROUTES } from '@/lib/routes'
 import { getPath } from '@/lib/i18n/routes'
 import headerLockup from '@/app/assets/escala-brand/logo-02-lockup-paper.png'
-import footerLockup from '@/app/assets/escala-brand/logo-05-lockup-compact-paper.png'
+/*
+ * BRAND-01 Z3 — `ink` variant, NOT `paper`.
+ *
+ * Spec §2 states "The header and footer are `abisal`, so both take `paper`."
+ * That is true of the header but WRONG about the footer: `.site-footer` is
+ * `background: var(--paper)` — a LIGHT surface. Shipping the light `paper`
+ * lockup there rendered it invisible (light-on-light).
+ *
+ * The spec's own colour-variant rule is what settles it: `ink` on `paper`,
+ * `paper` on any dark surface. Same 180×30 asset dimensions, so sizing, the
+ * intrinsic width/height and the @2x srcset are unaffected.
+ */
+import footerLockup from '@/app/assets/escala-brand/logo-05-lockup-compact-ink.png'
 import {
   BRAND_FOOTER_LOCKUP_HEIGHT_PX,
   BRAND_FOOTER_LOCKUP_WIDTH_PX,

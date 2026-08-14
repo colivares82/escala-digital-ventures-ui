@@ -21,10 +21,12 @@ brand is visible, plus metadata. No redesign: tokens, typography, grid and figur
 - **Z1 desktop header** — `site-chrome.tsx`: L02 `paper` lockup at 162×43, replacing the three
   bordered `<i>` squares + "ESCALA" text.
 - **Z2 mobile menu bar** — `mobile-menu.tsx`: standalone symbol, no disc/plate.
-- **Z3 footer** — `site-chrome.tsx`: L05 `paper` compact lockup at 180×30, decorative
-  (`alt=""`), the anchor keeping its existing `aria-label`.
+- **Z3 footer** — `site-chrome.tsx`: L05 **`ink`** compact lockup at 180×30, decorative
+  (`alt=""`), the anchor keeping its existing `aria-label`. `ink`, not the `paper` that spec §2
+  specifies — see "Corrected after live review" below.
 - **Z4 `/sobre-escala` section A** — `ceremonial-header.tsx`: L01 `ink` seal, 280×286, decorative
-  and `aria-hidden`. Required adding a two-column grid; see DECISIONS.md.
+  and `aria-hidden`, vertically centred against the text block. Required adding a two-column
+  grid; see DECISIONS.md.
 - **Z5 metadata** — `favicon.ico`, six favicon PNGs, apple-touch icon and the static OG image
   replace the draft `app/icon.svg` and the generated `app/opengraph-image.tsx` (both deleted).
 
@@ -39,6 +41,24 @@ brand is visible, plus metadata. No redesign: tokens, typography, grid and figur
   `lib/constants/seo.ts` (`OG_IMAGE`, `FAVICON_ICONS`, `APPLE_TOUCH_ICON`) and asserted
   end-to-end. The old guard passed while the output was broken because it only checked that the
   override was absent, never that the tag was present — that assertion is now inverted.
+
+### Corrected after live review
+Two defects caught by Carlos on the rendered site, both fixed in the same change:
+
+- **Footer logo was invisible — wrong colour variant.** Spec §2 states "the header and footer are
+  `abisal`, so both take `paper`". The header is `abisal`, but `.site-footer` is
+  `background: var(--paper)` — a **light** surface. The light `paper` lockup on it measured mean
+  ink luminance **246 against a 247 background** (invisible); the `ink` variant measures **25**.
+  Switched to `logo-05-lockup-compact-ink.png` per §2's own *rule* rather than its worked
+  example. Two new guards derive the expected variant from `globals.css` instead of the prose,
+  and were verified to fail when the bug is reintroduced.
+  **The original "verified live" claim for Z3 was wrong:** the DOM assertions (`alt`, dimensions,
+  link target) all passed while the mark was invisible. Element-presence tests cannot detect a
+  contrast failure.
+- **Seal was vertically misaligned.** A fixed `padding-top: 3.25rem` could not track the H1's
+  fluid `clamp(3rem, 7vw, 6rem)` wrapping to 2–3 lines, so the seal drifted further above the
+  text block's optical centre as the viewport widened. Replaced with `align-items: center`,
+  which self-adjusts and deletes the magic number. The ≤767px stacked layout keeps `start`.
 
 ### Notes
 - **Spec §1's native-resolution table is inaccurate.** The delivered lockups are pre-scaled to

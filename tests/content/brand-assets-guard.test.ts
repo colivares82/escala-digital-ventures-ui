@@ -50,6 +50,10 @@ describe('BRAND-01 · consumed assets exist at their expected native size', () =
   const CASES: ReadonlyArray<readonly [string, number, number]> = [
     ['app/assets/escala-brand/logo-02-lockup-paper.png', 200, 53],
     ['app/assets/escala-brand/logo-02-lockup-paper@2x.png', 400, 106],
+    // The footer consumes the `ink` variant (light surface); `paper` is kept
+    // verified too, since a dark-surface footer would need it.
+    ['app/assets/escala-brand/logo-05-lockup-compact-ink.png', 180, 30],
+    ['app/assets/escala-brand/logo-05-lockup-compact-ink@2x.png', 360, 60],
     ['app/assets/escala-brand/logo-05-lockup-compact-paper.png', 180, 30],
     ['app/assets/escala-brand/logo-05-lockup-compact-paper@2x.png', 360, 60],
     ['app/assets/escala-brand/logo-01-seal-ink.png', 288, 294],
@@ -230,12 +234,48 @@ describe('BRAND-01 §2 · unused variants are available but unreferenced', () =>
     }
   })
 
-  it('uses only the paper variant on dark surfaces and ink on light (§2)', () => {
-    // Header + footer are abisal (dark) → paper. Section A is paper (light) → ink.
-    const chrome = readSource('components/site-chrome.tsx')
-    expect(chrome).toContain('logo-02-lockup-paper.png')
-    expect(chrome).toContain('logo-05-lockup-compact-paper.png')
-    expect(readSource('components/mobile-menu.tsx')).toContain('symbol-paper-96.png')
-    expect(readSource('components/ceremonial-header.tsx')).toContain('logo-01-seal-ink.png')
+  it('matches each mark variant to the ACTUAL background of its surface (§2)', () => {
+    /*
+     * The §2 colour rule: `paper` mark on any dark surface, `ink` mark on a
+     * light (`paper`) surface.
+     *
+     * Note §2's worked example is WRONG about the footer — it says "the header
+     * and footer are abisal, so both take paper", but `.site-footer` is
+     * `background: var(--paper)`. Following the example instead of the rule
+     * shipped an invisible light-on-light footer logo. This test therefore
+     * derives the expectation from globals.css rather than from the prose.
+     */
+    const css = readSource('app/globals.css')
+    const surfaceOf = (selector: string) => {
+      const rule = css.match(new RegExp(`\\n\\${selector}\\s*\\{[^}]*\\}`))?.[0] ?? ''
+      return /background:\s*var\(--paper\)/.test(rule) ? 'light' : 'dark'
+    }
+
+    // Header: dark (abisal) → paper mark.
+    expect(surfaceOf('.site-header')).toBe('dark')
+    expect(readCode('components/site-chrome.tsx')).toContain('logo-02-lockup-paper.png')
+    expect(readCode('components/mobile-menu.tsx')).toContain('symbol-paper-96.png')
+
+    // Footer: LIGHT (paper) → ink mark. Regression guard for the invisible logo.
+    expect(surfaceOf('.site-footer')).toBe('light')
+    expect(readCode('components/site-chrome.tsx')).toContain('logo-05-lockup-compact-ink.png')
+    expect(readCode('components/site-chrome.tsx')).not.toContain(
+      'logo-05-lockup-compact-paper.png',
+    )
+
+    // /sobre-escala section A: light (paper) → ink seal.
+    expect(surfaceOf('.ceremonial-header')).toBe('light')
+    expect(readCode('components/ceremonial-header.tsx')).toContain('logo-01-seal-ink.png')
+  })
+
+  it('never renders a paper mark on a paper surface (contrast floor, §8)', () => {
+    // Blunt catch-all: no component that styles a light surface may import a
+    // `-paper` raster mark. This is the assertion that would have caught the
+    // invisible footer logo before it shipped.
+    const footerImports = readCode('components/site-chrome.tsx')
+      .split('\n')
+      .filter((l) => l.includes('escala-brand/') && l.includes('footer'))
+      .join('\n')
+    expect(footerImports).not.toMatch(/-paper(@2x)?\.(png|webp)/)
   })
 })

@@ -4282,15 +4282,21 @@ h1, h2, h3, h4, p {
 }
 
 /* BRAND-01 Z4 — two-column grid: text left, decorative seal right.
-   The 1.35fr/.65fr ratio comes from the wireframe. `align-items: start` keeps
-   the seal from stretching, and the seal's own padding-top aligns it to the
-   start of the body paragraph rather than the H1 (§6). */
+   The 1.35fr/.65fr ratio comes from the wireframe.
+
+   `align-items: center` centres the seal against the whole text block, both
+   axes. This replaced a fixed `padding-top: 3.25rem` that tried to pin the seal
+   to the start of the body paragraph (§6's wording): the H1 is fluid
+   (clamp(3rem, 7vw, 6rem), line-height 1) and wraps to 2–3 lines, so a constant
+   offset drifted further out of alignment the wider the viewport got — the seal
+   floated near the top while the text ran well below it. Centring self-adjusts
+   at every width and removes the magic number. */
 .ceremonial-header__inner {
   /* inherits page-shell padding */
   display: grid;
   grid-template-columns: 1.35fr 0.65fr;
   gap: clamp(2rem, 5vw, 3.5rem);
-  align-items: start;
+  align-items: center;
 }
 
 .ceremonial-header__text {
@@ -4301,7 +4307,6 @@ h1, h2, h3, h4, p {
 .ceremonial-header__seal {
   display: flex;
   justify-content: center;
-  padding-top: 3.25rem;
 }
 
 .ceremonial-header__seal-img {
@@ -4714,6 +4719,9 @@ h1, h2, h3, h4, p {
      900px is not used anywhere in this stylesheet. */
   .ceremonial-header__inner {
     grid-template-columns: 1fr;
+    /* Stacked: nothing to centre against, so revert to normal block flow and
+       let the seal's own padding do the separating. */
+    align-items: start;
   }
   .ceremonial-header__seal {
     padding-top: 2.5rem;

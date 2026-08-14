@@ -6,15 +6,15 @@
 |---------|--------|
 | Z1 desktop header — L02 `paper` lockup, 162×43, fixed size, `@2x` srcset via static import | Complete |
 | Z2 mobile menu bar — standalone symbol, no disc/plate; 30×30 box → 26.25×19.38 visible ink | Complete |
-| Z3 footer — L05 `paper` compact lockup, 180×30 (1:1 with its @1x file), decorative `alt=""` | Complete |
-| Z4 `/sobre-escala` section A — L01 `ink` seal 280×286, `aria-hidden`, → 200×204 below 767px | Complete |
+| Z3 footer — L05 **`ink`** compact lockup, 180×30, decorative `alt=""`. `ink` not `paper`: the footer is a LIGHT surface, contrary to spec §2 (fixed after live review — luminance 25 vs 247, was 246 vs 247) | Complete |
+| Z4 `/sobre-escala` section A — L01 `ink` seal 280×286, `aria-hidden`, vertically centred against the text block (was a fixed padding-top that drifted), → 200×204 below 767px | Complete |
 | Z5 — `favicon.ico` (real multi-size ICO) + 6 favicon PNGs + apple-touch 180×180 + OG 1200×630 | Complete |
 | Provisional mark gone: `<i>` squares, `.site-brand i` CSS, `{content.brand}` render, `app/icon.svg`, generated `opengraph-image.tsx` | Complete |
 | `accessibility.logoAlt` in es/en/ca — the only new copy; i18n coverage guard green | Complete |
 | `lib/brand-constants.ts` + `--brand-*` tokens — every size named, zero new colour values | Complete |
 | **Fixed: `og:image` + `apple-touch-icon` never emitted** (pre-existing; file convention can't reach the optional catch-all) — now explicit from `lib/constants/seo.ts`, verified live on es/en/ca | Complete |
-| `brand-assets-guard` — 30 assertions: asset existence + exact pixel sizes, ICO validity, no hardcoded alt/colour, no PWA manifest, unused variants unreferenced | Complete |
-| 71 test files · 1363 tests · 100% pass · coverage 83.24/79.23/87.83/85.71 (gate 70) · tsc clean · lint 0 errors · build clean | Complete |
+| `brand-assets-guard` — asset existence + exact pixel sizes, ICO validity, no hardcoded alt/colour, no PWA manifest, unused variants unreferenced, **variant↔surface pairing derived from `globals.css`** (mutation-tested: fails when the invisible-logo bug is reintroduced) | Complete |
+| 71 test files · 1366 tests · 100% pass · coverage 83.24/79.23/87.83/85.71 (gate 70) · tsc clean · lint 0 errors · build clean | Complete |
 | Scope guard held: no token file, font config, `routes.ts`, sitemap, robots, FIG component, animation or contact form touched | Verified |
 
 ## What works ✅ — SEO-01 (search & AI discoverability)

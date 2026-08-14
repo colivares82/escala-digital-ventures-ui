@@ -14,6 +14,24 @@ Z2 mobile bar → `components/mobile-menu.tsx` · Z4 seal → `components/ceremo
 Z5 → `app/layout.tsx` + `lib/constants/seo.ts` + `lib/seo/page-meta.ts` · alt keys →
 `content/{es,en,ca}/shared.ts`.
 
+**Two defects I shipped and Carlos caught on the live site — both fixed:**
+1. **Footer logo invisible.** Spec §2 says "the header and footer are `abisal`, so both take
+   `paper`" — but `.site-footer` is `background: var(--paper)`. I applied the spec's stated
+   variant without checking the actual surface, so a light mark landed on a light background:
+   measured luminance **246 vs 247**. Now `logo-05-lockup-compact-ink.png` (**25** vs 247).
+   **The lesson worth keeping: my §11 report said Z3 was "verified live" and it wasn't.** The DOM
+   assertions (alt, dimensions, link) all passed while the logo was invisible — element-presence
+   tests cannot see contrast. Two new guards now derive the expected variant from `globals.css`
+   rather than the spec prose, and I verified they fail when the bug is put back.
+2. **Seal vertically misaligned.** My `padding-top: 3.25rem` was a fixed guess at §6's
+   "top-aligned to the body paragraph"; it couldn't track the H1's fluid
+   `clamp(3rem, 7vw, 6rem)` wrapping to 2–3 lines, so the drift grew with viewport width. Now
+   `align-items: center` on the grid — self-adjusting, and one less magic number. ≤767px keeps
+   `start` + the seal's own padding.
+
+**Rule for future brand work:** trust §2's colour *rule* (`ink` on light, `paper` on dark) over
+any worked example, and confirm the surface in `globals.css` before choosing a variant.
+
 **Real bug found and fixed — pre-existing, not caused by this spec:**
 **`og:image` and `apple-touch-icon` had NEVER been emitted on any page.** SEO-01's changelog
 records the og:image bug as fixed by not overriding `openGraph.images`; that was correct but
