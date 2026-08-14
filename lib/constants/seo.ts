@@ -91,6 +91,60 @@ export const OG_LOCALE: Record<Locale, string> = {
 
 export const TWITTER_CARD_TYPE = 'summary_large_image'
 
+/**
+ * The social card image (BRAND-01 Z5 · §7).
+ *
+ * ONE image serves all three locales: it carries no text, so it needs no
+ * translation and produces no dictionary keys (§7). 1200×630.
+ *
+ * ── Why this is declared explicitly rather than left to the file convention ──
+ * `app/opengraph-image.*` only applies to routes in its OWN segment, and every
+ * page here renders from the optional catch-all `app/[[...path]]/`. Next.js
+ * refuses to place a metadata file inside an optional catch-all ("Optional
+ * catch-all must be the last part of the URL"), so the asset cannot be
+ * colocated with the pages either.
+ *
+ * Net effect: `og:image` was NEVER emitted on any page — verified empirically
+ * against the pre-BRAND-01 commit, so this is a PRE-EXISTING bug, not a
+ * regression from the brand swap. SEO-01 fixed the sibling bug (an explicit
+ * `openGraph.images` override suppressing injection) but the injection it was
+ * protecting never reached these routes. Declaring the URL here is the
+ * supported fix and keeps the asset a static file.
+ */
+export const OG_IMAGE = {
+  url: `${SITE_URL}/opengraph-image.png`,
+  width: 1200,
+  height: 630,
+  alt: ORG_NAME,
+} as const
+
+// ---------------------------------------------------------------------------
+// Icons (BRAND-01 Z5 · §7)
+// ---------------------------------------------------------------------------
+
+/**
+ * Browser icon set. Served from `public/brand/` and declared explicitly for the
+ * same reason as OG_IMAGE: file-convention metadata in `app/` does not reach the
+ * optional catch-all that renders every page.
+ */
+export const FAVICON_SIZES = [16, 32, 48, 96, 192, 512] as const
+
+export const FAVICON_ICONS = FAVICON_SIZES.map((size) => ({
+  url: `/brand/favicon-${size}.png`,
+  sizes: `${size}x${size}`,
+  type: 'image/png',
+}))
+
+/**
+ * iOS home-screen icon: 180×180, full bleed. The asset must NOT be pre-rounded
+ * — iOS applies its own corner radius (§7).
+ */
+export const APPLE_TOUCH_ICON = {
+  url: '/brand/apple-touch-icon.png',
+  sizes: '180x180',
+  type: 'image/png',
+} as const
+
 /** The brand suffix stripped from og:title (SEO-01 §3.5). */
 export const BRAND_TITLE_SUFFIX = ' | Escala'
 

@@ -24,3 +24,6 @@ yarn-error.log*
 # next-env.d.ts — committed per Next.js recommendation (needed for CI tsc)
 # Coverage reports
 coverage/
+
+# macOS
+.DS_Store

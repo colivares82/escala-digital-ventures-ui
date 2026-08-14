@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Escala">
+  <defs>
+    <mask id="m">
+      <rect x="0" y="0" width="512" height="512" fill="#fff"/>
+    <rect fill="#000" x="117.76" y="146.12" width="296.96" height="41.57"/>
+    <rect fill="#000" x="117.76" y="235.21" width="216.78" height="41.57"/>
+    <rect fill="#000" x="117.76" y="324.3" width="145.51" height="41.57"/>
+    </mask>
+  </defs>
+  <g mask="url(#m)"><circle cx="256.0" cy="256.0" r="256.0" fill="#16181D"/></g>
+</svg>
