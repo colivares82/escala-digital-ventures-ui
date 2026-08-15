@@ -3,34 +3,40 @@
 _Last updated: 15 August 2026 (GO-LIVE — canonical host = www; blocked on GoDaddy DNS.
 Previous: BRAND-01 COMPLETE — brand asset integration)_
 
-### CURRENT FOCUS — Phase 7 go-live (domain mapping)
+### CURRENT FOCUS — Phase 7 go-live: 🟢 THE SITE IS LIVE
 
-**The site is code-complete and deployable. One human action stands between it and being
-live: the GoDaddy DNS switch.**
+**`https://www.escaladigitalventures.com` is serving the real site** (HTTP/2 200, full
+security-header set, Cloud Run mapping `✔`). Go-live is effectively done.
 
-Two blockers were diagnosed (neither was a code defect):
+**Only loose end:** the apex (`escaladigitalventures.com`) TLS certificate is still
+provisioning. The apex already *routes* to Cloud Run — `:80` answers with a Google
+`x-cloud-trace-context` header — so it is a certificate wait, not a misconfiguration. Once it
+issues, the apex will 308-redirect to `www` (already built into `next.config.mjs`).
+
+**Three blockers were diagnosed and cleared — none was a code defect:**
 
 1. **`main` was an empty v0 stub.** `origin/main` was 2 commits old (`918288c`) with **no
-   `.github/` folder**, so merging into it never ran the pipeline — the workflow file didn't
-   exist on that ref. All 44 commits of work were on `dev`. Prod was consequently running
-   image `a674b5ce…` = the v0 scaffold. Fix: promote `dev` → `main`.
-2. **DNS still points at GoDaddy parking** (`15.197.148.33`, `3.33.130.190`). Cloud Run
-   mappings for apex **and** `www` both exist on `escala-web-prod` in `escala-dv-web` and
-   report `CertificatePending` — *"You must configure your DNS records for certificate
-   issuance to begin."* The apex mapping has been retrying since 7 Aug. Records to set are in
-   `docs/infra-runbook.md` Step 11.
+   `.github/` folder**, so merging into it never ran the pipeline. All 44 commits of work were
+   on `dev`; prod was running the v0 scaffold. Fixed by promoting `dev` → `main` (PRs #38/#39);
+   prod now runs `ccd52f2`.
+2. **GoDaddy's `A @ Parked` record.** Deleting parking rows wasn't enough — a special `Parked`
+   record kept expanding to GoDaddy's AWS Global Accelerator IPs, so the apex returned **six**
+   A records and ~1 request in 3 hit the placeholder. Also note GoDaddy's published zone lags
+   its own UI; always verify with `dig @ns65.domaincontrol.com`.
+3. **The apex mapping was stuck in a stale retry.** Created 7 Aug while DNS was parked, it hit
+   `Resource readiness deadline exceeded` and fell back to a **24 h** retry, so it never
+   re-attempted issuance after DNS was fixed. Deleted + recreated 15 Aug 08:47 to reset the
+   state machine (retry now `01:00`). `www` was a separate mapping and stayed up throughout.
 
-**Canonical host decision: `www`** (was apex). `www` is a CNAME to `ghs.googlehosted.com.`
-and survives Google IP rotation; the apex is pinned to 8 hardcoded IPs. Apex→www 308 redirect
-added in `next.config.mjs` because Cloud Run mappings cannot redirect. See DECISIONS.md
+**Canonical host: `www`** (was apex). `www` is a CNAME to `ghs.googlehosted.com.` and survives
+Google IP rotation; the apex is pinned to 8 hardcoded IPs. Apex→www 308 lives in
+`next.config.mjs` because Cloud Run mappings serve but never redirect. See DECISIONS.md
 "Go-live decisions".
 
-**Verified locally on the standalone build:** apex `/que-hacemos` → 308 → www; www → 200 (no
-loop); sitemap/robots/canonical/hreflang all emit `www`. Gate green: 1313 tests, 83.04%
-coverage, 0 lint errors, `tsc --noEmit` clean.
+**Gate at merge:** 1366 tests, 83.24% coverage, 0 lint errors, `tsc` clean, build clean.
 
-**Next step (Carlos, browser):** GoDaddy → delete the 2 parking A records + the `www` CNAME →
-add 4×A, 4×AAAA, `CNAME www → ghs.googlehosted.com.` TLS then provisions automatically.
+**Remaining (Carlos):** verify the apex once its cert issues; then R-7.10 (Search Console +
+Bing verification), which was blocked on the DNS switch and is now unblocked.
 
 ---
 

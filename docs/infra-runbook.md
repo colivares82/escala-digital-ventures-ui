@@ -424,6 +424,41 @@ gcloud beta run domain-mappings list --region europe-west1 --project escala-dv-w
 # Both rows should lose the "X"/"…" marker and become ready
 ```
 
+### Go-live log (15 Aug 2026)
+
+**`www` is LIVE** — `https://www.escaladigitalventures.com` returns HTTP/2 200 with the full
+security-header set; mapping shows `✔`.
+
+Two GoDaddy-side gotchas hit on the way, both worth knowing if this is ever repeated:
+
+1. **The `A @ Parked` record.** Deleting the parking *rows* is not enough on its own — GoDaddy
+   keeps a special `Parked` A record that expands to its AWS Global Accelerator parking IPs
+   (`3.33.130.190`, `15.197.148.33`). While it existed the apex returned **six** A records, so
+   roughly 1 request in 3 hit the GoDaddy placeholder instead of Cloud Run. Delete the `Parked`
+   row explicitly and confirm `Reenvío` (Forwarding) shows *"No configurado"* for both Domain
+   and Subdomains.
+2. **GoDaddy's published zone lags the UI.** After the edit, `dig @ns65.domaincontrol.com`
+   still returned the parking IPs for a while even though the console showed them gone. Always
+   verify against the **authoritative** nameserver, not a public resolver:
+   ```bash
+   dig @ns65.domaincontrol.com escaladigitalventures.com A +short   # expect ONLY 216.239.x.21
+   ```
+
+**Apex certificate reset.** The apex mapping was created on 7 Aug while DNS was still parked.
+It exceeded its readiness deadline (`Resource readiness deadline exceeded`) and fell back to a
+**24-hour** retry interval, so it did not re-attempt issuance when DNS was finally fixed. Fix —
+delete and recreate to reset the state machine (safe: `www` is a separate mapping and stays up):
+```bash
+gcloud beta run domain-mappings delete --domain escaladigitalventures.com \
+  --region europe-west1 --project escala-dv-web --quiet
+gcloud beta run domain-mappings create --service escala-web-prod \
+  --domain escaladigitalventures.com --region europe-west1 --project escala-dv-web
+```
+The required DNS records are unchanged by this, so **no GoDaddy edit is needed**. After the
+reset the retry interval drops to `01:00` and the apex answers on `:80` with a Google
+`x-cloud-trace-context` header — proof it is routing to Cloud Run and only the managed
+certificate is outstanding.
+
 ### Google Workspace (inbound email) — can be added NOW, independent of web DNS
 **[CARLOS INPUT REQUIRED]** Sign up for Google Workspace at workspace.google.com.
 During setup, Google will give you a TXT verification record and MX records.
