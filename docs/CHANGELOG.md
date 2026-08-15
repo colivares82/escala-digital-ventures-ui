@@ -1,5 +1,74 @@
 # Changelog
 
+## [BRAND-01] — August 2026 — Brand asset integration
+
+Surgical swap of the provisional brand mark for the delivered identity, in the four places the
+brand is visible, plus metadata. No redesign: tokens, typography, grid and figures unchanged.
+
+### Added
+- **Brand asset bundle** — `app/assets/escala-brand/` (89 files). Consumed: L02 lockup (header),
+  standalone symbol (mobile), L05 compact lockup (footer), L01 seal (`/sobre-escala`), favicon
+  set, apple-touch icon, OG image. L04 / L06 / `mar` variants and the icon SVGs are present but
+  deliberately unreferenced (spec §2) — no placement assigned yet.
+- `lib/brand-constants.ts` — every brand render size, with the resolution ceilings recorded.
+- `accessibility.logoAlt` in all three locales (`es`/`en`/`ca`) — the only new copy.
+- `tests/content/brand-assets-guard.test.ts` — asserts each consumed asset exists at its exact
+  pixel size, the provisional mark is gone (component + style), no alt text or colour is
+  hardcoded, and no PWA manifest was introduced.
+- `--brand-*` CSS custom properties (dimensions only — no new colour value).
+
+### Changed
+- **Z1 desktop header** — `site-chrome.tsx`: L02 `paper` lockup at 162×43, replacing the three
+  bordered `<i>` squares + "ESCALA" text.
+- **Z2 mobile menu bar** — `mobile-menu.tsx`: standalone symbol, no disc/plate.
+- **Z3 footer** — `site-chrome.tsx`: L05 **`ink`** compact lockup at 180×30, decorative
+  (`alt=""`), the anchor keeping its existing `aria-label`. `ink`, not the `paper` that spec §2
+  specifies — see "Corrected after live review" below.
+- **Z4 `/sobre-escala` section A** — `ceremonial-header.tsx`: L01 `ink` seal, 280×286, decorative
+  and `aria-hidden`, vertically centred against the text block. Required adding a two-column
+  grid; see DECISIONS.md.
+- **Z5 metadata** — `favicon.ico`, six favicon PNGs, apple-touch icon and the static OG image
+  replace the draft `app/icon.svg` and the generated `app/opengraph-image.tsx` (both deleted).
+
+### Fixed
+- **`og:image` and `apple-touch-icon` were never emitted on any page.** SEO-01 recorded the
+  `og:image` bug as fixed by not overriding `openGraph.images` — but the file-convention
+  injection it was protecting never reached these routes at all. `app/opengraph-image.*` only
+  applies to its own segment, and every page renders from the optional catch-all
+  `app/[[...path]]/`, which Next.js refuses to host a metadata file inside ("Optional catch-all
+  must be the last part of the URL"). **Verified empirically against the pre-BRAND-01 commit:
+  zero `og:image` tags on any page.** Both are now declared explicitly from
+  `lib/constants/seo.ts` (`OG_IMAGE`, `FAVICON_ICONS`, `APPLE_TOUCH_ICON`) and asserted
+  end-to-end. The old guard passed while the output was broken because it only checked that the
+  override was absent, never that the tag was present — that assertion is now inverted.
+
+### Corrected after live review
+Two defects caught by Carlos on the rendered site, both fixed in the same change:
+
+- **Footer logo was invisible — wrong colour variant.** Spec §2 states "the header and footer are
+  `abisal`, so both take `paper`". The header is `abisal`, but `.site-footer` is
+  `background: var(--paper)` — a **light** surface. The light `paper` lockup on it measured mean
+  ink luminance **246 against a 247 background** (invisible); the `ink` variant measures **25**.
+  Switched to `logo-05-lockup-compact-ink.png` per §2's own *rule* rather than its worked
+  example. Two new guards derive the expected variant from `globals.css` instead of the prose,
+  and were verified to fail when the bug is reintroduced.
+  **The original "verified live" claim for Z3 was wrong:** the DOM assertions (`alt`, dimensions,
+  link target) all passed while the mark was invisible. Element-presence tests cannot detect a
+  contrast failure.
+- **Seal was vertically misaligned.** A fixed `padding-top: 3.25rem` could not track the H1's
+  fluid `clamp(3rem, 7vw, 6rem)` wrapping to 2–3 lines, so the seal drifted further above the
+  text block's optical centre as the viewport widened. Replaced with `align-items: center`,
+  which self-adjusts and deletes the magic number. The ≤767px stacked layout keeps `start`.
+
+### Notes
+- **Spec §1's native-resolution table is inaccurate.** The delivered lockups are pre-scaled to
+  display size: L02 is 200×53 (@2x 400×106), not 445×119; L05 is 180×30 (@2x 360×60), not
+  386×64. Every render size still sits within the real @2x width, so the marks stay sharp.
+- **The mobile symbol renders in a 30×30 box, not 26×19.** `symbol-paper-96.png` is a square
+  canvas with transparent padding around 84×62 of ink; forcing it into 26×19 would squash the
+  mark ~26%. A 30px box puts the visible ink at 26.25×19.38 — §2's target, aspect preserved.
+- Breakpoint for the Z4 collapse is the project's existing **767px**, not the wireframe's 900px.
+
 ## [SEO-01] — August 2026 — Search & AI discoverability
 
 Surgical SEO pass across all 27 routes (9 pages × 3 locales) plus the 6 case-detail metas.

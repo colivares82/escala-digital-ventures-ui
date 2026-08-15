@@ -18,6 +18,7 @@
  * - Reduced motion: no transition, but must still open/close correctly (AC-11).
  */
 
+import Image from 'next/image'
 import { useEffect, useRef } from 'react'
 import { GridBackground } from '@/components/grid-background'
 import { LocaleSwitcher } from '@/components/locale-switcher'
@@ -27,6 +28,8 @@ import {
   HEADER_DESKTOP_MEDIA_QUERY,
   MOBILE_MENU_TRANSITION_MS,
 } from '@/lib/motion-constants'
+import brandSymbol from '@/app/assets/escala-brand/symbol-paper-96.png'
+import { BRAND_MOBILE_SYMBOL_BOX_PX } from '@/lib/brand-constants'
 
 type HeaderContent = typeof sharedContent.header
 type Accessibility = typeof sharedContent.accessibility
@@ -170,12 +173,18 @@ export function MobileMenu({
           aria-label={accessibility.homeLabel}
           onClick={onClose}
         >
-          <span aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </span>
-          {content.brand}
+          {/* BRAND-01 Z2 — standalone symbol, `paper` variant. No disc and no
+              plate: the disc form is reserved for favicon and app icon (§4).
+              The menu trigger and the expanded panel are untouched.
+              Square 30×30 box → visible ink 26×19 per §2; see
+              BRAND_MOBILE_SYMBOL_BOX_PX for why the box is not 26×19 itself. */}
+          <Image
+            src={brandSymbol}
+            alt={accessibility.logoAlt}
+            width={BRAND_MOBILE_SYMBOL_BOX_PX}
+            height={BRAND_MOBILE_SYMBOL_BOX_PX}
+            className="site-brand__symbol"
+          />
         </a>
         <button
           ref={closeButtonRef}

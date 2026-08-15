@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Archivo, IBM_Plex_Mono, Instrument_Sans } from 'next/font/google'
+import { APPLE_TOUCH_ICON, FAVICON_ICONS } from '@/lib/constants/seo'
 import './globals.css'
 
 const archivo = Archivo({
@@ -51,6 +52,21 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
   ),
+  /**
+   * Browser + iOS icons (BRAND-01 Z5) — site-wide fallback.
+   *
+   * Per-page metadata (buildPageMetadata) re-declares these for the catch-all
+   * routes; this covers the routes that do NOT go through it, e.g. not-found
+   * and /styleguide. Both read the same constants, so the two can't drift.
+   *
+   * `app/favicon.ico` is still picked up by the file convention and complements
+   * the PNG set. The OG image is set per-route from OG_IMAGE — see
+   * lib/constants/seo.ts for why the file convention could not be used.
+   */
+  icons: {
+    icon: FAVICON_ICONS,
+    apple: [APPLE_TOUCH_ICON],
+  },
 }
 
 export const viewport: Viewport = {

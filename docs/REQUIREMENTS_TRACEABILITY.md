@@ -115,9 +115,9 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | ID | Requirement | Status | Notes |
 |----|-------------|--------|-------|
 | R-8.1 | SSG for every page | ✅ | `dynamicParams = false`; all rendered routes are `○ (Static)` in build output |
-| R-8.2 | OG image with identity | ✅ | SPEC-P4 FR-6.2 — `app/opengraph-image.tsx`: abisal background, grid motif, claim in Archivo, ambre accent (1200×630). `metadataBase` set in `layout.tsx`. |
+| R-8.2 | OG image with identity | ✅ | **BRAND-01 Z5** — real brand OG artwork at `app/opengraph-image.png` (1200×630), replacing the generated `app/opengraph-image.tsx`. One text-free image serves all three locales (§7). Emitted via `OG_IMAGE` in `lib/constants/seo.ts`, **not** the file convention: `app/opengraph-image.*` cannot reach the optional catch-all `app/[[...path]]/`, which is why `og:image` had never actually rendered. Verified live on es/en/ca. |
 | R-8.3 | Structured data: `Organization` + `BreadcrumbList` | ⬜ | BACKLOG: SEO-01 (Phase 7) |
 | R-8.4 | Cookieless analytics | 🚫 | Dropped by Carlos decision (SPEC-P4 §0). No analytics, no banner. |
 | R-8.5 | Lighthouse ≥ 95 all categories | ⬜ | BACKLOG: PERF-01 (Phase 7) |
 | R-8.6 | Fonts self-hosted, zero third-party scripts | ✅ | `next/font` for all 3 typefaces |
-| R-8.7 | Favicon set | ✅ | SPEC-P4 FR-6.1 — `app/icon.svg` (squares logomark, draft — Carlos to approve before launch) |
+| R-8.7 | Favicon set | ✅ | **BRAND-01 Z5** — real `app/favicon.ico` (multi-size ICO) + `public/brand/favicon-{16,32,48,96,192,512}.png` + `apple-touch-icon.png` (180×180, full bleed, not pre-rounded). Draft `app/icon.svg` deleted. No PWA manifest created — none existed (§7/§10), so `maskable-*` stay unreferenced. |

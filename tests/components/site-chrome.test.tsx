@@ -10,6 +10,12 @@ import {
   HEADER_COMPACT_THRESHOLD_PX,
   HEADER_SCROLL_SHADOW_PX,
 } from '@/lib/motion-constants'
+import {
+  BRAND_FOOTER_LOCKUP_HEIGHT_PX,
+  BRAND_FOOTER_LOCKUP_WIDTH_PX,
+  BRAND_HEADER_LOCKUP_HEIGHT_PX,
+  BRAND_HEADER_LOCKUP_WIDTH_PX,
+} from '@/lib/brand-constants'
 
 const { header, footer, accessibility, finalCta } = sharedContent
 const email = finalCta.email
@@ -21,9 +27,41 @@ function simulateScroll(y: number) {
 }
 
 describe('SiteHeader', () => {
-  it('renders the brand name', () => {
+  // ── BRAND-01 Z1 · desktop header lockup ──────────────────────────────────
+
+  it('renders the L02 brand lockup image with the dictionary alt text', () => {
+    // BRAND-01 Z1: the provisional text wordmark ("ESCALA") + 3-square
+    // placeholder are replaced by the real lockup image. Alt text resolves
+    // through the dictionary — never hardcoded in the component (AC-4).
     render(<SiteHeader content={header} accessibility={accessibility} email={email} />)
-    expect(screen.getByText('ESCALA')).toBeInTheDocument()
+    const logo = screen.getByAltText(accessibility.logoAlt)
+    expect(logo).toBeInTheDocument()
+    expect(logo.tagName).toBe('IMG')
+  })
+
+  it('renders the brand lockup at the §3 size with intrinsic dimensions (no CLS)', () => {
+    render(<SiteHeader content={header} accessibility={accessibility} email={email} />)
+    const logo = screen.getByAltText(accessibility.logoAlt)
+    expect(logo).toHaveAttribute('width', String(BRAND_HEADER_LOCKUP_WIDTH_PX))
+    expect(logo).toHaveAttribute('height', String(BRAND_HEADER_LOCKUP_HEIGHT_PX))
+  })
+
+  it('no longer renders the provisional ESCALA text wordmark (AC-12)', () => {
+    const { container } = render(
+      <SiteHeader content={header} accessibility={accessibility} email={email} />,
+    )
+    const brandSlot = container.querySelector('.site-brand')
+    expect(brandSlot).not.toBeNull()
+    expect(brandSlot!.textContent).toBe('')
+  })
+
+  it('no longer renders the provisional 3-square placeholder inside the brand slot (AC-12)', () => {
+    const { container } = render(
+      <SiteHeader content={header} accessibility={accessibility} email={email} />,
+    )
+    // The trigger button legitimately keeps its own <i> bars, so this is
+    // scoped to the brand slot rather than the whole header.
+    expect(container.querySelectorAll('.site-brand i')).toHaveLength(0)
   })
 
   it('renders brand as a landmark link', () => {
@@ -135,9 +173,10 @@ describe('SiteHeader', () => {
     expect(headerEl!.contains(overlay)).toBe(false)
   })
 
-  it('renders the brand wordmark inside the open mobile overlay, not just the symbol', async () => {
-    // Regression: the overlay's brand slot rendered only the 3-square symbol
-    // and dropped the "ESCALA" wordmark text entirely.
+  it('renders the standalone symbol inside the open mobile overlay (Z2)', async () => {
+    // Supersedes the earlier assertion that this slot contained the "ESCALA"
+    // wordmark text. BRAND-01 Z2 replaces it with the standalone symbol image:
+    // no disc, no plate, no text. The slot must still carry exactly one image.
     const { container } = render(
       <SiteHeader content={header} accessibility={accessibility} email={email} />,
     )
@@ -148,7 +187,9 @@ describe('SiteHeader', () => {
 
     const overlayBrand = container.querySelector('.mobile-menu__brand-slot')
     expect(overlayBrand).not.toBeNull()
-    expect(overlayBrand!.textContent).toContain(header.brand)
+    expect(overlayBrand!.textContent).toBe('')
+    expect(overlayBrand!.querySelectorAll('img')).toHaveLength(1)
+    expect(overlayBrand!.querySelectorAll('i')).toHaveLength(0)
   })
 
   // ── Scroll behavior ──────────────────────────────────────────────────────
@@ -337,6 +378,39 @@ describe('SiteFooter', () => {
     const { container } = render(<SiteFooter {...footerProps} />)
     const rule = container.querySelector('.calibrated-rule')
     expect(rule).toHaveAttribute('aria-hidden', 'true')
+  })
+
+  // ── BRAND-01 Z3 · footer compact lockup ──────────────────────────────────
+
+  it('renders the L05 compact lockup as a DECORATIVE image (empty alt)', () => {
+    // §8 decision: the anchor already carries `homeLabel` as its accessible
+    // name, so the image inside it takes an empty alt to avoid a duplicated
+    // name. Recorded in the component and in DECISIONS.md.
+    const { container } = render(<SiteFooter {...footerProps} />)
+    const logo = container.querySelector('.site-footer__brand img')
+    expect(logo).not.toBeNull()
+    expect(logo).toHaveAttribute('alt', '')
+  })
+
+  it('renders the footer lockup at the §5 size with intrinsic dimensions', () => {
+    const { container } = render(<SiteFooter {...footerProps} />)
+    const logo = container.querySelector('.site-footer__brand img')
+    expect(logo).toHaveAttribute('width', String(BRAND_FOOTER_LOCKUP_WIDTH_PX))
+    expect(logo).toHaveAttribute('height', String(BRAND_FOOTER_LOCKUP_HEIGHT_PX))
+  })
+
+  it('keeps the footer brand slot a link to home with an accessible name', () => {
+    // §5: "If the footer brand node is currently a link, keep it a link with
+    // the same target." The empty-alt image must not cost the link its name.
+    render(<SiteFooter {...footerProps} />)
+    const link = screen.getByRole('link', { name: accessibility.homeLabel })
+    expect(link).toHaveClass('site-footer__brand')
+  })
+
+  it('no longer renders the ESCALA text wordmark in the footer (AC-12)', () => {
+    const { container } = render(<SiteFooter {...footerProps} />)
+    const brandSlot = container.querySelector('.site-footer__brand')
+    expect(brandSlot!.textContent).toBe('')
   })
 
   it('renders a dimensioned brand slot', () => {

@@ -10,6 +10,7 @@
 import { buildPageMetadata, ogTitle } from '@/lib/seo/page-meta'
 import { getDictionary } from '@/lib/i18n/dictionary'
 import { SITE_URL } from '@/lib/config'
+import { OG_IMAGE } from '@/lib/constants/seo'
 import { LOCALES, type Locale, type PageId } from '@/lib/i18n/types'
 import { getCase } from '@/content/data/cases'
 
@@ -179,9 +180,47 @@ describe('Open Graph and Twitter (§3.5)', () => {
     )
   })
 
-  // og:image must be left to Next's file convention: overriding
-  // openGraph.images here would suppress app/opengraph-image.tsx.
-  it('does not override openGraph.images', () => {
-    expect(metaFor('home', 'es').openGraph).not.toHaveProperty('images')
+  /*
+   * BRAND-01 Z5 — this assertion is INVERTED from its SEO-01 form.
+   *
+   * It used to require that `openGraph.images` be absent, so Next's
+   * app/opengraph-image.* file convention could inject og:image. That
+   * injection never actually reached these routes: every page renders from the
+   * optional catch-all `app/[[...path]]/`, which a metadata file cannot live
+   * inside, and a metadata file in `app/` does not apply to it. Verified
+   * empirically against the pre-BRAND-01 build — zero og:image tags on any
+   * page. The old assertion passed while the real output was broken, because
+   * it only checked the override was absent, never that the tag was emitted.
+   *
+   * og:image is now declared explicitly and asserted end-to-end below.
+   */
+  it('declares one og:image for every page and locale', () => {
+    for (const locale of LOCALES) {
+      const images = metaFor('home', locale).openGraph?.images
+      expect(images, `og:image missing for ${locale}`).toEqual([OG_IMAGE])
+    }
+  })
+
+  it('uses the same text-free OG image across all locales (§7)', () => {
+    // One image serves all three: it carries no text, so no per-locale variant
+    // and no new dictionary key.
+    const urls = LOCALES.map((l) => {
+      const images = metaFor('home', l).openGraph?.images as readonly { url: string }[]
+      return images[0]!.url
+    })
+    expect(new Set(urls).size).toBe(1)
+  })
+
+  it('sets the OG image to 1200x630 (§7)', () => {
+    expect(OG_IMAGE.width).toBe(1200)
+    expect(OG_IMAGE.height).toBe(630)
+  })
+
+  it('mirrors the OG image on the Twitter card', () => {
+    expect(metaFor('home', 'es').twitter?.images).toEqual([OG_IMAGE.url])
+  })
+
+  it('points the OG image at an absolute URL (required by crawlers)', () => {
+    expect(OG_IMAGE.url).toMatch(/^https?:\/\//)
   })
 })

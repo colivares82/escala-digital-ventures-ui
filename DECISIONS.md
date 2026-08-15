@@ -186,3 +186,88 @@
   commits of real work lived on `dev`. This, not CI misconfiguration, is why merging to `main`
   appeared to "complete" without updating the site. Resolved by promoting `dev` → `main`.
 
+## BRAND-01 decisions (brand asset integration)
+
+- **Spec §2 is factually wrong about the footer's surface; the footer takes `ink`, not `paper`.**
+  §2 asserts "The header and footer are `abisal`, so both take `paper`." The header is `abisal`
+  (`globals.css` line ~175), but **`.site-footer` is `background: var(--paper)`** — a light
+  surface. Following the worked example instead of the rule above it shipped the light `paper`
+  lockup onto a light background: measured mean ink luminance **246 against a 247 background**,
+  i.e. invisible. The `ink` variant measures **25** on the same background. Resolution: trust
+  §2's *rule* (`ink` on `paper`, `paper` on dark) over its *example*, and derive the expectation
+  from `globals.css` rather than from prose. Two regression guards now do exactly that — both
+  verified to fail when the bug is reintroduced.
+  **Process lesson:** the original §11 report claimed Z3 was "verified live". It was not — the
+  DOM assertions (correct `alt`, dimensions, link target) all passed while the mark was
+  invisible. Element-presence checks cannot detect a contrast failure; only rendered-pixel
+  inspection or a human can. The guard now asserts the variant-to-surface pairing instead.
+
+- **Z4 seal is vertically centred against the text block, not top-aligned to the body copy.**
+  §6 says "top-aligned to the start of the body paragraph — not to the H1". Implemented first as
+  a fixed `padding-top: 3.25rem`, which could not track the H1's fluid
+  `clamp(3rem, 7vw, 6rem)` at `line-height: 1` wrapping to 2–3 lines: the wider the viewport,
+  the further the seal drifted above the text block's optical centre. Replaced with
+  `align-items: center` on the grid, which self-adjusts at every width and removes the magic
+  number. Approved by Carlos after seeing it live. Below 767px the grid is a single column, so
+  `align-items` reverts to `start` and the seal's own `padding-top: 2.5rem` does the separating.
+
+- **Asset location `app/assets/escala-brand/` (not `public/brand/`) for in-page marks.** Spec §2
+  suggests `public/brand/` but defers to "whatever convention the project already uses". The
+  Phase 2.3 decision above already settled this for logos: static import via `next/image` gives
+  build-time missing-file detection, content-hashed URLs, and — decisive for BRAND-01 AC-8 —
+  **intrinsic width/height inferred from the import**, so no image can ship without reserved
+  space. `public/brand/` is used only for the favicon PNGs and the apple-touch icon, which must
+  be reachable at stable URLs from a `<link>` tag.
+
+- **Z4 required adding a grid that spec §6 assumed already existed.** §6 says to place the seal
+  in section A's "right-hand column", described as "already allocated and currently empty", and
+  in the same breath forbids changing "the section's ... grid definition, or column ratio".
+  Both cannot hold: `CeremonialHeader` was deliberately **single-column** (no `display:grid`
+  anywhere in `.ceremonial-header__inner`). The wireframe invents the column
+  (`grid-template-columns:1.35fr .65fr`). Decision: add the two-column grid to
+  `CeremonialHeader`, keeping the kicker/H1/sub markup, copy and type scale byte-identical.
+  Raised before implementing rather than resolved silently; Carlos chose this over deferring Z4.
+
+- **Z4 collapse uses 767px, the project's existing breakpoint — not the wireframe's 900px.**
+  `globals.css` has breakpoints at 1023 / 767 / 639 / 479px; **900px appears nowhere**, and all
+  Phase-2.5 `/sobre-escala` rules already use 767px. §6 itself says to use "the project's actual
+  value", and §11.4 asks for confirmation that it is existing rather than new. It is.
+
+- **Footer logo takes `alt=""`, not the §8 dictionary key.** The footer brand node is an anchor
+  that already carries `aria-label={accessibility.homeLabel}`, and the company name sits
+  separately in `.site-footer__meta` — not adjacent to the mark. A non-empty `alt` inside that
+  anchor would be overridden by the `aria-label` anyway, so it buys nothing and risks a
+  duplicated accessible name. §8 anticipates this ("judge from the actual markup and say which
+  you chose"). Consequence: the §8 table's footer key would be **unused**, so it was not added —
+  same reasoning as SPEC-POLISH-07 omitting `menuTitle`.
+
+- **Header renders at 162px per spec §3, not the 200px the bundle README recommends.** The
+  bundle's own `manifest.json` lists `display_widths: [200, 400]` for L02 and names the header as
+  its destination. §3 mandates 162px and pre-accepts the consequence ("at 162 px the 'DIGITAL
+  VENTURES' tagline measures 6.5 CSS px ... at the edge of legibility. This is accepted"). Both
+  were put to Carlos with the discrepancy stated; he chose 162px. Revisit if it reads poorly on a
+  1x display in the field.
+
+- **The mobile symbol is rendered in a 30×30 box, not the 26×19 §2 asks for.**
+  `symbol-paper-96.png` is a **square 96×96 canvas** whose ink occupies 84×62 (aspect 1.3548,
+  matching the manifest's 1.3514) with transparent padding. §2's "26 px wide (19 px tall)"
+  describes the *visible ink*, not the file. Setting the element to 26×19 would squash the mark
+  ~26% vertically. A 30px square box yields ink of 26.25×19.38 — §2's intent to a quarter-pixel,
+  with the true aspect preserved. Arithmetic recorded in `lib/brand-constants.ts`.
+
+- **`og:image` / `apple-touch-icon` are declared in metadata rather than by file convention.**
+  Not a preference — a Next.js constraint. `app/opengraph-image.*` and `app/apple-icon.*` apply
+  only to routes in their own segment; every page here renders from the optional catch-all
+  `app/[[...path]]/`, and Next refuses to host a metadata file inside one ("Optional catch-all
+  must be the last part of the URL"). So neither tag had ever been emitted — confirmed by
+  building the pre-BRAND-01 commit and finding zero `og:image` tags. SEO-01's changelog records
+  this bug as fixed; the fix (not overriding `openGraph.images`) was correct in itself but
+  protected an injection that never arrived. Now sourced from `lib/constants/seo.ts` so there is
+  still exactly one definition, and asserted end-to-end instead of by absence.
+
+- **`sharedContent.header.brand` (`'ESCALA'`) is kept, though nothing renders it visually.**
+  It is still consumed by `lib/seo/page-graph.ts` for breadcrumb names and passed as
+  `SiteFooter`'s `brand` prop. Deleting it would touch SEO structured data and the page call
+  site — outside §0's scope guard, for no functional gain. The prop is documented as accepted
+  but unrendered, and is not destructured.
+
