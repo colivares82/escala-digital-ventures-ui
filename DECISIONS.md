@@ -150,3 +150,39 @@
   (`case-flow-traversal`, gated by `[data-visible="true"]` and disabled entirely under
   `prefers-reduced-motion: reduce`), consistent with the project's existing `DiagramReveal` +
   `data-visible` reveal pattern rather than introducing a new animation primitive.
+
+## Go-live decisions (domain / canonical host)
+
+- **`www` is the canonical host, not the apex.** Reverses the original runbook plan
+  ("map www → redirects to apex"). Rationale: DNS forbids `CNAME` at a zone apex, so the apex
+  must use the four hardcoded Google A records (`216.239.32/34/36/38.21`) plus four AAAA — if
+  Google ever rotates those front-end IPs the site goes dark until someone edits GoDaddy by
+  hand. `www` is a `CNAME` to `ghs.googlehosted.com.`, which Google maintains, so it survives
+  IP rotation. Secondary benefits: cookies scope to `www` instead of leaking to every future
+  subdomain, and a CDN can later be introduced by repointing one CNAME. SEO impact is neutral —
+  Google has no host preference; it only penalises *inconsistency*. The switch was made now
+  because the domain still has zero backlinks (parked), making it free; after launch it becomes
+  a migration. Changed in `lib/config.ts`, `Dockerfile` ARG, `deploy.yml` build-arg.
+
+- **The apex→www redirect lives in `next.config.mjs`, not in infrastructure.** Cloud Run domain
+  mappings only *serve* — unlike nginx there is no server-level redirect primitive, and both
+  hosts map to the same `escala-web-prod` service. Without an app-level redirect the identical
+  content would answer on two hosts (duplicate content, split link equity, R-7.9 red).
+  Implemented with `redirects()` + `has: [{ type: 'host', value: 'escaladigitalventures.com' }]`.
+  Next.js emits **308** (not 301) for `permanent: true` — the method-preserving equivalent;
+  search engines treat it as canonical. Verified locally against the standalone build:
+  `Host: escaladigitalventures.com` → `308` to `https://www.escaladigitalventures.com/que-hacemos`;
+  `Host: www...` → `200` (no loop).
+
+- **`NEXT_PUBLIC_SITE_URL` must change in three places, not one.** It is a *build-time* var
+  baked into the image, so it cannot be flipped at the Cloud Run/runtime level: `Dockerfile:33`
+  (default), `deploy.yml:104` (CI build-arg), and `lib/config.ts` (runtime fallback). Leaving
+  any of them on the apex while the redirect points to `www` would make the sitemap, hreflang,
+  canonical tags and JSON-LD contradict the redirect.
+
+- **`main` was never a deployable branch.** Discovered during go-live: `origin/main` was still
+  the 2-commit v0 scaffold (`918288c`) with **no `.github/` directory at all**, so pushing to
+  it could never trigger the pipeline — the workflow file did not exist on that ref. All 44
+  commits of real work lived on `dev`. This, not CI misconfiguration, is why merging to `main`
+  appeared to "complete" without updating the site. Resolved by promoting `dev` → `main`.
+

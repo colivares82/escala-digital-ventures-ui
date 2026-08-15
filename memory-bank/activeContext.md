@@ -1,6 +1,39 @@
 # Active Context
 
-_Last updated: August 2026 (SEO-01 COMPLETE — search & AI discoverability)_
+_Last updated: 15 August 2026 (GO-LIVE — canonical host = www; blocked on GoDaddy DNS)_
+
+### CURRENT FOCUS — Phase 7 go-live (domain mapping)
+
+**The site is code-complete and deployable. One human action stands between it and being
+live: the GoDaddy DNS switch.**
+
+Two blockers were diagnosed (neither was a code defect):
+
+1. **`main` was an empty v0 stub.** `origin/main` was 2 commits old (`918288c`) with **no
+   `.github/` folder**, so merging into it never ran the pipeline — the workflow file didn't
+   exist on that ref. All 44 commits of work were on `dev`. Prod was consequently running
+   image `a674b5ce…` = the v0 scaffold. Fix: promote `dev` → `main`.
+2. **DNS still points at GoDaddy parking** (`15.197.148.33`, `3.33.130.190`). Cloud Run
+   mappings for apex **and** `www` both exist on `escala-web-prod` in `escala-dv-web` and
+   report `CertificatePending` — *"You must configure your DNS records for certificate
+   issuance to begin."* The apex mapping has been retrying since 7 Aug. Records to set are in
+   `docs/infra-runbook.md` Step 11.
+
+**Canonical host decision: `www`** (was apex). `www` is a CNAME to `ghs.googlehosted.com.`
+and survives Google IP rotation; the apex is pinned to 8 hardcoded IPs. Apex→www 308 redirect
+added in `next.config.mjs` because Cloud Run mappings cannot redirect. See DECISIONS.md
+"Go-live decisions".
+
+**Verified locally on the standalone build:** apex `/que-hacemos` → 308 → www; www → 200 (no
+loop); sitemap/robots/canonical/hreflang all emit `www`. Gate green: 1313 tests, 83.04%
+coverage, 0 lint errors, `tsc --noEmit` clean.
+
+**Next step (Carlos, browser):** GoDaddy → delete the 2 parking A records + the `www` CNAME →
+add 4×A, 4×AAAA, `CNAME www → ghs.googlehosted.com.` TLS then provisions automatically.
+
+---
+
+### SEO-01 — Search & AI discoverability (COMPLETE)
 
 ### SEO-01 — Search & AI discoverability (COMPLETE)
 
