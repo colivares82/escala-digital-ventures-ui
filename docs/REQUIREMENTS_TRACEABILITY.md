@@ -107,7 +107,7 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | R-7.6 | Structured data (JSON-LD) | ✅ | SEO-01 §6: one server-rendered `@graph` per page — `lib/seo/`, `components/json-ld.tsx`; validated by `tests/lib/seo/{schema,page-graph}.test.ts` |
 | R-7.7 | Q&A blocks for AI/answer-engine discoverability | ✅ | SEO-01 §5: `FaqBlock` on `/que-hacemos`, `/como-trabajamos`, `/modelo-de-alianza` × 3 locales; always expanded, in server-rendered HTML |
 | R-7.8 | `/llms.txt` machine summary | ✅ | SEO-01 §7.5: `app/llms.txt/route.ts` + `lib/seo/llms-txt.ts`, served `text/plain` |
-| R-7.9 | Single canonical host (`www`↔apex, `http`→`https`) | ⬜ | **Blocked on DNS switch** — domain still serves GoDaddy parking. SEO-01 §7.4 / AC-17; Carlos-side |
+| R-7.9 | Single canonical host (`www`↔apex, `http`→`https`) | 🟡 | **Code complete — awaiting GoDaddy DNS switch.** Canonical host is `www` (CNAME→`ghs.googlehosted.com`, survives Google IP rotation). `lib/config.ts` `SITE_URL`, `Dockerfile` ARG and `deploy.yml` build-arg all emit `www`; apex→www 308 redirect in `next.config.mjs` (verified locally: `/que-hacemos` → `https://www.escaladigitalventures.com/que-hacemos`). Cloud Run mappings for apex **and** `www` exist on `escala-web-prod`, both `CertificatePending` until DNS points at Google. SEO-01 §7.4 / AC-17 |
 | R-7.10 | Search Console + Bing Webmaster verification | ⬜ | **Blocked on DNS switch.** SEO-01 §9; DNS-TXT verified, cookieless, no analytics |
 
 ## §8 — SEO, analytics, performance

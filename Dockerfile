@@ -7,7 +7,7 @@
 # Stage 3 (runner):  minimal runtime image — only the standalone output
 #
 # Build args (all optional — defaults are safe for local testing):
-#   NEXT_PUBLIC_SITE_URL  e.g. https://escaladigitalventures.com
+#   NEXT_PUBLIC_SITE_URL  e.g. https://www.escaladigitalventures.com (canonical host)
 # ─────────────────────────────────────────────────────────────────────────────
 
 # ── Stage 1: dependency install ───────────────────────────────────────────────
@@ -30,7 +30,7 @@ FROM node:22-slim AS builder
 WORKDIR /app
 
 # Build-time public env vars (injected by CI; safe to bake into the image)
-ARG NEXT_PUBLIC_SITE_URL=https://escaladigitalventures.com
+ARG NEXT_PUBLIC_SITE_URL=https://www.escaladigitalventures.com
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 
 # Copy deps from stage 1

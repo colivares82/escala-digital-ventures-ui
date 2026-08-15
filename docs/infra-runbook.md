@@ -383,9 +383,28 @@ Document the records here once you have them.
 **[CARLOS INPUT REQUIRED]** Log in to GoDaddy DNS manager for `escaladigitalventures.com`.
 Add these records (do NOT delete existing records until Phase 7 go-live):
 
-### Website (Cloud Run) — ✅ DOMAIN MAPPING CREATED (add at Phase 7 go-live)
+### Website (Cloud Run) — ⚠️ GO-LIVE ACTION REQUIRED
+
+**Verified state (15 Aug 2026), project `escala-dv-web`, region `europe-west1`:**
+
+| Mapping | Service | Status |
+|---|---|---|
+| `escaladigitalventures.com` | `escala-web-prod` | `DomainRoutable: True` · `CertificatePending` |
+| `www.escaladigitalventures.com` | `escala-web-prod` | `CertificatePending` |
+
+Cloud Run reports: *"Waiting for certificate provisioning. You must configure your
+DNS records for certificate issuance to begin."* — i.e. **the mappings are correct;
+DNS is the only thing missing.**
+
+**Step 1 — DELETE the GoDaddy parking records** (these are what currently answer):
 ```
-# Exact records from gcloud beta run domain-mappings create (August 2026):
+A     @     15.197.148.33     ← DELETE (GoDaddy parking)
+A     @     3.33.130.190      ← DELETE (GoDaddy parking)
+CNAME www   escaladigitalventures.com   ← DELETE (points www at the parking apex)
+```
+
+**Step 2 — ADD these records** (from `gcloud beta run domain-mappings describe`):
+```
 A     @     216.239.32.21    TTL 3600
 A     @     216.239.34.21    TTL 3600
 A     @     216.239.36.21    TTL 3600
@@ -396,7 +415,14 @@ AAAA  @     2001:4860:4802:36::15    TTL 3600
 AAAA  @     2001:4860:4802:38::15    TTL 3600
 CNAME www   ghs.googlehosted.com.    TTL 3600
 ```
-Note: Managed TLS certificate will provision automatically once these DNS records are added and propagate.
+The apex A/AAAA records are still required even though `www` is canonical — the apex
+must resolve in order to serve the 308 redirect to `www`.
+
+Managed TLS provisions automatically once these propagate (15 min – 24 h). Verify with:
+```bash
+gcloud beta run domain-mappings list --region europe-west1 --project escala-dv-web
+# Both rows should lose the "X"/"…" marker and become ready
+```
 
 ### Google Workspace (inbound email) — can be added NOW, independent of web DNS
 **[CARLOS INPUT REQUIRED]** Sign up for Google Workspace at workspace.google.com.
