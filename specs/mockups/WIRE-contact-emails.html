@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WIRE — Correos del formulario de contacto · Escala Digital Ventures</title>
+<style>
+  :root{
+    --paper:#F7F7F4; --ink:#16181D; --mar:#0E3A5D; --abisal:#0A2B45;
+    --amber:#FFB703; --amber-dark:#B85C00;
+    --rule:rgba(22,24,29,.14); --muted:rgba(22,24,29,.58);
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:"Instrument Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#EDEDE9;color:var(--ink);font-family:var(--sans);
+       font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .page{max-width:1400px;margin:0 auto;padding:48px 32px 96px}
+
+  .pagehead{border-bottom:1px solid var(--rule);padding-bottom:28px;margin-bottom:44px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+           color:var(--amber-dark);margin:0 0 12px}
+  .pagehead h1{font-size:clamp(1.7rem,3.4vw,2.5rem);line-height:1.1;margin:0 0 12px;
+               font-weight:600;letter-spacing:-.02em}
+  .pagehead p{margin:0;max-width:64ch;color:var(--muted);font-size:15px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(520px,1fr));gap:40px;align-items:start}
+
+  .spec{background:var(--paper);border:1px solid var(--rule);padding:0}
+  .spec > header{padding:20px 24px;border-bottom:1px solid var(--rule);
+                 display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+  .spec > header h2{margin:0;font-size:17px;font-weight:600;letter-spacing:-.01em}
+  .tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+       color:var(--paper);background:var(--abisal);padding:4px 8px}
+
+  .headers{padding:18px 24px;border-bottom:1px solid var(--rule);background:rgba(14,58,93,.035)}
+  .headers dl{margin:0;display:grid;grid-template-columns:88px 1fr;gap:5px 14px;align-items:baseline}
+  .headers dt{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+              color:var(--muted)}
+  .headers dd{margin:0;font-size:13.5px;word-break:break-word}
+  .headers dd code{font-family:var(--mono);font-size:12.5px;background:rgba(22,24,29,.05);padding:1px 5px}
+
+  .stage{padding:28px 24px 32px;background:#E3E3DE}
+  .stage-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+               color:var(--muted);margin:0 0 14px}
+
+  /* ---------- maqueta del correo ---------- */
+  .mail{max-width:600px;margin:0 auto;background:var(--paper);border:1px solid rgba(22,24,29,.1)}
+  .mail-inner{padding:34px 36px 30px}
+
+  .brand{display:flex;align-items:center;gap:12px;padding-bottom:20px;
+         border-bottom:2px solid var(--abisal)}
+  .bars{display:flex;flex-direction:column;gap:3px;flex:0 0 auto}
+  .bars i{display:block;background:var(--abisal);height:4px}
+  .bars i:nth-child(1){width:26px}
+  .bars i:nth-child(2){width:18px}
+  .bars i:nth-child(3){width:22px}
+  .wordmark{line-height:1}
+  .wordmark b{display:block;font-size:18px;font-weight:700;letter-spacing:.22em;color:var(--abisal)}
+  .wordmark span{display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:.26em;
+                 color:var(--muted);margin-top:4px}
+
+  .kicker{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+          font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+          margin:22px 0 0;color:var(--amber-dark)}
+  .kicker .ref{color:var(--muted)}
+
+  .mail h1{font-size:24px;line-height:1.2;font-weight:600;letter-spacing:-.02em;margin:12px 0 0}
+  .mail p{font-size:15px;margin:16px 0 0}
+  .mail p.lead{color:var(--ink)}
+
+  .fields{margin:24px 0 0;border-top:1px solid var(--rule)}
+  .fields div{display:grid;grid-template-columns:96px 1fr;gap:14px;
+              padding:11px 0;border-bottom:1px solid var(--rule);align-items:baseline}
+  .fields dt{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+             color:var(--muted)}
+  .fields dd{margin:0;font-size:14.5px;word-break:break-word}
+  .fields dd a{color:var(--mar);text-decoration:underline}
+
+  .quote{margin:24px 0 0;padding:20px 22px;background:#FFFFFF;
+         border-left:3px solid var(--amber);border-top:1px solid var(--rule);
+         border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+  .quote .qlabel{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+                 color:var(--muted);margin:0 0 10px}
+  .quote p{margin:0;font-size:15px;white-space:pre-line}
+
+  .sig{margin:26px 0 0;padding-top:20px;border-top:1px solid var(--rule)}
+  .sig b{display:block;font-size:14.5px;font-weight:600}
+  .sig span{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+            color:var(--muted);margin-top:3px}
+
+  .mail-foot{padding:16px 36px 22px;border-top:1px solid var(--rule);background:rgba(14,58,93,.03)}
+  .mail-foot p{margin:0;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;
+               line-height:1.7;color:var(--muted);text-transform:uppercase}
+  .mail-foot p + p{margin-top:6px;text-transform:none;letter-spacing:.02em;font-size:10.5px}
+
+  .cta{display:inline-block;margin:22px 0 0;padding:12px 22px;background:var(--abisal);
+       color:var(--paper);text-decoration:none;font-size:14px;font-weight:600}
+
+  /* ---------- anotaciones ---------- */
+  .notes{margin-top:56px;border-top:1px solid var(--rule);padding-top:36px}
+  .notes h2{font-size:20px;margin:0 0 8px;font-weight:600;letter-spacing:-.01em}
+  .notes > p{margin:0 0 28px;color:var(--muted);max-width:70ch;font-size:15px}
+  .notecols{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px}
+  .note{background:var(--paper);border:1px solid var(--rule);padding:22px 24px}
+  .note h3{margin:0 0 12px;font-size:13px;font-family:var(--mono);letter-spacing:.1em;
+           text-transform:uppercase;color:var(--amber-dark);font-weight:500}
+  .note ul{margin:0;padding-left:18px}
+  .note li{margin:0 0 9px;font-size:14.5px}
+  .note li:last-child{margin-bottom:0}
+  .note code{font-family:var(--mono);font-size:12.5px;background:rgba(22,24,29,.06);padding:1px 5px}
+  .was{text-decoration:line-through;color:var(--muted)}
+  .now{background:rgba(255,183,3,.22);padding:1px 4px}
+
+  @media (max-width:640px){
+    .page{padding:32px 16px 64px}
+    .mail-inner{padding:26px 22px}
+    .mail-foot{padding:14px 22px 18px}
+    .fields div,.headers dl{grid-template-columns:1fr;gap:3px}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="pagehead">
+    <p class="eyebrow">Wireframe · Correos transaccionales · v1</p>
+    <h1>Correos del formulario de contacto</h1>
+    <p>Dos correos por cada envío válido: el aviso que recibes tú en <code>hola@</code> y la
+    confirmación que recibe quien ha escrito. Ambos en español, sin imágenes alojadas: la identidad
+    la sostienen la tipografía, el color y las etiquetas mono. Los datos mostrados son de ejemplo.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- ============ CORREO 1 ============ -->
+    <section class="spec">
+      <header>
+        <h2>1 · Aviso interno</h2>
+        <span class="tag">Para ti</span>
+      </header>
+
+      <div class="headers">
+        <dl>
+          <dt>De</dt><dd>Escala Digital Ventures &lt;<code>hola@escaladigitalventures.com</code>&gt;</dd>
+          <dt>Para</dt><dd><code>hola@escaladigitalventures.com</code></dd>
+          <dt>Responder&nbsp;a</dt><dd><code>marta.ruiz@textilnorte.es</code> <em>← el cliente</em></dd>
+          <dt>Asunto</dt><dd>Nuevo mensaje desde la web — Marta Ruiz (Textil Norte)</dd>
+        </dl>
+      </div>
+
+      <div class="stage">
+        <p class="stage-label">Vista del mensaje</p>
+        <div class="mail">
+          <div class="mail-inner">
+
+            <div class="brand">
+              <div class="bars"><i></i><i></i><i></i></div>
+              <div class="wordmark"><b>ESCALA</b><span>DIGITAL VENTURES</span></div>
+            </div>
+
+            <div class="kicker">
+              <span>Formulario web</span>
+              <span class="ref">14 ago 2026 · 11:42 CEST</span>
+            </div>
+
+            <h1>Marta Ruiz, de Textil Norte.</h1>
+
+            <dl class="fields">
+              <div><dt>Nombre</dt><dd>Marta Ruiz</dd></div>
+              <div><dt>Empresa</dt><dd>Textil Norte, S.L.</dd></div>
+              <div><dt>Correo</dt><dd><a href="#">marta.ruiz@textilnorte.es</a></dd></div>
+              <div><dt>Idioma</dt><dd>Español · enviado desde /contacto</dd></div>
+            </dl>
+
+            <div class="quote">
+              <p class="qlabel">¿Qué frena tu crecimiento?</p>
+              <p>Gestionamos los pedidos de nuestros veinte clientes en una hoja de cálculo compartida y ya no da más de sí. Cada cierre de mes son tres días de cuadrar albaranes a mano y siempre se nos escapa algo.
+
+Nos gustaría entender qué implicaría montar algo propio.</p>
+            </div>
+
+            <p style="font-size:14px;color:var(--muted)">Responde a este correo para contestarle directamente.</p>
+
+          </div>
+          <div class="mail-foot">
+            <p>Escala Digital Ventures, S.L.U. · Mataró · Barcelona</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CORREO 2 ============ -->
+    <section class="spec">
+      <header>
+        <h2>2 · Confirmación</h2>
+        <span class="tag">Para el cliente</span>
+      </header>
+
+      <div class="headers">
+        <dl>
+          <dt>De</dt><dd>Escala Digital Ventures &lt;<code>hola@escaladigitalventures.com</code>&gt;</dd>
+          <dt>Para</dt><dd><code>marta.ruiz@textilnorte.es</code></dd>
+          <dt>Responder&nbsp;a</dt><dd><code>hola@escaladigitalventures.com</code></dd>
+          <dt>Asunto</dt><dd>Hemos recibido tu mensaje — Escala Digital Ventures</dd>
+        </dl>
+      </div>
+
+      <div class="stage">
+        <p class="stage-label">Vista del mensaje</p>
+        <div class="mail">
+          <div class="mail-inner">
+
+            <div class="brand">
+              <div class="bars"><i></i><i></i><i></i></div>
+              <div class="wordmark"><b>ESCALA</b><span>DIGITAL VENTURES</span></div>
+            </div>
+
+            <div class="kicker">
+              <span>Mensaje recibido</span>
+              <span class="ref">14 ago 2026</span>
+            </div>
+
+            <h1>Hola, Marta.</h1>
+
+            <p class="lead">Hemos recibido tu mensaje y lo vamos a leer con calma. Te responderemos
+            personalmente en un plazo de dos días laborables — no con una plantilla, sino con una
+            primera lectura de lo que nos cuentas.</p>
+
+            <p>Escuchamos antes de proponer. Si vemos que no somos el socio adecuado para lo que
+            necesitas, también te lo diremos.</p>
+
+            <div class="quote">
+              <p class="qlabel">Esto es lo que nos has enviado</p>
+              <p>Gestionamos los pedidos de nuestros veinte clientes en una hoja de cálculo compartida y ya no da más de sí. Cada cierre de mes son tres días de cuadrar albaranes a mano y siempre se nos escapa algo.
+
+Nos gustaría entender qué implicaría montar algo propio.</p>
+            </div>
+
+            <div class="sig">
+              <b>Carlos Olivares</b>
+              <span>Director General · Escala Digital Ventures</span>
+            </div>
+
+          </div>
+          <div class="mail-foot">
+            <p>Escala Digital Ventures, S.L.U. · Mataró · Barcelona · hola@escaladigitalventures.com</p>
+            <p>Si no has escrito tú a través de escaladigitalventures.com, puedes ignorar este
+            mensaje: no haremos nada más con él.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============ ANOTACIONES ============ -->
+  <div class="notes">
+    <h2>Notas de decisión</h2>
+    <p>Puntos que necesitan tu visto bueno antes de que escriba el spec. Cualquiera de ellos es
+    barato de cambiar ahora y caro de cambiar después.</p>
+
+    <div class="notecols">
+
+      <div class="note">
+        <h3>Corrección de copy en la web</h3>
+        <ul>
+          <li>Pie del formulario, actual: <span class="was">CONEXIÓN SEGURA · TUS DATOS SE ALMACENAN EN LA UE · SIN CESIÓN A TERCEROS</span></li>
+          <li>Propuesta: <span class="now">CONEXIÓN SEGURA · SIN CESIÓN A TERCEROS · SIN COOKIES DE SEGUIMIENTO</span></li>
+          <li>Motivo: Workspace Business Starter no permite fijar región de datos. Las otras dos
+          afirmaciones sí son demostrables.</li>
+          <li>Afecta a las tres claves de diccionario (ES/EN/CA).</li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <h3>Tipografía en correo</h3>
+        <ul>
+          <li>Archivo, Instrument Sans e IBM Plex Mono <strong>no cargan</strong> en Gmail, Outlook
+          ni Apple Mail. Es una limitación del medio, no una decisión.</li>
+          <li>Se usa una pila del sistema con la misma jerarquía: peso, interletrado amplio en el
+          wordmark, y mono real para etiquetas donde el cliente lo soporte.</li>
+          <li>La identidad la sostienen el símbolo de tres barras (dibujado en CSS, sin imagen), el
+          filete abisal y el acento ámbar.</li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <h3>Sin imágenes, a propósito</h3>
+        <ul>
+          <li>Ningún <code>&lt;img&gt;</code>. Muchos clientes bloquean imágenes por defecto y el
+          correo se vería roto en la primera impresión.</li>
+          <li>El símbolo de tres barras se construye con celdas de tabla de color sólido.</li>
+          <li>Ventaja añadida: nada que alojar, nada que caducar, ningún píxel de seguimiento —
+          coherente con la decisión de no usar analítica.</li>
+        </ul>
+      </div>
+
+      <div class="note">
+        <h3>Detalles a confirmar</h3>
+        <ul>
+          <li><strong>Firma:</strong> ¿"Carlos Olivares · Director General"? El Libro evita el
+          detalle personal, pero un correo firmado por una persona convierte mucho mejor que uno
+          firmado por una empresa.</li>
+          <li><strong>Asunto interno:</strong> ¿mantener nombre y empresa? Facilita buscar en Gmail
+          y ordenar por remitente.</li>
+          <li><strong>Empresa vacía:</strong> el campo no es obligatorio. Si falta, el asunto queda
+          "Nuevo mensaje desde la web — Marta Ruiz" y la fila desaparece del aviso.</li>
+          <li><strong>Sin CTA ni enlaces</strong> en la confirmación: no hay nada que el cliente
+          deba hacer, solo esperar respuesta. Añadir botones lo acercaría a un boletín.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

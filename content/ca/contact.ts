@@ -40,7 +40,7 @@ export const contactContent = {
     ref: 'ESCALA · REF. CONTACTE',
   },
   trustLine:
-    'CONNEXIÓ SEGURA · LES TEVES DADES S\'EMMAGATZEMEN A LA UE · SENSE CESSIÓ A TERCERS',
+    'CONNEXIÓ SEGURA · SENSE CESSIÓ A TERCERS · SENSE GALETES DE SEGUIMENT',
 } as const satisfies ContactDictionary
 
 export type ContactContent = typeof contactContent
