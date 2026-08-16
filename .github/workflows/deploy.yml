@@ -189,7 +189,7 @@ jobs:
             --memory 512Mi \
             --concurrency 80 \
             --cpu-throttling \
-            --set-env-vars "NODE_ENV=production,EMAIL_DRY_RUN=true,SMTP_HOST=smtp.resend.com,SMTP_PORT=587,SMTP_USER=resend,CONTACT_FROM=hola@escaladigitalventures.com,CONTACT_FROM_NAME=Escala Digital Ventures" \
+            --set-env-vars "NODE_ENV=production,EMAIL_DRY_RUN=false,SMTP_HOST=smtp.resend.com,SMTP_PORT=587,SMTP_USER=resend,CONTACT_FROM=hola@escaladigitalventures.com,CONTACT_FROM_NAME=Escala Digital Ventures" \
             --remove-secrets "CONTACT_FROM,EMAIL_API_KEY" \
             --update-secrets "CONTACT_TO=CONTACT_TO:latest,SMTP_PASSWORD=resend-api-key:latest" \
             --quiet
