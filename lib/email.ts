@@ -1,16 +1,15 @@
 /**
- * Email transport — SPEC-contact-email §5, §6.1
+ * Email transport — SPEC-contact-email §5 · SPEC-contact-email-03 §2
  *
- * SMTP (Google Workspace) via nodemailer, STARTTLS on port 587.
- * Replaces the previous Resend HTTP integration: mail now originates from the
- * Workspace domain whose SPF/DKIM/DMARC records were configured in
- * RUNBOOK-workspace-dns.md.
+ * Resend over SMTP via nodemailer, STARTTLS on port 587 (never implicit TLS).
+ * Outbound only; inbound mail is Microsoft 365 via GoDaddy. The sending domain's
+ * SPF/DKIM/DMARC records are published at GoDaddy — see docs/infra-runbook.md.
  *
- * Config (all via env — NEVER hardcoded, AC3):
- *   SMTP_HOST          = smtp.gmail.com
+ * Config (all via env — NEVER hardcoded):
+ *   SMTP_HOST          = smtp.resend.com
  *   SMTP_PORT          = 587
- *   SMTP_USER          = <workspace mailbox>
- *   SMTP_PASSWORD      = <App Password, from Secret Manager>
+ *   SMTP_USER          = resend  (the LITERAL string, not an email address)
+ *   SMTP_PASSWORD      = <Resend API key, from Secret Manager: resend-api-key>
  *   CONTACT_TO         = <internal inbox>   (server-only, never in client code)
  *   CONTACT_FROM       = hola@escaladigitalventures.com
  *   CONTACT_FROM_NAME  = Escala Digital Ventures
@@ -38,7 +37,9 @@ export interface ContactPayload {
 
 // ─── Env config ───────────────────────────────────────────────────────────────
 
-const SMTP_HOST = process.env.SMTP_HOST ?? 'smtp.gmail.com'
+// No default host: a wrong default (e.g. a previous provider's) fails as an
+// opaque "535 Authentication failed" instead of a clear misconfiguration.
+const SMTP_HOST = process.env.SMTP_HOST
 const SMTP_PORT = parseInt(process.env.SMTP_PORT ?? '587', 10)
 const SMTP_USER = process.env.SMTP_USER
 const SMTP_PASSWORD = process.env.SMTP_PASSWORD
@@ -107,6 +108,10 @@ async function send({ to, replyTo, email }: SendArgs): Promise<void> {
       textBytes: email.text.length,
     })
     return
+  }
+
+  if (!SMTP_HOST) {
+    throw new Error('SMTP_HOST env var is missing — cannot send email')
   }
 
   if (!CONTACT_FROM) {

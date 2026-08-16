@@ -91,12 +91,17 @@ at Cloud Run deploy time via `--set-secrets`.
 **Secrets managed:**
 | Secret | Purpose |
 |---|---|
-| `EMAIL_API_KEY` | Resend API key (placeholder until Resend account created) |
-| `CONTACT_TO` | Internal inbox receiving form submissions |
-| `CONTACT_FROM` | Verified sender address |
+| `resend-api-key` | Resend API key — mounted as `SMTP_PASSWORD` on both services |
+| `CONTACT_TO` | Internal inbox receiving form submissions (prod only) |
 
-**Not in Secret Manager:** `NODE_ENV`, `EMAIL_DRY_RUN` — these are non-sensitive
-operational flags set directly as Cloud Run env vars.
+**Not in Secret Manager:** `NODE_ENV`, `EMAIL_DRY_RUN`, `SMTP_HOST`, `SMTP_PORT`,
+`SMTP_USER`, `CONTACT_FROM`, `CONTACT_FROM_NAME` — non-sensitive operational config set
+directly as Cloud Run env vars. `CONTACT_FROM` (`hola@escaladigitalventures.com`) is
+published on the website, so it is not a secret. Dev's `CONTACT_TO` is likewise a plain
+env var: it is a test recipient, not a credential.
+
+**Pending retirement:** the legacy `EMAIL_API_KEY` and `CONTACT_FROM` secrets are
+unmounted but still present; delete once dev verification passes.
 
 ---
 
@@ -125,7 +130,7 @@ This prevents storage creep from frequent CI builds.
   + backend service). Not justified for a static marketing site.
 - A VPC connector costs ~€5–10/month. Not needed — the app has no private resources
   (no Cloud SQL, no Memorystore, no internal services).
-- The contact form calls Resend's public API — no private network path needed.
+- The contact form reaches Resend over public SMTP — no private network path needed.
 
 **When to revisit:** If a future version adds a database (Cloud SQL) or a private
 service, add a serverless VPC connector at that point. Do not pre-provision it.
@@ -183,21 +188,34 @@ no real emails are sent from dev.
 
 ---
 
-## D-11 · Email provider: Resend
+## D-11 · Outbound mail: Resend over SMTP
 
-**Decision:** Resend as the transactional email provider.
+**Decision:** Outbound transactional email via **Resend SMTP** (`smtp.resend.com`, STARTTLS
+on port 587), sent with nodemailer from `lib/email.ts`. Sending region: `eu-west-1`.
 
-**Why:**
-- Simple REST API (native `fetch`, no SDK needed — already implemented in `lib/email.ts`).
-- Generous free tier: 3,000 emails/month, 100/day. A contact form on a marketing site
-  will never approach this.
-- Domain verification (SPF/DKIM) is straightforward.
-- The existing `lib/email.ts` abstraction supports swapping providers via `EMAIL_PROVIDER`
-  env var — zero code change if Resend is ever replaced.
+**Inbound mail is unchanged:** Microsoft 365 via GoDaddy. Only outbound is Resend.
 
-**Status:** Deferred. Resend account not yet created. `EMAIL_API_KEY` is a placeholder
-in Secret Manager; `EMAIL_DRY_RUN=true` on dev. Prod will also use DRY_RUN until
-Carlos creates the Resend account and verifies the domain.
+**Why SMTP rather than the REST API:**
+- One transport for the whole app — nodemailer was already added for the earlier
+  Google Workspace attempt, so SMTP means no additional dependency.
+- Microsoft 365 SMTP was evaluated and abandoned: the tenant does not expose app
+  passwords, and basic auth is being retired in favour of OAuth 2.0.
+
+**Configuration:** `SMTP_USER` is the literal string `resend` (not an email address);
+`SMTP_PASSWORD` is the Resend API key, stored in Secret Manager as `resend-api-key`
+and mounted on both Cloud Run services.
+
+**Known limitations:**
+- **Free tier caps at 100 emails/day.** Each submission sends two (notification +
+  confirmation), so this is roughly **50 submissions/day**.
+- **No delivery telemetry** wired into the app — bounces and failures are visible only
+  in the Resend dashboard.
+- **Resend stores account data and logs in the US.** Submitter personal data therefore
+  transits a US-based processor. `/privacidad` needs a corresponding update — a legal
+  copy decision, not a code change.
+
+**Status:** Dev active. Prod remains `EMAIL_DRY_RUN=true` until dev verification passes
+and go-live is approved separately.
 
 ---
 
