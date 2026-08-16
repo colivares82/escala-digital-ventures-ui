@@ -40,7 +40,7 @@ export const contactContent = {
     ref: 'ESCALA · CONTACT REF.',
   },
   trustLine:
-    'SECURE CONNECTION · YOUR DATA IS STORED IN THE EU · NO THIRD-PARTY SHARING',
+    'SECURE CONNECTION · NO THIRD-PARTY SHARING · NO TRACKING COOKIES',
 } as const satisfies ContactDictionary
 
 export type ContactContent = typeof contactContent

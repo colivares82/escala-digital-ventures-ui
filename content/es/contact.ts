@@ -43,7 +43,7 @@ export const contactContent = {
     ref: 'ESCALA · REF. CONTACTO',
   },
   trustLine:
-    'CONEXIÓN SEGURA · TUS DATOS SE ALMACENAN EN LA UE · SIN CESIÓN A TERCEROS',
+    'CONEXIÓN SEGURA · SIN CESIÓN A TERCEROS · SIN COOKIES DE SEGUIMIENTO',
 } as const satisfies ContactDictionary
 
 export type ContactContent = typeof contactContent

@@ -1,23 +1,30 @@
 /**
- * Email provider abstraction — Spec SPEC-P2.6 FR-4.1
+ * Email transport — SPEC-contact-email §5 · SPEC-contact-email-03 §2
  *
- * sendContactNotification(payload) dispatches the notification email to the
- * internal recipient via the configured provider (default: Resend).
- * Uses native fetch — no additional npm dependency.
+ * Resend over SMTP via nodemailer, STARTTLS on port 587 (never implicit TLS).
+ * Outbound only; inbound mail is Microsoft 365 via GoDaddy. The sending domain's
+ * SPF/DKIM/DMARC records are published at GoDaddy — see docs/infra-runbook.md.
  *
  * Config (all via env — NEVER hardcoded):
- *   EMAIL_PROVIDER          = 'resend'                     (default: 'resend')
- *   EMAIL_API_KEY           = <provider key>
- *   CONTACT_TO              = <internal inbox>             (server-only, never in client code)
- *   CONTACT_FROM            = hola@escaladigitalventures.com (becomes verified in Phase 6)
- *   CONTACT_SUBJECT_PREFIX  = [Escala · Contacto]
+ *   SMTP_HOST          = smtp.resend.com
+ *   SMTP_PORT          = 587
+ *   SMTP_USER          = resend  (the LITERAL string, not an email address)
+ *   SMTP_PASSWORD      = <Resend API key, from Secret Manager: resend-api-key>
+ *   CONTACT_TO         = <internal inbox>   (server-only, never in client code)
+ *   CONTACT_FROM       = hola@escaladigitalventures.com
+ *   CONTACT_FROM_NAME  = Escala Digital Ventures
  *
- * DRY_RUN mode (EMAIL_DRY_RUN=true OR no EMAIL_API_KEY): logs the payload instead of sending.
- * Phase 6 domain flip: change CONTACT_FROM + provider domain — ZERO code change needed.
- *
- * Honeypot decision: the server returns 200 without sending (FR-3.4 — does not reveal
- * rejection to automated scanners). This is documented in DECISIONS.md.
+ * DRY_RUN mode (EMAIL_DRY_RUN=true OR no SMTP_PASSWORD): logs what would be
+ * sent instead of connecting. This is the default for local development so a
+ * dev machine can never send real mail (§4).
  */
+
+import nodemailer, { type Transporter } from 'nodemailer'
+import {
+  renderNotificationEmail,
+  type RenderedEmail,
+} from './email/templates/notification'
+import { renderConfirmationEmail } from './email/templates/confirmation'
 
 export interface ContactPayload {
   name: string
@@ -30,109 +37,172 @@ export interface ContactPayload {
 
 // ─── Env config ───────────────────────────────────────────────────────────────
 
+// No default host: a wrong default (e.g. a previous provider's) fails as an
+// opaque "535 Authentication failed" instead of a clear misconfiguration.
+const SMTP_HOST = process.env.SMTP_HOST
+const SMTP_PORT = parseInt(process.env.SMTP_PORT ?? '587', 10)
+const SMTP_USER = process.env.SMTP_USER
+const SMTP_PASSWORD = process.env.SMTP_PASSWORD
+
 const CONTACT_TO = process.env.CONTACT_TO
-const CONTACT_FROM = process.env.CONTACT_FROM ?? 'onboarding@resend.dev'
-const API_KEY = process.env.EMAIL_API_KEY
-const SUBJECT_PREFIX =
-  process.env.CONTACT_SUBJECT_PREFIX ?? '[Escala · Contacto]'
+const CONTACT_FROM = process.env.CONTACT_FROM
+const CONTACT_FROM_NAME =
+  process.env.CONTACT_FROM_NAME ?? 'Escala Digital Ventures'
 
-// DRY_RUN when explicitly enabled or when no API key exists (safe local dev)
-const IS_DRY_RUN = process.env.EMAIL_DRY_RUN === 'true' || !API_KEY
+// DRY_RUN when explicitly enabled or when no SMTP password exists (safe local dev)
+const IS_DRY_RUN = process.env.EMAIL_DRY_RUN === 'true' || !SMTP_PASSWORD
 
-// ─── Resend provider ──────────────────────────────────────────────────────────
+// Timeouts so a hung SMTP session cannot hold the request open indefinitely (§6.1)
+const SMTP_CONNECTION_TIMEOUT_MS = 10_000
+const SMTP_GREETING_TIMEOUT_MS = 10_000
+const SMTP_SOCKET_TIMEOUT_MS = 20_000
 
-async function sendViaResend(payload: ContactPayload): Promise<void> {
-  const subject = `${SUBJECT_PREFIX} ${payload.company} — ${payload.name}`
-  const ts = payload.timestamp ?? new Date().toISOString()
+// Locale label shown in the notification body
+const LOCALE_LABELS: Record<string, string> = {
+  es: 'Español',
+  en: 'Inglés',
+  ca: 'Catalán',
+}
 
-  const html = `
-<p><strong>Nombre:</strong> ${payload.name}</p>
-<p><strong>Empresa:</strong> ${payload.company}</p>
-<p><strong>Email:</strong> ${payload.email}</p>
-<p><strong>¿Qué frena su crecimiento?</strong></p>
-<blockquote style="border-left:3px solid #FFB703;margin:0;padding-left:1em">
-  ${payload.blocker}
-</blockquote>
-<hr/>
-<p style="color:#888;font-size:12px">
-  Locale: ${payload.locale ?? 'es'} · Fecha: ${ts}
-</p>
-`.trim()
+// ─── Transport ────────────────────────────────────────────────────────────────
 
-  const text = [
-    `Nombre:  ${payload.name}`,
-    `Empresa: ${payload.company}`,
-    `Email:   ${payload.email}`,
-    '',
-    '¿Qué frena su crecimiento?',
-    payload.blocker,
-    '',
-    `Locale: ${payload.locale ?? 'es'}`,
-    `Fecha:  ${ts}`,
-  ].join('\n')
+let cachedTransporter: Transporter | null = null
 
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${API_KEY}`,
-    },
-    body: JSON.stringify({
-      from: CONTACT_FROM,
-      to: [CONTACT_TO],
-      reply_to: payload.email, // Carlos replies directly to the visitor
-      subject,
-      html,
-      text,
-    }),
+/**
+ * Lazily creates the SMTP transporter. Cached so a warm Cloud Run instance
+ * reuses the connection pool instead of reconnecting per request.
+ */
+function getTransporter(): Transporter {
+  if (cachedTransporter) return cachedTransporter
+
+  cachedTransporter = nodemailer.createTransport({
+    host: SMTP_HOST,
+    port: SMTP_PORT,
+    secure: false, // STARTTLS upgrade on 587 (§6.1)
+    requireTLS: true,
+    auth: { user: SMTP_USER, pass: SMTP_PASSWORD },
+    connectionTimeout: SMTP_CONNECTION_TIMEOUT_MS,
+    greetingTimeout: SMTP_GREETING_TIMEOUT_MS,
+    socketTimeout: SMTP_SOCKET_TIMEOUT_MS,
   })
 
-  if (!res.ok) {
-    const detail = await res.text().catch(() => '')
-    throw new Error(`Resend error ${res.status}: ${detail}`)
+  return cachedTransporter
+}
+
+interface SendArgs {
+  to: string
+  replyTo: string
+  email: RenderedEmail
+}
+
+async function send({ to, replyTo, email }: SendArgs): Promise<void> {
+  if (IS_DRY_RUN) {
+    // No SMTP connection — log the envelope so the flow can be verified locally.
+    // Addresses redacted: this branch runs wherever credentials are absent.
+    console.log('[email:DRY_RUN]', {
+      to: '[redacted]',
+      replyTo: '[redacted]',
+      from: `${CONTACT_FROM_NAME} <${CONTACT_FROM ?? 'unset'}>`,
+      subject: email.subject,
+      htmlBytes: email.html.length,
+      textBytes: email.text.length,
+    })
+    return
   }
+
+  if (!SMTP_HOST) {
+    throw new Error('SMTP_HOST env var is missing — cannot send email')
+  }
+
+  if (!CONTACT_FROM) {
+    throw new Error('CONTACT_FROM env var is missing — cannot send email')
+  }
+
+  await getTransporter().sendMail({
+    from: { name: CONTACT_FROM_NAME, address: CONTACT_FROM },
+    to,
+    replyTo,
+    subject: email.subject,
+    text: email.text,
+    html: email.html,
+  })
+}
+
+// ─── Formatting ───────────────────────────────────────────────────────────────
+
+/** "14 ago 2026 · 11:42 CEST" (withTime) or "14 ago 2026". */
+function formatSentAt(iso: string, withTime: boolean): string {
+  const date = new Date(iso)
+  const base: Intl.DateTimeFormatOptions = {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'Europe/Madrid',
+  }
+  const opts: Intl.DateTimeFormatOptions = withTime
+    ? {
+        ...base,
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZoneName: 'short',
+      }
+    : base
+
+  return new Intl.DateTimeFormat('es-ES', opts).format(date)
 }
 
 // ─── Public API ───────────────────────────────────────────────────────────────
 
 /**
- * Sends a contact notification email to the internal recipient (CONTACT_TO).
+ * Notification to the internal inbox (CONTACT_TO).
+ * Reply-To is the submitter so Carlos can reply directly from Gmail (AC6).
  *
- * In DRY_RUN mode (no API key or EMAIL_DRY_RUN=true): logs a well-formed
- * notification payload instead of calling the provider — safe for local dev.
- *
- * Throws on provider failure. The API route converts the thrown error to a 502.
+ * Throws on failure — the API route converts this to an error response,
+ * because a lost lead must never be shown to the user as success (§5.2).
  */
 export async function sendContactNotification(
   payload: ContactPayload,
 ): Promise<void> {
-  if (IS_DRY_RUN) {
-    // DRY_RUN: no provider call — log so the integration can be verified locally.
-    // No PII in production logs (this branch never runs in production).
-    console.log(
-      '[email:DRY_RUN] sendContactNotification',
-      JSON.stringify(
-        { ...payload, email: '[redacted-for-log]' },
-        null,
-        2,
-      ),
-    )
-    return
+  if (!CONTACT_TO && !IS_DRY_RUN) {
+    throw new Error('CONTACT_TO env var is missing — cannot send notification')
   }
 
-  if (!CONTACT_TO) {
-    throw new Error(
-      'CONTACT_TO env var is missing — cannot send notification email',
-    )
-  }
+  const locale = payload.locale ?? 'es'
+  const email = renderNotificationEmail({
+    name: payload.name,
+    company: payload.company,
+    email: payload.email,
+    blocker: payload.blocker,
+    locale: LOCALE_LABELS[locale] ?? locale,
+    sentAt: formatSentAt(payload.timestamp ?? new Date().toISOString(), true),
+  })
 
-  const provider = process.env.EMAIL_PROVIDER ?? 'resend'
-  switch (provider) {
-    case 'resend':
-      await sendViaResend(payload)
-      break
-    // TODO(P6): case 'sendgrid': await sendViaSendGrid(payload); break
-    default:
-      throw new Error(`Unknown EMAIL_PROVIDER: "${provider}"`)
-  }
+  await send({
+    to: CONTACT_TO ?? '',
+    replyTo: payload.email, // AC6
+    email,
+  })
+}
+
+/**
+ * Spanish confirmation to the person who submitted the form (§5.1).
+ * Reply-To is the shared inbox so replies do not land on an individual.
+ *
+ * Throws on failure; the caller logs and still returns success, because the
+ * lead is already captured and the courtesy email is not worth failing on (§5.2).
+ */
+export async function sendContactConfirmation(
+  payload: ContactPayload,
+): Promise<void> {
+  const email = renderConfirmationEmail({
+    name: payload.name,
+    blocker: payload.blocker,
+    sentAt: formatSentAt(payload.timestamp ?? new Date().toISOString(), false),
+  })
+
+  await send({
+    to: payload.email,
+    replyTo: CONTACT_FROM ?? '',
+    email,
+  })
 }
