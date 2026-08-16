@@ -15,7 +15,10 @@
  */
 
 import { type NextRequest, NextResponse } from 'next/server'
-import { sendContactNotification } from '@/lib/email'
+import {
+  sendContactConfirmation,
+  sendContactNotification,
+} from '@/lib/email'
 
 // Explicit Node.js runtime — required for Cloud Run compatibility (FR-3.1).
 // Default in Next.js App Router, made explicit for future deployment clarity.
@@ -39,6 +42,35 @@ function checkRateLimit(ip: string): boolean {
     return true
   }
   if (bucket.count >= RATE_LIMIT) return false
+
+  bucket.count += 1
+  return true
+}
+
+// ─── Per-address limiter (SPEC-contact-email §5.4) ───────────────────────────
+// The auto-confirmation means a valid submission sends mail to an address the
+// submitter controls. Without a per-address cap, the form could be used to
+// deliver repeated mail to a third party. Max 3 per address per 24h.
+//
+// KNOWN LIMITATION — accepted, do not "fix": Cloud Run is scale-to-zero, so
+// this in-memory counter resets on cold start. At current traffic, in-memory
+// plus the existing honeypot is proportionate. Deliberately NOT introducing
+// Firestore/Redis for this.
+
+const ADDRESS_WINDOW_MS = 24 * 60 * 60 * 1000
+const ADDRESS_LIMIT = 3
+const addressBuckets = new Map<string, { count: number; resetAt: number }>()
+
+function checkAddressLimit(email: string): boolean {
+  const key = email.toLowerCase()
+  const now = Date.now()
+  const bucket = addressBuckets.get(key)
+
+  if (!bucket || now >= bucket.resetAt) {
+    addressBuckets.set(key, { count: 1, resetAt: now + ADDRESS_WINDOW_MS })
+    return true
+  }
+  if (bucket.count >= ADDRESS_LIMIT) return false
 
   bucket.count += 1
   return true
@@ -94,16 +126,27 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return badRequest(`blocker must be at least ${MIN_MESSAGE_LEN} characters`)
   if (!consent) return badRequest('consent is required')
 
-  // ── Send notification ───────────────────────────────────────────────────────
+  // ── Per-address limit (§5.4) ────────────────────────────────────────────────
+  // Checked after validation so only well-formed addresses consume quota.
+  if (!checkAddressLimit(email)) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+  }
+
+  const payload = {
+    name,
+    company,
+    email,
+    blocker,
+    locale: String(body.locale ?? 'es'),
+    timestamp: new Date().toISOString(),
+  }
+
+  // ── 1. Notification — MUST succeed (§5.2) ───────────────────────────────────
+  // A failure here means the lead is lost, so the user sees an error and the
+  // existing error UI offers the direct address as a fallback. Never show
+  // success over a lost lead.
   try {
-    await sendContactNotification({
-      name,
-      company,
-      email,
-      blocker,
-      locale: String(body.locale ?? 'es'),
-      timestamp: new Date().toISOString(),
-    })
+    await sendContactNotification(payload)
   } catch (err) {
     // Log server-side only — response contains no PII or internal detail (FR-3.5)
     console.error(
@@ -111,6 +154,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       err instanceof Error ? err.message : String(err),
     )
     return NextResponse.json({ error: 'Email delivery failed' }, { status: 502 })
+  }
+
+  // ── 2. Confirmation — best effort (§5.2) ────────────────────────────────────
+  // The lead is already safe. A failed courtesy email is logged and swallowed:
+  // it is not worth failing the request the visitor sees.
+  try {
+    await sendContactConfirmation(payload)
+  } catch (err) {
+    console.error(
+      '[contact/api] sendContactConfirmation failed (non-fatal):',
+      err instanceof Error ? err.message : String(err),
+    )
   }
 
   return NextResponse.json({ ok: true })

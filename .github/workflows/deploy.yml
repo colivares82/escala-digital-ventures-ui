@@ -142,8 +142,9 @@ jobs:
             --memory 512Mi \
             --concurrency 80 \
             --cpu-throttling \
-            --set-env-vars "NODE_ENV=production,EMAIL_DRY_RUN=true,NEXT_PUBLIC_NOINDEX=true" \
-            --set-secrets "CONTACT_TO=CONTACT_TO:latest,CONTACT_FROM=CONTACT_FROM:latest,EMAIL_API_KEY=EMAIL_API_KEY:latest" \
+            --set-env-vars "NODE_ENV=production,EMAIL_DRY_RUN=false,NEXT_PUBLIC_NOINDEX=true,SMTP_HOST=smtp.resend.com,SMTP_PORT=587,SMTP_USER=resend,CONTACT_FROM=hola@escaladigitalventures.com,CONTACT_FROM_NAME=Escala Digital Ventures,CONTACT_TO=carlos.olivares.ve@gmail.com" \
+            --remove-secrets "CONTACT_TO,CONTACT_FROM,EMAIL_API_KEY" \
+            --update-secrets "SMTP_PASSWORD=resend-api-key:latest" \
             --quiet
 
       - name: Print dev URL
@@ -188,8 +189,9 @@ jobs:
             --memory 512Mi \
             --concurrency 80 \
             --cpu-throttling \
-            --set-env-vars "NODE_ENV=production,EMAIL_DRY_RUN=true" \
-            --set-secrets "CONTACT_TO=CONTACT_TO:latest,CONTACT_FROM=CONTACT_FROM:latest,EMAIL_API_KEY=EMAIL_API_KEY:latest" \
+            --set-env-vars "NODE_ENV=production,EMAIL_DRY_RUN=false,SMTP_HOST=smtp.resend.com,SMTP_PORT=587,SMTP_USER=resend,CONTACT_FROM=hola@escaladigitalventures.com,CONTACT_FROM_NAME=Escala Digital Ventures" \
+            --remove-secrets "CONTACT_FROM,EMAIL_API_KEY" \
+            --update-secrets "CONTACT_TO=CONTACT_TO:latest,SMTP_PASSWORD=resend-api-key:latest" \
             --quiet
 
       - name: Print prod URL

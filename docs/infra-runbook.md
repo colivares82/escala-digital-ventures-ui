@@ -213,31 +213,32 @@ echo -n "hola@escaladigitalventures.com" | \
     --replication-policy automatic \
     --project escala-web
 
-# CONTACT_FROM — the verified sender address
-# Pre-Resend: use onboarding@resend.dev (Resend sandbox)
-# After Resend domain verification: update to hola@escaladigitalventures.com
-echo -n "onboarding@resend.dev" | \
-  gcloud secrets create CONTACT_FROM \
-    --data-file=- \
-    --replication-policy automatic \
-    --project escala-web
+# CONTACT_FROM is NOT a secret — hola@escaladigitalventures.com is published on
+# the website. It is set as a plain --set-env-vars value in deploy.yml.
 
-# EMAIL_API_KEY — your Resend API key
-# [CARLOS INPUT REQUIRED] Create account at resend.com, get API key, paste below
-# For now, use a placeholder — DRY_RUN=true on dev means no real sends
-echo -n "PLACEHOLDER_REPLACE_WITH_RESEND_KEY" | \
-  gcloud secrets create EMAIL_API_KEY \
-    --data-file=- \
-    --replication-policy automatic \
-    --project escala-web
+# resend-api-key — the Resend API key, mounted as SMTP_PASSWORD
+gcloud secrets create resend-api-key \
+  --replication-policy="user-managed" --locations="europe-west1" \
+  --project escala-dv-web
+
+gcloud secrets add-iam-policy-binding resend-api-key \
+  --member="serviceAccount:228491148700-compute@developer.gserviceaccount.com" \
+  --role="roles/secretmanager.secretAccessor" \
+  --project escala-dv-web
 ```
 
-To update a secret later (e.g. when you have the real Resend key):
+Add the key value yourself — `read -rs` hides the input and keeps it out of shell
+history. Never paste a key into a chat window or commit one:
 ```bash
-echo -n "re_YOUR_REAL_KEY_HERE" | \
-  gcloud secrets versions add EMAIL_API_KEY \
-    --data-file=- \
-    --project escala-web
+read -rs -p "Resend API key: " RESEND_KEY && \
+  printf '%s' "$RESEND_KEY" | \
+  gcloud secrets versions add resend-api-key --data-file=- --project escala-dv-web && \
+  unset RESEND_KEY
+```
+
+Verify by version count only, never by reading the value back:
+```bash
+gcloud secrets versions list resend-api-key --project escala-dv-web
 ```
 
 ---
@@ -274,8 +275,8 @@ gcloud run deploy escala-web-dev \
   --memory 512Mi \
   --concurrency 80 \
   --cpu-throttling \
-  --set-env-vars "NODE_ENV=production,EMAIL_DRY_RUN=true" \
-  --set-secrets "CONTACT_TO=CONTACT_TO:latest,CONTACT_FROM=CONTACT_FROM:latest,EMAIL_API_KEY=EMAIL_API_KEY:latest" \
+  --set-env-vars "NODE_ENV=production,EMAIL_DRY_RUN=false,SMTP_HOST=smtp.resend.com,SMTP_PORT=587,SMTP_USER=resend,CONTACT_FROM=hola@escaladigitalventures.com,CONTACT_FROM_NAME=Escala Digital Ventures,CONTACT_TO=carlos.olivares.ve@gmail.com" \
+  --set-secrets "SMTP_PASSWORD=resend-api-key:latest" \
   --project escala-web
 
 # Get the dev URL
@@ -339,8 +340,8 @@ gcloud run deploy escala-web-prod \
   --memory 512Mi \
   --concurrency 80 \
   --cpu-throttling \
-  --set-env-vars "NODE_ENV=production,EMAIL_DRY_RUN=false" \
-  --set-secrets "CONTACT_TO=CONTACT_TO:latest,CONTACT_FROM=CONTACT_FROM:latest,EMAIL_API_KEY=EMAIL_API_KEY:latest" \
+  --set-env-vars "NODE_ENV=production,EMAIL_DRY_RUN=true,SMTP_HOST=smtp.resend.com,SMTP_PORT=587,SMTP_USER=resend,CONTACT_FROM=hola@escaladigitalventures.com,CONTACT_FROM_NAME=Escala Digital Ventures" \
+  --set-secrets "CONTACT_TO=CONTACT_TO:latest,SMTP_PASSWORD=resend-api-key:latest" \
   --project escala-web
 ```
 
@@ -441,15 +442,15 @@ MX    @     10  ALT4.ASPMX.L.GOOGLE.COM.
 ```
 
 ### Email authentication (SPF / DKIM / DMARC)
-**Important:** Only ONE SPF record is allowed. It must authorize BOTH Google Workspace
-and Resend (the transactional sender). Merge them into a single record:
+**Important:** Only ONE SPF record is allowed. It must authorize BOTH the inbound
+provider (Microsoft 365 via GoDaddy) and Resend (the outbound transactional sender).
+Merge them into a single record:
 
 ```
-# Merged SPF — authorizes Google Workspace + Resend
-TXT   @     "v=spf1 include:_spf.google.com include:amazonses.com ~all"
-# Note: Resend uses Amazon SES infrastructure. Confirm the exact include
-# at resend.com/docs/send-with-smtp when you set up your Resend account.
-# Replace include:amazonses.com with whatever Resend specifies.
+# Merged SPF — authorizes Microsoft 365 (inbound) + Resend (outbound)
+TXT   @     "v=spf1 include:secureserver.net include:_spf.resend.com ~all"
+# Confirm the exact includes against the GoDaddy/Microsoft 365 DNS panel and
+# the Resend dashboard — both publish the value they expect.
 
 # Workspace DKIM — Google Admin Console → Apps → Gmail → Authenticate email
 # Google generates the key; you add it as:
@@ -496,29 +497,25 @@ Or via console (simpler):
 
 ---
 
-## Step 13 — Email provider setup (deferred — do when ready)
+## Step 13 — Outbound mail (Resend) — ✅ configured
 
-**[CARLOS INPUT REQUIRED — DEFERRED]**
+Inbound mail is Microsoft 365 via GoDaddy. Outbound transactional mail is Resend
+over SMTP. See `docs/infra-decisions.md` D-11 for the decision record.
 
-1. Create account at https://resend.com
-2. Add domain `escaladigitalventures.com` → Resend gives you DKIM + SPF records
-3. Add those records at GoDaddy (merge SPF as shown in Step 11)
-4. Verify domain in Resend dashboard
-5. Create API key → copy it
-6. Update the Secret Manager secret:
-   ```bash
-   echo -n "re_YOUR_REAL_KEY_HERE" | \
-     gcloud secrets versions add EMAIL_API_KEY \
-       --data-file=- \
-       --project escala-web
-   ```
-7. Update CONTACT_FROM secret to `hola@escaladigitalventures.com`:
-   ```bash
-   echo -n "hola@escaladigitalventures.com" | \
-     gcloud secrets versions add CONTACT_FROM \
-       --data-file=- \
-       --project escala-web
-   ```
+1. ✅ Domain `escaladigitalventures.com` verified in Resend
+2. ✅ DKIM (`resend._domainkey`) + merged SPF published at GoDaddy (Step 11)
+3. ✅ Secret `resend-api-key` created; runtime SA granted `secretAccessor`
+4. ✅ `deploy.yml` mounts it as `SMTP_PASSWORD` on both services
+5. ⬜ Carlos adds the key value — see the `read -rs` command in Step 6
+
+`CONTACT_FROM` is no longer a secret: `hola@escaladigitalventures.com` is published
+on the website, so it is a plain `--set-env-vars` value in `deploy.yml`.
+
+**Retire the legacy secrets once dev verification passes:**
+```bash
+gcloud secrets delete EMAIL_API_KEY --project escala-dv-web
+gcloud secrets delete CONTACT_FROM  --project escala-dv-web
+```
 8. Redeploy prod (no code change needed — env-flip only):
    ```bash
    gcloud run services update escala-web-prod \
@@ -549,10 +546,10 @@ After completing all steps:
 
 | Item | Status |
 |---|---|
-| Resend account + API key | ⬜ Deferred |
-| Google Workspace signup + MX records at GoDaddy | ⬜ Deferred |
-| Workspace DKIM record at GoDaddy | ⬜ Deferred |
-| Resend DKIM + merged SPF at GoDaddy | ⬜ Deferred |
+| Resend account + domain verified | ✅ Done |
+| Resend API key value added to `resend-api-key` secret | ⬜ Carlos |
+| Microsoft 365 (GoDaddy) inbound mail + MX records | ✅ Done |
+| Resend DKIM + merged SPF at GoDaddy | ✅ Done |
 | DMARC record at GoDaddy | ⬜ Deferred |
 | Cloud Run domain mapping DNS records at GoDaddy | ⬜ Phase 7 (go-live) |
 | Legal placeholders resolved | ⬜ Before go-live |
