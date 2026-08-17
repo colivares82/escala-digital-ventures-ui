@@ -130,10 +130,11 @@ export const methodContent = {
     heading: 'Preguntas frecuentes',
     items: [
       {
+        // CONTENT-11 C7 — the client approves the PROTOTYPE, not the spec.
         question:
-          '¿Qué es una especificación y por qué la apruebo antes de construir?',
+          '¿Qué es una especificación y qué veo yo antes de construir?',
         answer:
-          'Es el documento que describe qué se va a construir antes de escribir código: contexto de negocio, requisitos numerados, casos límite y criterios de aceptación. Cuando hay interfaz, incluye un prototipo visual navegable. Lo apruebas tú. Así los malentendidos se resuelven cuando cuestan una conversación, no cuando cuestan un desarrollo.',
+          'Es el documento que describe qué se va a construir antes de escribir código: contexto de negocio, requisitos numerados, casos límite y criterios de aceptación. Cuando hay interfaz, incluye un prototipo visual navegable que apruebas antes de que se construya. Así los malentendidos se resuelven cuando cuestan una conversación, no cuando cuestan un desarrollo.',
       },
       {
         question: '¿Usáis IA para desarrollar? ¿Eso afecta a la calidad?',

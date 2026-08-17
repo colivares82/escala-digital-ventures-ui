@@ -38,7 +38,8 @@ export const servicesContent = {
       title: 'Desenvolupament de plataformes',
       problem: 'El programari genèric no s\'adapta a la teva realitat.',
       deliverable:
-        'Dissenyem i construïm aplicacions web i plataformes a mida —no plantilles—, amb usuaris i rols, domini propi, correu transaccional, generació de documents i facturació integrada. Una solució construïda a mida del teu negoci: obtens una llicència d\'ús indefinida sobre la teva plataforma i la propietat de les teves dades. La propietat intel·lectual i el codi són d\'Escala.',
+        // CONTENT-11 C1 — ownership/licence terms are never published.
+        'Dissenyem i construïm aplicacions web i plataformes a mida —no plantilles—, amb usuaris i rols, domini propi, correu transaccional, generació de documents i facturació integrada. Una arquitectura preparada per evolucionar durant anys, no per quedar-se a la primera versió.',
       figVariant: 'platform',
       figLabels: ['PLATAFORMA', 'USUARIS · ROLS', 'DOMINI', 'CORREU', 'DOCUMENTS', 'FACTURACIÓ'],
       figCaption: 'FIG. 08 — ARQUITECTURA MODULAR',

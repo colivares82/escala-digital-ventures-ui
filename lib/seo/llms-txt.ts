@@ -9,7 +9,8 @@
  *   - the canonical definition (§2.1) appears verbatim, ES and EN (AC-19)
  *   - ONLY the verified figures from §0.4 (AC-18/AC-20)
  *   - no invoicing language for Magupell; "billing summaries" only (§0.3)
- *   - the licence/IP/data position stated correctly (§0.3)
+ *   - NO ownership, IP or licence terms (CONTENT-11 §3.3): those are agreed
+ *     privately per client during commercial negotiation and never published
  *   - nothing that is not already public on the site
  */
 
@@ -39,7 +40,7 @@ const KEY_PAGES: readonly { page: PageId; label: string }[] = [
   {
     page: 'alliance',
     label:
-      'The alliance model: a maximum of five active clients, and the licence / intellectual-property / data position.',
+      'The alliance model: a maximum of five active clients, sector exclusivity, and how an alliance starts.',
   },
   { page: 'about', label: 'About the studio and its founder.' },
   { page: 'contact', label: 'How to start a conversation.' },
@@ -101,10 +102,13 @@ export function buildLlmsTxt(): string {
     '- A maximum of five active alliances at a time, so each client gets full dedication across the technical, strategic and visionary planes.',
   )
   lines.push(
-    '- Data ownership stays entirely with the client, who also receives an exclusive, indefinite licence to operate their platform with unlimited users. The licence survives the end of the support service.',
+    '- An alliance starts with a conversation about the business, not about technology: the process that holds it back most is analysed in depth, and a first bounded scope is defined — with its specification and its prototype — before anything larger is committed to.',
   )
   lines.push(
-    '- Intellectual property and source code belong to Escala, with sector exclusivity for the client: the platform and its improvements are not reused for their competitors.',
+    '- Sector exclusivity for the client: the platform and its improvements are not reused for their competitors.',
+  )
+  lines.push(
+    '- If the relationship ends, the platform keeps running and the data is returned in full, in standard formats. Continuity conditions are agreed in writing at the start of the alliance.',
   )
   lines.push('')
 

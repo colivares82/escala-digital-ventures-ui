@@ -3,8 +3,10 @@
  * Full content for /modelo-de-alianza (Phase 2.4).
  * Spec: SPEC-P2.4 FR-8.1
  *
- * Ownership note (§0 / FR-6): commitment 01 uses the corrected "A MEDIDA" framing.
- * DO NOT add any "propiedad del código" or "client owns the code" wording here.
+ * CONTENT-11: commercial terms are NEVER published on this site. They are
+ * agreed privately with each client during commercial negotiation. Do not
+ * reintroduce contractual wording here — the blocklist in
+ * tests/content/ownership-guard.test.ts fails the build on any such term.
  */
 import type { AllianceDictionary } from '@/content/types'
 
@@ -13,7 +15,7 @@ export const allianceContent = {
   meta: {
     title: 'Socio tecnológico para pymes: el modelo de alianza',
     description:
-      'Solo cinco alianzas activas. Acompañamiento técnico, estratégico y visionario, licencia de uso indefinida y propiedad total de tus datos.',
+      'Solo cinco alianzas activas. Acompañamiento técnico, estratégico y visionario, exclusividad en tu sector y soporte continuo con trazabilidad completa.',
   },
 
   pageHeader: {
@@ -80,7 +82,7 @@ export const allianceContent = {
       {
         n: '02',
         tag: 'ESPECIFICACIÓN',
-        body: 'Cada funcionalidad se especifica y aprueba antes de construirse.',
+        body: 'Nada se construye sin especificación previa: requisitos, casos límite y criterios de aceptación.',
       },
       {
         n: '03',
@@ -101,12 +103,11 @@ export const allianceContent = {
   },
 
   /**
-   * Q&A block — SEO-01 §5.7.
+   * Q&A block — SEO-01 §5.7. Exactly 5 items.
    *
-   * OWNERSHIP: answer 2 states the corrected model (Libro v2.2 / SPEC-FIX-01):
-   * the client owns their DATA and holds an indefinite use LICENCE; the IP and
-   * source code belong to Escala. Never say the client owns the code — the
-   * guard at tests/content/ownership-guard.test.ts enforces this.
+   * CONTENT-11: contractual ownership and licence terms are never published
+   * here. Item 2 is an onboarding question ("¿Cómo empieza una alianza?");
+   * item 3 answers continuity in operational terms only.
    */
   faq: {
     sectionEyebrow: 'E / PREGUNTAS FRECUENTES',
@@ -119,19 +120,19 @@ export const allianceContent = {
           'Porque la dedicación no se puede repartir indefinidamente. Con cinco alianzas activas podemos conocer cada negocio a fondo, responder rápido y acompañar en el plano técnico, el estratégico y el visionario. No es una limitación de capacidad: es el modelo de negocio, y es lo que separa a un socio de un proveedor.',
       },
       {
-        question: '¿De quién es el código y de quién son los datos?',
+        question: '¿Cómo empieza una alianza?',
         answer:
-          'Los datos son enteramente tuyos: los posees, los exportas cuando quieras y se te devuelven íntegros al terminar la relación. La propiedad intelectual y el código fuente son de Escala, y tú recibes una licencia de uso exclusiva, intransferible y por tiempo indefinido para operar tu plataforma con usuarios ilimitados.',
+          'Con una conversación sobre tu negocio, no sobre tecnología. Si vemos encaje, analizamos a fondo el proceso que más te frena y definimos un primer alcance acotado, con su especificación y su prototipo, antes de comprometer nada más grande. De ahí sale una propuesta concreta: qué se construye primero, en cuánto tiempo y con qué inversión.',
       },
       {
         question: '¿Qué pasa si dejamos de trabajar juntos?',
         answer:
-          'La licencia de uso sobrevive al final del soporte: nunca te quedas sin tu herramienta. Tus datos se te devuelven completos. Las obligaciones de confidencialidad y las restricciones sectoriales siguen vigentes después de que termine la relación.',
+          'Tu plataforma sigue operativa y tus datos se te devuelven íntegros, en formatos estándar y sin retenciones. Las condiciones de continuidad se acuerdan por escrito al principio de la alianza, no cuando llega el momento.',
       },
       {
         question: '¿Podríais trabajar con mi competencia?',
         answer:
-          'No con el mismo sistema. Cada alianza incluye exclusividad sectorial: no reutilizamos tu plataforma ni sus mejoras para competidores tuyos en tu sector. Es la contrapartida natural de que la propiedad intelectual sea nuestra.',
+          'No con el mismo sistema. Cada alianza incluye exclusividad sectorial: no reutilizamos tu plataforma ni sus mejoras para competidores tuyos en tu sector.',
       },
       {
         question: '¿Qué incluye exactamente una alianza?',

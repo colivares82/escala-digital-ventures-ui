@@ -1,7 +1,56 @@
 # Active Context
 
-_Last updated: 15 August 2026 (GO-LIVE — canonical host = www; blocked on GoDaddy DNS.
-Previous: BRAND-01 COMPLETE — brand asset integration)_
+_Last updated: 17 August 2026 (CONTENT-11 COMPLETE — commercial terms removed from all public
+copy. Previous: GO-LIVE — canonical host = www, blocked on GoDaddy DNS)_
+
+### CONTENT-11 — Commercial Terms Cleanup (COMPLETE, content-only)
+
+**The rule that now governs all copy: IP, licensing and ownership terms are NEVER published.**
+They are agreed per client during commercial negotiation. This *reverses the published side* of
+SPEC-FIX-01: that spec corrected the wording to "the IP is Escala's"; CONTENT-11 removes the
+subject from public surfaces entirely, in both directions. The contractual model itself is
+unchanged and still lives in Libro Ch. 6/11/13 — now flagged `> INTERNO · NO PUBLICABLE`.
+
+Changed (dictionaries + generator only): `/que-hacemos` service line 02 closes on architecture ·
+`/modelo-de-alianza` FAQ item 2 replaced with "¿Cómo empieza una alianza?" (still exactly 5
+items), items 3–4 rewritten, commitment 02 no longer claims per-feature approval, meta
+description reworded (ES 150 / EN 149 / CA 145 chars) · `/como-trabajamos` FAQ item 1 corrected
+so the client approves the **prototype**, not every spec · `lib/seo/llms-txt.ts` licence/IP
+bullets replaced with onboarding + exclusivity + continuity.
+
+**Second correction, unrelated to IP:** the site implied the client approves *every*
+specification. It doesn't — prototypes and additional scoped implementations only.
+
+**The guard is now a blocklist, not an allowlist** (`tests/content/ownership-guard.test.ts`):
+12 ES/EN/CA terms, case- and accent-insensitive, scanning `content/ app/ lib/ components/
+public/` plus the *generated* `/llms.txt` body (there is no static file — it's a route handler).
+Sanctioned exception, by exact string: the legal pages' own website-content copyright notice
+(site copyright ≠ client-platform ownership), so **zero legal sentences were removed**.
+
+**A masking bug I introduced and caught via the AC-08 mutation test:** the first revision put
+the short heading `'PROPIEDAD INTELECTUAL'` in the global allowlist and stripped it from every
+file, so an injected `la propiedad intelectual …` went **unreported** while only the
+second injected term fired. Fixed by scoping short headings to `content/*/legal.ts` and matching
+them as whole `name:`/`title:` lines, plus scanning line-by-line instead of whole-file (a
+whole-file shortcut let one sanctioned hit suppress a real violation in the same file). Verified
+the guard now reports both terms. **Lesson: an allowlist entry short enough to appear inside
+ordinary prose will silently disarm the guard — scope it, or don't allow it.**
+
+**Four pre-existing tests asserted the OLD wording and had to be inverted** (reported as the
+AC-09 scope exception): `tests/lib/seo/crawl.test.ts` ×2 required the exact sentences the
+blocklist now forbids; `tests/content/seo-prohibitions-guard.test.ts` ×2 required IP to be
+"attributed to Escala where discussed", which is obsolete once IP isn't discussed.
+
+Also updated so future sessions can't reintroduce the copy: `.clinerules/project-ownership-rule.md`
+(it *mandated* the removed wording verbatim — the single highest-risk file in this change),
+`docs/i18n-glossary.md` (terms marked RETIRED), spec v1.1.1 §1/§5.2/§5.5 + superseded note.
+
+Gate: 71 files · 1397 tests pass · coverage 78.35/76.54/82.53/80.39 (gate 70) · tsc clean ·
+0 lint errors · build clean · zero component/SVG/style files touched.
+
+---
+
+### Previous focus — Phase 7 go-live (domain mapping)
 
 ### CURRENT FOCUS — Phase 7 go-live (domain mapping)
 

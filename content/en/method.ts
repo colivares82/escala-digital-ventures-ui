@@ -127,9 +127,10 @@ export const methodContent = {
     heading: 'Frequently asked questions',
     items: [
       {
-        question: 'What is a specification, and why do I approve it before you build?',
+        // CONTENT-11 C7 — the client approves the PROTOTYPE, not the spec.
+        question: 'What is a specification, and what do I see before anything is built?',
         answer:
-          'It is the document describing what will be built before any code is written: business context, numbered requirements, edge cases and acceptance criteria. Where there is an interface, it includes a navigable visual prototype. You approve it. That way misunderstandings get resolved when they cost a conversation, not when they cost a build.',
+          'It is the document that describes what will be built before a line of code is written: business context, numbered requirements, edge cases and acceptance criteria. When there is an interface, it includes a navigable visual prototype that you approve before it is built. That way misunderstandings are resolved when they cost a conversation, not when they cost a development cycle.',
       },
       {
         question: 'Do you use AI to develop? Does that affect quality?',

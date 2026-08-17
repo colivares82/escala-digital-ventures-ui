@@ -43,10 +43,10 @@ export const servicesContent = {
       title: 'Desarrollo de plataformas',
       problem: 'El software genérico no encaja con tu realidad.',
       deliverable:
-        // §3.1 canonical wording — SPEC-FIX-01 / Libro v2.2 Ch. 13.
-        // Client gets: indefinite use licence + data ownership.
-        // Code and IP: belong to Escala.
-        'Diseñamos y construimos aplicaciones web y plataformas a medida —no plantillas—, con usuarios y roles, dominio propio, correo transaccional, generación de documentos y facturación integrada. Una solución construida a medida de tu negocio: obtienes una licencia de uso indefinida sobre tu plataforma y la propiedad de tus datos. La propiedad intelectual y el código son de Escala.',
+        // CONTENT-11 C1 — ownership/licence terms are never published; they are
+        // agreed per client during commercial negotiation. The paragraph closes
+        // on architecture instead.
+        'Diseñamos y construimos aplicaciones web y plataformas a medida —no plantillas—, con usuarios y roles, dominio propio, correo transaccional, generación de documentos y facturación integrada. Una arquitectura preparada para evolucionar durante años, no para quedarse en la primera versión.',
       figVariant: 'platform',
       // Labels for FIG. 08 — ARQUITECTURA MODULAR (core + 5 modules)
       figLabels: ['PLATAFORMA', 'USUARIOS · ROLES', 'DOMINIO', 'CORREO', 'DOCUMENTOS', 'FACTURACIÓN'],

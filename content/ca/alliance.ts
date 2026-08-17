@@ -3,8 +3,10 @@
  * SPEC-P5 FR-1.1 · Glossary: docs/i18n-glossary.md
  * Pending Carlos register review (AC-9).
  *
- * Ownership note: commitment 01 uses the corrected "A MIDA" framing.
- * DO NOT add any "client owns the code" wording here.
+ * CONTENT-11: commercial terms are NEVER published on this site. They are
+ * agreed privately with each client during commercial negotiation. Do not
+ * reintroduce contractual wording here — the blocklist in
+ * tests/content/ownership-guard.test.ts fails the build on any such term.
  */
 import type { AllianceDictionary } from '@/content/types'
 
@@ -13,7 +15,7 @@ export const allianceContent = {
   meta: {
     title: "Soci tecnològic per a pimes: el model d'aliança",
     description:
-      "Només cinc aliances actives. Acompanyament tècnic, estratègic i visionari, llicència d'ús indefinida sobre la plataforma i propietat de les teves dades.",
+      'Només cinc aliances actives. Acompanyament tècnic, estratègic i visionari, exclusivitat al teu sector i suport continu amb traçabilitat completa.',
   },
 
   pageHeader: {
@@ -76,7 +78,7 @@ export const allianceContent = {
       {
         n: '02',
         tag: 'ESPECIFICACIÓ',
-        body: 'Cada funcionalitat s\'especifica i s\'aprova abans de construir-se.',
+        body: 'No es construeix res sense especificació prèvia: requisits, casos límit i criteris d\'acceptació.',
       },
       {
         n: '03',
@@ -97,9 +99,11 @@ export const allianceContent = {
   },
 
   /**
-   * Q&A block — SEO-01 §5.7 / §5.8.
-   * OWNERSHIP: the client owns their DATA and holds an indefinite use LICENCE;
-   * IP and source code belong to Escala. Never say the client owns the code.
+   * Q&A block — SEO-01 §5.7 / §5.8. Exactly 5 items.
+   *
+   * CONTENT-11: contractual ownership and licence terms are never published
+   * here. Item 2 is an onboarding question ("Com comença una aliança?");
+   * item 3 answers continuity in operational terms only.
    */
   faq: {
     sectionEyebrow: 'E / PREGUNTES FREQÜENTS',
@@ -112,19 +116,19 @@ export const allianceContent = {
           'Perquè la dedicació no es pot repartir indefinidament. Amb cinc aliances actives podem conèixer cada negoci a fons, respondre ràpid i acompanyar en el pla tècnic, l\'estratègic i el visionari. No és una limitació de capacitat: és el model de negoci, i és el que separa un soci d\'un proveïdor.',
       },
       {
-        question: 'De qui és el codi i de qui són les dades?',
+        question: 'Com comença una aliança?',
         answer:
-          'Les dades són enterament teves: les posseeixes, les exportes quan vulguis i se\'t retornen íntegres al final de la relació. La propietat intel·lectual i el codi font són d\'Escala, i tu reps una llicència d\'ús exclusiva, intransferible i per temps indefinit per operar la teva plataforma amb usuaris il·limitats.',
+          'Amb una conversa sobre el teu negoci, no sobre tecnologia. Si hi veiem encaix, analitzem a fons el procés que més et frena i definim un primer abast acotat, amb la seva especificació i el seu prototip, abans de comprometre res més gran. D\'aquí surt una proposta concreta: què es construeix primer, en quant temps i amb quina inversió.',
       },
       {
         question: 'Què passa si deixem de treballar junts?',
         answer:
-          'La llicència d\'ús sobreviu al final del suport: mai no et quedes sense la teva eina. Les teves dades se\'t retornen completes. Les obligacions de confidencialitat i les restriccions sectorials continuen vigents després que acabi la relació.',
+          'La teva plataforma continua operativa i les teves dades se\'t retornen íntegres, en formats estàndard i sense retencions. Les condicions de continuïtat s\'acorden per escrit al principi de l\'aliança, no quan arriba el moment.',
       },
       {
         question: 'Podríeu treballar amb la meva competència?',
         answer:
-          'No amb el mateix sistema. Cada aliança inclou exclusivitat sectorial: no reutilitzem la teva plataforma ni les seves millores per a competidors teus en el teu sector. És la contrapartida natural que la propietat intel·lectual sigui nostra.',
+          'No amb el mateix sistema. Cada aliança inclou exclusivitat sectorial: no reutilitzem la teva plataforma ni les seves millores per a competidors teus en el teu sector.',
       },
       {
         question: 'Què inclou exactament una aliança?',
