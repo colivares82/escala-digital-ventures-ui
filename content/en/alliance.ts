@@ -3,8 +3,10 @@
  * SPEC-P5 FR-1.1 · Glossary: docs/i18n-glossary.md
  * Pending Carlos register review (AC-9).
  *
- * Ownership note: commitment 01 uses the corrected "CUSTOM" framing.
- * DO NOT add any "client owns the code" wording here.
+ * CONTENT-11: commercial terms are NEVER published on this site. They are
+ * agreed privately with each client during commercial negotiation. Do not
+ * reintroduce contractual wording here — the blocklist in
+ * tests/content/ownership-guard.test.ts fails the build on any such term.
  */
 import type { AllianceDictionary } from '@/content/types'
 
@@ -13,7 +15,7 @@ export const allianceContent = {
   meta: {
     title: 'Technology Partner for SMEs — The Alliance Model',
     description:
-      'Only five active alliances. Technical, strategic and visionary partnership, an indefinite licence to your platform and full ownership of your data.',
+      'Only five active alliances. Technical, strategic and visionary partnership, exclusivity in your sector and continuous support with full traceability.',
   },
 
   pageHeader: {
@@ -76,7 +78,7 @@ export const allianceContent = {
       {
         n: '02',
         tag: 'SPECIFICATION',
-        body: 'Every feature is specified and approved before it is built.',
+        body: 'Nothing is built without a prior specification: requirements, edge cases and acceptance criteria.',
       },
       {
         n: '03',
@@ -97,9 +99,11 @@ export const allianceContent = {
   },
 
   /**
-   * Q&A block — SEO-01 §5.7 / §5.8.
-   * OWNERSHIP: the client owns their DATA and holds an indefinite use LICENCE;
-   * IP and source code belong to Escala. Never say the client owns the code.
+   * Q&A block — SEO-01 §5.7 / §5.8. Exactly 5 items.
+   *
+   * CONTENT-11: contractual ownership and licence terms are never published
+   * here. Item 2 is an onboarding question ("How does an alliance start?");
+   * item 3 answers continuity in operational terms only.
    */
   faq: {
     sectionEyebrow: 'E / FREQUENTLY ASKED QUESTIONS',
@@ -112,24 +116,19 @@ export const allianceContent = {
           'Because dedication cannot be divided indefinitely. With five active alliances we can know each business thoroughly, respond quickly and support it technically, strategically and with a view of what comes next. It is not a capacity limit: it is the business model, and it is what separates a partner from a supplier.',
       },
       {
-        // Phrased as "belongs to whom" rather than "who owns the code": the
-        // ownership guard (tests/content/i18n-coverage.test.ts) rightly blocks
-        // the latter pattern, and the guard stays strict — the question is
-        // reworded instead of the guard being relaxed. Same intent, and it
-        // reads closer to how a prospect actually asks it.
-        question: 'The platform we pay for — who does the code belong to, and the data?',
+        question: 'How does an alliance start?',
         answer:
-          'The data is entirely yours: you own it, you can export it whenever you want, and it is returned to you in full when the relationship ends. Intellectual property and source code belong to Escala, and you receive an exclusive, non-transferable, indefinite licence to operate your platform with unlimited users.',
+          'With a conversation about your business, not about technology. If there is a fit, we analyse in depth the process that holds you back the most and define a first, bounded scope — with its specification and its prototype — before committing to anything larger. That produces a concrete proposal: what gets built first, in how long, and at what investment.',
       },
       {
         question: 'What happens if we stop working together?',
         answer:
-          'The use licence survives the end of support: you are never left without your tool. Your data is returned to you in full. Confidentiality obligations and sector restrictions remain in force after the relationship ends.',
+          'Your platform keeps running and your data is returned to you in full, in standard formats and with nothing held back. Continuity conditions are agreed in writing at the start of the alliance, not when the moment arrives.',
       },
       {
         question: 'Could you work with my competitors?',
         answer:
-          'Not with the same system. Every alliance includes sector exclusivity: we do not reuse your platform or its improvements for your competitors in your sector. That is the natural counterpart to the intellectual property being ours.',
+          'Not with the same system. Every alliance includes sector exclusivity: we do not reuse your platform or its improvements for competitors of yours in your sector.',
       },
       {
         question: 'What exactly does an alliance include?',

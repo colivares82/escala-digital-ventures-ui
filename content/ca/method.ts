@@ -127,9 +127,10 @@ export const methodContent = {
     heading: 'Preguntes freqüents',
     items: [
       {
-        question: 'Què és una especificació i per què l\'aprovo abans de construir?',
+        // CONTENT-11 C7 — the client approves the PROTOTYPE, not the spec.
+        question: 'Què és una especificació i què veig jo abans de construir?',
         answer:
-          'És el document que descriu què es construirà abans d\'escriure codi: context de negoci, requisits numerats, casos límit i criteris d\'acceptació. Quan hi ha interfície, inclou un prototip visual navegable. L\'aproves tu. Així els malentesos es resolen quan costen una conversa, no quan costen un desenvolupament.',
+          'És el document que descriu què es construirà abans d\'escriure codi: context de negoci, requisits numerats, casos límit i criteris d\'acceptació. Quan hi ha interfície, inclou un prototip visual navegable que aproves abans que es construeixi. Així els malentesos es resolen quan costen una conversa, no quan costen un desenvolupament.',
       },
       {
         question: 'Feu servir IA per desenvolupar? Això afecta la qualitat?',

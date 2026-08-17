@@ -110,9 +110,10 @@ The following items appear verbatim in all three locales:
 | facturación | billing / invoicing | facturació | |
 | factura | invoice | factura | |
 | datos | data | dades | |
-| propiedad intelectual | intellectual property | propietat intel·lectual | |
-| licencia de uso indefinida | indefinite use licence | llicència d'ús indefinida | Key IP/ownership term |
-| propiedad de tus datos | ownership of your data | propietat de les teves dades | |
+| ~~propiedad intelectual~~ | ~~intellectual property~~ | ~~propietat intel·lectual~~ | **RETIRED — CONTENT-11.** Never published; blocklisted in `tests/content/ownership-guard.test.ts` |
+| ~~licencia de uso indefinida~~ | ~~indefinite use licence~~ | ~~llicència d'ús indefinida~~ | **RETIRED — CONTENT-11.** Never published; blocklisted |
+| propiedad de tus datos | ownership of your data | propietat de les teves dades | Data ownership is still sayable; platform/IP ownership is not |
+| exclusividad sectorial | sector exclusivity | exclusivitat sectorial | Publishable, in operational terms only |
 | Misión | Mission | Missió | |
 | Visión | Vision | Visió | |
 | Técnico | Technical | Tècnic | |
@@ -175,7 +176,7 @@ These short all-caps labels appear in the UI. Translations must fit the layout.
 
 - No physical/street address.
 - No former-employer names (anonymized experience formula only).
-- IP and source code belong to Escala — never state the client owns the code.
+- No IP, licensing or ownership terms at all (CONTENT-11): not "the client owns the code", and not the counter-claim either. The subject is never raised on a public surface — it is agreed per client during commercial negotiation. Data ownership and sector exclusivity remain sayable in operational terms.
 - `colivares.com` appears as plain text only (not a link).
 - No "ruso" / "russian" / "rusa" in any locale.
 - No medical diagnosis claims in BioZero copy (capability-framed only).
