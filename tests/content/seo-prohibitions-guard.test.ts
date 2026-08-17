@@ -104,13 +104,19 @@ describe('SEO-01 §0.3 — the client never owns the code', () => {
     expect(text).not.toMatch(/dueñ[oa] del c[oó]digo/i)
   })
 
-  it.each(SURFACES)('$locale: IP is attributed to Escala where discussed', ({ text }) => {
-    // Where ownership is discussed at all, Escala must be the named owner.
-    if (/propiedad intelectual|intellectual property|propietat intel/i.test(text)) {
-      expect(text).toMatch(
-        /(son|es) de Escala|belong to Escala|són d.Escala|sigui nostra|being ours/i,
-      )
-    }
+  /**
+   * CONTENT-11 §3.4 replaces the previous "IP is attributed to Escala where
+   * discussed" rule. Attribution is no longer the test, because platform IP and
+   * licence terms are not discussed publicly at all — they are agreed privately
+   * per client. The only sanctioned IP mention left is the legal pages' own
+   * website-content copyright notice, which is about Escala's site, not about a
+   * client's platform. Full term blocklist: tests/content/ownership-guard.test.ts.
+   */
+  it.each(SURFACES)('$locale: no client-platform licence terms are published', ({ text }) => {
+    expect(text).not.toMatch(/licencia de uso/i)
+    expect(text).not.toMatch(/licen[cs]e to (use|operate)/i)
+    expect(text).not.toMatch(/llic[eè]ncia d.[uú]s/i)
+    expect(text).not.toMatch(/intransferible|non-transferable/i)
   })
 })
 

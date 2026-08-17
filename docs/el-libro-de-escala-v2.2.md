@@ -190,6 +190,11 @@ Cada decisión técnica evalúa su impacto futuro. La deuda técnica solo se ace
 
 ### El stack y la práctica de Escala
 
+> **INTERNO · NO PUBLICABLE** — La frase final de este párrafo describe condiciones
+> contractuales (licencia, propiedad intelectual, código fuente). No se publica en el sitio
+> web ni en ninguna superficie pública: se acuerda con cada cliente durante la negociación
+> comercial. Ver CONTENT-11 §3.5.
+
 En la práctica, esto se traduce en decisiones concretas: TypeScript de extremo a extremo, React en el frontend, NestJS en el backend, PostgreSQL como base de datos, despliegues contenedorizados en Google Cloud (región europea), integración y entrega continuas con GitHub Actions, entornos separados de desarrollo y producción, cobertura de pruebas automatizadas como norma, control de versiones visible en la propia aplicación y revisión de seguridad de credenciales e infraestructura. El cliente recibe una licencia de uso indefinida sobre su plataforma y es propietario de sus datos; la propiedad intelectual y el código fuente son de Escala (ver Cap. 13).
 
 ## Capítulo 7. Inteligencia Artificial y Automatización aplicada al Negocio
@@ -271,6 +276,11 @@ Escala no ofrece un catálogo tradicional de servicios: cada colaboración se di
 
 **Transformación digital y automatización de procesos.** Análisis de procesos, herramientas y flujos de trabajo para identificar oportunidades de simplificación, automatización y modernización: desde la captura del dato en origen hasta la facturación y el informe final.
 
+> **INTERNO · NO PUBLICABLE** — La frase final (licencia de uso, propiedad intelectual,
+> código) no se publica. La versión publicada de esta línea de servicio cierra en la
+> arquitectura: «…y una arquitectura preparada para evolucionar durante años, no para
+> quedarse en la primera versión.» Ver CONTENT-11 §2 C1.
+
 **Desarrollo de plataformas.** Diseño y construcción de aplicaciones web, plataformas empresariales, portales internos y soluciones SaaS a medida —no plantillas ni configuraciones sobre herramientas de terceros—, con gestión de usuarios y roles, dominios propios, correo transaccional, generación de documentos y facturación integrada, y una arquitectura preparada para evolucionar durante años. La solución se construye a medida de las necesidades reales del negocio; el cliente obtiene una licencia de uso indefinida y la propiedad de sus datos, mientras que la propiedad intelectual y el código son de Escala.
 
 **Automatización e IA aplicada.** Integración de modelos de lenguaje y de visión donde generan valor real y medible: reducción de tareas repetitivas, análisis de imágenes, mejora de la toma de decisiones, integración entre sistemas y aumento de productividad.
@@ -302,6 +312,13 @@ El requisito más importante no es el sector ni el tamaño: es la voluntad de es
 ## Capítulo 13. Compromisos de cada alianza
 
 Toda alianza de Escala se rige por los mismos compromisos: cada solución se construye a medida de las necesidades y oportunidades reales del negocio —no plantillas—; cada funcionalidad se especifica y aprueba antes de construirse; la calidad se demuestra con pruebas automatizadas y estabilidad en producción, no con promesas; el soporte es continuo, trazable y transparente en su facturación; y la relación se mide por un único indicador final, que es el crecimiento y la eficiencia del negocio del cliente.
+
+> **INTERNO · NO PUBLICABLE** — Toda esta sección describe condiciones contractuales
+> (propiedad intelectual, código fuente, licencia de uso, exclusividad sectorial). No se
+> publica en el sitio web ni en ninguna superficie pública: se acuerda con cada cliente
+> durante la negociación comercial. La única excepción publicable es la exclusividad
+> sectorial, formulada en términos operativos y sin vincularla a la titularidad del código.
+> Ver CONTENT-11 §3.5.
 
 ### Propiedad intelectual y modelo de colaboración
 

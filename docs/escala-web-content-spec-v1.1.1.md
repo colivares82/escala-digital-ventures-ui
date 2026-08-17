@@ -20,6 +20,8 @@
   - The founder's trajectory lives at colivares.com; mention as plain text, no link, until that site is live.
   - Case studies use real names (MAGUPELL, BioZero — permission confirmed) and ONLY verifiable facts. No invented figures, percentages or metrics anywhere, ever.
   - Voice: first person plural, direct, confident, close. Business before technology. No empty jargon.
+  - **IP, licensing and ownership terms are never published. They are agreed per client during commercial negotiation.** (CONTENT-11 §3.5. Enforced by the term blocklist in `tests/content/ownership-guard.test.ts`; the only sanctioned exception is the legal pages' own website-content copyright notice.)
+  - The client approves **prototypes** and **additional scoped implementations** — not every specification and not every iteration. Do not write copy implying blanket per-spec approval (CONTENT-11 C5/C7).
 
 ## 2. Brand foundation (from the Libro de Escala)
 
@@ -133,7 +135,7 @@ Footer (paper) — per §4.1.
 ### 5.2 Qué hacemos `/que-hacemos`
 
 PageHeader H1 "Qué hacemos"; lead "No ofrecemos un catálogo de servicios: diseñamos cada colaboración alrededor de los objetivos de tu negocio. Estas son las cinco líneas que casi siempre se combinan dentro de una misma alianza." Then 5 ServiceSections (mono index; H2; problem paragraph; what-we-do paragraph — copy per v1.0/Libro Ch. 11, unchanged):
-1. Transformación digital y automatización de procesos · 2. Desarrollo de plataformas (ownership framing: "Una solución a medida de tu negocio; obtienes una licencia de uso indefinida y la propiedad de tus datos. La propiedad intelectual y el código son de Escala.") · 3. Automatización e IA aplicada · 4. CTO y Product Leadership fraccional · 5. Operación, soporte y evolución continua.
+1. Transformación digital y automatización de procesos · 2. Desarrollo de plataformas (closes on architecture, NOT on commercial terms: "…Una arquitectura preparada para evolucionar durante años, no para quedarse en la primera versión." — CONTENT-11 C1) · 3. Automatización e IA aplicada · 4. CTO y Product Leadership fraccional · 5. Operación, soporte y evolución continua.
 Closing **IdealClientNote** — H2 "¿Encajamos?" (Libro Ch. 12) + CTA → contact. Small line-art inline diagrams per service allowed (FIG-kit style, "Fig." plates).
 
 ### 5.3 Cómo trabajamos `/como-trabajamos`
@@ -151,7 +153,11 @@ Case template (data-driven): sector eyebrow · H1 · readout row · narrative Co
 
 ### 5.5 Modelo de alianza `/modelo-de-alianza`
 
-H1 «Cinco alianzas. Toda nuestra dedicación.»; lead "No buscamos proyectos; buscamos socios. Y elegimos a nuestros socios tanto como ellos nos eligen a nosotros." Sections: WhyFive (Ch. 11) · FIG. 05 constellation reused · ThreePlanes (Plano técnico / estratégico / visionario, Ch. 11) · Commitments (the 5 commitments, Ch. 13, editorial numbered list with the FIG-kit tick treatment) · FinalCTA.
+H1 «Cinco alianzas. Toda nuestra dedicación.»; lead "No buscamos proyectos; buscamos socios. Y elegimos a nuestros socios tanto como ellos nos eligen a nosotros." Sections: WhyFive (Ch. 11) · FIG. 05 constellation reused · ThreePlanes (Plano técnico / estratégico / visionario, Ch. 11) · Commitments (the 5 commitments, Ch. 13, editorial numbered list with the FIG-kit tick treatment) · FaqBlock (5 items) · FinalCTA.
+
+**Commitments — commitment 02 «ESPECIFICACIÓN» (CONTENT-11 C5):** "Nada se construye sin especificación previa: requisitos, casos límite y criterios de aceptación." It must NOT claim every feature is client-approved. Commitments 01, 03, 04, 05 unchanged.
+
+**FAQ — exactly 5 items, in this order (CONTENT-11 C2/C3/C4):** por qué solo cinco · **cómo empieza una alianza** · qué pasa si dejamos de trabajar juntos · competencia · qué incluye una alianza. The former "¿De quién es el código y de quién son los datos?" item is **removed permanently** — commercial terms are not published. Item 3 answers continuity operationally (platform keeps running, data returned in full, conditions agreed in writing up front). Item 4 ends at sector exclusivity, with no link to IP ownership.
 
 ### 5.6 Sobre Escala `/sobre-escala`
 
@@ -193,6 +199,7 @@ Blog/insights · newsletter · colivares.com link (text only until live) · dark
 
 1. §3 fully replaced: identity is the as-built "Sistemas en movimiento" (abisal/ambre #FFB703, FIG diagram kit, PhaseCycle ring, motion language, three type tokens) — supersedes "El instrumento de medida" (ScaleRule + calibre #E8590C).
 0. (v1.1.1) IP/ownership corrected sitewide: the client does NOT own the code. Escala retains intellectual property and source code; the client receives an indefinite, exclusive use licence over their platform, owns their data, and gets sector exclusivity. Source of truth pinned to Libro v2.2 (new Ch. 13 section "Propiedad intelectual y modelo de colaboración"). Service line 2 reworded; any "propietario de … código" phrasing removed.
+   > **SUPERSEDED by CONTENT-11.** This entry is retained for history only. The position above is still contractually accurate, but it is **no longer published anywhere on the site**: prospects reacted badly to contractual language on a marketing surface, so ownership and licensing were removed from all public copy, metadata and `/llms.txt`, and are now agreed per client during commercial negotiation. See §1 editorial hard rules and CONTENT-11 §3.5.
 2. §5.1 home rewritten to the as-built 7-section structure: contact form in the home; client chips replace large case cards; DAT.04 = OPERATIVA; stair milestone "OPERATIVA REAL: CLIENTES · PROVEEDORES · GESTIÓN INTERNA"; ClaimsMarquee; section index map 00–06.
 3. **Russian removed everywhere** (Carlos does not speak Russian): languages are Spanish, English and Catalan on the site; "ES/EN/RU environments" corrected to ES/EN (§2); contact meta lines updated (§5.1/§5.7); §5.6 experience references ES/EN per Libro Ch. 4.
 4. §6 inventory updated to the as-built components; ScaleRule/PhasePanel retired.

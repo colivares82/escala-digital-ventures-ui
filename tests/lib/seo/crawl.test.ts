@@ -125,9 +125,18 @@ describe('/llms.txt (§7.5 / AC-18)', () => {
     }
   })
 
-  it('states the licence/IP/data position correctly', () => {
-    expect(body).toMatch(/indefinite licence/i)
-    expect(body).toMatch(/Intellectual property and source code belong to Escala/i)
+  // CONTENT-11 §3.3: these assertions used to REQUIRE the licence/IP sentences.
+  // They now require their absence — commercial terms are agreed privately per
+  // client and never published, so the AEO surface must not carry them either.
+  it('publishes no licence or IP position', () => {
+    expect(body).not.toMatch(/indefinite licence/i)
+    expect(body).not.toMatch(/intellectual property/i)
+    expect(body).not.toMatch(/source code/i)
+  })
+
+  it('states the alliance position in operational terms', () => {
+    expect(body).toMatch(/sector exclusivity/i)
+    expect(body).toMatch(/returned in full/i)
   })
 
   it('lists the contact address and the copyright line', () => {
@@ -151,10 +160,11 @@ describe('/llms.txt (§7.5 / AC-18)', () => {
     expect(body).toMatch(/billing summaries/i)
   })
 
-  it('never claims the client owns the code', () => {
+  it('makes no code-ownership claim in either direction', () => {
     expect(body).not.toMatch(/owns? (the|your|their) (source )?code/i)
-    // Data ownership DOES belong to the client, so only code/IP is excluded.
     expect(body).not.toMatch(/client owns .{0,20}(code|intellectual property)/i)
-    expect(body).toMatch(/Intellectual property and source code belong to Escala/i)
+    // CONTENT-11: the counter-claim ("…belong to Escala") is gone too. The
+    // subject is simply not raised on a public surface.
+    expect(body).not.toMatch(/belong to Escala/i)
   })
 })

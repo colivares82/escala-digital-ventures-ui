@@ -38,7 +38,8 @@ export const servicesContent = {
       title: 'Platform development',
       problem: 'Generic software does not fit your reality.',
       deliverable:
-        'We design and build custom web applications and platforms — not templates — with users and roles, your own domain, transactional email, document generation and integrated billing. A solution built around your business: you receive an indefinite use licence over your platform and ownership of your data. Intellectual property and source code belong to Escala.',
+        // CONTENT-11 C1 — ownership/licence terms are never published.
+        'We design and build custom web applications and platforms —not templates—, with users and roles, your own domain, transactional email, document generation and integrated billing. An architecture built to evolve over years, not to stop at its first version.',
       figVariant: 'platform',
       figLabels: ['PLATFORM', 'USERS · ROLES', 'DOMAIN', 'EMAIL', 'DOCUMENTS', 'BILLING'],
       figCaption: 'FIG. 08 — MODULAR ARCHITECTURE',
