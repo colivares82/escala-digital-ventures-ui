@@ -14,8 +14,7 @@ npm install
 npm run dev
 npm run lint
 npx tsc --noEmit
-npm run build
-```
+npm run build```
 
 ## Routes
 
@@ -31,4 +30,4 @@ npm run build
 
 The contact form validates in the browser but does not transmit or persist data. See `TODO.md` before connecting production services and `DECISIONS.md` for approved design rationale.
 
-Owned by Carlos Olivares
+Owned by Carlos Olivares - colivares82
