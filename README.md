@@ -30,3 +30,5 @@ npm run build
 - `content/en/`, `content/ca/` — reserved for reviewed translations
 
 The contact form validates in the browser but does not transmit or persist data. See `TODO.md` before connecting production services and `DECISIONS.md` for approved design rationale.
+
+Owned by Carlos Olivares
