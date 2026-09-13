@@ -1,76 +1,66 @@
 /**
- * Content-derived lastmod for the sitemap (SEO-01 §7.2).
+ * Content-derived lastmod for the sitemap (SEO-01 §7.2 · SEO-01a §4b).
  *
- * The spec requires a REAL lastmod "derived from content, not build time".
- * Each route's copy lives in a known content module, so the modification time
- * of that file is the honest signal: it changes when the page's copy changes
- * and stays put when unrelated code is deployed.
+ * ── Why this is a maintained table and not a filesystem or git lookup ──
+ * The previous implementation used `statSync().mtimeMs` on each route's
+ * content modules. That is correct in principle and worked locally, but it
+ * cannot survive this project's container build: `Dockerfile` line 40 does a
+ * `COPY . .`, and Docker sets the mtime of every copied file to the layer
+ * creation time. Every content file therefore ends up with one identical
+ * timestamp, frozen at image-build time.
  *
- * Read at module scope (build/server start) with `statSync` — this runs on the
- * server only, inside the sitemap route.
+ * The live consequence, confirmed on 13 Sep 2026: all 33 sitemap entries
+ * carried `2026-08-17T22:01:53Z`, a build timestamp that predated the SEO-01
+ * deployment. Google reads that as "nothing changed since 17 August" and
+ * deprioritises recrawling — the most likely reason the SEO-01 metadata had
+ * not been picked up.
+ *
+ * Deriving the date from git (SEO-01a §4b option 1) is also impossible here:
+ * `.git` is not present in the build image, so `git log` cannot run at build
+ * or request time. A fresh build timestamp (option 3) is explicitly a last
+ * resort and would still move every URL on every unrelated deploy.
+ *
+ * That leaves option 2: an explicit per-page date, maintained here. It is
+ * honest (it only moves when a human moves it), stable across rebuilds, and
+ * differs per page. The cost is that it must be updated by hand when a page's
+ * copy changes — see the contract below.
  */
 
-import { statSync } from 'node:fs'
-import path from 'node:path'
 import type { PageId } from '@/lib/i18n/types'
 
 /**
- * Content files backing each route, relative to the repo root.
- * A page's date is the NEWEST mtime across its locale dictionaries, so a
- * translation-only change still refreshes the date for every locale URL.
+ * Date each route's content last changed, as a W3C `YYYY-MM-DD` string (UTC).
+ *
+ * ⚠️ CONTRACT: when you change a page's copy in `content/{es,en,ca}/<page>.ts`
+ * (or `content/data/cases.ts` for case details), update that page's date here
+ * in the same commit. A stale date here is invisible in the UI and only shows
+ * up as suppressed recrawling weeks later.
+ *
+ * Seeded to the SEO-01a deployment date for every page, which is accurate:
+ * SEO-01 rewrote the metadata of all 27 page metas + 6 case metas, so every
+ * route genuinely changed. Dates are intentionally allowed to diverge from
+ * this point on — that divergence is the signal Google needs.
  */
-const CONTENT_SOURCES: Record<PageId, readonly string[]> = {
-  home: ['content/es/home.ts', 'content/en/home.ts', 'content/ca/home.ts'],
-  services: [
-    'content/es/services.ts',
-    'content/en/services.ts',
-    'content/ca/services.ts',
-  ],
-  method: [
-    'content/es/method.ts',
-    'content/en/method.ts',
-    'content/ca/method.ts',
-  ],
-  cases: ['content/es/cases.ts', 'content/en/cases.ts', 'content/ca/cases.ts'],
-  caseDetail: ['content/data/cases.ts'],
-  alliance: [
-    'content/es/alliance.ts',
-    'content/en/alliance.ts',
-    'content/ca/alliance.ts',
-  ],
-  about: ['content/es/about.ts', 'content/en/about.ts', 'content/ca/about.ts'],
-  contact: [
-    'content/es/contact.ts',
-    'content/en/contact.ts',
-    'content/ca/contact.ts',
-  ],
-  legal: ['content/es/legal.ts', 'content/en/legal.ts', 'content/ca/legal.ts'],
-  privacy: [
-    'content/es/privacy.ts',
-    'content/en/privacy.ts',
-    'content/ca/privacy.ts',
-  ],
+export const PAGE_LAST_MODIFIED: Record<PageId, string> = {
+  home: '2026-09-13',
+  services: '2026-09-13',
+  method: '2026-09-13',
+  cases: '2026-09-13',
+  caseDetail: '2026-09-13',
+  alliance: '2026-09-13',
+  about: '2026-09-13',
+  contact: '2026-09-13',
+  legal: '2026-09-13',
+  privacy: '2026-09-13',
 }
 
 /**
- * Newest mtime among a page's content files.
+ * The `lastmod` value for a route, as a `YYYY-MM-DD` string.
  *
- * Falls back to `undefined` when a file cannot be stat'ed (e.g. a trimmed
- * production image) — Next then omits <lastmod> for that URL, which is
- * correct: a wrong date is worse than no date.
+ * Date-level precision is deliberate (SEO-01a §4b): Google ignores anything
+ * finer, and the millisecond timestamps the old implementation emitted were
+ * pure noise that made the all-identical bug harder to spot.
  */
-export function getLastModified(page: PageId): Date | undefined {
-  const files = CONTENT_SOURCES[page]
-  let newest: number | undefined
-
-  for (const file of files) {
-    try {
-      const { mtimeMs } = statSync(path.join(process.cwd(), file))
-      if (newest === undefined || mtimeMs > newest) newest = mtimeMs
-    } catch {
-      // Unreadable file → ignore it and rely on the remaining sources.
-    }
-  }
-
-  return newest === undefined ? undefined : new Date(newest)
+export function getLastModified(page: PageId): string {
+  return PAGE_LAST_MODIFIED[page]
 }
