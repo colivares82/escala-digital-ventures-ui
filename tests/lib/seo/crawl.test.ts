@@ -9,6 +9,16 @@ import { buildLlmsTxt } from '@/lib/seo/llms-txt'
 import { ALLOWED_AI_CRAWLERS } from '@/lib/constants/seo'
 import { SITE_URL } from '@/lib/config'
 import { CANONICAL_DEFINITION } from '@/lib/seo/entity'
+import { PAGE_LAST_MODIFIED } from '@/lib/seo/lastmod'
+import { buildPageMetadata } from '@/lib/seo/page-meta'
+import { LOCALES } from '@/lib/i18n/types'
+
+/**
+ * The date SEO-01 reached production. Every sitemap lastmod must be at or
+ * after this: the live site was reporting 2026-08-17, which predated the
+ * deployment and told Google the new metadata did not exist (SEO-01a §4b).
+ */
+const SEO_01_DEPLOYMENT_DATE = '2026-08-18'
 
 describe('robots.txt (§7.1 / AC-12)', () => {
   const result = robots()
@@ -80,13 +90,43 @@ describe('sitemap.xml (§7.2 / AC-13)', () => {
     }
   })
 
-  it('sets a real lastmod derived from content, not build time', () => {
+  /*
+   * SEO-01a §4b — this assertion is REWRITTEN from its SEO-01 form.
+   *
+   * It used to assert `lastModified instanceof Date` and "not in the future",
+   * which the old mtime implementation satisfied while being completely
+   * broken in production: Docker's `COPY . .` reset every content file's
+   * mtime to the layer build time, so all 33 entries emitted one identical,
+   * stale timestamp. Both assertions passed the whole time.
+   *
+   * The lesson is the same one the og:image bug taught: asserting a value's
+   * *shape* proves nothing about its *correctness*. These assertions now pin
+   * the actual contract — a date-level string, from the maintained table.
+   */
+  it('sets a date-level lastmod string, never a build timestamp', () => {
     for (const entry of entries) {
-      expect(entry.lastModified).toBeInstanceOf(Date)
-      // A content mtime is necessarily in the past.
-      expect((entry.lastModified as Date).getTime()).toBeLessThanOrEqual(
-        Date.now(),
-      )
+      expect(entry.lastModified).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    }
+  })
+
+  it('sources every lastmod from the maintained per-page table', () => {
+    const known = new Set(Object.values(PAGE_LAST_MODIFIED))
+    for (const entry of entries) {
+      expect(known).toContain(entry.lastModified as string)
+    }
+  })
+
+  /*
+   * The defect that made this spec necessary: a stale date suppresses
+   * recrawling. Guard the failure mode directly — no entry may predate the
+   * SEO-01 deployment, which is what Google was being told on 13 Sep 2026.
+   */
+  it('has no lastmod earlier than the SEO-01 deployment', () => {
+    for (const entry of entries) {
+      expect(
+        (entry.lastModified as string) >= SEO_01_DEPLOYMENT_DATE,
+        `${entry.url} reports ${entry.lastModified as string}`,
+      ).toBe(true)
     }
   })
 
@@ -95,6 +135,82 @@ describe('sitemap.xml (§7.2 / AC-13)', () => {
       expect(entry).not.toHaveProperty('priority')
       expect(entry).not.toHaveProperty('changeFrequency')
     }
+  })
+
+  it('lists the root as the bare origin, matching the canonical tag', () => {
+    const urls = entries.map((e) => e.url)
+    expect(urls).toContain(SITE_URL)
+    expect(urls).not.toContain(`${SITE_URL}/`)
+  })
+})
+
+/*
+ * SEO-01a §4 — the check that was missing.
+ *
+ * Canonical and sitemap <loc> were each tested in isolation and both passed,
+ * while disagreeing with each other on the root URL in production. Neither
+ * suite could catch that, because neither one ever compared the two. This
+ * describe block exists solely to hold them against each other.
+ */
+describe('canonical ↔ sitemap URL agreement (SEO-01a §4)', () => {
+  const sitemapUrls = new Set(sitemap().map((e) => e.url))
+
+  /**
+   * The canonical as the BROWSER receives it, not as the Metadata object
+   * holds it.
+   *
+   * These differ, and that difference is the entire bug: `buildPageMetadata`
+   * returns `https://…com/` for the home route, but Next.js resolves every
+   * canonical against `metadataBase` (app/layout.tsx) before rendering, and
+   * `new URL('https://…com/').href.replace(...)` normalisation drops the
+   * trailing slash — so the tag that ships says `https://…com`.
+   *
+   * Comparing the raw object here would assert the wrong thing and "pass"
+   * against output that is still mismatched in production — the same trap the
+   * double-brand title bug and the og:image bug both fell into. So we apply
+   * the framework's own normalisation before comparing.
+   */
+  const renderedCanonical = (value: string): string =>
+    new URL(value, SITE_URL).href.replace(/\/$/, '') || value
+
+  it('every sitemap URL is byte-identical to that page canonical', () => {
+    // Rebuild the same route set the sitemap walks, then ask the metadata
+    // layer for its canonical and require an exact string match.
+    const cases: { page: Parameters<typeof buildPageMetadata>[0]['page']; params?: { slug: 'magupell' | 'biozero' } }[] = [
+      { page: 'home' },
+      { page: 'method' },
+      { page: 'services' },
+      { page: 'cases' },
+      { page: 'caseDetail', params: { slug: 'magupell' } },
+      { page: 'caseDetail', params: { slug: 'biozero' } },
+      { page: 'alliance' },
+      { page: 'about' },
+      { page: 'contact' },
+      { page: 'legal' },
+      { page: 'privacy' },
+    ]
+
+    for (const { page, params } of cases) {
+      for (const locale of LOCALES) {
+        const canonical = buildPageMetadata({
+          page,
+          locale,
+          params,
+          title: 'T',
+          description: 'D',
+        }).alternates?.canonical as string
+
+        const rendered = renderedCanonical(canonical)
+        expect(
+          sitemapUrls.has(rendered),
+          `canonical ${rendered} (${page}/${locale}) is absent from the sitemap`,
+        ).toBe(true)
+      }
+    }
+  })
+
+  it('covers every sitemap URL — no orphan entries', () => {
+    expect(sitemapUrls.size).toBe(33)
   })
 })
 
