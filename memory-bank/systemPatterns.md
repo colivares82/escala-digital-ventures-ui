@@ -57,6 +57,10 @@ Single catch-all route `app/[[...path]]/page.tsx`:
 
 Adding a page: interface in `content/types.ts` + ES dict + EN/CA re-exports + route entry (if new) + component + `generateStaticParams` update. Full guide: `docs/adding-a-page.md`.
 
+**ES-only pages (LANDING-01):** add the id to `EsOnlyPageId` and the slug to `ES_ONLY_ROUTES`. Keep
+the page out of `app/sitemap.ts`, make its `Dictionary` slice optional and put it in `ES_BUNDLE`
+only. Noindex and no-hreflang then come automatically from `buildPageMetadata`.
+
 Known limitation: `<html lang>` is `"es"` globally; EN/CA get correct `lang` on `<main>` instead. Phase 6 middleware will fix `<html lang>` properly.
 
 ## Constants pattern

@@ -494,6 +494,182 @@ export interface PrivacyDictionary {
   readonly sections: ReadonlyArray<LegalSection>
 }
 
+// ---------------------------------------------------------------------------
+// LANDING-01 — /oportunidad conversion landing (ES only, noindex).
+// Wireframe: specs/mockups/wireframe-landing01-oportunidad.html
+// ---------------------------------------------------------------------------
+
+/** Mono "NN / Label" section eyebrow. */
+export interface OportunidadSectionIndex {
+  readonly index: string
+  readonly label: string
+}
+
+/** Three labels, left → right, for one row of a ScenarioFlow. */
+export type ScenarioFlowRow = readonly [string, string, string]
+
+export interface OportunidadHeroFigContent {
+  /** [label above the inputs, label above the outcomes] — vertical FIG. 01 (LANDING-01B). */
+  readonly headers: readonly [string, string]
+  /** Exactly 5 scattered inputs, top → bottom. */
+  readonly inputs: readonly [string, string, string, string, string]
+  readonly coreTitle: string
+  readonly coreSub: string
+  readonly outputs: readonly [
+    { readonly title: string; readonly sub: string },
+    { readonly title: string; readonly sub: string },
+  ]
+  readonly caption: string
+  readonly aria: string
+}
+
+export interface DayRow {
+  readonly time: string
+  readonly before: string
+  readonly after: string
+}
+
+export interface DayComparisonContent {
+  readonly cols: readonly [string, string, string]
+  /** Inline labels used when the table stacks on mobile. */
+  readonly mobileBefore: string
+  readonly mobileAfter: string
+  readonly rows: ReadonlyArray<DayRow>
+}
+
+export interface ScenarioContent {
+  readonly eyebrow: string
+  readonly title: string
+  readonly problem: string
+  readonly before: ScenarioFlowRow
+  readonly after: ScenarioFlowRow
+  readonly outcome: string
+}
+
+export interface ScenarioFlowLabels {
+  readonly before: string
+  readonly after: string
+  readonly aria: string
+}
+
+/** LANDING-01A — one owner phrase in the «¿Te suena?» wall. */
+export interface OportunidadPhrase {
+  /** Stored without « »; the component adds the quote marks. */
+  readonly quote: string
+  readonly answer: string
+  readonly span: 'wide' | 'half'
+  /** Fixed resting tilt in degrees (−1.4 … +1.4). Never random. */
+  readonly tilt: number
+}
+
+/** Result message per band: 0 · 1–2 · 3–5 · 6–8 marked phrases. */
+export interface DiagnosisMessages {
+  readonly none: string
+  readonly low: string
+  readonly mid: string
+  readonly high: string
+}
+
+export interface DiagnosisPanelContent {
+  readonly label: string
+  readonly of: string
+  readonly scaleLow: string
+  readonly scaleHigh: string
+  readonly messages: DiagnosisMessages
+  readonly cta: string
+  readonly more: string
+}
+
+export interface OportunidadReadoutContent {
+  readonly label: string
+  readonly value: string
+  readonly caption: string
+}
+
+export interface OportunidadDictionary {
+  readonly meta: PageMeta
+  readonly hero: {
+    readonly sectionIndex: OportunidadSectionIndex
+    readonly title1: string
+    readonly title2: string
+    readonly lead: string
+    readonly ctaPrimary: string
+    readonly ctaSecondary: string
+    readonly badge: string
+    readonly fig: OportunidadHeroFigContent
+  }
+  /** LANDING-01A — interactive self-diagnosis, first section after the hero. */
+  readonly teSuena: {
+    readonly sectionIndex: OportunidadSectionIndex
+    readonly title: string
+    readonly lead: string
+    readonly answerLabel: string
+    readonly phrases: ReadonlyArray<OportunidadPhrase>
+    readonly panel: DiagnosisPanelContent
+    readonly closing: { readonly lead: string; readonly accent: string }
+  }
+  readonly day: {
+    readonly sectionIndex: OportunidadSectionIndex
+    readonly title: string
+    readonly lead: string
+    readonly table: DayComparisonContent
+    readonly closing: string
+  }
+  readonly scenarios: {
+    readonly sectionIndex: OportunidadSectionIndex
+    readonly title: string
+    readonly lead: string
+    readonly flowLabels: ScenarioFlowLabels
+    readonly outcomeLabel: string
+    readonly items: readonly [ScenarioContent, ScenarioContent, ScenarioContent]
+  }
+  readonly alliance: {
+    readonly sectionIndex: OportunidadSectionIndex
+    readonly title: string
+    readonly lead: string
+    /** Caption under the shared AllianceConstellation (seats come from home.allianceFigure). */
+    readonly figCaption: string
+    readonly planes: ReadonlyArray<{
+      readonly label: string
+      readonly title: string
+      readonly body: string
+    }>
+    readonly notLabel: string
+    readonly notMark: string
+    readonly notItems: ReadonlyArray<string>
+  }
+  readonly about: {
+    readonly sectionIndex: OportunidadSectionIndex
+    readonly title: string
+    readonly name: string
+    readonly role: string
+    readonly lead: string
+    readonly readouts: ReadonlyArray<OportunidadReadoutContent>
+    readonly link: string
+  }
+  readonly start: {
+    readonly sectionIndex: OportunidadSectionIndex
+    readonly title: string
+    readonly lead: string
+    readonly steps: ReadonlyArray<{
+      readonly n: string
+      readonly title: string
+      readonly body: string
+    }>
+    readonly price: {
+      readonly label: string
+      readonly value: string
+      readonly note: string
+    }
+    readonly offer: {
+      readonly label: string
+      readonly big: string
+      readonly line: string
+      readonly note: string
+    }
+  }
+}
+
 /**
  * Phase 4 — 404 not-found copy block. Spec: SPEC-P4 FR-5.
  * Lives in shared content so it can be accessed without locale resolution.

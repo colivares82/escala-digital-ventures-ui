@@ -17,7 +17,7 @@ import {
   OG_SITE_NAME,
   TWITTER_CARD_TYPE,
 } from '@/lib/constants/seo'
-import { getAlternates, getPath } from '@/lib/i18n/routes'
+import { getAlternates, getPath, isEsOnlyPage } from '@/lib/i18n/routes'
 import { LOCALES } from '@/lib/i18n/types'
 import type { Locale, PageId, PageParams } from '@/lib/i18n/types'
 
@@ -62,19 +62,25 @@ export function buildPageMetadata(input: PageMetadataInput): Metadata {
   const canonicalPath = getPath(page, locale, params)
   const canonical = `${SITE_URL}${canonicalPath}`
   const alternates = getAlternates(page, params)
+  // LANDING-01 D2 — ES-only landings are noindex, nofollow and carry no
+  // hreflang alternates (they have no EN/CA equivalent to point to).
+  const esOnly = isEsOnlyPage(page)
 
   return {
     title,
     description,
-    alternates: {
-      canonical,
-      languages: {
-        es: `${SITE_URL}${alternates.es}`,
-        en: `${SITE_URL}${alternates.en}`,
-        ca: `${SITE_URL}${alternates.ca}`,
-        'x-default': `${SITE_URL}${alternates.es}`,
-      },
-    },
+    ...(esOnly ? { robots: { index: false, follow: false } } : {}),
+    alternates: esOnly
+      ? { canonical }
+      : {
+          canonical,
+          languages: {
+            es: `${SITE_URL}${alternates.es}`,
+            en: `${SITE_URL}${alternates.en}`,
+            ca: `${SITE_URL}${alternates.ca}`,
+            'x-default': `${SITE_URL}${alternates.es}`,
+          },
+        },
     openGraph: {
       title: ogTitle(title),
       description,
@@ -82,7 +88,7 @@ export function buildPageMetadata(input: PageMetadataInput): Metadata {
       siteName: OG_SITE_NAME,
       type: ARTICLE_PAGES.includes(page) ? 'article' : 'website',
       locale: OG_LOCALE[locale],
-      alternateLocale: alternateOgLocales(locale),
+      alternateLocale: esOnly ? [] : alternateOgLocales(locale),
       // BRAND-01 Z5: declared explicitly because app/opengraph-image.* cannot
       // reach the optional catch-all these pages render from — see OG_IMAGE.
       // One text-free image for all three locales (§7).
