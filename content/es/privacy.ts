@@ -10,7 +10,7 @@
  * Do NOT publish with unresolved placeholders (FR-4.2).
  *
  * Key decisions (SPEC-P4 §0):
- * - No analytics → no third-party cookies → no cookie banner needed.
+ * - Cookieless analytics only (Savri, FEAT-01) → no cookies → no cookie banner needed.
  * - No physical address shown (Carlos's decision).
  * - Public contact: hola@escaladigitalventures.com only.
  *
@@ -83,11 +83,21 @@ export const privacyContent = {
       name: 'DESTINATARIOS',
       title: 'Destinatarios',
       // Explicit statement: no tracking cookies used → no cookie banner required (SPEC-P4 §0).
-      body: 'No cedemos tus datos a terceros con fines propios. Utilizamos proveedores de servicios (alojamiento web y envío de correo electrónico) que actúan como encargados del tratamiento bajo contrato y están ubicados en la Unión Europea. Este sitio web no utiliza cookies de seguimiento ni herramientas de analítica de terceros.',
+      // FEAT-01 R6: "ni herramientas de analítica de terceros" removed — cookieless
+      // analytics (Savri) is now described in section 06.
+      body: 'No cedemos tus datos a terceros con fines propios. Utilizamos proveedores de servicios (alojamiento web y envío de correo electrónico) que actúan como encargados del tratamiento bajo contrato y están ubicados en la Unión Europea. Este sitio web no utiliza cookies de seguimiento.',
+    },
+    {
+      // FEAT-01 §5 — final copy; title carries the §5 bold lead.
+      id: 'estadisticas',
+      index: '06',
+      name: 'ESTADÍSTICAS',
+      title: 'Estadísticas de uso',
+      body: 'Para entender cómo se usa esta web medimos visitas de forma agregada con Savri, una herramienta de analítica que no utiliza cookies ni otras tecnologías de almacenamiento en tu dispositivo. Solo vemos datos estadísticos agregados —páginas visitadas, sitio de procedencia, país, tipo de dispositivo y navegador—, que no nos permiten identificarte. No usamos esta información con fines publicitarios ni para crear perfiles. Savri actúa como encargado del tratamiento. Base legal: nuestro interés legítimo en conocer y mejorar el uso de la web.',
     },
     {
       id: 'derechos',
-      index: '06',
+      index: '07',
       name: 'TUS DERECHOS',
       title: 'Tus derechos',
       body: 'Puedes ejercer en cualquier momento los derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de tus datos escribiendo a hola@escaladigitalventures.com. Si consideras que el tratamiento no se ajusta a la normativa vigente, tienes derecho a presentar una reclamación ante la Agencia Española de Protección de Datos (aepd.es).',

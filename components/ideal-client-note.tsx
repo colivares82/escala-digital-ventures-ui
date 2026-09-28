@@ -4,7 +4,9 @@
  * Spec: SPEC-P2.2 FR-5
  */
 
+import { TrackedLink } from '@/components/analytics/tracked-link'
 import { SectionIndex } from '@/components/section-index'
+import { ANALYTICS_EVENTS, ANALYTICS_LOCATIONS } from '@/lib/constants/analytics'
 
 export interface IdealClientNoteProps {
   eyebrow: string
@@ -32,10 +34,15 @@ export function IdealClientNote({
         <SectionIndex index={sectionIndex} label={eyebrow} />
         <h2 className="ideal-client__title">{title}</h2>
         <p className="ideal-client__body">{body}</p>
-        <a href={ctaHref} className="ideal-client__cta primary-link">
+        <TrackedLink
+          event={ANALYTICS_EVENTS.CTA_CLICK}
+          location={ANALYTICS_LOCATIONS.IDEAL_CLIENT}
+          href={ctaHref}
+          className="ideal-client__cta primary-link"
+        >
           {cta}
           <span aria-hidden="true">↗</span>
-        </a>
+        </TrackedLink>
       </div>
     </section>
   )

@@ -73,11 +73,19 @@ export const privacyContent = {
       index: '05',
       name: 'RECIPIENTS',
       title: 'Recipients',
-      body: 'We do not share your data with third parties for their own purposes. We use service providers (web hosting and email delivery) who act as data processors under contract and are located within the European Union. This website does not use tracking cookies or third-party analytics tools.',
+      body: 'We do not share your data with third parties for their own purposes. We use service providers (web hosting and email delivery) who act as data processors under contract and are located within the European Union. This website does not use tracking cookies.',
+    },
+    {
+      // FEAT-01 §5 — final copy; title carries the §5 bold lead.
+      id: 'estadisticas',
+      index: '06',
+      name: 'STATISTICS',
+      title: 'Usage statistics',
+      body: 'To understand how this website is used, we measure visits in aggregate with Savri, an analytics tool that does not use cookies or any other storage technology on your device. We only see aggregated statistics —pages visited, referring site, country, device type and browser— which do not allow us to identify you. We do not use this information for advertising or profiling. Savri acts as data processor. Legal basis: our legitimate interest in understanding and improving the use of the website.',
     },
     {
       id: 'derechos',
-      index: '06',
+      index: '07',
       name: 'YOUR RIGHTS',
       title: 'Your rights',
       body: 'You may exercise your rights of access, rectification, erasure, objection, restriction of processing and data portability at any time by writing to hola@escaladigitalventures.com. If you consider that the processing does not comply with current regulations, you have the right to lodge a complaint with the Spanish Data Protection Agency (aepd.es).',

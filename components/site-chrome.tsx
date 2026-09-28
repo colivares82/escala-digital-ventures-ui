@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
+import { TrackedLink } from '@/components/analytics/tracked-link'
 import { CalibratedRule } from '@/components/calibrated-rule'
 import { LocaleSwitcher } from '@/components/locale-switcher'
 import { MobileMenu } from '@/components/mobile-menu'
@@ -12,6 +13,7 @@ import {
   HEADER_COMPACT_THRESHOLD_PX,
   HEADER_SCROLL_SHADOW_PX,
 } from '@/lib/motion-constants'
+import { ANALYTICS_EVENTS, ANALYTICS_LOCATIONS } from '@/lib/constants/analytics'
 import { ANCHORS, ROUTES } from '@/lib/routes'
 import { getPath } from '@/lib/i18n/routes'
 import headerLockup from '@/app/assets/escala-brand/logo-02-lockup-paper.png'
@@ -182,9 +184,14 @@ export function SiteHeader({
             pageParams={pageParams}
             languagesLabel={accessibility.languages}
           />
-          <a className="header-cta" href={contactHref}>
+          <TrackedLink
+            event={ANALYTICS_EVENTS.CTA_CLICK}
+            location={ANALYTICS_LOCATIONS.HEADER}
+            className="header-cta"
+            href={contactHref}
+          >
             {content.contact}
-          </a>
+          </TrackedLink>
         </div>
 
         <button
@@ -305,7 +312,13 @@ export function SiteFooter({
                   </li>
                 ))}
                 <li>
-                  <a href={contactHref}>{contactLabel}</a>
+                  <TrackedLink
+                    event={ANALYTICS_EVENTS.CTA_CLICK}
+                    location={ANALYTICS_LOCATIONS.FOOTER}
+                    href={contactHref}
+                  >
+                    {contactLabel}
+                  </TrackedLink>
                 </li>
               </ul>
             </nav>
@@ -317,7 +330,13 @@ export function SiteFooter({
             </h2>
             <div aria-labelledby="footer-col-contact">
               <p className="site-footer__line">
-                <a href={`mailto:${email}`}>{email}</a>
+                <TrackedLink
+                  event={ANALYTICS_EVENTS.EMAIL_CLICK}
+                  location={ANALYTICS_LOCATIONS.FOOTER}
+                  href={`mailto:${email}`}
+                >
+                  {email}
+                </TrackedLink>
               </p>
               <p className="site-footer__line">{location}</p>
               <p className="site-footer__mono">{languages}</p>

@@ -538,7 +538,7 @@ Carlos is working on content/QA over the next few days. When ready:
 - **Real imagery:** case-study context images pending from clients
 - **ServiceFig variants:** FIG.08/09/11 geometry fixed (SPEC-POLISH-05); FIG.07/FIG.10 canvas-normalised only. Still DRAFT VISUAL overall — Carlos may iterate further after live review
 - **Logo-display permission:** Carlos to confirm for Magupell + BioZero before Phase 7 launch
-- **Analytics:** dropped by Carlos decision (SPEC-P4 §0). No analytics, no banner.
+- **Analytics:** FEAT-01 — cookieless Savri (no cookies, no banner). Active only on prod hostnames (runtime check in `lib/analytics`); components call the `lib/analytics` facade, never the SDK's `useTracker()` (it throws without the provider). Proxy `/io/api/collect`. Site ID pending (fail-closed). AC-5 geo unverified until prod deploy.
 - **Rate limit store:** in-memory. Swap to Redis/Upstash if abuse observed.
 - **Resend account:** not yet created. EMAIL_DRY_RUN=true on both envs until set up.
 - **Google Workspace:** not yet set up. Inbound email to hola@escaladigitalventures.com pending.
