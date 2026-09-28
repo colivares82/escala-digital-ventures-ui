@@ -16,7 +16,9 @@ import {
   DEFAULT_LOCALE,
   LOCALES,
   type CaseSlug,
+  type EsOnlyPageId,
   type Locale,
+  type LocalizedPageId,
   type PageId,
   type PageParams,
   type RouteResolution,
@@ -37,10 +39,24 @@ const ROUTE_MAP = {
   contact:    { es: '/contacto',                en: '/en/contact',            ca: '/ca/contacte' },
   legal:      { es: '/aviso-legal',             en: '/en/legal-notice',       ca: '/ca/avis-legal' },
   privacy:    { es: '/privacidad',              en: '/en/privacy',            ca: '/ca/privacitat' },
-} as const satisfies Record<PageId, Record<Locale, string>>
+} as const satisfies Record<LocalizedPageId, Record<Locale, string>>
+
+/**
+ * ES-only pages (LANDING-01 D1) — ES path only. Not in the sitemap, no nav
+ * entry, noindex. EN/CA alternates fall back to that locale's home, so the
+ * LocaleSwitcher never links to a URL that 404s.
+ */
+const ES_ONLY_ROUTES = {
+  oportunidad: '/oportunidad',
+} as const satisfies Record<EsOnlyPageId, string>
 
 // Export for inspection / testing (read-only).
-export { ROUTE_MAP }
+export { ROUTE_MAP, ES_ONLY_ROUTES }
+
+/** True when the page has no EN/CA version. */
+export function isEsOnlyPage(page: PageId): page is EsOnlyPageId {
+  return page in ES_ONLY_ROUTES
+}
 
 // ---------------------------------------------------------------------------
 // getPath — segments → localized URL
@@ -51,6 +67,9 @@ export { ROUTE_MAP }
  * For caseDetail, params.slug is required and replaces the {slug} token.
  */
 export function getPath(page: PageId, locale: Locale, params?: PageParams): string {
+  if (isEsOnlyPage(page)) {
+    return locale === DEFAULT_LOCALE ? ES_ONLY_ROUTES[page] : getPath('home', locale)
+  }
   const template: string = (ROUTE_MAP[page] as Record<Locale, string>)[locale]
   if (page === 'caseDetail') {
     if (!params?.slug) {
@@ -69,7 +88,7 @@ export function getPath(page: PageId, locale: Locale, params?: PageParams): stri
 const PATH_TO_RESOLUTION = new Map<string, RouteResolution>()
 
 // Build reverse lookup at module load.
-;(Object.keys(ROUTE_MAP) as PageId[]).forEach((page) => {
+;(Object.keys(ROUTE_MAP) as LocalizedPageId[]).forEach((page) => {
   LOCALES.forEach((locale) => {
     const template: string = (ROUTE_MAP[page] as Record<Locale, string>)[locale]
     if (page === 'caseDetail') {
@@ -81,6 +100,11 @@ const PATH_TO_RESOLUTION = new Map<string, RouteResolution>()
       PATH_TO_RESOLUTION.set(template, { page, locale })
     }
   })
+})
+
+// ES-only pages: register the ES path only — EN/CA variants never resolve.
+;(Object.keys(ES_ONLY_ROUTES) as EsOnlyPageId[]).forEach((page) => {
+  PATH_TO_RESOLUTION.set(ES_ONLY_ROUTES[page], { page, locale: DEFAULT_LOCALE })
 })
 
 /**

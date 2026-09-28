@@ -6,13 +6,15 @@
  */
 import {
   CASE_SLUGS,
+  ES_ONLY_ROUTES,
   LOCALES,
   ROUTE_MAP,
+  isEsOnlyPage,
   getAlternates,
   getPath,
   resolvePath,
 } from '@/lib/i18n/routes'
-import type { CaseSlug, Locale, PageId } from '@/lib/i18n/types'
+import type { CaseSlug, Locale, LocalizedPageId, PageId } from '@/lib/i18n/types'
 
 // ---------------------------------------------------------------------------
 // Helpers — mirror the internal segmentsToPath logic for test clarity
@@ -240,18 +242,53 @@ describe('getAlternates', () => {
 })
 
 // ---------------------------------------------------------------------------
+// ES-only pages — LANDING-01 D1 (/oportunidad)
+// ---------------------------------------------------------------------------
+describe('ES-only pages (LANDING-01)', () => {
+  it('resolves /oportunidad to the ES landing', () => {
+    expect(resolvePath(['oportunidad'])).toEqual({ page: 'oportunidad', locale: 'es' })
+  })
+
+  it('never resolves an EN/CA variant (→ 404)', () => {
+    expect(resolvePath(['en', 'oportunidad'])).toBeNull()
+    expect(resolvePath(['en', 'opportunity'])).toBeNull()
+    expect(resolvePath(['ca', 'oportunidad'])).toBeNull()
+    expect(resolvePath(['ca', 'oportunitat'])).toBeNull()
+  })
+
+  it('EN/CA alternates fall back to that locale home (LocaleSwitcher never 404s)', () => {
+    expect(getAlternates('oportunidad')).toEqual({ es: '/oportunidad', en: '/en', ca: '/ca' })
+  })
+
+  it('isEsOnlyPage flags only the landing', () => {
+    expect(isEsOnlyPage('oportunidad')).toBe(true)
+    expect(isEsOnlyPage('home')).toBe(false)
+    expect(isEsOnlyPage('contact')).toBe(false)
+  })
+
+  it('ES-only paths do not collide with localized ROUTE_MAP paths', () => {
+    const localized = new Set(
+      (Object.keys(ROUTE_MAP) as LocalizedPageId[]).flatMap((p) =>
+        Object.values(ROUTE_MAP[p] as Record<Locale, string>),
+      ),
+    )
+    Object.values(ES_ONLY_ROUTES).forEach((path) => expect(localized.has(path)).toBe(false))
+  })
+})
+
+// ---------------------------------------------------------------------------
 // Route map structural invariants
 // ---------------------------------------------------------------------------
 describe('ROUTE_MAP structural invariants', () => {
   it('every page has entries for all 3 locales', () => {
-    ;(Object.keys(ROUTE_MAP) as PageId[]).forEach((page) => {
+    ;(Object.keys(ROUTE_MAP) as LocalizedPageId[]).forEach((page) => {
       const entry = ROUTE_MAP[page] as Record<Locale, string>
       expect(Object.keys(entry)).toEqual(expect.arrayContaining(['es', 'en', 'ca']))
     })
   })
 
   it('all ES paths do not start with /en/ or /ca/ locale prefix', () => {
-    ;(Object.keys(ROUTE_MAP) as PageId[]).forEach((page) => {
+    ;(Object.keys(ROUTE_MAP) as LocalizedPageId[]).forEach((page) => {
       if (page === 'caseDetail') return // template with {slug}, not a final path
       const entry = ROUTE_MAP[page] as Record<Locale, string>
       const esPath = entry.es
@@ -270,7 +307,7 @@ describe('ROUTE_MAP structural invariants', () => {
 
   it('no two different page+locale pairs share the same path', () => {
     const seenPaths = new Set<string>()
-    ;(Object.keys(ROUTE_MAP) as PageId[]).forEach((page) => {
+    ;(Object.keys(ROUTE_MAP) as LocalizedPageId[]).forEach((page) => {
       const entry = ROUTE_MAP[page] as Record<Locale, string>
       if (page === 'caseDetail') return // templates, not final paths
       LOCALES.forEach((locale) => {
