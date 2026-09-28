@@ -2,8 +2,10 @@
  * § 00 Hero — dark abisal surface + GridBackground (reused as-is).
  * Two columns ≥1024px (LANDING-01B): copy left, vertical FIG. 01 right.
  */
+import { TrackedLink } from '@/components/analytics/tracked-link'
 import { GridBackground } from '@/components/grid-background'
 import { SectionIndex } from '@/components/section-index'
+import { ANALYTICS_EVENTS, ANALYTICS_LOCATIONS } from '@/lib/constants/analytics'
 import type { OportunidadDictionary } from '@/content/types'
 import { OportunidadHeroFig } from './oportunidad-hero-fig'
 import { OPORTUNIDAD_ANCHORS, toHash } from './constants'
@@ -21,9 +23,14 @@ export function OportunidadHero({ content }: { content: OportunidadDictionary['h
           </h1>
           <p className="oport-hero__lead">{content.lead}</p>
           <div className="hero__actions oport-hero__actions">
-            <a className="oport-cta" href={toHash(OPORTUNIDAD_ANCHORS.CONTACTO)}>
+            <TrackedLink
+              event={ANALYTICS_EVENTS.CTA_CLICK}
+              location={ANALYTICS_LOCATIONS.OPORTUNIDAD_HERO}
+              className="oport-cta"
+              href={toHash(OPORTUNIDAD_ANCHORS.CONTACTO)}
+            >
               {content.ctaPrimary}
-            </a>
+            </TrackedLink>
             <a className="text-link" href={toHash(OPORTUNIDAD_ANCHORS.ESCENARIOS)}>
               {content.ctaSecondary}
             </a>

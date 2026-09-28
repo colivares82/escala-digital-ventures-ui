@@ -11,7 +11,10 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
+import { TrackedLink } from '@/components/analytics/tracked-link'
 import { ContactSuccess } from '@/components/contact-success'
+import { getCurrentLocale, trackEvent } from '@/lib/analytics'
+import { ANALYTICS_EVENTS, ANALYTICS_LOCATIONS } from '@/lib/constants/analytics'
 import type { sharedContent } from '@/content/es/shared'
 
 type ContactFormCopy = typeof sharedContent.contactForm
@@ -124,6 +127,13 @@ export function ContactForm({
         }),
       })
       setFormState(res.ok ? 'success' : 'apiError')
+      // FEAT-01 §3: server-confirmed success only. The API answers a filled
+      // honeypot with a silent 200 (DECISIONS.md), so res.ok alone would count
+      // bots — require the honeypot to be empty too. `locale` only, never
+      // field values (D6).
+      if (res.ok && !data.get('website')) {
+        trackEvent(ANALYTICS_EVENTS.CONTACT_SUBMITTED, { locale: getCurrentLocale() })
+      }
     } catch {
       setFormState('apiError')
     }
@@ -212,7 +222,13 @@ export function ContactForm({
       {isApiError && (
         <p className="contact-api-error contact-field--wide">
           {copy.errorApiPrefix}{' '}
-          <a href={`mailto:${email}`}>{email}</a>{' '}
+          <TrackedLink
+            event={ANALYTICS_EVENTS.EMAIL_CLICK}
+            location={ANALYTICS_LOCATIONS.CONTACT_FORM}
+            href={`mailto:${email}`}
+          >
+            {email}
+          </TrackedLink>{' '}
           {copy.errorApiSuffix}
         </p>
       )}
@@ -221,7 +237,13 @@ export function ContactForm({
       {Object.keys(errors).length > 0 && !isApiError && (
         <p className="contact-fallback">
           {copy.fallback}{' '}
-          <a href={`mailto:${email}`}>{email}</a>
+          <TrackedLink
+            event={ANALYTICS_EVENTS.EMAIL_CLICK}
+            location={ANALYTICS_LOCATIONS.CONTACT_FORM}
+            href={`mailto:${email}`}
+          >
+            {email}
+          </TrackedLink>
         </p>
       )}
     </form>

@@ -3,17 +3,20 @@
  *
  * Verifies:
  * - /aviso-legal has exactly 5 sections with required IDs
- * - /privacidad has exactly 6 sections with required IDs
+ * - /privacidad has exactly 7 sections with required IDs (FEAT-01 added «estadisticas»)
  * - Meta title/description length limits (≤60/≤155 chars)
  * - Privacy policy contains the no-tracking-cookies statement (AC-4)
  * - Privacy policy contains AEPD reference (AC-4)
  * - Placeholder detection: collectPlaceholders reports unresolved tokens (FR-4.2)
  * - No physical/street address in either dictionary (AC-8)
+ * - FEAT-01 R6/AC-8: Savri copy in ES/EN/CA; no remaining "no analytics" claim
  */
 
 import { describe, it, expect } from 'vitest'
 import { legalContent } from '@/content/es/legal'
 import { privacyContent } from '@/content/es/privacy'
+import { privacyContent as privacyContentEn } from '@/content/en/privacy'
+import { privacyContent as privacyContentCa } from '@/content/ca/privacy'
 import { collectPlaceholders } from '@/lib/placeholders'
 
 // ---------------------------------------------------------------------------
@@ -86,8 +89,8 @@ describe('legalContent — /aviso-legal (SPEC-P4 FR-2)', () => {
 // /privacidad
 // ---------------------------------------------------------------------------
 describe('privacyContent — /privacidad (SPEC-P4 FR-3)', () => {
-  it('has exactly 6 sections', () => {
-    expect(privacyContent.sections).toHaveLength(6)
+  it('has exactly 7 sections (FEAT-01 adds «estadisticas»)', () => {
+    expect(privacyContent.sections).toHaveLength(7)
   })
 
   it('sections have the required IDs in order', () => {
@@ -98,8 +101,14 @@ describe('privacyContent — /privacidad (SPEC-P4 FR-3)', () => {
       'base-legal',
       'conservacion',
       'destinatarios',
+      'estadisticas',
       'derechos',
     ])
+  })
+
+  it('section indexes are sequential 01..07', () => {
+    const indexes = privacyContent.sections.map((s) => s.index)
+    expect(indexes).toEqual(['01', '02', '03', '04', '05', '06', '07'])
   })
 
   it('each section has index, name, title, and body', () => {
@@ -122,6 +131,27 @@ describe('privacyContent — /privacidad (SPEC-P4 FR-3)', () => {
   it('destinatarios section states no tracking cookies are used (AC-4)', () => {
     const destinatarios = privacyContent.sections.find((s) => s.id === 'destinatarios')
     expect(destinatarios?.body).toMatch(/no utiliza cookies de seguimiento/i)
+  })
+
+  // ── FEAT-01 R6 / AC-8 ────────────────────────────────────────────────────
+  describe.each([
+    ['es', privacyContent, /Savri actúa como encargado del tratamiento/],
+    ['en', privacyContentEn, /Savri acts as data processor/],
+    ['ca', privacyContentCa, /Savri actua com a encarregat del tractament/],
+  ] as const)('FEAT-01 analytics copy (%s)', (_locale, dict, processorLine) => {
+    const estadisticas = dict.sections.find((s) => s.id === 'estadisticas')
+
+    it('has the «estadisticas» section with the §5 copy', () => {
+      expect(estadisticas?.body).toMatch(/Savri/)
+      expect(estadisticas?.body).toMatch(processorLine)
+    })
+
+    it('no longer claims the site has no analytics', () => {
+      const text = JSON.stringify(dict)
+      expect(text).not.toMatch(/herramientas de analítica de terceros/i)
+      expect(text).not.toMatch(/third-party analytics tools/i)
+      expect(text).not.toMatch(/eines d'analítica de tercers/i)
+    })
   })
 
   it('derechos section references AEPD (AC-4)', () => {

@@ -3,7 +3,9 @@
  * Dark abisal card with the shared GridBackground texture. Sticky on desktop,
  * sticky bottom bar below 1024px (CSS only).
  */
+import { TrackedLink } from '@/components/analytics/tracked-link'
 import { GridBackground } from '@/components/grid-background'
+import { ANALYTICS_EVENTS, ANALYTICS_LOCATIONS } from '@/lib/constants/analytics'
 import type { DiagnosisPanelContent } from '@/content/types'
 import { diagnosisBand } from './diagnosis'
 import { OPORTUNIDAD_ANCHORS, toHash } from './constants'
@@ -36,9 +38,14 @@ export function DiagnosisPanel({ count, total, content }: DiagnosisPanelProps) {
         </p>
         <p className="diagnosis-panel__msg">{content.messages[diagnosisBand(count)]}</p>
       </div>
-      <a className="oport-cta diagnosis-panel__cta" href={toHash(OPORTUNIDAD_ANCHORS.CONTACTO)}>
+      <TrackedLink
+        event={ANALYTICS_EVENTS.CTA_CLICK}
+        location={ANALYTICS_LOCATIONS.DIAGNOSIS_PANEL}
+        className="oport-cta diagnosis-panel__cta"
+        href={toHash(OPORTUNIDAD_ANCHORS.CONTACTO)}
+      >
         {content.cta}
-      </a>
+      </TrackedLink>
       <a className="diagnosis-panel__more" href={toHash(OPORTUNIDAD_ANCHORS.ALIANZA)}>
         {content.more}
       </a>

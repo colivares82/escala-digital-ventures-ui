@@ -4,6 +4,7 @@
  * No direct ES content imports — SPEC-P5 FR-5.
  */
 import { AllianceConstellation } from '@/components/alliance-constellation'
+import { TrackedLink } from '@/components/analytics/tracked-link'
 import { ClaimsMarquee } from '@/components/claims-marquee'
 import { ClientChip } from '@/components/client-chip'
 import { FinalCTA } from '@/components/final-cta'
@@ -14,6 +15,7 @@ import { SectionIndex } from '@/components/section-index'
 import { SystemDiagram } from '@/components/system-diagram'
 import { ProofTimelineFig } from '@/components/proof-timeline-fig'
 import { Reveal, WordReveal } from '@/components/motion-runtime'
+import { ANALYTICS_EVENTS, ANALYTICS_LOCATIONS } from '@/lib/constants/analytics'
 import { ANCHORS, ROUTES } from '@/lib/routes'
 import { getPath } from '@/lib/i18n/routes'
 import type { homeContent as homeContentType } from '@/content/es/home'
@@ -52,10 +54,15 @@ export function Hero({
             <WordReveal as="h1" text={content.title} />
             <p>{content.description}</p>
             <div className="hero__actions">
-              <a className="primary-link" href={ANCHORS.CONTACTO}>
+              <TrackedLink
+                event={ANALYTICS_EVENTS.CTA_CLICK}
+                location={ANALYTICS_LOCATIONS.HERO}
+                className="primary-link"
+                href={ANCHORS.CONTACTO}
+              >
                 {content.primaryCta}
                 <span aria-hidden="true">↗</span>
-              </a>
+              </TrackedLink>
               <a className="text-link" href={ANCHORS.METODO}>
                 {content.secondaryCta}
                 <span aria-hidden="true">↓</span>

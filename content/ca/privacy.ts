@@ -73,11 +73,19 @@ export const privacyContent = {
       index: '05',
       name: 'DESTINATARIS',
       title: 'Destinataris',
-      body: 'No cedim les teves dades a tercers amb finalitats pròpies. Utilitzem proveïdors de serveis (allotjament web i enviament de correu electrònic) que actuen com a encarregats del tractament sota contracte i estan ubicats dins de la Unió Europea. Aquest lloc web no utilitza cookies de seguiment ni eines d\'analítica de tercers.',
+      body: 'No cedim les teves dades a tercers amb finalitats pròpies. Utilitzem proveïdors de serveis (allotjament web i enviament de correu electrònic) que actuen com a encarregats del tractament sota contracte i estan ubicats dins de la Unió Europea. Aquest lloc web no utilitza cookies de seguiment.',
+    },
+    {
+      // FEAT-01 §5 — final copy; title carries the §5 bold lead.
+      id: 'estadisticas',
+      index: '06',
+      name: 'ESTADÍSTIQUES',
+      title: 'Estadístiques d\'ús',
+      body: 'Per entendre com s\'utilitza aquest web mesurem les visites de manera agregada amb Savri, una eina d\'analítica que no utilitza galetes ni cap altra tecnologia d\'emmagatzematge al teu dispositiu. Només veiem dades estadístiques agregades —pàgines visitades, lloc de procedència, país, tipus de dispositiu i navegador—, que no ens permeten identificar-te. No fem servir aquesta informació amb finalitats publicitàries ni per crear perfils. Savri actua com a encarregat del tractament. Base legal: el nostre interès legítim a conèixer i millorar l\'ús del web.',
     },
     {
       id: 'derechos',
-      index: '06',
+      index: '07',
       name: 'ELS TEUS DRETS',
       title: 'Els teus drets',
       body: 'Pots exercir en qualsevol moment els drets d\'accés, rectificació, supressió, oposició, limitació del tractament i portabilitat de les teves dades escrivint a hola@escaladigitalventures.com. Si consideres que el tractament no s\'ajusta a la normativa vigent, tens dret a presentar una reclamació davant l\'Agència Espanyola de Protecció de Dades (aepd.es).',

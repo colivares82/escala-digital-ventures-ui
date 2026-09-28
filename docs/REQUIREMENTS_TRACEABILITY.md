@@ -80,7 +80,7 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | R-5.6 | Sobre Escala `/sobre-escala` | ✅ | SPEC-P2.5 — CeremonialHeader, DnaBlock, ValuesList, ExpertiseGrid, Manifesto. All 3 locale slugs. |
 | R-5.7 | Contacto `/contacto` — form + API | ✅ | SPEC-P2.6 — ContactForm (dossier variant), ContactSuccess, API route, rate limit, honeypot. All 3 locale slugs. |
 | R-5.8 | Aviso legal `/aviso-legal`, Privacidad `/privacidad` | ✅ | SPEC-P4 — LegalDoc + AnchorNav, 5/6 LSSI-CE/RGPD sections, placeholders for unconfirmed data. All 3 locale slugs. |
-| R-5.8a | Cookieless analytics (no cookie banner needed) | 🚫 | SPEC-P4 §0: Carlos decided no analytics. No banner needed. ANALYTICS-01 dropped. |
+| R-5.8a | Cookieless analytics (no cookie banner needed) | ◐ | FEAT-01 (supersedes SPEC-P4 §0 drop): Savri, prod-only, first-party proxy, 4 events, privacy §06. Awaiting site ID + prod AC-3…AC-7. |
 | R-5.9 | 404 page — identity-branded | ✅ | SPEC-P4 FR-5 — `app/not-found.tsx`: abisal + GridBackground + kit micro-diagram + «Fuera del sistema.» |
 
 ## §6 — Design system

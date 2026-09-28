@@ -10,6 +10,13 @@ import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ContactForm } from '@/components/contact-form'
 import { sharedContent } from '@/content/es/shared'
+import { trackEvent } from '@/lib/analytics'
+
+// FEAT-01: spy on the analytics facade (gate is covered in tests/lib/analytics.test.ts).
+vi.mock('@/lib/analytics', () => ({
+  trackEvent: vi.fn(),
+  getCurrentLocale: () => 'es',
+}))
 
 const copy = sharedContent.contactForm
 const PRIVACY_HREF = '/privacidad'
@@ -40,6 +47,70 @@ function mockFetchNetworkError() {
 
 afterEach(() => {
   vi.unstubAllGlobals()
+  vi.mocked(trackEvent).mockClear()
+})
+
+async function fillValidForm(user: ReturnType<typeof userEvent.setup>) {
+  await user.type(screen.getByLabelText(/Nombre/i), 'Carlos')
+  await user.type(screen.getByLabelText(/Empresa/i), 'Escala')
+  await user.type(screen.getByLabelText(/Email/i), 'hola@escaladigitalventures.com')
+  await user.type(
+    screen.getByLabelText(/frena tu crecimiento/i),
+    'Los procesos manuales nos ralentizan bastante.',
+  )
+  await user.click(screen.getByRole('checkbox'))
+}
+
+// ── FEAT-01 §3 · AC-6 — Contact Submitted ─────────────────────────────────
+describe('ContactForm — Contact Submitted event', () => {
+  it('fires once with locale only on server-confirmed success', async () => {
+    mockFetchOk()
+    const user = userEvent.setup()
+    render(<ContactForm {...DEFAULT_PROPS} />)
+    await fillValidForm(user)
+    await user.click(screen.getByRole('button', { name: /Enviar/i }))
+
+    await waitFor(() => expect(screen.getByRole('status')).toBeInTheDocument())
+    expect(trackEvent).toHaveBeenCalledTimes(1)
+    // D6: no field values — the payload is exactly { locale }.
+    expect(trackEvent).toHaveBeenCalledWith('Contact Submitted', { locale: 'es' })
+  })
+
+  it('does not fire on a server error', async () => {
+    mockFetchFail()
+    const user = userEvent.setup()
+    const { container } = render(<ContactForm {...DEFAULT_PROPS} />)
+    await fillValidForm(user)
+    await user.click(screen.getByRole('button', { name: /Enviar/i }))
+
+    await waitFor(() =>
+      expect(container.querySelector('.contact-api-error')).toBeInTheDocument(),
+    )
+    expect(trackEvent).not.toHaveBeenCalled()
+  })
+
+  it('does not fire on client-side validation failure', async () => {
+    mockFetchOk()
+    const user = userEvent.setup()
+    render(<ContactForm {...DEFAULT_PROPS} />)
+    await user.click(screen.getByRole('button', { name: /Enviar/i }))
+    expect(fetch).not.toHaveBeenCalled()
+    expect(trackEvent).not.toHaveBeenCalled()
+  })
+
+  it('does not fire when the honeypot is filled, even though the API answers 200', async () => {
+    // Regression: the API's silent 200 on honeypot would otherwise count bots.
+    mockFetchOk()
+    const user = userEvent.setup()
+    const { container } = render(<ContactForm {...DEFAULT_PROPS} />)
+    await fillValidForm(user)
+    const honeypot = container.querySelector('input[name="website"]') as HTMLInputElement
+    await user.type(honeypot, 'http://spam.example')
+    await user.click(screen.getByRole('button', { name: /Enviar/i }))
+
+    await waitFor(() => expect(screen.getByRole('status')).toBeInTheDocument())
+    expect(trackEvent).not.toHaveBeenCalled()
+  })
 })
 
 describe('ContactForm', () => {

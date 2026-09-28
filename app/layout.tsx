@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Archivo, IBM_Plex_Mono, Instrument_Sans } from 'next/font/google'
+import { AnalyticsRuntime } from '@/components/analytics/analytics-runtime'
 import { APPLE_TOUCH_ICON, FAVICON_ICONS } from '@/lib/constants/seo'
 import './globals.css'
 
@@ -86,7 +87,10 @@ export default function RootLayout({
       className={`${archivo.variable} ${instrumentSans.variable} ${ibmPlexMono.variable} bg-background`}
       lang="es"
     >
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        {/* FEAT-01: renders no DOM of its own; Savri active on prod hosts only. */}
+        <AnalyticsRuntime>{children}</AnalyticsRuntime>
+      </body>
     </html>
   )
 }
