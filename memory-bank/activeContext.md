@@ -34,6 +34,30 @@ written (the spec said none; the standards and the 70% gate require them). Reado
 - **Rule going forward:** on landings, reuse the existing site components as-is. Don't fork
   page-local variants.
 
+**LANDING-01A — «¿Te suena?» (28 Sep 2026).** New interactive self-diagnosis section, inserted
+**first after the hero** (Carlos: it replaces nothing, everything else moves down). New order:
+00 Hero · 01 ¿Te suena? (`#te-suena`) · 02 Un lunes · 03 Escenarios (`#escenarios`, cards
+kept) · 04 Alianza (`#alianza`) · 05 Quién · 06 Empezamos · FinalCTA. Page-local files:
+`te-suena-section.tsx` (client), `phrase-wall.tsx`, `diagnosis-panel.tsx`, `diagnosis.ts`
+(pure band/toggle helpers), `use-phrase-selection.ts`. Hydration flag via
+`useSyncExternalStore`, because the lint rule bans setState in an effect. SSR/no-JS shows every
+answer and hides the counter. Nothing is stored or sent. Spec deviations: `globals.css` +
+`types.ts` + tests (needed for the renumbering; plus a new `te-suena.test.tsx`), and the
+«Con tu sistema» label uses `color-mix(--ambre-dk 85%, --ink)` because `--ambre-dk` alone is
+4.2:1 on the warm tint (fails AA).
+
+**LANDING-01B — Hero two-column + vertical FIG. 01 (28 Sep 2026).** The hero is now 5fr/6fr with an
+88px gap, vertically centred: copy on the left, a vertical `OportunidadHeroFig` on the right
+(rewritten in place). The figure is chips → curved dashed links into the core's top edge → core →
+2 arrows → CONTROL/TIEMPO cards. Geometry comes from the wireframe; chip widths and entry points
+are derived from the labels. It stacks below 1024px (figure max 560px) and scales to width, with
+no inner scroller. Copy changes: EXCEL, «UN SOLO LUGAR» removed (`headers` is now a 2-tuple),
+full stops on the outcomes, new aria. Deviations: container kept as `page-shell` (88rem), not
+1200px, to stay aligned with the sections below. Mobile top padding is header + 72px (152px)
+because the header is fixed and overlaps the hero. The figure test was rewritten for the
+vertical geometry. Measured at 1280: gap 88, centres equal, chip label 15.4px, core title
+26.4px, no horizontal scroll at any width.
+
 **Open for Carlos:** (1) FIG. 01/02 numbering was kept as in the wireframe (the free global
 numbers are FIG. 13/14). (2) Visual QA at 360px and with reduced motion needs a real browser.
 (3) Update the offer date/copy in `content/es/oportunidad.ts` by hand when it changes.

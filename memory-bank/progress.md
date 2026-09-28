@@ -7,6 +7,7 @@
 | 7-section landing, Header/Footer unchanged, no nav entry | Complete |
 | ES-only route mechanism (`ES_ONLY_ROUTES`, `isEsOnlyPage`); EN/CA 404; switcher falls back to `/en`, `/ca` | Complete |
 | noindex, nofollow · no hreflang · not in sitemap | Complete (verified live) |
+| LANDING-01A «¿Te suena?» self-diagnosis as § 01 (8 phrases, live panel, sticky/bottom bar, no-JS fallback) | Complete |
 | Contact = site-wide `FinalCTA`/`ContactSection` (no page-local block) | Complete (revision) |
 | § 03 = shared `AllianceConstellation` protagonist on abisal (Magupell · BioZero) | Complete (revision) |
 | Hero proportion aligned to site tokens/rhythm; FIG. 01 capped at 68rem | Complete (revision) |

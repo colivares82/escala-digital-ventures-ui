@@ -1,6 +1,7 @@
 /**
  * OportunidadPage — /oportunidad (LANDING-01). ES only, noindex, no nav entry.
- * Sections 00 Hero → 05 Cómo empezamos, then the site-wide FinalCTA
+ * Sections 00 Hero → 01 ¿Te suena? (LANDING-01A) → … → 06 Cómo empezamos,
+ * then the site-wide FinalCTA
  * (ContactSection, renders #contacto) — reused as-is, no landing-specific copy.
  * Wireframe: specs/mockups/wireframe-landing01-oportunidad.html
  */
@@ -12,6 +13,7 @@ import {
   ScenariosSection,
 } from '@/components/oportunidad/oportunidad-story'
 import { AboutSection, StartSection } from '@/components/oportunidad/oportunidad-closing'
+import { TeSuenaSection } from '@/components/oportunidad/te-suena-section'
 import type { Dictionary } from '@/lib/i18n/dictionary'
 import { getPath } from '@/lib/i18n/routes'
 import type { Locale } from '@/lib/i18n/types'
@@ -25,6 +27,7 @@ export function OportunidadPage({ dict, locale }: { dict: Dictionary; locale: Lo
   return (
     <>
       <OportunidadHero content={content.hero} />
+      <TeSuenaSection content={content.teSuena} />
       <DaySection content={content.day} />
       <ScenariosSection content={content.scenarios} />
       <AllianceSection content={content.alliance} figure={dict.home.allianceFigure} />

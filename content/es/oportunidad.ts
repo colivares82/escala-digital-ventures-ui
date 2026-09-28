@@ -34,21 +34,98 @@ export const oportunidadContent = {
     ctaSecondary: 'Ver cómo sería en tu negocio ↓',
     badge: 'Cinco alianzas · hoy quedan 3 plazas',
     fig: {
-      headers: ['HOY · TODO REPARTIDO', 'UN SOLO LUGAR', 'LO QUE GANAS'],
-      inputs: ['WHATSAPP', 'HOJAS DE CÁLCULO', 'CORREOS', 'PAPEL', 'LLAMADAS'],
+      // LANDING-01B: vertical figure — label above the chips, label above the outcomes.
+      headers: ['HOY · TODO REPARTIDO', 'LO QUE GANAS'],
+      inputs: ['WHATSAPP', 'EXCEL', 'CORREOS', 'PAPEL', 'LLAMADAS'],
       coreTitle: 'TU SISTEMA',
       coreSub: 'HECHO A TU MEDIDA',
       outputs: [
-        { title: 'CONTROL', sub: 'Sabes qué pasa, hoy' },
-        { title: 'TIEMPO', sub: 'Tu equipo, en lo que importa' },
+        { title: 'CONTROL', sub: 'Sabes qué pasa, hoy.' },
+        { title: 'TIEMPO', sub: 'Tu equipo, en lo que importa.' },
       ],
       caption: 'FIG. 01 — De la operativa repartida a tu propio sistema',
-      aria: 'De la operativa repartida a tu propio sistema',
+      aria: 'Todo lo que hoy está repartido, en un solo sistema hecho a tu medida que te da control y tiempo',
+    },
+  },
+
+  // LANDING-01A · wireframe: specs/mockups/wireframe-landing01c-te-suena.html
+  teSuena: {
+    sectionIndex: { index: '01', label: '¿Te suena?' },
+    title: '¿Cuántas de estas frases has dicho esta semana?',
+    lead: 'Marca las que reconozcas. No hay respuestas malas: son las mismas que escuchamos en casi todos los negocios que han crecido deprisa.',
+    answerLabel: 'Con tu sistema',
+    phrases: [
+      {
+        quote: '¿Alguien sabe cuál es la última versión del Excel?',
+        answer: 'Un solo lugar con el dato bueno. Todos ven lo mismo.',
+        span: 'wide',
+        tilt: -1.2,
+      },
+      {
+        quote: 'Ya te lo mandé por WhatsApp.',
+        answer: 'Cada cosa queda registrada donde toca, no perdida en un chat.',
+        span: 'half',
+        tilt: 1.0,
+      },
+      {
+        quote: 'Eso solo lo sabe hacer Marta.',
+        answer: 'El proceso vive en el sistema, no en la cabeza de una persona.',
+        span: 'half',
+        tilt: 0.6,
+      },
+      {
+        quote: 'No puedo irme de vacaciones: si no estoy, esto se para.',
+        answer: 'Tu negocio sigue funcionando aunque tú no estés.',
+        span: 'wide',
+        tilt: -0.8,
+      },
+      {
+        quote: 'Me enteré a final de mes.',
+        answer: 'Lo ves el mismo día, cuando todavía tiene arreglo.',
+        span: 'half',
+        tilt: 1.4,
+      },
+      {
+        quote: 'Cada local lo hace a su manera.',
+        answer: 'Un mismo estándar para todo tu equipo y toda tu red.',
+        span: 'half',
+        tilt: -0.5,
+      },
+      {
+        quote: 'Esta noche me pongo a cuadrar los números.',
+        answer: 'Los números ya están al día. Tu noche, para ti.',
+        span: 'wide',
+        tilt: 0.9,
+      },
+      {
+        quote: 'Vamos a tener que contratar a alguien solo para pasar datos.',
+        answer: 'Creces sin sumar horas de copiar y pegar.',
+        span: 'wide',
+        tilt: -1.1,
+      },
+    ],
+    panel: {
+      label: 'Tu resultado',
+      of: '/ 8',
+      scaleLow: 'Bajo control',
+      scaleHigh: 'A pulso',
+      messages: {
+        none: 'Ninguna, de momento. Si tu operativa va por delante, genial. Si algún día deja de ir, aquí estaremos.',
+        low: 'Empieza a pesar. Es el mejor momento para ordenarlo: antes de que duela.',
+        mid: 'Tu negocio ha crecido más rápido que sus herramientas. Y eso tiene solución.',
+        high: 'Estás sosteniendo el negocio a pulso. Eso es exactamente lo que resolvemos.',
+      },
+      cta: 'Cuéntanos tu caso',
+      more: 'O sigue leyendo: así lo resolvemos ↓',
+    },
+    closing: {
+      lead: 'No es falta de esfuerzo ni de equipo.',
+      accent: 'Es que tu negocio ha crecido más rápido que sus herramientas.',
     },
   },
 
   day: {
-    sectionIndex: { index: '01', label: 'Un lunes cualquiera' },
+    sectionIndex: { index: '02', label: 'Un lunes cualquiera' },
     title: 'Un lunes cualquiera en tu negocio.',
     lead: 'No es falta de ganas ni de equipo. Es que la operativa vive repartida en demasiados sitios, y cada día cuesta un poco más.',
     table: {
@@ -87,7 +164,7 @@ export const oportunidadContent = {
   },
 
   scenarios: {
-    sectionIndex: { index: '02', label: 'Cómo sería en tu negocio' },
+    sectionIndex: { index: '03', label: 'Cómo sería en tu negocio' },
     title: 'Cómo sería en tu negocio.',
     lead: 'Tres escenarios ilustrativos. Cada negocio es distinto: por eso cada solución se construye a medida.',
     flowLabels: {
@@ -131,7 +208,7 @@ export const oportunidadContent = {
   },
 
   alliance: {
-    sectionIndex: { index: '03', label: 'Una alianza, no un proveedor' },
+    sectionIndex: { index: '04', label: 'Una alianza, no un proveedor' },
     title: 'No te vendemos un programa. Nos convertimos en tu equipo de tecnología.',
     lead: 'Trabajamos con cinco negocios a la vez, no con cincuenta. Por eso podemos implicarnos como si el negocio fuera nuestro.',
     figCaption: 'FIG. 02 — Cinco plazas · dos activas · tres disponibles',
@@ -162,7 +239,7 @@ export const oportunidadContent = {
   },
 
   about: {
-    sectionIndex: { index: '04', label: 'Quién está detrás' },
+    sectionIndex: { index: '05', label: 'Quién está detrás' },
     title: 'Hablas con quien lo construye.',
     name: 'Carlos Olivares',
     role: 'Fundador · Product Engineer',
@@ -194,7 +271,7 @@ export const oportunidadContent = {
   },
 
   start: {
-    sectionIndex: { index: '05', label: 'Cómo empezamos' },
+    sectionIndex: { index: '06', label: 'Cómo empezamos' },
     title: 'Empezar es sencillo. Y no te compromete a todo.',
     lead: 'Avanzamos por etapas. Solo pasas a la siguiente cuando la anterior te ha demostrado su valor.',
     steps: [

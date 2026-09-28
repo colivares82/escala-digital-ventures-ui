@@ -58,7 +58,10 @@ export function AllianceSection({
   figure: AllianceFigureContent
 }) {
   return (
-    <section className="section section--dark dark-surface oport-section oport-section--dark">
+    <section
+      id={OPORTUNIDAD_ANCHORS.ALIANZA}
+      className="section section--dark dark-surface oport-section oport-section--dark"
+    >
       <GridBackground />
       <div className="page-shell oport-section__inner">
         <SectionHead sectionIndex={content.sectionIndex} title={content.title} lead={content.lead} />

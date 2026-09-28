@@ -9,12 +9,14 @@ import { oportunidadContent as c } from '@/content/es/oportunidad'
 const dict = getDictionary('es')
 
 describe('OportunidadPage', () => {
-  it('renders sections 00 → 05 in wireframe order, then the site-wide contact block', () => {
+  it('renders sections 00 → 06 («¿Te suena?» first), then the site-wide contact block', () => {
     const { container } = render(<OportunidadPage dict={dict} locale="es" />)
     const indexes = [...container.querySelectorAll('.section-index span:first-child')].map(
       (n) => n.textContent,
     )
-    expect(indexes).toEqual(['00', '01', '02', '03', '04', '05'])
+    expect(indexes).toEqual(['00', '01', '02', '03', '04', '05', '06'])
+    const sections = container.querySelectorAll('section')
+    expect(sections[1]).toHaveAttribute('id', 'te-suena')
     const last = container.lastElementChild as HTMLElement
     expect(last).toHaveAttribute('id', 'contacto')
   })
@@ -33,7 +35,10 @@ describe('OportunidadPage', () => {
 
   it('CTAs point to the in-page anchors, which exist (AC-9)', () => {
     const { container } = render(<OportunidadPage dict={dict} locale="es" />)
-    expect(screen.getByRole('link', { name: c.hero.ctaPrimary })).toHaveAttribute('href', '#contacto')
+    // Hero CTA + «¿Te suena?» panel CTA share the label; both must reach the form.
+    const contactCtas = screen.getAllByRole('link', { name: c.hero.ctaPrimary })
+    expect(contactCtas).toHaveLength(2)
+    contactCtas.forEach((a) => expect(a).toHaveAttribute('href', '#contacto'))
     expect(screen.getByRole('link', { name: c.hero.ctaSecondary })).toHaveAttribute('href', '#escenarios')
     expect(container.querySelector('#contacto')).toBeInTheDocument()
     expect(container.querySelector('#escenarios')).toBeInTheDocument()
@@ -58,7 +63,13 @@ describe('OportunidadPage', () => {
     )
   })
 
-  it('§ 03 renders the shared AllianceConstellation with Magupell and BioZero', () => {
+  it('the «¿Te suena?» read-more link targets the Alianza section, which exists', () => {
+    const { container } = render(<OportunidadPage dict={dict} locale="es" />)
+    expect(screen.getByRole('link', { name: c.teSuena.panel.more })).toHaveAttribute('href', '#alianza')
+    expect(container.querySelector('#alianza')).toHaveClass('oport-section--dark')
+  })
+
+  it('§ 04 renders the shared AllianceConstellation with Magupell and BioZero', () => {
     const { container } = render(<OportunidadPage dict={dict} locale="es" />)
     expect(container.querySelector('.alliance-constellation--protagonist')).toBeInTheDocument()
     const fig = container.querySelector('.oport-alliance__fig') as HTMLElement

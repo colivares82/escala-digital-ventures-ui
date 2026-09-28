@@ -23,7 +23,8 @@ describe('LANDING-01 · content', () => {
     expect(c.meta.description.length).toBeLessThanOrEqual(155)
   })
 
-  it('has 5 day rows, 3 scenarios, 3 planes, 4 readouts, 3 steps', () => {
+  it('has 8 phrases, 5 day rows, 3 scenarios, 3 planes, 4 readouts, 3 steps', () => {
+    expect(c.teSuena.phrases).toHaveLength(8)
     expect(c.day.table.rows).toHaveLength(5)
     expect(c.scenarios.items).toHaveLength(3)
     expect(c.alliance.planes).toHaveLength(3)
@@ -52,7 +53,17 @@ describe('LANDING-01 · content', () => {
     expect(values).toEqual(['20+ años', '40.000+', '+100', 'MIT'])
   })
 
-  it('§ 03 seats come from the shared home figure (Magupell · BioZero · 3 free)', () => {
+  it('«¿Te suena?» phrases: spec spans/tilts, tilt within ±1.4°, no stored « » marks', () => {
+    const { phrases } = c.teSuena
+    expect(phrases.map((p) => p.span)).toEqual(['wide', 'half', 'half', 'wide', 'half', 'half', 'wide', 'wide'])
+    expect(phrases.map((p) => p.tilt)).toEqual([-1.2, 1.0, 0.6, -0.8, 1.4, -0.5, 0.9, -1.1])
+    phrases.forEach((p) => {
+      expect(Math.abs(p.tilt)).toBeLessThanOrEqual(1.4)
+      expect(p.quote).not.toMatch(/[«»]/)
+    })
+  })
+
+  it('§ 04 seats come from the shared home figure (Magupell · BioZero · 3 free)', () => {
     const seats = getDictionary('es').home.allianceFigure.seats
     expect(seats.filter((s) => s.state === 'occupied').map((s) => s.name)).toEqual(['Magupell', 'BioZero'])
     expect(seats.filter((s) => s.state === 'free')).toHaveLength(3)

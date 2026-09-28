@@ -509,7 +509,8 @@ export interface OportunidadSectionIndex {
 export type ScenarioFlowRow = readonly [string, string, string]
 
 export interface OportunidadHeroFigContent {
-  readonly headers: readonly [string, string, string]
+  /** [label above the inputs, label above the outcomes] — vertical FIG. 01 (LANDING-01B). */
+  readonly headers: readonly [string, string]
   /** Exactly 5 scattered inputs, top → bottom. */
   readonly inputs: readonly [string, string, string, string, string]
   readonly coreTitle: string
@@ -551,6 +552,34 @@ export interface ScenarioFlowLabels {
   readonly aria: string
 }
 
+/** LANDING-01A — one owner phrase in the «¿Te suena?» wall. */
+export interface OportunidadPhrase {
+  /** Stored without « »; the component adds the quote marks. */
+  readonly quote: string
+  readonly answer: string
+  readonly span: 'wide' | 'half'
+  /** Fixed resting tilt in degrees (−1.4 … +1.4). Never random. */
+  readonly tilt: number
+}
+
+/** Result message per band: 0 · 1–2 · 3–5 · 6–8 marked phrases. */
+export interface DiagnosisMessages {
+  readonly none: string
+  readonly low: string
+  readonly mid: string
+  readonly high: string
+}
+
+export interface DiagnosisPanelContent {
+  readonly label: string
+  readonly of: string
+  readonly scaleLow: string
+  readonly scaleHigh: string
+  readonly messages: DiagnosisMessages
+  readonly cta: string
+  readonly more: string
+}
+
 export interface OportunidadReadoutContent {
   readonly label: string
   readonly value: string
@@ -568,6 +597,16 @@ export interface OportunidadDictionary {
     readonly ctaSecondary: string
     readonly badge: string
     readonly fig: OportunidadHeroFigContent
+  }
+  /** LANDING-01A — interactive self-diagnosis, first section after the hero. */
+  readonly teSuena: {
+    readonly sectionIndex: OportunidadSectionIndex
+    readonly title: string
+    readonly lead: string
+    readonly answerLabel: string
+    readonly phrases: ReadonlyArray<OportunidadPhrase>
+    readonly panel: DiagnosisPanelContent
+    readonly closing: { readonly lead: string; readonly accent: string }
   }
   readonly day: {
     readonly sectionIndex: OportunidadSectionIndex

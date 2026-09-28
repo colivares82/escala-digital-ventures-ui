@@ -17,23 +17,46 @@ describe('OportunidadHeroFig', () => {
     expect(screen.getByText(c.hero.fig.caption)).toBeInTheDocument()
   })
 
-  it('input connectors run from the box right edge to the core left edge', () => {
+  // LANDING-01B — vertical figure: chip bottom-centre → distinct points on the core's top edge.
+  it('inbound links run from each chip bottom-centre to a distinct, ordered core top-edge point', () => {
     const { container } = render(<OportunidadHeroFig content={c.hero.fig} />)
-    const coreX = Number(container.querySelector('.oport-hero-fig__core')?.getAttribute('x'))
-    const boxes = container.querySelectorAll('.oport-hero-fig__input')
-    container.querySelectorAll('.oport-hero-fig__flow-in').forEach((line, i) => {
-      const boxRight = Number(boxes[i].getAttribute('x')) + Number(boxes[i].getAttribute('width'))
-      expect(Number(line.getAttribute('x1'))).toBeCloseTo(boxRight)
-      expect(Number(line.getAttribute('x2'))).toBe(coreX)
+    const core = container.querySelector('.oport-hero-fig__core') as SVGRectElement
+    const [coreX, coreY, coreW] = ['x', 'y', 'width'].map((a) => Number(core.getAttribute(a)))
+    const chips = container.querySelectorAll('.oport-hero-fig__input')
+    const ends = [...container.querySelectorAll('.oport-hero-fig__flow-in')].map((path, i) => {
+      const nums = (path.getAttribute('d') ?? '').match(/-?\d+(\.\d+)?/g)!.map(Number)
+      const [sx, sy] = nums
+      const [ex, ey] = nums.slice(-2)
+      const chipX = Number(chips[i].getAttribute('x'))
+      const chipW = Number(chips[i].getAttribute('width'))
+      expect(sx).toBeCloseTo(chipX + chipW / 2)
+      expect(sy).toBeCloseTo(Number(chips[i].getAttribute('y')) + Number(chips[i].getAttribute('height')))
+      expect(ey).toBe(coreY)
+      expect(ex).toBeGreaterThan(coreX)
+      expect(ex).toBeLessThan(coreX + coreW)
+      return ex
     })
+    // Same order as the chips and strictly increasing → the five links never cross.
+    expect(ends).toEqual([...ends].sort((a, b) => a - b))
+    expect(new Set(ends).size).toBe(5)
   })
 
-  it('draws connectors before boxes so lines sit behind nodes', () => {
+  it('draws every link before any box so lines sit behind nodes', () => {
     const { container } = render(<OportunidadHeroFig content={c.hero.fig} />)
-    const all = [...container.querySelectorAll('svg > *')]
-    const lastLine = all.map((n) => n.tagName).lastIndexOf('line')
-    const firstGroup = all.findIndex((n) => n.tagName === 'g')
-    expect(lastLine).toBeLessThan(firstGroup)
+    const all = [...container.querySelectorAll('svg *')]
+    const lastLink = Math.max(
+      ...all.map((n, i) => (n.matches('.oport-hero-fig__flow-in, .oport-hero-fig__flow-out') ? i : -1)),
+    )
+    const firstBox = all.findIndex((n) => n.tagName === 'rect')
+    expect(lastLink).toBeLessThan(firstBox)
+  })
+
+  it('renders only the two mono labels (no «UN SOLO LUGAR»)', () => {
+    const { container } = render(<OportunidadHeroFig content={c.hero.fig} />)
+    expect([...container.querySelectorAll('.oport-hero-fig__header')].map((n) => n.textContent)).toEqual([
+      'HOY · TODO REPARTIDO',
+      'LO QUE GANAS',
+    ])
   })
 })
 
