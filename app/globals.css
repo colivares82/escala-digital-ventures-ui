@@ -5927,3 +5927,657 @@ h1, h2, h3, h4, p {
 }
 
 }
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* LANDING-01 — /oportunidad (ES only, noindex)                                 */
+/* Wireframe: specs/mockups/wireframe-landing01-oportunidad.html                */
+/* Tokens only — no new tokens. Wireframe "amber-dark" = existing --ambre-dk,   */
+/* "deep" = --abisal-gradient-end. Alt paper surface = --paper under a 4% ink   */
+/* wash (same rgb(22 24 29 / a) idiom already used for --line).                 */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* Shared type */
+.oport-head {
+  align-items: end;
+  margin-bottom: 3.5rem;
+}
+.oport-head__title {
+  margin: 0;
+  max-width: 18ch;
+  font: 600 var(--text-display-lg) / 1.02 var(--font-archivo);
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.oport-head__lead {
+  margin: 0;
+}
+.oport-section .section-index span:first-child {
+  color: var(--ambre-dk);
+}
+.oport-section--alt {
+  background: linear-gradient(rgb(22 24 29 / 0.04), rgb(22 24 29 / 0.04)), var(--paper);
+}
+.oport-fig__caption {
+  margin: 0.75rem 0 0;
+  color: rgb(247 247 244 / 0.7);
+  font: 500 0.7rem / 1.5 var(--font-ibm-plex-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.oport-fig__caption--light {
+  color: rgb(22 24 29 / 0.64);
+}
+
+/* § 00 Hero */
+.oport-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 10rem 0 7rem;
+}
+.oport-hero__inner {
+  position: relative;
+  z-index: 1;
+}
+.oport-hero .section-index {
+  margin-bottom: 2rem;
+}
+.oport-hero__title {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font: 600 clamp(2.5rem, 5.4vw, 4.5rem) / 1.02 var(--font-archivo);
+  letter-spacing: -0.045em;
+}
+.oport-hero__title-accent {
+  color: var(--ambre);
+}
+.oport-hero__lead {
+  max-width: 40rem;
+  margin: 1.5rem 0 0;
+  color: rgb(247 247 244 / 0.74);
+  font-size: 1.15rem;
+  line-height: 1.6;
+}
+.oport-hero__actions {
+  align-items: center;
+  margin: 2.25rem 0 1.75rem;
+}
+.oport-cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 3rem;
+  padding: 0 1.4rem;
+  border-radius: 2px;
+  background: var(--ambre);
+  color: var(--ink);
+  font: 500 0.8rem var(--font-ibm-plex-mono);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: background 180ms, color 180ms;
+}
+.oport-cta:hover,
+.oport-cta:focus-visible {
+  background: var(--paper);
+}
+.oport-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--line-light);
+  font: 500 0.75rem var(--font-ibm-plex-mono);
+  letter-spacing: 0.04em;
+}
+.oport-badge__dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--ambre);
+  animation: oport-pulse 2.4s ease-in-out infinite;
+}
+@keyframes oport-pulse {
+  50% { opacity: 0.35; }
+}
+@keyframes oport-dash {
+  to { stroke-dashoffset: -20; }
+}
+
+/* FIG. 01 */
+.oport-fig {
+  margin: 4rem 0 0;
+}
+.oport-fig__scroll {
+  max-width: 100%;
+}
+.oport-hero-fig__header {
+  fill: rgb(247 247 244 / 0.55);
+  font: 500 12px var(--font-ibm-plex-mono);
+  letter-spacing: 1.5px;
+}
+.oport-hero-fig__flow-in {
+  stroke: rgb(247 247 244 / 0.55);
+  stroke-width: 1.4;
+  stroke-dasharray: 5 5;
+  animation: oport-dash 3s linear infinite;
+}
+.oport-hero-fig__flow-out {
+  stroke: var(--paper);
+  stroke-width: 1.6;
+}
+.oport-hero-fig__input {
+  fill: var(--abisal);
+  stroke: rgb(247 247 244 / 0.55);
+  stroke-dasharray: 4 3;
+}
+.oport-hero-fig__input-label {
+  fill: rgb(247 247 244 / 0.7);
+  font: 500 13px var(--font-ibm-plex-mono);
+  letter-spacing: 1px;
+}
+.oport-hero-fig__output {
+  fill: var(--abisal);
+  stroke: var(--paper);
+  stroke-width: 1.4;
+}
+.oport-hero-fig__bar {
+  fill: var(--ambre);
+}
+.oport-hero-fig__output-title {
+  fill: var(--paper);
+  font: 500 15px var(--font-ibm-plex-mono);
+  letter-spacing: 1.5px;
+}
+.oport-hero-fig__output-sub {
+  fill: rgb(247 247 244 / 0.7);
+  font: 400 14.5px var(--font-instrument-sans);
+}
+.oport-hero-fig__core {
+  fill: var(--abisal-gradient-end);
+  stroke: var(--ambre);
+  stroke-width: 2;
+}
+.oport-hero-fig__core-title {
+  fill: var(--paper);
+  font: 600 18px var(--font-archivo);
+}
+.oport-hero-fig__core-sub {
+  fill: var(--ambre);
+  font: 500 12.5px var(--font-ibm-plex-mono);
+  letter-spacing: 2px;
+}
+
+/* § 01 Day comparison */
+.day-comparison {
+  width: 100%;
+  border-collapse: collapse;
+  border-top: 1px solid var(--ink);
+  text-align: left;
+}
+.day-comparison thead th {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--line);
+  color: rgb(22 24 29 / 0.64);
+  font: 500 0.72rem var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.day-comparison thead th:first-child {
+  width: 6rem;
+}
+.day-comparison .day-comparison__after-head {
+  color: var(--ambre-dk);
+}
+.day-comparison tbody th,
+.day-comparison td {
+  padding: 1.4rem 1rem 1.4rem 0;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  line-height: 1.55;
+}
+.day-comparison__time {
+  color: var(--ambre-dk);
+  font: 500 0.95rem var(--font-ibm-plex-mono);
+}
+.day-comparison__before {
+  padding-left: 1.1rem !important;
+  border-left: 1.5px dashed rgb(22 24 29 / 0.35);
+  color: rgb(22 24 29 / 0.64);
+}
+.day-comparison__after {
+  padding-left: 1.1rem !important;
+  border-left: 3px solid var(--ambre);
+  color: var(--ink);
+}
+.oport-closing {
+  margin: 2.5rem 0 0;
+  color: var(--ambre-dk);
+  font: 600 clamp(1.4rem, 2.4vw, 1.75rem) / 1.2 var(--font-archivo);
+  letter-spacing: -0.02em;
+}
+
+/* § 02 Scenarios */
+.oport-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+.scenario-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+.scenario-card__eyebrow,
+.scenario-card__outcome-label {
+  margin: 0;
+  font: 500 0.72rem var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.scenario-card__eyebrow {
+  color: var(--ambre-dk);
+}
+.scenario-card__title {
+  margin: 0.6rem 0;
+  font: 600 1.5rem / 1.15 var(--font-archivo);
+  letter-spacing: -0.02em;
+}
+.scenario-card__problem {
+  margin: 0;
+  color: rgb(22 24 29 / 0.64);
+  line-height: 1.55;
+}
+.scenario-card__figbox {
+  margin: 1.25rem 0 0.25rem;
+  padding: 0.9rem 0.6rem;
+  border: 1px solid var(--line);
+}
+.scenario-card__outcome-label {
+  margin-top: 0.9rem;
+  color: rgb(22 24 29 / 0.64);
+}
+.scenario-card__outcome {
+  margin: 0.4rem 0 0;
+  line-height: 1.55;
+}
+.scenario-flow__row-label {
+  fill: rgb(22 24 29 / 0.6);
+  font: 500 9.5px var(--font-ibm-plex-mono);
+  letter-spacing: 1.2px;
+}
+.scenario-flow__row-label--after {
+  fill: var(--ambre-dk);
+}
+.scenario-flow__link--dashed,
+.scenario-flow__link--faded {
+  stroke: rgb(22 24 29 / 0.45);
+  stroke-width: 1.3;
+  stroke-dasharray: 3 3;
+}
+.scenario-flow__link--faded {
+  stroke: rgb(22 24 29 / 0.25);
+}
+.scenario-flow__break {
+  stroke: var(--ambre-dk);
+  stroke-width: 1.5;
+  fill: none;
+}
+.scenario-flow__box--dashed {
+  fill: var(--paper);
+  stroke: rgb(22 24 29 / 0.45);
+  stroke-dasharray: 3 2.5;
+}
+.scenario-flow__box--solid {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.3;
+}
+.scenario-flow__link--solid {
+  stroke: var(--ink);
+  stroke-width: 1.4;
+}
+.scenario-flow__arrow {
+  fill: var(--ink);
+}
+.scenario-flow__bar {
+  fill: var(--ambre);
+}
+.scenario-flow__box-label,
+.scenario-flow__box-label--muted {
+  fill: var(--ink);
+  font: 500 9.5px var(--font-ibm-plex-mono);
+  letter-spacing: 0.4px;
+}
+.scenario-flow__box-label--muted {
+  fill: rgb(22 24 29 / 0.68);
+}
+
+/* § 03 Alliance */
+.oport-alliance {
+  display: grid;
+  grid-template-columns: minmax(0, 40fr) minmax(0, 60fr);
+  gap: 3.5rem;
+  align-items: center;
+}
+.oport-constellation {
+  margin: 0;
+  width: min(100%, 26rem);
+}
+.oport-constellation__conn--solid {
+  stroke: var(--ink);
+  stroke-width: 1.3;
+}
+.oport-constellation__conn--dashed {
+  stroke: rgb(22 24 29 / 0.35);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 3;
+}
+.oport-constellation__node--active {
+  fill: var(--ambre);
+  stroke: var(--ink);
+  stroke-width: 1.2;
+  animation: oport-pulse 2.4s ease-in-out infinite;
+}
+.oport-constellation__node--free {
+  fill: var(--paper);
+  stroke: rgb(22 24 29 / 0.45);
+  stroke-width: 1.2;
+  stroke-dasharray: 2.5 2;
+}
+.oport-constellation__label,
+.oport-constellation__label--free {
+  fill: var(--ink);
+  font: 500 8.5px var(--font-ibm-plex-mono);
+  letter-spacing: 1px;
+}
+.oport-constellation__label--free {
+  fill: rgb(22 24 29 / 0.64);
+}
+.oport-constellation__core {
+  fill: var(--abisal);
+}
+.oport-constellation__core-label {
+  fill: var(--paper);
+  font: 500 9.5px var(--font-ibm-plex-mono);
+  letter-spacing: 1.5px;
+}
+.oport-planes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.oport-planes__item {
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--line);
+}
+.oport-planes__label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  color: var(--mar);
+  font: 500 0.72rem var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.oport-planes__label::before,
+.oport-offer__label::before {
+  content: '';
+  width: 0.9rem;
+  height: 3px;
+  background: var(--ambre);
+}
+.oport-planes__title {
+  margin: 0.5rem 0;
+  font: 600 1.25rem / 1.2 var(--font-archivo);
+  letter-spacing: -0.02em;
+}
+.oport-planes__body {
+  margin: 0;
+  color: rgb(22 24 29 / 0.64);
+  line-height: 1.55;
+}
+.oport-not {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 1rem 1.75rem;
+  margin-top: 2.5rem;
+  padding: 1.1rem 0;
+  border-block: 1px solid var(--line);
+}
+.oport-not__label {
+  margin: 0;
+  color: rgb(22 24 29 / 0.64);
+  font: 500 0.72rem var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.oport-not__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* § 04 About */
+.oport-person {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.1rem;
+  margin: 1rem 0 0;
+}
+.oport-person__name {
+  font: 600 1.5rem var(--font-archivo);
+}
+.oport-person__role {
+  color: var(--mar);
+  font: 500 0.72rem var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.oport-readouts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+.oport-readouts__cell {
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--ink);
+}
+.oport-readouts__label {
+  color: var(--ambre-dk);
+  font: 500 0.72rem var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.oport-readouts__value {
+  margin: 0.5rem 0 0.4rem;
+  font: 600 var(--text-figure) / 1.05 var(--font-archivo);
+  letter-spacing: -0.03em;
+}
+.oport-readouts__caption {
+  margin: 0;
+  color: rgb(22 24 29 / 0.64);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.oport-about__link {
+  margin-top: 2rem;
+  color: var(--mar);
+}
+
+/* § 05 Start */
+.oport-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.oport-steps__item {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  padding: 1.4rem 0;
+  border-top: 1px solid var(--line);
+}
+.oport-steps__n {
+  color: var(--ambre-dk);
+  font: 600 2.25rem / 1 var(--font-archivo);
+}
+.oport-steps__title {
+  margin: 0 0 0.4rem;
+  font: 600 1.25rem var(--font-archivo);
+}
+.oport-steps__body {
+  margin: 0;
+  color: rgb(22 24 29 / 0.64);
+  line-height: 1.55;
+}
+.oport-invest {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 3.5rem;
+  align-items: stretch;
+  margin-top: 2.5rem;
+}
+.oport-price {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--ink);
+}
+.oport-price__label {
+  margin: 0;
+  color: var(--ambre-dk);
+  font: 500 0.72rem var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.oport-price__value {
+  margin: 0.5rem 0;
+  font: 600 clamp(1.75rem, 3vw, 2.5rem) / 1.1 var(--font-archivo);
+  letter-spacing: -0.03em;
+}
+.oport-price__note {
+  margin: 0;
+  color: rgb(22 24 29 / 0.64);
+  line-height: 1.55;
+}
+.oport-offer {
+  padding: 1.75rem;
+}
+.oport-offer__label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  color: var(--ambre);
+  font: 500 0.72rem var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.oport-offer__big {
+  margin: 0.75rem 0 0;
+  color: var(--ambre);
+  font: 600 4rem / 1 var(--font-archivo);
+  letter-spacing: -0.04em;
+}
+.oport-offer__line {
+  margin: 0.5rem 0 0;
+  font: 600 1.375rem var(--font-archivo);
+}
+.oport-offer__note {
+  margin: 0.5rem 0 0;
+  color: rgb(247 247 244 / 0.74);
+}
+
+/* § 06 Contact */
+.oport-contact__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 3.5rem;
+  align-items: start;
+}
+.oport-contact .lead-copy {
+  margin-top: 1.25rem;
+}
+
+/* Anchors land below the fixed header */
+#escenarios,
+#contacto {
+  scroll-margin-top: 5rem;
+}
+
+/* Responsive — §2 layout rules */
+@media (max-width: 1023px) {
+  .oport-cards,
+  .oport-alliance,
+  .oport-invest,
+  .oport-contact__grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .oport-readouts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 720px) {
+  .oport-hero {
+    padding: 7rem 0 5rem;
+  }
+  /* FIG. 01 scrolls inside its own container; the page never scrolls sideways. */
+  .oport-fig__scroll {
+    overflow-x: auto;
+  }
+  .oport-fig__scroll .oport-hero-fig {
+    min-width: 560px;
+  }
+  .day-comparison thead {
+    display: none;
+  }
+  .day-comparison,
+  .day-comparison tbody,
+  .day-comparison tr,
+  .day-comparison tbody th,
+  .day-comparison td {
+    display: block;
+    width: 100%;
+  }
+  .day-comparison tr {
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .day-comparison tbody th,
+  .day-comparison td {
+    padding: 0.35rem 0 0.35rem 1.1rem;
+    border-bottom: 0;
+  }
+  .day-comparison tbody th {
+    padding-left: 0;
+  }
+  .day-comparison__before::before,
+  .day-comparison__after::before {
+    content: attr(data-label) ' ';
+    font: 500 0.68rem var(--font-ibm-plex-mono);
+    letter-spacing: 0.08em;
+  }
+  .day-comparison__after::before {
+    color: var(--ambre-dk);
+  }
+  .oport-offer__big {
+    font-size: 3.25rem;
+  }
+}
+
+/* Reduced motion — hero flow, badge dot and constellation nodes fully static (AC-11). */
+@media (prefers-reduced-motion: reduce) {
+  .oport-hero-fig__flow-in,
+  .oport-badge__dot,
+  .oport-constellation__node--active {
+    animation: none;
+  }
+}

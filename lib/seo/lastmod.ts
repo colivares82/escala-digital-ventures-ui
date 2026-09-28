@@ -52,6 +52,9 @@ export const PAGE_LAST_MODIFIED: Record<PageId, string> = {
   contact: '2026-09-13',
   legal: '2026-09-13',
   privacy: '2026-09-13',
+  // LANDING-01 — ES-only, noindex, never emitted in the sitemap. Kept only
+  // because this record is exhaustive over PageId.
+  oportunidad: '2026-09-28',
 }
 
 /**

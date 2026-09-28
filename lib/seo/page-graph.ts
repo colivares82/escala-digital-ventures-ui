@@ -52,6 +52,9 @@ function dictFor(dict: Dictionary, page: PageId): PageDictionary {
     contact: dict.contact,
     legal: dict.legal,
     privacy: dict.privacy,
+    // LANDING-01 — ES-only slice; EN/CA never route here (their alternate is
+    // home), so the home fallback is unreachable in practice.
+    oportunidad: dict.oportunidad ?? dict.home,
   }
   return map[page] as PageDictionary
 }

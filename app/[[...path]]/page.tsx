@@ -16,6 +16,7 @@ import { ContactPage } from '@/components/pages/contact'
 import { LegalPage } from '@/components/pages/legal'
 import { MethodPage } from '@/components/pages/method'
 import { PrivacyPage } from '@/components/pages/privacy'
+import { OportunidadPage } from '@/components/pages/oportunidad'
 import { ServicesPage } from '@/components/pages/services'
 import { CasesPage } from '@/components/pages/cases'
 import { CaseDossier } from '@/components/case-dossier'
@@ -84,6 +85,7 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
     { path: ['privacidad'] },                       // ES privacy — SPEC-P4
     { path: ['en', 'privacy'] },                    // EN privacy
     { path: ['ca', 'privacitat'] },                 // CA privacy
+    { path: ['oportunidad'] },                      // ES-only landing — LANDING-01 (no EN/CA)
   ]
 }
 
@@ -119,6 +121,8 @@ export async function generateMetadata({
       case 'contact':    return dict.contact.meta
       case 'legal':      return dict.legal.meta
       case 'privacy':    return dict.privacy.meta
+      // ES-only: resolvePath only yields locale 'es' here, so the slice exists.
+      case 'oportunidad': return dict.oportunidad?.meta ?? dict.home.meta
     }
   })()
 
@@ -151,7 +155,8 @@ export default async function Page({
   // Phase 2.5: 'about' added — SPEC-P2.5 FR-1.1
   // Phase 2.6: 'contact' added — SPEC-P2.6 FR-1.1
   // Phase 4: 'legal' + 'privacy' added — SPEC-P4 FR-1.1
-  const BUILT_PAGES = ['home', 'method', 'services', 'cases', 'caseDetail', 'alliance', 'about', 'contact', 'legal', 'privacy'] as const
+  // LANDING-01: 'oportunidad' added (ES only).
+  const BUILT_PAGES = ['home', 'method', 'services', 'cases', 'caseDetail', 'alliance', 'about', 'contact', 'legal', 'privacy', 'oportunidad'] as const
   if (!BUILT_PAGES.includes(page as (typeof BUILT_PAGES)[number])) notFound()
 
   // For caseDetail, resolve the case and 404 on unknown slug.
@@ -205,6 +210,8 @@ export default async function Page({
           <LegalPage dict={dict} />
         ) : page === 'privacy' ? (
           <PrivacyPage dict={dict} />
+        ) : page === 'oportunidad' ? (
+          <OportunidadPage dict={dict} locale={locale} />
         ) : (
           <>
             <Hero

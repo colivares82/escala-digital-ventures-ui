@@ -20,6 +20,7 @@ import { legalContent as legalEs } from '@/content/es/legal'
 import { methodContent as methodEs } from '@/content/es/method'
 import { privacyContent as privacyEs } from '@/content/es/privacy'
 import { servicesContent as servicesEs } from '@/content/es/services'
+import { oportunidadContent as oportunidadEs } from '@/content/es/oportunidad'
 
 // ── EN ───────────────────────────────────────────────────────────────────────
 import { homeContent as homeEn } from '@/content/en/home'
@@ -57,9 +58,12 @@ export type Dictionary = {
   readonly contact: typeof contactEs
   readonly legal: typeof legalEs
   readonly privacy: typeof privacyEs
+  /** LANDING-01 — ES-only landing; absent from the EN/CA bundles by design. */
+  readonly oportunidad?: typeof oportunidadEs
 }
 
 const ES_BUNDLE: Dictionary = {
+  oportunidad: oportunidadEs,
   shared: sharedEs,
   home: homeEs,
   services: servicesEs,

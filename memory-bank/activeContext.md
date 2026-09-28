@@ -1,5 +1,34 @@
 # Active Context
 
+### LANDING-01 — `/oportunidad` conversion landing (COMPLETE, 28 Sep 2026)
+
+ES-only, noindex/nofollow landing, reached only by direct URL or QR. No nav entry, not in the
+sitemap, no hreflang. Branch: `31-langind-franquicia` (the current branch — not committed yet).
+
+**New pattern: ES-only pages.** `PageId` now includes `EsOnlyPageId`. `ROUTE_MAP` is keyed by
+`LocalizedPageId`, and ES-only slugs live in `ES_ONLY_ROUTES` (`lib/i18n/routes.ts`). Behaviour:
+`getPath(esOnly, 'en'|'ca')` returns that locale's home, so the LocaleSwitcher never produces a
+404 and needed no edits. Only the ES path goes into the reverse map, so EN/CA variants 404.
+`buildPageMetadata` checks `isEsOnlyPage()` to add noindex and drop hreflang. The dictionary slice
+is **optional** on `Dictionary` (`oportunidad?`) and is only present in `ES_BUNDLE`. That keeps it
+out of the i18n coverage guard without changing the guard's logic.
+
+**Spec deviations (user-approved):** the minimal typed-route integration touched `types.ts`,
+`lastmod.ts`, `page-graph.ts`, `page-meta.ts` and `dictionary.ts` beyond `routes.ts`. Tests were
+written (the spec said none; the standards and the 70% gate require them). Readouts use the
+`/sobre-escala` wording, not "100+"/"40.000+". No new tokens (`--ambre-dk` was reused).
+
+**Open for Carlos:** (1) FIG. 01/02 numbers collide with the site's global figure numbering. The
+spec labels were kept; the free global numbers would be FIG. 13/14. (2) Visual QA at 360px and
+with reduced motion needs a real browser. (3) Update the offer date/copy in
+`content/es/oportunidad.ts` by hand when it changes.
+
+Gate: 74 files · 1438 tests pass · coverage 79.95/77.62/84.46/81.91 · tsc clean · lint 0 errors ·
+build clean · live: `/oportunidad` 200, EN/CA 404, robots noindex, 0 hreflang, 0 sitemap hits,
+`/api/contact` dry-run `{ok:true}`.
+
+---
+
 _Last updated: 17 August 2026 (CONTENT-11 COMPLETE — commercial terms removed from all public
 copy. Previous: GO-LIVE — canonical host = www, blocked on GoDaddy DNS)_
 

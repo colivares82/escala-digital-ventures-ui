@@ -1,5 +1,35 @@
 # Changelog
 
+## [LANDING-01] — September 2026 — `/oportunidad` conversion landing (ES only)
+
+New direct-URL / QR landing. Wireframe: `specs/mockups/wireframe-landing01-oportunidad.html`.
+
+### Added
+- `/oportunidad` — 7 sections (00 Hero → 06 Hablemos), site Header/Footer unchanged, no nav entry.
+- `content/es/oportunidad.ts` + `OportunidadDictionary` (and sub-types) in `content/types.ts`.
+- `components/oportunidad/` — `OportunidadHeroFig` (FIG. 01), `DayComparison`, `ScenarioCard` +
+  `ScenarioFlow`, `OportunidadConstellation` (FIG. 02, the D6 page-local fallback), section wrappers.
+- `components/pages/oportunidad.tsx` — the page composer.
+- **ES-only route mechanism**: `EsOnlyPageId` / `LocalizedPageId` types, `ES_ONLY_ROUTES` and
+  `isEsOnlyPage()` in `lib/i18n/routes.ts`. EN/CA never resolve (404), and the LocaleSwitcher's
+  EN/CA links fall back to `/en` and `/ca`.
+- Tests: `tests/content/oportunidad-content.test.ts`, `tests/components/oportunidad/*`, plus an
+  ES-only block in `tests/lib/i18n/routes.test.ts`.
+
+### Changed
+- `buildPageMetadata` — ES-only pages get `robots: noindex, nofollow` with no hreflang and no
+  `og:locale:alternate`. Indexable pages are unchanged.
+- The exhaustive `Record<PageId, …>` maps (`lastmod.ts`, `page-graph.ts`) and the catch-all route
+  gained the `oportunidad` entry. The sitemap is untouched, so the page is excluded by construction.
+
+### Decisions
+- Readouts reuse the `/sobre-escala` metrics wording ("Más de 20 años", "Decenas de miles",
+  "Más de cien", "MIT"). The spec's "100+" is blocked by `seo-prohibitions-guard`.
+- No new tokens: wireframe amber-dark → `--ambre-dk`, deep → `--abisal-gradient-end`, alt paper →
+  `--paper` under a 4% ink wash.
+- FIG. 01 / FIG. 02 keep the numbers the spec gives them, even though the site normally numbers
+  figures globally (see open question in activeContext).
+
 ## [BRAND-01] — August 2026 — Brand asset integration
 
 Surgical swap of the provisional brand mark for the delivered identity, in the four places the

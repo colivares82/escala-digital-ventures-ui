@@ -22,6 +22,17 @@ export type PageId =
   | 'contact'
   | 'legal'
   | 'privacy'
+  | 'oportunidad'
+
+/**
+ * Pages that exist in ES only (LANDING-01 D1). They have no EN/CA slug: the
+ * route helpers resolve their EN/CA alternates to that locale's home, and
+ * only the ES path is registered for reverse lookup (so EN/CA 404).
+ */
+export type EsOnlyPageId = 'oportunidad'
+
+/** Pages localised in every locale — the keys of ROUTE_MAP. */
+export type LocalizedPageId = Exclude<PageId, EsOnlyPageId>
 
 export type CaseSlug = 'magupell' | 'biozero'
 export const CASE_SLUGS = ['magupell', 'biozero'] as const satisfies readonly CaseSlug[]
