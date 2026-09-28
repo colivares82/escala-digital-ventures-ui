@@ -13,7 +13,9 @@
  */
 'use client'
 
+import { TrackedLink } from '@/components/analytics/tracked-link'
 import { ContactForm } from '@/components/contact-form'
+import { ANALYTICS_EVENTS, ANALYTICS_LOCATIONS } from '@/lib/constants/analytics'
 import { getPath } from '@/lib/i18n/routes'
 import type { Dictionary } from '@/lib/i18n/dictionary'
 import type { Locale } from '@/lib/i18n/types'
@@ -70,7 +72,15 @@ export function ContactSection({ dict, locale, mode = 'section' }: ContactSectio
               <span className="contact-page__meta-key">
                 {directMeta.emailLabel}
               </span>{' '}
-              <a href={`mailto:${directMeta.email}`}>{directMeta.email}</a>
+              <TrackedLink
+                event={ANALYTICS_EVENTS.EMAIL_CLICK}
+                location={
+                  isPage ? ANALYTICS_LOCATIONS.CONTACT_PAGE : ANALYTICS_LOCATIONS.FINAL_CTA
+                }
+                href={`mailto:${directMeta.email}`}
+              >
+                {directMeta.email}
+              </TrackedLink>
             </div>
             <div>
               <span className="contact-page__meta-key">

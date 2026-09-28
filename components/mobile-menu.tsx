@@ -20,8 +20,10 @@
 
 import Image from 'next/image'
 import { useEffect, useRef } from 'react'
+import { TrackedLink } from '@/components/analytics/tracked-link'
 import { GridBackground } from '@/components/grid-background'
 import { LocaleSwitcher } from '@/components/locale-switcher'
+import { ANALYTICS_EVENTS, ANALYTICS_LOCATIONS } from '@/lib/constants/analytics'
 import type { sharedContent } from '@/content/es/shared'
 import type { Locale, PageId, PageParams } from '@/lib/i18n/types'
 import {
@@ -220,18 +222,29 @@ export function MobileMenu({
       </nav>
 
       <div className="mobile-menu__foot">
-        <a className="mobile-menu__cta" href={contactHref} onClick={onClose}>
+        <TrackedLink
+          event={ANALYTICS_EVENTS.CTA_CLICK}
+          location={ANALYTICS_LOCATIONS.MOBILE_MENU}
+          className="mobile-menu__cta"
+          href={contactHref}
+          onClick={onClose}
+        >
           {content.contact}
-        </a>
+        </TrackedLink>
         <LocaleSwitcher
           currentPage={currentPage}
           locale={locale}
           pageParams={pageParams}
           languagesLabel={accessibility.languages}
         />
-        <a className="mobile-menu__mail" href={`mailto:${email}`}>
+        <TrackedLink
+          event={ANALYTICS_EVENTS.EMAIL_CLICK}
+          location={ANALYTICS_LOCATIONS.MOBILE_MENU}
+          className="mobile-menu__mail"
+          href={`mailto:${email}`}
+        >
           {email}
-        </a>
+        </TrackedLink>
       </div>
     </div>
   )

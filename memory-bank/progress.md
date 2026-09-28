@@ -359,7 +359,7 @@
 | Feature | Priority | Status |
 |---------|----------|--------|
 | Aviso legal + Privacidad legal pages | P1 | ✅ Done (SPEC-P4) |
-| Cookieless analytics | — | 🚫 Dropped (Carlos decision) |
+| Cookieless analytics | — | ◐ FEAT-01 code complete — site ID + prod verification pending |
 | 404 page + favicon + OG images | P2 | ✅ Done (SPEC-P4) |
 
 ### Phase 5 — EN & CA content ☑ COMPLETE

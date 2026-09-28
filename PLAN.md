@@ -101,7 +101,10 @@ Status: ☑ (folded into Phase 2.6)
 Status: ☑ done (SPEC-P4)
 - ☑ `/aviso-legal` (LSSI-CE: 5 sections, placeholders for unconfirmed data — Carlos to fill before go-live).
 - ☑ `/privacidad` (RGPD: 6 sections, no-tracking-cookies statement, AEPD reference).
-- ☑ Cookieless analytics — **DROPPED** (Carlos's decision: no analytics, no banner needed).
+- ☑ Cookieless analytics — originally dropped (SPEC-P4 §0); **reinstated by FEAT-01**, see below.
+- ◐ FEAT-01 — Cookieless analytics (Savri) + 4 conversion events. Code complete: prod-hostname
+  gate, first-party proxy `/io/api/collect`, privacy §06 (ES/EN/CA). Pending: Savri site ID in
+  `lib/constants/analytics.ts` (fail-closed until set) + Carlos post-deploy AC-3…AC-7 (AC-5 geo).
 - ☑ 404 page with the identity (abisal + GridBackground + kit micro-diagram + «Fuera del sistema.»).
 - ☑ Favicon set (`app/icon.svg` — draft, Carlos to approve before launch).
 - ☑ OG image (`app/opengraph-image.tsx` — 1200×630, abisal + claim + ambre).
