@@ -1,19 +1,17 @@
 /**
  * OportunidadPage — /oportunidad (LANDING-01). ES only, noindex, no nav entry.
- * Seven sections in wireframe order: 00 Hero → 06 Hablemos.
+ * Sections 00 Hero → 05 Cómo empezamos, then the site-wide FinalCTA
+ * (ContactSection, renders #contacto) — reused as-is, no landing-specific copy.
  * Wireframe: specs/mockups/wireframe-landing01-oportunidad.html
  */
+import { FinalCTA } from '@/components/final-cta'
 import { OportunidadHero } from '@/components/oportunidad/oportunidad-hero'
 import {
   AllianceSection,
   DaySection,
   ScenariosSection,
 } from '@/components/oportunidad/oportunidad-story'
-import {
-  AboutSection,
-  ContactBlock,
-  StartSection,
-} from '@/components/oportunidad/oportunidad-closing'
+import { AboutSection, StartSection } from '@/components/oportunidad/oportunidad-closing'
 import type { Dictionary } from '@/lib/i18n/dictionary'
 import { getPath } from '@/lib/i18n/routes'
 import type { Locale } from '@/lib/i18n/types'
@@ -29,15 +27,10 @@ export function OportunidadPage({ dict, locale }: { dict: Dictionary; locale: Lo
       <OportunidadHero content={content.hero} />
       <DaySection content={content.day} />
       <ScenariosSection content={content.scenarios} />
-      <AllianceSection content={content.alliance} />
+      <AllianceSection content={content.alliance} figure={dict.home.allianceFigure} />
       <AboutSection content={content.about} casesHref={getPath('cases', locale)} />
       <StartSection content={content.start} />
-      <ContactBlock
-        content={content.contact}
-        formCopy={dict.shared.contactForm}
-        privacyHref={getPath('privacy', locale)}
-        email={dict.contact.directMeta.email}
-      />
+      <FinalCTA dict={dict} locale={locale} />
     </>
   )
 }

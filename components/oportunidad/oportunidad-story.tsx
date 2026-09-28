@@ -1,10 +1,12 @@
 /**
  * § 01 Un lunes cualquiera · § 02 Escenarios · § 03 Alianza.
  */
-import type { OportunidadDictionary } from '@/content/types'
+import { AllianceConstellation } from '@/components/alliance-constellation'
+import { GridBackground } from '@/components/grid-background'
+import { DiagramReveal } from '@/components/motion-runtime'
+import type { AllianceFigureContent, OportunidadDictionary } from '@/content/types'
 import { DayComparison } from './day-comparison'
 import { ScenarioCard } from './scenario-card'
-import { OportunidadConstellation } from './oportunidad-constellation'
 import { SectionHead } from './section-head'
 import { OPORTUNIDAD_ANCHORS } from './constants'
 
@@ -43,13 +45,35 @@ export function ScenariosSection({ content }: { content: OportunidadDictionary['
   )
 }
 
-export function AllianceSection({ content }: { content: OportunidadDictionary['alliance'] }) {
+/**
+ * § 03 — dark abisal surface because the shared AllianceConstellation is
+ * designed for abisal (paper strokes/labels). Seats, aria and core sub-label
+ * come from the home dictionary so client names stay single-sourced.
+ */
+export function AllianceSection({
+  content,
+  figure,
+}: {
+  content: OportunidadDictionary['alliance']
+  figure: AllianceFigureContent
+}) {
   return (
-    <section className="section section--light oport-section">
-      <div className="page-shell">
+    <section className="section section--dark dark-surface oport-section oport-section--dark">
+      <GridBackground />
+      <div className="page-shell oport-section__inner">
         <SectionHead sectionIndex={content.sectionIndex} title={content.title} lead={content.lead} />
         <div className="oport-alliance">
-          <OportunidadConstellation content={content.constellation} />
+          <figure className="oport-alliance__fig">
+            <DiagramReveal>
+              <AllianceConstellation
+                seats={figure.seats}
+                size="protagonist"
+                ariaLabel={figure.figAria}
+                coreSubLabel={figure.coreSubLabel}
+              />
+            </DiagramReveal>
+            <figcaption className="oport-fig__caption">{content.figCaption}</figcaption>
+          </figure>
           <ul className="oport-planes">
             {content.planes.map((plane) => (
               <li key={plane.label} className="oport-planes__item">

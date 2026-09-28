@@ -3,6 +3,7 @@
  * lib/routes.ts ANCHORS belong to the home page and are out of scope.
  */
 export const OPORTUNIDAD_ANCHORS = {
+  // Must match the id ContactSection (mode="section", via FinalCTA) renders.
   CONTACTO: 'contacto',
   ESCENARIOS: 'escenarios',
 } as const

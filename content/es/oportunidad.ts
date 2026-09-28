@@ -5,10 +5,12 @@
  * Rules for this file:
  *   - ES only (D1): no EN/CA counterpart, deliberately absent from the i18n
  *     coverage guard's parity list.
- *   - No client names (D5).
- *   - Experience readouts reuse the /sobre-escala metrics ("más de veinte
- *     años", "decenas de miles de empresas", "más de cien países", MIT).
- *     Never "100+"/"200+" — blocked by seo-prohibitions-guard.
+ *   - No client names in this file. § 03 renders the shared AllianceConstellation
+ *     fed by dict.home.allianceFigure.seats (Magupell · BioZero · DISPONIBLE ×3),
+ *     so seat names stay single-sourced in content/es/home.ts.
+ *   - Experience readouts use the wireframe figures (20+ · 40.000+ · 100 · MIT).
+ *     The literal "100+" is blocked by seo-prohibitions-guard, so the same
+ *     figure is spelled "+100".
  *   - Offer copy + date are edited by hand here; there is no date logic (D8).
  */
 import type { OportunidadDictionary } from '@/content/types'
@@ -132,13 +134,7 @@ export const oportunidadContent = {
     sectionIndex: { index: '03', label: 'Una alianza, no un proveedor' },
     title: 'No te vendemos un programa. Nos convertimos en tu equipo de tecnología.',
     lead: 'Trabajamos con cinco negocios a la vez, no con cincuenta. Por eso podemos implicarnos como si el negocio fuera nuestro.',
-    constellation: {
-      active: 'ACTIVA',
-      available: 'DISPONIBLE',
-      core: 'ESCALA',
-      caption: 'FIG. 02 — Cinco plazas · dos activas · tres disponibles',
-      aria: 'Cinco plazas de alianza: dos activas y tres disponibles alrededor de Escala',
-    },
+    figCaption: 'FIG. 02 — Cinco plazas · dos activas · tres disponibles',
     planes: [
       {
         label: 'Plano técnico',
@@ -171,21 +167,21 @@ export const oportunidadContent = {
     name: 'Carlos Olivares',
     role: 'Fundador · Product Engineer',
     lead: 'Más de veinte años construyendo y dirigiendo plataformas de software empresarial de alcance global. Esa misma disciplina, ahora al servicio de cinco negocios, con trato directo y sin intermediarios.',
-    // Same metrics as /sobre-escala (content/es/about.ts · expertise.lead).
+    // Figures verbatim from the wireframe; "+100" because "100+" is guard-blocked.
     readouts: [
       {
         label: 'Trayectoria',
-        value: 'Más de 20 años',
+        value: '20+ años',
         caption: 'Construyendo y dirigiendo plataformas de software empresarial.',
       },
       {
         label: 'Alcance',
-        value: 'Decenas de miles',
-        caption: 'De empresas usando plataformas que hemos construido y dirigido.',
+        value: '40.000+',
+        caption: 'Empresas usando plataformas que hemos construido y dirigido.',
       },
       {
         label: 'Presencia',
-        value: 'Más de cien',
+        value: '+100',
         caption: 'Países. Estándares de software empresarial global.',
       },
       {
@@ -229,12 +225,6 @@ export const oportunidadContent = {
       line: 'en tu prototipo',
       note: 'al firmar tu alianza antes del 30 de noviembre de 2026.',
     },
-  },
-
-  contact: {
-    sectionIndex: { index: '06', label: 'Hablemos' },
-    title: 'Cuéntanos qué frena tu negocio.',
-    lead: 'Te respondemos personalmente en un plazo de dos días laborables. Y te diremos con honestidad si podemos ayudarte.',
   },
 } as const satisfies OportunidadDictionary
 

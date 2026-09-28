@@ -7,9 +7,12 @@
 | 7-section landing, Header/Footer unchanged, no nav entry | Complete |
 | ES-only route mechanism (`ES_ONLY_ROUTES`, `isEsOnlyPage`); EN/CA 404; switcher falls back to `/en`, `/ca` | Complete |
 | noindex, nofollow · no hreflang · not in sitemap | Complete (verified live) |
-| ContactForm reused as-is; dry-run submit OK | Complete |
-| Page-local FIG. 01, DayComparison, ScenarioFlow ×3, FIG. 02 constellation; reduced-motion static | Complete |
-| 17 component tests + 14 content/SEO tests + 5 route tests | Complete |
+| Contact = site-wide `FinalCTA`/`ContactSection` (no page-local block) | Complete (revision) |
+| § 03 = shared `AllianceConstellation` protagonist on abisal (Magupell · BioZero) | Complete (revision) |
+| Hero proportion aligned to site tokens/rhythm; FIG. 01 capped at 68rem | Complete (revision) |
+| Readouts use wireframe figures (20+ · 40.000+ · +100 · MIT) | Complete (revision) |
+| Page-local FIG. 01, DayComparison, ScenarioFlow ×3; reduced-motion static | Complete |
+| Component + content/SEO + route tests updated | Complete |
 | Visual QA at 360px / reduced motion in a real browser | ⬜ Pending Carlos |
 | FIG. 01/02 vs global figure numbering | ⬜ Pending Carlos decision |
 

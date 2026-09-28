@@ -551,14 +551,6 @@ export interface ScenarioFlowLabels {
   readonly aria: string
 }
 
-export interface OportunidadConstellationContent {
-  readonly active: string
-  readonly available: string
-  readonly core: string
-  readonly caption: string
-  readonly aria: string
-}
-
 export interface OportunidadReadoutContent {
   readonly label: string
   readonly value: string
@@ -596,7 +588,8 @@ export interface OportunidadDictionary {
     readonly sectionIndex: OportunidadSectionIndex
     readonly title: string
     readonly lead: string
-    readonly constellation: OportunidadConstellationContent
+    /** Caption under the shared AllianceConstellation (seats come from home.allianceFigure). */
+    readonly figCaption: string
     readonly planes: ReadonlyArray<{
       readonly label: string
       readonly title: string
@@ -635,11 +628,6 @@ export interface OportunidadDictionary {
       readonly line: string
       readonly note: string
     }
-  }
-  readonly contact: {
-    readonly sectionIndex: OportunidadSectionIndex
-    readonly title: string
-    readonly lead: string
   }
 }
 

@@ -5,7 +5,6 @@ import { render, screen } from '@testing-library/react'
 import { OportunidadHeroFig } from '@/components/oportunidad/oportunidad-hero-fig'
 import { DayComparison } from '@/components/oportunidad/day-comparison'
 import { ScenarioFlow } from '@/components/oportunidad/scenario-flow'
-import { OportunidadConstellation } from '@/components/oportunidad/oportunidad-constellation'
 import { oportunidadContent as c } from '@/content/es/oportunidad'
 
 describe('OportunidadHeroFig', () => {
@@ -70,26 +69,5 @@ describe('ScenarioFlow', () => {
   it('prints every label', () => {
     render(<ScenarioFlow before={s.before} after={s.after} labels={c.scenarios.flowLabels} />)
     ;[...s.before, ...s.after].forEach((label) => expect(screen.getByText(label)).toBeInTheDocument())
-  })
-})
-
-describe('OportunidadConstellation', () => {
-  it('renders 2 active and 3 available seats around the core', () => {
-    const { container } = render(<OportunidadConstellation content={c.alliance.constellation} />)
-    expect(container.querySelectorAll('.oport-constellation__node--active')).toHaveLength(2)
-    expect(container.querySelectorAll('.oport-constellation__node--free')).toHaveLength(3)
-    expect(screen.getAllByText(c.alliance.constellation.active)).toHaveLength(2)
-    expect(screen.getAllByText(c.alliance.constellation.available)).toHaveLength(3)
-    expect(screen.getByRole('img', { name: c.alliance.constellation.aria })).toBeInTheDocument()
-  })
-
-  it('connectors never enter the core or the nodes', () => {
-    const { container } = render(<OportunidadConstellation content={c.alliance.constellation} />)
-    const core = container.querySelector('.oport-constellation__core') as SVGCircleElement
-    const [cx, cy, r] = ['cx', 'cy', 'r'].map((a) => Number(core.getAttribute(a)))
-    container.querySelectorAll('line').forEach((line) => {
-      const d = Math.hypot(Number(line.getAttribute('x1')) - cx, Number(line.getAttribute('y1')) - cy)
-      expect(d).toBeCloseTo(r)
-    })
   })
 })

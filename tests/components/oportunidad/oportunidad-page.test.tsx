@@ -9,12 +9,19 @@ import { oportunidadContent as c } from '@/content/es/oportunidad'
 const dict = getDictionary('es')
 
 describe('OportunidadPage', () => {
-  it('renders all 7 sections in wireframe order (00 → 06)', () => {
+  it('renders sections 00 → 05 in wireframe order, then the site-wide contact block', () => {
     const { container } = render(<OportunidadPage dict={dict} locale="es" />)
     const indexes = [...container.querySelectorAll('.section-index span:first-child')].map(
       (n) => n.textContent,
     )
-    expect(indexes).toEqual(['00', '01', '02', '03', '04', '05', '06'])
+    expect(indexes).toEqual(['00', '01', '02', '03', '04', '05'])
+    const last = container.lastElementChild as HTMLElement
+    expect(last).toHaveAttribute('id', 'contacto')
+  })
+
+  it('hero H1 uses the shared display scale, not a page-local size', () => {
+    render(<OportunidadPage dict={dict} locale="es" />)
+    expect(screen.getByRole('heading', { level: 1 })).toHaveClass('oport-hero__title')
   })
 
   it('renders the two-line H1 with the accent line', () => {
@@ -41,11 +48,25 @@ describe('OportunidadPage', () => {
     )
   })
 
-  it('reuses the existing ContactForm inside #contacto (D9)', () => {
+  it('reuses the site-wide ContactSection (FinalCTA) as #contacto', () => {
     const { container } = render(<OportunidadPage dict={dict} locale="es" />)
     const contact = container.querySelector('#contacto') as HTMLElement
+    expect(contact).toHaveClass('contact-page', 'contact-page--section')
     expect(contact.querySelector('form.contact-form')).toBeInTheDocument()
-    expect(within(contact).getByRole('heading', { level: 2 })).toHaveTextContent(c.contact.title)
+    expect(within(contact).getByRole('heading', { level: 2 })).toHaveTextContent(
+      dict.contact.pageHeader.h1,
+    )
+  })
+
+  it('§ 03 renders the shared AllianceConstellation with Magupell and BioZero', () => {
+    const { container } = render(<OportunidadPage dict={dict} locale="es" />)
+    expect(container.querySelector('.alliance-constellation--protagonist')).toBeInTheDocument()
+    const fig = container.querySelector('.oport-alliance__fig') as HTMLElement
+    expect(fig.closest('section')).toHaveClass('section--dark')
+    expect(within(fig).getByText('Magupell')).toBeInTheDocument()
+    expect(within(fig).getByText('BioZero')).toBeInTheDocument()
+    expect(within(fig).getAllByText('DISPONIBLE')).toHaveLength(3)
+    expect(screen.getByText(c.alliance.figCaption)).toBeInTheDocument()
   })
 
   it('renders planes, «lo que no somos» strip and readouts', () => {

@@ -36,7 +36,7 @@ describe('LANDING-01 · content', () => {
     expect(c.start.offer.label).toContain('30.11.2026')
   })
 
-  it('names no client (AC-6 / D5)', () => {
+  it('hardcodes no client name — seat names are single-sourced in home.allianceFigure', () => {
     expect(JSON.stringify(c)).not.toMatch(/magupell|biozero/i)
     componentSources.forEach((src) => expect(src).not.toMatch(/magupell|biozero/i))
   })
@@ -47,13 +47,15 @@ describe('LANDING-01 · content', () => {
     expect(text).not.toMatch(/100\+|200\+/)
   })
 
-  it('experience metrics match the /sobre-escala wording', () => {
-    const aboutLead = getDictionary('es').about.expertise.lead
-    expect(aboutLead).toMatch(/más de veinte años/)
-    expect(aboutLead).toMatch(/decenas de miles/)
-    expect(aboutLead).toMatch(/más de cien países/)
-    const values = c.about.readouts.map((r) => r.value.toLowerCase())
-    expect(values).toEqual(['más de 20 años', 'decenas de miles', 'más de cien', 'mit'])
+  it('experience readouts use the wireframe figures ("+100" spelling for the guard)', () => {
+    const values = c.about.readouts.map((r) => r.value)
+    expect(values).toEqual(['20+ años', '40.000+', '+100', 'MIT'])
+  })
+
+  it('§ 03 seats come from the shared home figure (Magupell · BioZero · 3 free)', () => {
+    const seats = getDictionary('es').home.allianceFigure.seats
+    expect(seats.filter((s) => s.state === 'occupied').map((s) => s.name)).toEqual(['Magupell', 'BioZero'])
+    expect(seats.filter((s) => s.state === 'free')).toHaveLength(3)
   })
 })
 

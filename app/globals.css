@@ -5969,10 +5969,12 @@ h1, h2, h3, h4, p {
 }
 
 /* § 00 Hero */
+/* Padding matches the site-wide .section rhythm (8rem) so the hero keeps the
+ * same proportion as every other section. */
 .oport-hero {
   position: relative;
   overflow: hidden;
-  padding: 10rem 0 7rem;
+  padding: 8rem 0 6rem;
 }
 .oport-hero__inner {
   position: relative;
@@ -5984,9 +5986,11 @@ h1, h2, h3, h4, p {
 .oport-hero__title {
   display: flex;
   flex-direction: column;
+  max-width: 20ch;
   margin: 0;
-  font: 600 clamp(2.5rem, 5.4vw, 4.5rem) / 1.02 var(--font-archivo);
-  letter-spacing: -0.045em;
+  /* Same display token as the page h2s and every page title on the site. */
+  font: 600 var(--text-display-lg) / 1.02 var(--font-archivo);
+  letter-spacing: -0.04em;
 }
 .oport-hero__title-accent {
   color: var(--ambre);
@@ -5995,7 +5999,7 @@ h1, h2, h3, h4, p {
   max-width: 40rem;
   margin: 1.5rem 0 0;
   color: rgb(247 247 244 / 0.74);
-  font-size: 1.15rem;
+  font-size: 1.12rem;
   line-height: 1.6;
 }
 .oport-hero__actions {
@@ -6045,8 +6049,11 @@ h1, h2, h3, h4, p {
 }
 
 /* FIG. 01 */
+/* Capped so FIG. 01 stays in the same weight class as other site diagrams
+ * instead of spanning the full 88rem shell. */
 .oport-fig {
-  margin: 4rem 0 0;
+  max-width: min(100%, 68rem);
+  margin: 3.5rem 0 0;
 }
 .oport-fig__scroll {
   max-width: 100%;
@@ -6256,53 +6263,42 @@ h1, h2, h3, h4, p {
 }
 
 /* § 03 Alliance */
+/* Figure gets the wider track: the protagonist constellation (960-unit
+ * viewBox) needs the room for Magupell/BioZero labels to stay legible. */
 .oport-alliance {
   display: grid;
-  grid-template-columns: minmax(0, 40fr) minmax(0, 60fr);
+  grid-template-columns: minmax(0, 56fr) minmax(0, 44fr);
   gap: 3.5rem;
   align-items: center;
 }
-.oport-constellation {
+.oport-alliance__fig {
   margin: 0;
-  width: min(100%, 26rem);
 }
-.oport-constellation__conn--solid {
-  stroke: var(--ink);
-  stroke-width: 1.3;
+.oport-alliance__fig .oport-fig__caption {
+  text-align: center;
 }
-.oport-constellation__conn--dashed {
-  stroke: rgb(22 24 29 / 0.35);
-  stroke-width: 1.2;
-  stroke-dasharray: 3 3;
+/* § 03 sits on abisal so the shared AllianceConstellation reads correctly. */
+.oport-section--dark {
+  position: relative;
+  overflow: hidden;
 }
-.oport-constellation__node--active {
-  fill: var(--ambre);
-  stroke: var(--ink);
-  stroke-width: 1.2;
-  animation: oport-pulse 2.4s ease-in-out infinite;
+.oport-section__inner {
+  position: relative;
+  z-index: 1;
 }
-.oport-constellation__node--free {
-  fill: var(--paper);
-  stroke: rgb(22 24 29 / 0.45);
-  stroke-width: 1.2;
-  stroke-dasharray: 2.5 2;
+.oport-section--dark .section-index span:first-child {
+  color: var(--ambre);
 }
-.oport-constellation__label,
-.oport-constellation__label--free {
-  fill: var(--ink);
-  font: 500 8.5px var(--font-ibm-plex-mono);
-  letter-spacing: 1px;
+.oport-section--dark .oport-planes__item,
+.oport-section--dark .oport-not {
+  border-color: var(--line-light);
 }
-.oport-constellation__label--free {
-  fill: rgb(22 24 29 / 0.64);
+.oport-section--dark .oport-planes__label {
+  color: rgb(247 247 244 / 0.7);
 }
-.oport-constellation__core {
-  fill: var(--abisal);
-}
-.oport-constellation__core-label {
-  fill: var(--paper);
-  font: 500 9.5px var(--font-ibm-plex-mono);
-  letter-spacing: 1.5px;
+.oport-section--dark .oport-planes__body,
+.oport-section--dark .oport-not__label {
+  color: rgb(247 247 244 / 0.7);
 }
 .oport-planes {
   margin: 0;
@@ -6495,17 +6491,6 @@ h1, h2, h3, h4, p {
   color: rgb(247 247 244 / 0.74);
 }
 
-/* § 06 Contact */
-.oport-contact__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 3.5rem;
-  align-items: start;
-}
-.oport-contact .lead-copy {
-  margin-top: 1.25rem;
-}
-
 /* Anchors land below the fixed header */
 #escenarios,
 #contacto {
@@ -6516,8 +6501,7 @@ h1, h2, h3, h4, p {
 @media (max-width: 1023px) {
   .oport-cards,
   .oport-alliance,
-  .oport-invest,
-  .oport-contact__grid {
+  .oport-invest {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
@@ -6527,7 +6511,7 @@ h1, h2, h3, h4, p {
 }
 @media (max-width: 720px) {
   .oport-hero {
-    padding: 7rem 0 5rem;
+    padding: 6rem 0 4.5rem;
   }
   /* FIG. 01 scrolls inside its own container; the page never scrolls sideways. */
   .oport-fig__scroll {
@@ -6573,11 +6557,11 @@ h1, h2, h3, h4, p {
   }
 }
 
-/* Reduced motion — hero flow, badge dot and constellation nodes fully static (AC-11). */
+/* Reduced motion — hero flow and badge dot fully static (AC-11). The shared
+ * constellation handles its own reduced-motion rule. */
 @media (prefers-reduced-motion: reduce) {
   .oport-hero-fig__flow-in,
-  .oport-badge__dot,
-  .oport-constellation__node--active {
+  .oport-badge__dot {
     animation: none;
   }
 }

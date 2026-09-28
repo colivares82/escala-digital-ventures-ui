@@ -1,13 +1,10 @@
 /**
- * § 04 Quién está detrás · § 05 Cómo empezamos · § 06 Hablemos.
- * § 06 reuses ContactForm as-is (D9): same API route, copy and states.
+ * § 04 Quién está detrás · § 05 Cómo empezamos.
+ * Contact is the site-wide FinalCTA, composed in components/pages/oportunidad.tsx.
  */
-import { ContactForm } from '@/components/contact-form'
 import { SectionIndex } from '@/components/section-index'
-import type { sharedContent } from '@/content/es/shared'
 import type { OportunidadDictionary } from '@/content/types'
 import { SectionHead } from './section-head'
-import { OPORTUNIDAD_ANCHORS } from './constants'
 
 export function AboutSection({
   content,
@@ -78,31 +75,6 @@ export function StartSection({ content }: { content: OportunidadDictionary['star
             <p className="oport-offer__note">{content.offer.note}</p>
           </div>
         </div>
-      </div>
-    </section>
-  )
-}
-
-export function ContactBlock({
-  content,
-  formCopy,
-  privacyHref,
-  email,
-}: {
-  content: OportunidadDictionary['contact']
-  formCopy: typeof sharedContent.contactForm
-  privacyHref: string
-  email: string
-}) {
-  return (
-    <section id={OPORTUNIDAD_ANCHORS.CONTACTO} className="section section--dark dark-surface oport-contact">
-      <div className="page-shell oport-contact__grid">
-        <div>
-          <SectionIndex index={content.sectionIndex.index} label={content.sectionIndex.label} />
-          <h2 className="oport-head__title">{content.title}</h2>
-          <p className="lead-copy">{content.lead}</p>
-        </div>
-        <ContactForm copy={formCopy} privacyHref={privacyHref} email={email} />
       </div>
     </section>
   )

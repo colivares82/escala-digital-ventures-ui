@@ -18,14 +18,28 @@ out of the i18n coverage guard without changing the guard's logic.
 written (the spec said none; the standards and the 70% gate require them). Readouts use the
 `/sobre-escala` wording, not "100+"/"40.000+". No new tokens (`--ambre-dk` was reused).
 
-**Open for Carlos:** (1) FIG. 01/02 numbers collide with the site's global figure numbering. The
-spec labels were kept; the free global numbers would be FIG. 13/14. (2) Visual QA at 360px and
-with reduced motion needs a real browser. (3) Update the offer date/copy in
-`content/es/oportunidad.ts` by hand when it changes.
+**Revision (Carlos feedback, 28 Sep 2026) — reuse over page-local code:**
+- **Hero proportion:** the hero now uses the site rhythm. Padding is 8rem/6rem and the H1 uses
+  `--text-display-lg` (the same token as every h2), max 20ch. The lead is 1.12rem and
+  FIG. 01 is capped at 68rem.
+- **§ 03 constellation:** now the shared `AllianceConstellation` (`protagonist`, inside
+  `DiagramReveal`), fed by `dict.home.allianceFigure`: Magupell · BioZero · DISPONIBLE ×3.
+  § 03 moved to the abisal surface (`section--dark` + `GridBackground`) because the shared
+  component is abisal-only. `OportunidadConstellation` was deleted. **This overrides D5
+  ("no client names") for § 03.** Names stay single-sourced in `content/es/home.ts`.
+- **Readouts:** use the wireframe figures `20+ años · 40.000+ · +100 · MIT`. `+100` is used
+  because the literal `100+` is blocked by seo-prohibitions-guard.
+- **§ 06 contact:** now the site-wide `FinalCTA` → `ContactSection mode="section"`. It supplies
+  `#contacto` and the site copy. `ContactBlock` and the `contact` dictionary slice were deleted.
+- **Rule going forward:** on landings, reuse the existing site components as-is. Don't fork
+  page-local variants.
 
-Gate: 74 files · 1438 tests pass · coverage 79.95/77.62/84.46/81.91 · tsc clean · lint 0 errors ·
-build clean · live: `/oportunidad` 200, EN/CA 404, robots noindex, 0 hreflang, 0 sitemap hits,
-`/api/contact` dry-run `{ok:true}`.
+**Open for Carlos:** (1) FIG. 01/02 numbering was kept as in the wireframe (the free global
+numbers are FIG. 13/14). (2) Visual QA at 360px and with reduced motion needs a real browser.
+(3) Update the offer date/copy in `content/es/oportunidad.ts` by hand when it changes.
+
+Gate: 74 files · 1439 tests pass · coverage 79.58/77.03/84.14/81.55 · tsc clean · lint clean ·
+build clean · live SSR: Magupell/BioZero in § 03, `.contact-page--section#contacto`, readouts OK.
 
 ---
 
