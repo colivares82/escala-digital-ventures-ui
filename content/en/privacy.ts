@@ -6,8 +6,8 @@
  * LEGAL DISCLAIMER: This is a faithful translation of the ES privacy policy.
  * It is NOT legal advice. A qualified advisor must review before go-live.
  *
- * Unconfirmed data uses {{PLACEHOLDER}} tokens — same as ES.
- * Do NOT publish with unresolved placeholders.
+ * All former double-brace placeholders resolved (HOME-V2 Part A, 18 Oct 2026).
+ * The placeholder guard fails the build if one is reintroduced.
  */
 import type { PrivacyDictionary } from '@/content/types'
 
@@ -22,7 +22,7 @@ export const privacyContent = {
     eyebrow: '· PRIVACY',
     h1: 'Privacy policy',
     updatedLabel: 'LAST UPDATED ·',
-    updatedDate: '{{FECHA_ACTUALIZACION}}',
+    updatedDate: '18 October 2026',
   },
   anchorLabel: 'ON THIS PAGE',
   sections: [
@@ -39,7 +39,7 @@ export const privacyContent = {
         },
         {
           key: 'Tax ID (NIF)',
-          value: '{{NIF_B88767520}}',
+          value: 'B88767520',
         },
         {
           key: 'Contact',
@@ -66,7 +66,7 @@ export const privacyContent = {
       index: '04',
       name: 'RETENTION',
       title: 'Retention period',
-      body: 'We retain your data for the time strictly necessary to respond to your enquiry and, where applicable, for the duration of the commercial or pre-contractual relationship; once that period has elapsed, the data is deleted or blocked in accordance with applicable regulations. Data is hosted on servers located within the European Union {{REGION_EU_GOOGLE_CLOUD}}.',
+      body: 'We retain your data for the time strictly necessary to respond to your enquiry and, where applicable, for the duration of the commercial or pre-contractual relationship; once that period has elapsed, the data is deleted or blocked in accordance with applicable regulations. Data is hosted on servers located within the European Union (Google Cloud, europe-west1 region, Belgium).',
     },
     {
       id: 'destinatarios',

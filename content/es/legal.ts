@@ -6,8 +6,8 @@
  * and applicable Spanish law (LSSI-CE). It is NOT legal advice. A qualified
  * advisor must review this page before go-live.
  *
- * Unconfirmed data is marked with {{PLACEHOLDER}} tokens (FR-4.1).
- * Do NOT publish with unresolved placeholders (FR-4.2).
+ * All former double-brace placeholders resolved (HOME-V2 Part A, 18 Oct 2026).
+ * The placeholder guard fails the build if one is reintroduced.
  *
  * IMPORTANT: No physical/street address is shown anywhere (Carlos's decision).
  * LSSI-CE identification is satisfied with company name + NIF + email contact.
@@ -28,8 +28,7 @@ export const legalContent = {
     eyebrow: '· AVISO LEGAL',
     h1: 'Aviso legal',
     updatedLabel: 'ÚLTIMA ACTUALIZACIÓN ·',
-    // TODO(P4): Carlos to confirm and replace this placeholder before go-live.
-    updatedDate: '{{FECHA_ACTUALIZACION}}',
+    updatedDate: '18 de octubre de 2026',
   },
   anchorLabel: 'EN ESTA PÁGINA',
   sections: [
@@ -46,13 +45,7 @@ export const legalContent = {
         },
         {
           key: 'NIF',
-          // Pre-filled from MAGUPELL contract §1 — Carlos to confirm before go-live.
-          value: '{{NIF_B88767520}}',
-        },
-        {
-          key: 'Registro Mercantil',
-          // Carlos to provide inscription data (tomo, folio, hoja, inscripción).
-          value: '{{REGISTRO_MERCANTIL}}',
+          value: 'B88767520',
         },
         {
           key: 'Correo electrónico',
@@ -87,8 +80,8 @@ export const legalContent = {
       index: '05',
       name: 'LEGISLACIÓN',
       title: 'Legislación aplicable y jurisdicción',
-      // Jurisdiction placeholder — Carlos to confirm; do NOT infer from withheld address.
-      body: 'El presente aviso legal se rige por la legislación española. Para cualquier controversia derivada del uso de este sitio web, las partes se someten a los juzgados y tribunales competentes conforme a la legislación aplicable {{JURISDICCION}}.',
+      // No court or city named (HOME-V2 A.1).
+      body: 'El presente aviso legal se rige por la legislación española. Para cualquier controversia derivada del uso de este sitio web, las partes se someten a los juzgados y tribunales competentes conforme a la legislación aplicable.',
     },
   ],
 } as const satisfies LegalDictionary

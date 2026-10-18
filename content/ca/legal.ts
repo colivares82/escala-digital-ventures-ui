@@ -6,8 +6,8 @@
  * LEGAL DISCLAIMER: This is a faithful translation of the ES legal notice.
  * It is NOT legal advice. A qualified advisor must review before go-live.
  *
- * Unconfirmed data uses {{PLACEHOLDER}} tokens — same as ES.
- * Do NOT publish with unresolved placeholders.
+ * All former double-brace placeholders resolved (HOME-V2 Part A, 18 Oct 2026).
+ * The placeholder guard fails the build if one is reintroduced.
  */
 import type { LegalDictionary } from '@/content/types'
 
@@ -21,7 +21,7 @@ export const legalContent = {
     eyebrow: '· AVÍS LEGAL',
     h1: 'Avís legal',
     updatedLabel: 'DARRERA ACTUALITZACIÓ ·',
-    updatedDate: '{{FECHA_ACTUALIZACION}}',
+    updatedDate: '18 d\'octubre de 2026',
   },
   anchorLabel: 'EN AQUESTA PÀGINA',
   sections: [
@@ -38,11 +38,7 @@ export const legalContent = {
         },
         {
           key: 'NIF',
-          value: '{{NIF_B88767520}}',
-        },
-        {
-          key: 'Registre Mercantil',
-          value: '{{REGISTRO_MERCANTIL}}',
+          value: 'B88767520',
         },
         {
           key: 'Correu electrònic',
@@ -76,7 +72,7 @@ export const legalContent = {
       index: '05',
       name: 'LEGISLACIÓ',
       title: 'Legislació aplicable i jurisdicció',
-      body: 'El present avís legal es regeix per la legislació espanyola. Per a qualsevol controvèrsia derivada de l\'ús d\'aquest lloc web, les parts se sotmeten als jutjats i tribunals competents conforme a la legislació aplicable {{JURISDICCION}}.',
+      body: 'El present avís legal es regeix per la legislació espanyola. Per a qualsevol controvèrsia derivada de l\'ús d\'aquest lloc web, les parts se sotmeten als jutjats i tribunals competents conforme a la legislació aplicable.',
     },
   ],
 } as const satisfies LegalDictionary

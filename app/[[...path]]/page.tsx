@@ -1,18 +1,10 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import {
-  AllianceTeaser,
-  FinalCTA,
-  FrameworkSection,
-  Hero,
-  ProblemSection,
-  ProofSection,
-  ServicesPreview,
-} from '@/components/home-sections'
 import { MotionRuntime } from '@/components/motion-runtime'
 import { AboutPage } from '@/components/pages/about'
 import { AlliancePage } from '@/components/pages/alliance'
 import { ContactPage } from '@/components/pages/contact'
+import { HomePage } from '@/components/pages/home'
 import { LegalPage } from '@/components/pages/legal'
 import { MethodPage } from '@/components/pages/method'
 import { PrivacyPage } from '@/components/pages/privacy'
@@ -23,7 +15,7 @@ import { CaseDossier } from '@/components/case-dossier'
 import { SiteFooter, SiteHeader } from '@/components/site-chrome'
 import { JsonLd } from '@/components/json-ld'
 import { getDictionary } from '@/lib/i18n/dictionary'
-import { getPath, resolvePath } from '@/lib/i18n/routes'
+import { resolvePath } from '@/lib/i18n/routes'
 import { buildPageMetadata } from '@/lib/seo/page-meta'
 import { buildPageGraph } from '@/lib/seo/page-graph'
 import { getCase } from '@/content/data/cases'
@@ -164,11 +156,6 @@ export default async function Page({
     page === 'caseDetail' && pageParams?.slug ? getCase(pageParams.slug) : null
   if (page === 'caseDetail' && !caseData) notFound()
 
-  // Locale-aware hrefs for home section links
-  const methodHref = getPath('method', locale)
-  const servicesHref = getPath('services', locale)
-  const allianceHref = getPath('alliance', locale)
-
   // Exactly one server-rendered JSON-LD @graph per page — SEO-01 §6 / AC-8.
   const graph = buildPageGraph({ dict, page, locale, params: pageParams })
 
@@ -213,46 +200,8 @@ export default async function Page({
         ) : page === 'oportunidad' ? (
           <OportunidadPage dict={dict} locale={locale} />
         ) : (
-          <>
-            <Hero
-              content={home.hero}
-              claims={home.claims}
-              labels={home.labels}
-              diagrams={home.diagrams}
-              heroFigure={(home as { heroFigure?: unknown }).heroFigure as Parameters<typeof Hero>[0]['heroFigure']}
-              claimsAriaLabel={shared.accessibility.keyMessages}
-            />
-            <ProblemSection
-              content={home.problem}
-              labels={home.labels}
-              diagrams={home.diagrams}
-              problemFigure={(home as { problemFigure?: unknown }).problemFigure as Parameters<typeof ProblemSection>[0]['problemFigure']}
-            />
-            <ServicesPreview
-              content={home.services}
-              labels={home.labels}
-              servicesHref={servicesHref}
-            />
-            <FrameworkSection
-              content={home.framework}
-              labels={home.labels}
-              methodHref={methodHref}
-            />
-            <ProofSection
-              content={home.proof}
-              labels={home.labels}
-              diagrams={home.diagrams}
-              proofFigure={(home as { proofFigure?: unknown }).proofFigure as Parameters<typeof ProofSection>[0]['proofFigure']}
-            />
-            <AllianceTeaser
-              content={home.alliance}
-              labels={home.labels}
-              diagrams={home.diagrams}
-              allianceHref={allianceHref}
-              allianceFigure={(home as { allianceFigure?: unknown }).allianceFigure as Parameters<typeof AllianceTeaser>[0]['allianceFigure']}
-            />
-            <FinalCTA dict={dict} locale={locale} />
-          </>
+          // HOME-V2 — home composed from the shared landing sections.
+          <HomePage dict={dict} locale={locale} />
         )}
       </main>
       <SiteFooter

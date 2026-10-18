@@ -6,8 +6,8 @@
  * and applicable EU/Spanish law (RGPD). It is NOT legal advice. A qualified
  * advisor must review this page before go-live.
  *
- * Unconfirmed data is marked with {{PLACEHOLDER}} tokens (FR-4.1).
- * Do NOT publish with unresolved placeholders (FR-4.2).
+ * All former double-brace placeholders resolved (HOME-V2 Part A, 18 Oct 2026).
+ * The placeholder guard fails the build if one is reintroduced.
  *
  * Key decisions (SPEC-P4 §0):
  * - Cookieless analytics only (Savri, FEAT-01) → no cookies → no cookie banner needed.
@@ -28,8 +28,7 @@ export const privacyContent = {
     eyebrow: '· PRIVACIDAD',
     h1: 'Política de privacidad',
     updatedLabel: 'ÚLTIMA ACTUALIZACIÓN ·',
-    // TODO(P4): Carlos to confirm and replace this placeholder before go-live.
-    updatedDate: '{{FECHA_ACTUALIZACION}}',
+    updatedDate: '18 de octubre de 2026',
   },
   anchorLabel: 'EN ESTA PÁGINA',
   sections: [
@@ -46,8 +45,7 @@ export const privacyContent = {
         },
         {
           key: 'NIF',
-          // Pre-filled from MAGUPELL contract §1 — Carlos to confirm before go-live.
-          value: '{{NIF_B88767520}}',
+          value: 'B88767520',
         },
         {
           key: 'Contacto',
@@ -74,8 +72,8 @@ export const privacyContent = {
       index: '04',
       name: 'CONSERVACIÓN',
       title: 'Plazo de conservación',
-      // EU-region placeholder — to be confirmed at Phase 6 when GCP is configured.
-      body: 'Conservamos tus datos el tiempo estrictamente necesario para atender tu solicitud y, en su caso, mientras dure la relación comercial o precontractual; transcurrido ese plazo, se suprimen o bloquean conforme a la normativa aplicable. Los datos se alojan en servidores ubicados dentro de la Unión Europea {{REGION_EU_GOOGLE_CLOUD}}.',
+      // Hosting of this website and its contact-form data only (HOME-V2 A.2).
+      body: 'Conservamos tus datos el tiempo estrictamente necesario para atender tu solicitud y, en su caso, mientras dure la relación comercial o precontractual; transcurrido ese plazo, se suprimen o bloquean conforme a la normativa aplicable. Los datos se alojan en servidores ubicados dentro de la Unión Europea (Google Cloud, región europe-west1, Bélgica).',
     },
     {
       id: 'destinatarios',

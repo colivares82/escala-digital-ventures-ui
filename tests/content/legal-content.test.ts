@@ -74,14 +74,21 @@ describe('legalContent — /aviso-legal (SPEC-P4 FR-2)', () => {
     expect(legalContent.meta.description.length).toBeLessThanOrEqual(155)
   })
 
-  it('has unresolved placeholders (expected — not yet publishable)', () => {
-    const placeholders = collectPlaceholders(legalContent)
-    // We expect placeholders to be present until Carlos fills them in.
-    expect(placeholders.length).toBeGreaterThan(0)
-    const tokens = placeholders.map((p) => p.token)
-    expect(tokens).toContain('{{FECHA_ACTUALIZACION}}')
-    expect(tokens).toContain('{{REGISTRO_MERCANTIL}}')
-    expect(tokens).toContain('{{JURISDICCION}}')
+  // HOME-V2 A.1 — all placeholders resolved; publishable.
+  it('has no unresolved placeholders', () => {
+    expect(collectPlaceholders(legalContent)).toEqual([])
+  })
+
+  it('shows the confirmed NIF and no Registro Mercantil row (Carlos: row removed)', () => {
+    const titular = legalContent.sections.find((s) => s.id === 'titular')
+    const keys = titular?.kv?.map((r) => r.key) ?? []
+    expect(titular?.kv?.find((r) => r.key === 'NIF')?.value).toBe('B88767520')
+    expect(keys).not.toContain('Registro Mercantil')
+  })
+
+  it('§05 names no court or city (A.1)', () => {
+    const legislacion = legalContent.sections.find((s) => s.id === 'legislacion')
+    expect(legislacion?.body).toMatch(/conforme a la legislación aplicable\.$/)
   })
 })
 
@@ -167,11 +174,16 @@ describe('privacyContent — /privacidad (SPEC-P4 FR-3)', () => {
     expect(privacyContent.meta.description.length).toBeLessThanOrEqual(155)
   })
 
-  it('has unresolved placeholders (expected — not yet publishable)', () => {
-    const placeholders = collectPlaceholders(privacyContent)
-    expect(placeholders.length).toBeGreaterThan(0)
-    const tokens = placeholders.map((p) => p.token)
-    expect(tokens).toContain('{{FECHA_ACTUALIZACION}}')
+  // HOME-V2 A.2 — all placeholders resolved; publishable.
+  it('has no unresolved placeholders', () => {
+    expect(collectPlaceholders(privacyContent)).toEqual([])
+  })
+
+  it('§04 names the EU hosting region of this website (A.2)', () => {
+    const conservacion = privacyContent.sections.find((s) => s.id === 'conservacion')
+    expect(conservacion?.body).toMatch(
+      /Unión Europea \(Google Cloud, región europe-west1, Bélgica\)\.$/,
+    )
   })
 })
 

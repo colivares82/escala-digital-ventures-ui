@@ -4,7 +4,7 @@
  * Pending Carlos register review (AC-9).
  */
 import { sharedContent } from '@/content/en/shared'
-import { clients } from '@/content/es/clients'
+import { homeLandingContent } from '@/content/en/home-landing'
 import type { HomePageDictionary } from '@/content/types'
 
 export const homeContent = {
@@ -17,128 +17,10 @@ export const homeContent = {
 
   header: sharedContent.header,
 
-  labels: {
-    hero: 'ESCALA DIGITAL VENTURES',
-    problem: 'STARTING POINT',
-    symptoms: 'Operational symptoms',
-    services: 'CAPABILITIES',
-    framework: 'THE GROWTH CYCLE',
-    frameworkLead: 'TEN PHASES · ONE CONTINUOUS IMPROVEMENT CYCLE',
-    frameworkAria: 'Ten-phase growth cycle',
-    phasePrefix: 'PHASE',
-    proof: 'EVIDENCE',
-    proofAttribution: 'VERIFIED EVIDENCE FROM REAL CLIENTS',
-    alliance: 'ALLIANCE MODEL',
-    allianceLegend: 'EACH ALLIANCE: TECHNICAL · STRATEGIC · VISIONARY LAYER',
-  },
-
-  diagrams: {
-    hero: 'From manual processes to real, measurable value through a bespoke system',
-    problem: 'Fragmented operational flow across spreadsheets, emails and documents',
-    proof: 'Verified operational evolution',
-    alliance: 'Five alliances, full dedication. Two occupied.',
-  },
-
-  /**
-   * Hero narrative diagram (FIG.01) — SPEC-POLISH-01.
-   * All copy comes from here; no hardcoded strings in the component.
-   * Zone numbers and FIG number are not translated (kit grammar §3.3).
-   */
-  heroFigure: {
-    zones: ['01 · MANUAL PROCESSES', '02 · BESPOKE SYSTEM', '03 · REAL, MEASURABLE VALUE'],
-    inputs: ['EMAILS', 'SPREADSHEETS', 'NOTES', 'CATALOGUE', 'RECORDS'],
-    system: { title: '02 · BESPOKE SYSTEM', innerLabel: 'ORDERS · MODELS' },
-    outputs: [
-      { label: 'INSIGHT', sub: 'Decisions and data' },
-      { label: 'OPTIMISATION', sub: 'of processes' },
-    ],
-    caption: 'FIG. 01 — FROM MANY MANUAL PROCESSES TO REAL, MEASURABLE VALUE',
-  },
-
-  hero: {
-    // SEO-01 §4.2 — category + locality lead the eyebrow.
-    eyebrow: 'Product and Technology Studio · Mataró, Barcelona',
-    // H1 is a brand asset — UNCHANGED (SEO-01 §0.2 / AC-3).
-    title: 'We automate your business. We scale with you.',
-    // SEO-01 §4.1 — carries "manual processes", "custom platform", "automate".
-    description:
-      'We automate your company\u2019s manual processes and turn them into a custom platform of your own, one you can grow on.',
-    primaryCta: "Let's talk about your business",
-    secondaryCta: 'How we work',
-  },
-
   claims: sharedContent.claims,
 
-  /**
-   * Problem section (01 / STARTING POINT) — SPEC-POLISH-02.
-   * body is a two-paragraph tuple; both paragraphs rendered separately.
-   * Pending Carlos register review (AC-9).
-   */
-  problem: {
-    title: 'Your operations have hit their limit — not your ambitions.',
-    body: [
-      'You have built a business that works. But there comes a point where the operations — spreadsheets, emails, loose documents, knowledge locked in the heads of a few people — can no longer keep up with growth: volume increases, errors multiply and the business depends on nobody being absent.',
-      'Escala steps in there: it turns that operational core into your own platform on which you can keep growing.',
-    ] as const,
-    symptoms: [
-      'growing volume',
-      'multiplying errors',
-      'delayed invoicing',
-      'dependency on people',
-    ],
-  },
-
-  /**
-   * Problem flows diagram (FIG.02) — SPEC-POLISH-02.
-   * All copy comes from here; no hardcoded strings in the component.
-   * Piece labels and core lines are not translated (kit grammar §3.3 — mono labels).
-   * Pending Carlos register review (AC-9).
-   */
-  problemFigure: {
-    pieces: [
-      'HOJAS DE CÁLCULO',
-      'CORREOS',
-      'NOTAS',
-      'CATÁLOGO',
-      'HISTORIAL',
-    ] as const,
-    core: ['PROCESOS', 'MANUALES'] as const,
-    caption: 'FIG. 02 — AN OPERATION DEPENDENT ON MANUAL PROCESSES: FLOWS DO NOT COMPLETE',
-    note: 'EACH PIECE TRIES TO CONNECT · THE FLOW BREAKS AT THE MANUAL STEP',
-  },
-
-  services: {
-    title: 'What we do',
-    action: 'See all services',
-    items: [
-      {
-        title: 'Digital transformation and process automation',
-        text: 'Critical processes that live in spreadsheets and in people\'s heads.',
-      },
-      {
-        title: 'Platform development',
-        text: 'Generic software does not fit your reality.',
-      },
-      {
-        title: 'Automation and applied AI',
-        text: 'Everyone talks about AI; few apply it with real return.',
-      },
-      {
-        title: 'Fractional CTO and Product Leadership',
-        text: 'You need senior product and technology direction without hiring a full-time profile.',
-      },
-      {
-        title: 'Operation, support and continuous evolution',
-        text: 'Software that does not evolve, dies.',
-      },
-    ],
-  },
-
   framework: {
-    title: 'Our own method: the Escala Growth Framework',
-    description:
-      'Ten phases that connect business, people, processes and technology in a continuous improvement cycle.',
-    action: 'How we work',
+    // Consumed by /como-trabajamos (components/pages/method.tsx).
     phases: [
       {
         name: 'Discover',
@@ -194,12 +76,8 @@ export const homeContent = {
   },
 
   /**
-   * Proof section (04 / EVIDENCE) — SPEC-POLISH-03.
-   * Real Magupell data. Readouts structured as an array for future multi-case
-   * generalization — adding a new case is a data change only.
-   * kind: 'number' = Archivo display figure; 'phrase' = slightly smaller phrase.
-   * plotVariant: decorative micro-plot identifier (aria-hidden in component).
-   * Pending Carlos register review (AC-9).
+   * Magupell readouts (SPEC-POLISH-03). Consumed by home 04 Evidencia
+   * (HOME-V2: title = H2; DAT.01/02/04/05 rendered) and /styleguide.
    */
   proof: {
     title: 'Facts, not promises.',
@@ -247,31 +125,6 @@ export const homeContent = {
         plotVariant: 'roles',
       },
     ] as const,
-    cases: clients,
-  },
-
-  /**
-   * Proof timeline diagram (FIG.04) — SPEC-POLISH-03.
-   * Real Magupell dates. All copy from here; no hardcoded strings in the component.
-   * timeline is a 5-tuple (chronological order).
-   * Pending Carlos register review (AC-9).
-   */
-  proofFigure: {
-    timeline: [
-      { date: 'DEC 2025', deliverable: 'Requirements' },
-      { date: 'JAN 2026', deliverable: 'Prototype' },
-      { date: 'APR 2026', deliverable: 'Development' },
-      { date: 'MAY–JUN 2026', deliverable: 'Pre-production' },
-      { date: 'JUL 2026', deliverable: 'Production' },
-    ] as const,
-    timelineCaption: 'FIG. 04 — FROM REQUIREMENTS TO PRODUCTION IN 7 MONTHS, WITH VERIFIED DATES',
-    timelineAria: 'Verified Magupell timeline: from requirements in December 2025 to production in July 2026',
-  },
-
-  alliance: {
-    title: 'Five alliances. Our full dedication.',
-    body: 'We deliberately limit the number of active clients to guarantee dedication, closeness and continuous support. It is not a limitation: it is the model.',
-    action: 'Discover the alliance model',
   },
 
   /**
@@ -294,6 +147,9 @@ export const homeContent = {
     coreSubLabel: '2 ACTIVE ALLIANCES · 3 AVAILABLE',
     figAria: 'Alliance constellation: Escala at the centre, two active alliances (Magupell, BioZero) and three available seats',
   },
+
+  /** HOME-V2 — visible copy of home sections 00–08 (see content/en/home-landing.ts). */
+  landing: homeLandingContent,
 
   footer: sharedContent.footer,
 } as const satisfies HomePageDictionary

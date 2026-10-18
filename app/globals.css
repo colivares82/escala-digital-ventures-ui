@@ -399,44 +399,6 @@ h1, h2, h3, h4, p {
 /* ─────────────────────────────────────────────────────────────────────────── */
 /* HERO                                                                          */
 /* ─────────────────────────────────────────────────────────────────────────── */
-.hero {
-  min-height: 100svh;
-  padding-top: 5rem;
-}
-
-.hero__grid {
-  min-height: calc(100svh - 5rem);
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-template-rows: auto 1fr;
-  gap: 2rem;
-  padding-block: 3rem;
-}
-.hero .section-index {
-  grid-column: 1 / 6;
-}
-.hero__claim {
-  grid-column: 1 / 8;
-  align-self: center;
-}
-.hero__claim > p {
-  max-width: 37rem;
-  margin: 2rem 0;
-  color: rgb(247 247 244 / 0.72);
-  font-size: 1.12rem;
-  line-height: 1.6;
-}
-.hero__diagram {
-  grid-column: 8 / 13;
-  align-self: center;
-  display: flex;
-  flex-direction: column;
-}
-.hero__eyebrow {
-  margin-bottom: 1rem;
-  color: var(--ambre);
-  font: 500 0.64rem / 1.5 var(--font-ibm-plex-mono);
-}
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
@@ -481,10 +443,7 @@ h1, h2, h3, h4, p {
   letter-spacing: -0.06em;
   text-wrap: balance;
 }
-.hero__claim .word-reveal {
-  font-size: var(--text-display-xl);
-  letter-spacing: -0.07em;
-}
+
 .word-reveal__mask {
   display: inline-block;
   overflow: hidden;
@@ -583,53 +542,8 @@ h1, h2, h3, h4, p {
 }
 
 /* Symptoms strip (horizontal, under headline, closed by divider) */
-.problem-symptoms {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 2.25rem;
-  margin: 1.5rem 0 0;
-  padding: 0 0 2rem;
-  list-style: none;
-  border-bottom: 1px solid var(--line);
-}
-.problem-symptom {
-  transition-delay: calc(var(--symptom-delay, 0) * 90ms);
-}
-.problem-symptom--1 { --symptom-delay: 1; }
-.problem-symptom--2 { --symptom-delay: 2; }
-.problem-symptom--3 { --symptom-delay: 3; }
-.problem-symptom--4 { --symptom-delay: 4; }
-.problem-symptom li {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--mar);
-  font: 500 0.68rem / 1.4 var(--font-ibm-plex-mono);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-.problem-symptom i {
-  width: 2rem;
-  border-top: 1px dashed currentColor;
-}
 
 /* Two balanced columns: body | diagram */
-.problem-cols {
-  display: grid;
-  grid-template-columns: 1fr 1.15fr;
-  gap: 5vw;
-  align-items: center;
-  margin-top: 2.75rem;
-}
-.problem-cols__body {
-  display: flex;
-  flex-direction: column;
-  gap: 1.125rem;
-}
-.problem-cols__body .lead-copy {
-  margin: 0;
-  max-width: 50ch;
-}
 
 /* FIG.02 — problem flows diagram */
 .problem-plate {
@@ -866,9 +780,7 @@ h1, h2, h3, h4, p {
   border: 1px solid var(--line);
   padding: 2rem;
 }
-.hero__diagram > .diagram-reveal {
-  width: 100%;
-}
+
 .hero-plate .system-diagram svg {
   max-height: 25rem;
 }
@@ -1072,13 +984,6 @@ h1, h2, h3, h4, p {
 /* ─────────────────────────────────────────────────────────────────────────── */
 /* PROOF SECTION — READOUTS + CASE CARDS + CLIENT CHIPS                         */
 /* ─────────────────────────────────────────────────────────────────────────── */
-.proof__attribution {
-  max-width: 42rem;
-  margin: 1.25rem 0 0;
-  color: var(--mar);
-  font: 500 0.65rem / 1.5 var(--font-ibm-plex-mono);
-  letter-spacing: 0.06em;
-}
 
 /* Readout grid — SPEC-POLISH-03: 2 columns × 3 rows */
 .readouts {
@@ -1250,111 +1155,28 @@ h1, h2, h3, h4, p {
  * The figure frame: white background, 1px border, corner ticks.
  * Matches the wireframe .figframe style.
  */
-.proof-timeline {
-  background: #fff;
-  border: 1px solid var(--line);
-  padding: 1.625rem 1.5rem 1rem;
-  position: relative;
-}
 
 /* Corner ticks — kit grammar §3.3 */
-.proof-timeline__ticks path {
-  fill: none;
-  stroke: var(--ink);
-  stroke-width: 1;
-  opacity: 0.3;
-  vector-effect: non-scaling-stroke;
-}
 
 /* Fill polygon under the stair — very subtle mar tint */
-.proof-timeline__fill {
-  fill: var(--mar);
-  opacity: 0.05;
-  stroke: none;
-}
 
 /* Stair line — MUST be fill:none or the open path fills black */
-.proof-timeline__stair {
-  fill: none;
-  stroke: var(--ink);
-  stroke-width: 2;
-  vector-effect: non-scaling-stroke;
-}
 
 /* Step marker dots */
-.proof-timeline__node {
-  fill: var(--ink);
-  stroke: none;
-}
 
 /* Production node — ambre accent */
-.proof-timeline__node--production {
-  fill: var(--ambre);
-  stroke: none;
-}
 
 /* Date labels — mono 14px, mar, weight 500 */
-.proof-timeline__date {
-  font: 500 14px / 1 var(--font-ibm-plex-mono);
-  fill: var(--mar);
-  stroke: none;
-}
 
 /* Deliverable labels — mono 12px, mar at 70% */
-.proof-timeline__deliverable {
-  font: 400 12px / 1 var(--font-ibm-plex-mono);
-  fill: rgb(14 58 93 / 0.7);
-  stroke: none;
-}
 
 /* Production deliverable — ambre-dk */
-.proof-timeline__deliverable--production {
-  fill: var(--ambre-dk);
-}
 
 /* Figcaption — mono 11px, mar */
-.proof-timeline__caption {
-  display: block;
-  margin-top: 0.875rem;
-  font: 500 0.6875rem / 1.4 var(--font-ibm-plex-mono);
-  letter-spacing: 0.03em;
-  color: var(--mar);
-}
 
 /* Proof timeline plate — override diagram-reveal width constraint */
-.proof-timeline-plate {
-  width: 100%;
-}
-.proof-timeline-plate .proof-timeline {
-  width: 100%;
-}
 
 /* Proof grid layout */
-.proof__grid {
-  grid-template-columns: minmax(20rem, 46%) 1fr;
-  align-items: stretch;
-  margin-bottom: 3.5rem;
-}
-.proof__attribution {
-  font-size: 0.75rem;
-}
-.proof__grid > div:first-child {
-  display: flex;
-  min-height: 100%;
-  flex-direction: column;
-}
-.proof__grid > .diagram-reveal {
-  align-self: stretch;
-  display: flex;
-}
-.proof__grid > .diagram-reveal .system-diagram {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border: 1px solid var(--line);
-  padding: 1.5rem;
-}
 
 /* ─────────────────────────────────────────────────────────────────────────── */
 /* ALLIANCE SECTION                                                              */
@@ -1372,27 +1194,6 @@ h1, h2, h3, h4, p {
 }
 
 /* ── Protagonist constellation stage (SPEC-POLISH-04) ── */
-.alliance-stage {
-  margin-top: 3rem;
-  max-width: 900px;
-  margin-inline: auto;
-}
-
-.alliance-caption {
-  font-family: var(--font-ibm-plex-mono);
-  font-size: 0.75rem;
-  color: rgb(247 247 244 / 0.7);
-  letter-spacing: 0.03em;
-  margin-top: 0.5rem;
-}
-
-.alliance-subcaption {
-  font-family: var(--font-ibm-plex-mono);
-  font-size: 0.6875rem;
-  color: rgb(247 247 244 / 0.5);
-  letter-spacing: 0.05em;
-  margin-top: 0.375rem;
-}
 
 /* Core sub-label inside the protagonist SVG */
 .alliance-constellation--protagonist .ac-core-sublabel {
@@ -1446,13 +1247,7 @@ h1, h2, h3, h4, p {
 }
 
 /* ── Legacy figure (fallback when allianceFigure not provided) ── */
-.alliance-figure {
-  width: min(100%, 45rem);
-  margin: 4rem auto 0;
-}
-.alliance-figure > .diagram-reveal {
-  width: 100%;
-}
+
 .alliance-plate .system-diagram svg {
   display: block;
   width: 100%;
@@ -1482,12 +1277,6 @@ h1, h2, h3, h4, p {
 }
 .alliance-nodes .diagram-node.is-available circle {
   stroke-dasharray: 4 4;
-}
-.alliance-legend {
-  margin: 1rem 0 0;
-  color: rgb(247 247 244 / 0.7);
-  font: 500 0.62rem / 1.5 var(--font-ibm-plex-mono);
-  letter-spacing: 0.08em;
 }
 
 /* Staggered entrance for alliance constellation */
@@ -2404,15 +2193,9 @@ h1, h2, h3, h4, p {
      wordmark; applying it to the image would crop the lockup, and §3 fixes the
      rendered size at 162×43 regardless of viewport. The mobile MENU BAR uses
      the standalone symbol instead (.site-brand__symbol, Z2). */
-  .problem-layout {
-    gap: 2rem;
-  }
-  .hero__claim {
-    grid-column: 1 / 9;
-  }
-  .hero__diagram {
-    grid-column: 9 / 13;
-  }
+  
+  
+  
   .split-heading {
     gap: 2rem;
   }
@@ -2443,30 +2226,16 @@ h1, h2, h3, h4, p {
   .phase-cycle__phase h3 {
     font-size: clamp(2.5rem, 5vw, 3.5rem);
   }
-  .proof__grid > .diagram-reveal .system-diagram {
-    padding: 1rem;
-  }
+  
 }
 
 /* ── Large mobile: 768px and below ── */
 @media (max-width: 768px) {
-  .hero__grid {
-    display: flex;
-    flex-direction: column;
-  }
-  .hero__diagram {
-    width: 100%;
-    align-self: stretch;
-  }
-  .hero__diagram > .diagram-reveal {
-    width: 100%;
-  }
+  
+  
+  
   /* Problem section: stack columns on mobile */
-  .problem-cols {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
-  }
+  
   .problem-plate {
     width: 100%;
   }
@@ -2517,11 +2286,7 @@ h1, h2, h3, h4, p {
     font: 500 0.6875rem / 1.5 var(--font-ibm-plex-mono);
     letter-spacing: 0.08em;
   }
-  .proof__grid {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 3.5rem;
-  }
+  
   .client-chips {
     max-width: none;
     justify-content: flex-start;
@@ -2547,22 +2312,7 @@ h1, h2, h3, h4, p {
   .site-header__inner {
     gap: 1rem;
   }
-  .hero__grid {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding-block: 2rem;
-  }
-  .hero .section-index {
-    margin-bottom: 2rem;
-  }
-  .hero__diagram {
-    width: 100%;
-    align-self: stretch;
-  }
-  .hero__diagram > .diagram-reveal {
-    width: 100%;
-  }
+
   .section--light > .page-shell > .diagram-reveal {
     padding: 1rem;
   }
@@ -5341,7 +5091,6 @@ h1, h2, h3, h4, p {
   }
 }
 
-
 /* ── CaseNarrative — numbered section wrapper (mirrors dossier-field index style) ── */
 .case-narrative {
   margin-top: 2rem;
@@ -5393,7 +5142,6 @@ h1, h2, h3, h4, p {
 .case-narrative__section--governance .case-narrative__label {
   color: var(--ambre);
 }
-
 
 /* ── CaseGovernance — AA-contrast 2×2 cards on abisal ── */
 .case-governance__heading {
@@ -5483,7 +5231,6 @@ h1, h2, h3, h4, p {
     grid-template-columns: 1fr;
   }
 }
-
 
 /* ── CaseFlowFig — FIG. EXP-02 "El ciclo operativo" ── */
 .case-flow-fig {
@@ -5585,7 +5332,6 @@ h1, h2, h3, h4, p {
   }
 }
 
-
 /* Traversal accent: one directional pulse, left→right, runs once on entry. */
 .case-flow-fig__traversal {
   display: none;
@@ -5646,7 +5392,6 @@ h1, h2, h3, h4, p {
     display: none !important;
   }
 }
-
 
 /* ── CaseTimelineLadder — FIG. EXP-03 chronology strip (section 06) ── */
 .case-timeline-ladder {
@@ -5748,8 +5493,6 @@ h1, h2, h3, h4, p {
   max-width: 60ch;
 }
 
-
-
 @media (max-width: 767px) {
   .case-timeline-ladder__steps {
     grid-template-columns: 1fr;
@@ -5827,7 +5570,6 @@ h1, h2, h3, h4, p {
   outline: 2px solid var(--ambre);
   outline-offset: 4px;
 }
-
 
 .mobile-menu__nav {
   position: relative;
@@ -6901,5 +6643,149 @@ h1, h2, h3, h4, p {
   .oport-hero-fig__flow-in,
   .oport-badge__dot {
     animation: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* HOME-V2 — home composed from the shared landing sections                     */
+/* Wireframe: specs/mockups/wireframe-home-v2.html                              */
+/* Only the elements the home adds; every other rule is the shared .oport-*     */
+/* set above, so /oportunidad output is unchanged. Tokens only.                 */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* 00 — amber kicker below the primary-claim H1. --ambre on --abisal ≈ 9:1 (AA). */
+.oport-hero__kicker {
+  max-width: 24ch;
+  margin: -0.5rem 0 1.5rem;
+  color: var(--ambre);
+  font: 500 clamp(1.25rem, 2vw, 1.6rem) / 1.25 var(--font-archivo);
+  letter-spacing: -0.01em;
+}
+/* 00 — 5-dot alliance indicator (filled = active alliance). Static: no pulse. */
+.oport-dots {
+  display: inline-flex;
+  gap: 0.375rem;
+}
+.oport-dots i {
+  width: 0.625rem;
+  height: 0.625rem;
+  border: 1px solid var(--ambre);
+  border-radius: 50%;
+}
+.oport-dots i.is-on {
+  background: var(--ambre);
+}
+
+/* 04 — Evidencia on abisal: readouts restyled for the dark surface, 4 → 2 → 1. */
+.home-evidence__readouts {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0 0 2.5rem;
+  border-color: var(--line-light);
+}
+.home-evidence .readout {
+  border-color: var(--line-light);
+}
+.home-evidence .readout__eyebrow,
+.home-evidence .readout__plot {
+  color: var(--ambre);
+}
+.home-evidence .readout__value {
+  color: var(--paper);
+}
+.home-evidence .readout__caption {
+  color: rgb(247 247 244 / 0.72);
+}
+/* Case links: two columns on abisal (ClientChip keeps its white card for AA). */
+.home-evidence__cases {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: none;
+  margin-top: 0;
+}
+
+/* 05 / 07 — links added on the home only. */
+.oport-alliance__link {
+  margin-top: 2rem;
+}
+.oport-start__actions {
+  align-items: center;
+  gap: 1.75rem;
+  margin-top: 3rem;
+}
+
+/* 08 — A fondo: paper2 surface, 5 → 2 → 1 tiles, hover/focus only. */
+.deep-links {
+  background: linear-gradient(rgb(22 24 29 / 0.04), rgb(22 24 29 / 0.04)), var(--paper);
+  padding-block: 5.5rem;
+}
+.deep-links__list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+.deep-links__list li + li {
+  border-left: 1px solid var(--line);
+}
+.deep-links__tile {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem 1.25rem 1.75rem;
+  color: var(--ink);
+  text-decoration: none;
+  transition: background var(--motion-fast);
+}
+.deep-links__tile:hover,
+.deep-links__tile:focus-visible {
+  background: var(--paper);
+}
+.deep-links__label {
+  /* --ambre-dk alone is ~4.2:1 on this tint; nudged toward ink for AA (≥4.5). */
+  color: color-mix(in srgb, var(--ambre-dk) 85%, var(--ink));
+  font: 500 0.7rem var(--font-ibm-plex-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.deep-links__title {
+  margin-top: 0.25rem;
+  font: 600 1.1rem / 1.2 var(--font-archivo);
+  letter-spacing: -0.01em;
+}
+.deep-links__line {
+  color: rgb(22 24 29 / 0.72);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+#inicio {
+  scroll-margin-top: 5rem;
+}
+
+@media (max-width: 1023px) {
+  .home-evidence__readouts,
+  .deep-links__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .deep-links__list li + li {
+    border-left: 0;
+  }
+  .deep-links__list li {
+    border-bottom: 1px solid var(--line);
+  }
+}
+@media (max-width: 699px) {
+  .home-evidence__readouts,
+  .home-evidence__cases,
+  .deep-links__list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .deep-links__tile {
+    transition: none;
   }
 }

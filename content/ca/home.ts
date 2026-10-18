@@ -4,7 +4,7 @@
  * Pending Carlos register review (AC-9).
  */
 import { sharedContent } from '@/content/ca/shared'
-import { clients } from '@/content/es/clients'
+import { homeLandingContent } from '@/content/ca/home-landing'
 import type { HomePageDictionary } from '@/content/types'
 
 export const homeContent = {
@@ -17,129 +17,10 @@ export const homeContent = {
 
   header: sharedContent.header,
 
-  labels: {
-    hero: 'ESCALA DIGITAL VENTURES',
-    problem: 'PUNT DE PARTIDA',
-    symptoms: 'Símptomes operatius',
-    services: 'CAPACITATS',
-    framework: 'EL CICLE DE CREIXEMENT',
-    frameworkLead: 'DEU FASES · UN CICLE CONTINU DE MILLORA',
-    frameworkAria: 'Cicle de creixement de deu fases',
-    phasePrefix: 'FASE',
-    proof: 'EVIDÈNCIA',
-    proofAttribution: 'EVIDÈNCIA VERIFICADA EN CLIENTS REALS',
-    alliance: "MODEL D'ALIANÇA",
-    allianceLegend: "CADA ALIANÇA: PLA TÈCNIC · ESTRATÈGIC · VISIONARI",
-  },
-
-  diagrams: {
-    hero: 'De processos manuals a valor real i mesurable mitjançant un sistema a mida',
-    problem: 'Flux operatiu fragmentat entre fulls, correus i documents',
-    proof: 'Evolució verificada de la operació',
-    alliance: 'Cinc aliances, dedicació completa. Dues ocupades.',
-  },
-
-  /**
-   * Hero narrative diagram (FIG.01) — SPEC-POLISH-01.
-   * All copy comes from here; no hardcoded strings in the component.
-   * Zone numbers and FIG number are not translated (kit grammar §3.3).
-   */
-  heroFigure: {
-    zones: ['01 · PROCESSOS MANUALS', '02 · SISTEMA A MIDA', '03 · VALOR REAL I MESURABLE'],
-    inputs: ['CORREUS', 'FULLS DE CÀLCUL', 'NOTES', 'CATÀLEG', 'HISTORIALS'],
-    system: { title: '02 · SISTEMA A MIDA', innerLabel: 'ORDENA · MODELA' },
-    outputs: [
-      { label: 'INSIGHT', sub: 'Decisions i dades' },
-      { label: 'OPTIMITZACIÓ', sub: 'de processos' },
-    ],
-    caption: 'FIG. 01 — DE MOLTS PROCESSOS MANUALS A VALOR REAL I MESURABLE',
-  },
-
-  hero: {
-    // SEO-01 §4.2 — category + locality lead the eyebrow.
-    eyebrow: 'Estudi de producte i tecnologia · Mataró, Barcelona',
-    // H1 is a brand asset — UNCHANGED (SEO-01 §0.2 / AC-3).
-    title: 'Automatitzem el teu negoci. Escalem amb tu.',
-    // SEO-01 §4.1 — carries "processos manuals", "plataforma a mida",
-    // "automatitzem".
-    description:
-      'Automatitzem els processos manuals de la teva empresa i els convertim en una plataforma pròpia, feta a mida, sobre la qual pots créixer.',
-    primaryCta: 'Parlem del teu negoci',
-    secondaryCta: 'Com treballem',
-  },
-
   claims: sharedContent.claims,
 
-  /**
-   * Problem section (01 / PUNT DE PARTIDA) — SPEC-POLISH-02.
-   * body is a two-paragraph tuple; both paragraphs rendered separately.
-   * Pending Carlos register review (AC-9).
-   */
-  problem: {
-    title: 'La teva operativa ha arribat al seu límit, no els teus objectius.',
-    body: [
-      "Has construït un negoci que funciona. Però arriba un punt en què l'operativa —fulls de càlcul, correus, documents solts, coneixement al cap de poques persones— deixa d'acompanyar el creixement: el volum augmenta, els errors es multipliquen i el negoci depèn que ningú falti.",
-      "Escala entra aquí: converteix aquell cor operatiu en una plataforma pròpia sobre la qual continuar creixent.",
-    ] as const,
-    symptoms: [
-      'volum que creix',
-      'errors que es multipliquen',
-      'facturació que es retarda',
-      'dependència de persones',
-    ],
-  },
-
-  /**
-   * Problem flows diagram (FIG.02) — SPEC-POLISH-02.
-   * All copy comes from here; no hardcoded strings in the component.
-   * Piece labels and core lines are not translated (kit grammar §3.3 — mono labels).
-   * Pending Carlos register review (AC-9).
-   */
-  problemFigure: {
-    pieces: [
-      'HOJAS DE CÁLCULO',
-      'CORREOS',
-      'NOTAS',
-      'CATÁLOGO',
-      'HISTORIAL',
-    ] as const,
-    core: ['PROCESOS', 'MANUALES'] as const,
-    caption: "FIG. 02 — UNA OPERATIVA QUE DEPÈN DE PROCESSOS MANUALS: ELS FLUXOS NO ES COMPLETEN",
-    note: "CADA PEÇA INTENTA CONNECTAR-SE · EL FLUX ES TALLA AL PAS MANUAL",
-  },
-
-  services: {
-    title: 'Què fem',
-    action: 'Veure tots els serveis',
-    items: [
-      {
-        title: 'Transformació digital i automatització de processos',
-        text: 'Processos crítics que viuen en fulls de càlcul i al cap de les persones.',
-      },
-      {
-        title: 'Desenvolupament de plataformes',
-        text: 'El programari genèric no encaixa amb la teva realitat.',
-      },
-      {
-        title: 'Automatització i IA aplicada',
-        text: 'Tothom parla de IA; pocs la apliquen amb retorn.',
-      },
-      {
-        title: 'CTO i Product Leadership fraccional',
-        text: 'Necessites criteri directiu de producte i tecnologia, sense contractar un perfil a temps complet.',
-      },
-      {
-        title: 'Operació, suport i evolució contínua',
-        text: 'El programari que no evoluciona, mor.',
-      },
-    ],
-  },
-
   framework: {
-    title: 'Un mètode propi: el Escala Growth Framework',
-    description:
-      'Deu fases que connecten negoci, persones, processos i tecnologia en un cicle continu de millora.',
-    action: 'Com treballem',
+    // Consumed by /como-trabajamos (components/pages/method.tsx).
     phases: [
       {
         name: 'Discover',
@@ -195,12 +76,8 @@ export const homeContent = {
   },
 
   /**
-   * Proof section (04 / EVIDÈNCIA) — SPEC-POLISH-03.
-   * Real Magupell data. Readouts structured as an array for future multi-case
-   * generalization — adding a new case is a data change only.
-   * kind: 'number' = Archivo display figure; 'phrase' = slightly smaller phrase.
-   * plotVariant: decorative micro-plot identifier (aria-hidden in component).
-   * Pending Carlos register review (AC-9).
+   * Magupell readouts (SPEC-POLISH-03). Consumed by home 04 Evidencia
+   * (HOME-V2: title = H2; DAT.01/02/04/05 rendered) and /styleguide.
    */
   proof: {
     title: 'Fets, no promeses.',
@@ -248,31 +125,6 @@ export const homeContent = {
         plotVariant: 'roles',
       },
     ] as const,
-    cases: clients,
-  },
-
-  /**
-   * Proof timeline diagram (FIG.04) — SPEC-POLISH-03.
-   * Real Magupell dates. All copy from here; no hardcoded strings in the component.
-   * timeline is a 5-tuple (chronological order).
-   * Pending Carlos register review (AC-9).
-   */
-  proofFigure: {
-    timeline: [
-      { date: 'DES 2025', deliverable: 'Requisits' },
-      { date: 'GEN 2026', deliverable: 'Prototip' },
-      { date: 'ABR 2026', deliverable: 'Desenvolupament' },
-      { date: 'MAI–JUN 2026', deliverable: 'Preproducció' },
-      { date: 'JUL 2026', deliverable: 'Producció' },
-    ] as const,
-    timelineCaption: 'FIG. 04 — DELS REQUISITS A PRODUCCIÓ EN 7 MESOS, AMB DATES VERIFICADES',
-    timelineAria: 'Cronologia verificada de Magupell: dels requisits al desembre de 2025 a producció al juliol de 2026',
-  },
-
-  alliance: {
-    title: 'Cinc aliances. Tota la nostra dedicació.',
-    body: "Limitem deliberadament el nombre de clients actius per garantir dedicació, proximitat i acompanyament continu. No és una limitació: és el model.",
-    action: "Coneix el model d'aliança",
   },
 
   /**
@@ -295,6 +147,9 @@ export const homeContent = {
     coreSubLabel: '2 ALIANCES ACTIVES · 3 DISPONIBLES',
     figAria: "Constel·lació d'aliances: Escala al centre, dues aliances actives (Magupell, BioZero) i tres places disponibles",
   },
+
+  /** HOME-V2 — visible copy of home sections 00–08 (see content/ca/home-landing.ts). */
+  landing: homeLandingContent,
 
   footer: sharedContent.footer,
 } as const satisfies HomePageDictionary

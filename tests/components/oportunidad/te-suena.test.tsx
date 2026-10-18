@@ -3,8 +3,8 @@
  */
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { TeSuenaSection } from '@/components/oportunidad/te-suena-section'
-import { diagnosisBand, toggleIndex } from '@/components/oportunidad/diagnosis'
+import { TeSuenaSection } from '@/components/landing/te-suena-section'
+import { diagnosisBand, toggleIndex } from '@/components/landing/diagnosis'
 import { oportunidadContent as c } from '@/content/es/oportunidad'
 
 const t = c.teSuena

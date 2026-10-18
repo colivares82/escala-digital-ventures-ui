@@ -1,5 +1,25 @@
 # Changelog
 
+## [HOME-V2] — 18 Oct 2026 — Home redesign from /oportunidad + legal placeholder fixes
+
+Spec: HOME-V2 v1.0 · Wireframe: `specs/mockups/wireframe-home-v2.html`.
+
+### Part A — legal
+- `/aviso-legal` + `/privacidad` (ES/EN/CA): date 18 Oct 2026, NIF B88767520, §04 hosting region
+  (Google Cloud, europe-west1, Belgium). Registro Mercantil row **removed** in all locales (Carlos).
+  §05 names no court or city.
+- Guard: `tests/content/i18n-coverage.test.ts` now fails on any `{{…}}` token in every locale
+  dictionary (legal/privacy exemption removed; /oportunidad swept too).
+
+### Part B — home
+- Home = 00 Hero · 01 ¿Te suena? · 02 Un lunes · 03 Escenarios · 04 Evidencia · 05 Alianza ·
+  06 Quién · 07 Cómo empezamos · 08 A fondo · A Contacto (unchanged FinalCTA).
+- `components/oportunidad/` → `components/landing/` (shared by both pages; explicit variant props).
+- New: `components/pages/home.tsx`, `components/landing/evidence-section.tsx`,
+  `components/landing/deep-links.tsx`, `content/{es,en,ca}/home-landing.ts`.
+- Deleted (home-only, now unreferenced): `components/home-sections.tsx`, `components/proof-timeline-fig.tsx` (+ tests).
+- /oportunidad rendered output byte-identical; home <head>/JSON-LD, sitemap, robots, llms.txt identical.
+
 ## [LANDING-01] — September 2026 — `/oportunidad` conversion landing (ES only)
 
 New direct-URL / QR landing. Wireframe: `specs/mockups/wireframe-landing01-oportunidad.html`.

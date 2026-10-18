@@ -54,14 +54,12 @@ describe('sharedContent', () => {
   })
 })
 
-describe('homeContent', () => {
-  it('has all 7 home section keys', () => {
-    expect(homeContent.hero).toBeTruthy()
-    expect(homeContent.problem).toBeTruthy()
-    expect(homeContent.services).toBeTruthy()
-    expect(homeContent.framework).toBeTruthy()
+describe('homeContent (HOME-V2)', () => {
+  it('has the home v2 slices + the slices other pages still consume', () => {
+    expect(homeContent.landing).toBeTruthy()
     expect(homeContent.proof).toBeTruthy()
-    expect(homeContent.alliance).toBeTruthy()
+    expect(homeContent.allianceFigure).toBeTruthy()
+    expect(homeContent.framework).toBeTruthy() // /como-trabajamos
     expect(sharedContent.finalCta).toBeTruthy()
   })
 
@@ -73,17 +71,6 @@ describe('homeContent', () => {
     homeContent.framework.phases.forEach((phase) => {
       expect(phase.name).toBeTruthy()
       expect(phase.description).toBeTruthy()
-    })
-  })
-
-  it('has exactly 5 service lines', () => {
-    expect(homeContent.services.items).toHaveLength(5)
-  })
-
-  it('every service item has a title and text', () => {
-    homeContent.services.items.forEach((item) => {
-      expect(item.title).toBeTruthy()
-      expect(item.text).toBeTruthy()
     })
   })
 
@@ -104,22 +91,8 @@ describe('homeContent', () => {
     expect(sharedContent.finalCta.email).toMatch(/@escaladigitalventures\.com$/)
   })
 
-  it('has all required label keys', () => {
-    const { labels } = homeContent
-    expect(labels.hero).toBeTruthy()
-    expect(labels.problem).toBeTruthy()
-    expect(labels.services).toBeTruthy()
-    expect(labels.framework).toBeTruthy()
-    expect(labels.frameworkLead).toBeTruthy()
-    expect(labels.frameworkAria).toBeTruthy()
-    expect(labels.phasePrefix).toBeTruthy()
-    expect(labels.proof).toBeTruthy()
-    expect(labels.alliance).toBeTruthy()
-  })
-
-  it('hero title contains the primary claim', () => {
-    expect(homeContent.hero.title).toContain('Automatizamos')
-    expect(homeContent.hero.title).toContain('Escalamos')
+  it('hero H1 is exactly the primary claim (HOME-V2 AC-B2)', () => {
+    expect(homeContent.landing.hero.title1).toBe('Automatizamos tu negocio. Escalamos contigo.')
   })
 })
 

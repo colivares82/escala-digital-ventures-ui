@@ -6,14 +6,14 @@
  * Wireframe: specs/mockups/wireframe-landing01-oportunidad.html
  */
 import { FinalCTA } from '@/components/final-cta'
-import { OportunidadHero } from '@/components/oportunidad/oportunidad-hero'
+import { OportunidadHero } from '@/components/landing/oportunidad-hero'
 import {
   AllianceSection,
   DaySection,
   ScenariosSection,
-} from '@/components/oportunidad/oportunidad-story'
-import { AboutSection, StartSection } from '@/components/oportunidad/oportunidad-closing'
-import { TeSuenaSection } from '@/components/oportunidad/te-suena-section'
+} from '@/components/landing/oportunidad-story'
+import { AboutSection, StartSection } from '@/components/landing/oportunidad-closing'
+import { TeSuenaSection } from '@/components/landing/te-suena-section'
 import type { Dictionary } from '@/lib/i18n/dictionary'
 import { getPath } from '@/lib/i18n/routes'
 import type { Locale } from '@/lib/i18n/types'
@@ -31,7 +31,7 @@ export function OportunidadPage({ dict, locale }: { dict: Dictionary; locale: Lo
       <DaySection content={content.day} />
       <ScenariosSection content={content.scenarios} />
       <AllianceSection content={content.alliance} figure={dict.home.allianceFigure} />
-      <AboutSection content={content.about} casesHref={getPath('cases', locale)} />
+      <AboutSection content={content.about} linkHref={getPath('cases', locale)} />
       <StartSection content={content.start} />
       <FinalCTA dict={dict} locale={locale} />
     </>

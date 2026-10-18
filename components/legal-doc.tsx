@@ -8,7 +8,7 @@
  * On mobile (<768px): AnchorNav is hidden; a simple top "índice" list is shown instead.
  *
  * Unresolved {{PLACEHOLDER}} tokens are rendered with an ambre highlight (dev warning).
- * This is a visual indicator only — it does NOT fail the build (FR-4.2).
+ * Visual safety net only; the i18n coverage guard fails the build (HOME-V2 A.3).
  *
  * Spec: SPEC-P4 FR-1, FR-4
  */

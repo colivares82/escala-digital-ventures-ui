@@ -9,7 +9,8 @@
  *   - locality-level address only; no streetAddress, no postalCode (AC-9)
  *   - Organization.sameAs never carries a personal profile (AC-10)
  *   - no telephone node (§6.1)
- *   - no vatID/taxID while /aviso-legal still holds placeholder tokens (§10.1)
+ *   - no vatID/taxID (§10.1; legal placeholders resolved in HOME-V2, JSON-LD
+ *     deliberately unchanged — adding vatID is a separate SEO decision)
  */
 
 import { SITE_URL } from '@/lib/config'

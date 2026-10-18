@@ -36,6 +36,7 @@ import { aboutContent as aboutEs } from '@/content/es/about'
 import { contactContent as contactEs } from '@/content/es/contact'
 import { legalContent as legalEs } from '@/content/es/legal'
 import { privacyContent as privacyEs } from '@/content/es/privacy'
+import { oportunidadContent as oportunidadEs } from '@/content/es/oportunidad'
 
 // ── EN bundles ───────────────────────────────────────────────────────────────
 import { homeContent as homeEn } from '@/content/en/home'
@@ -181,25 +182,28 @@ describe('i18n coverage — key structure parity with ES (FR-4.1)', () => {
 })
 
 // ---------------------------------------------------------------------------
-// FR-4.1 — No {{PLACEHOLDER}} tokens in EN/CA (they are ES-only pending data)
-// Note: legal/privacy EN/CA inherit the same placeholders as ES — these are
-// intentional and must be resolved before go-live. We warn but don't fail here
-// since the ES versions also have them (same guard as Phase 4).
+// HOME-V2 A.3 — No double-brace placeholder tokens in ANY locale dictionary.
+// Legal/privacy are no longer exempt (all placeholders resolved 18 Oct 2026).
+// The ES-only /oportunidad dictionary is swept too. The failure lists the
+// path + token so the offending string is obvious. Never relax this — fix
+// the copy instead.
 // ---------------------------------------------------------------------------
-describe('i18n coverage — no unexpected placeholders in EN/CA', () => {
-  // Only non-legal pages should be placeholder-free in EN/CA
-  const nonLegalDicts = DICTIONARIES.filter(
-    (d) => d.name !== 'legal' && d.name !== 'privacy',
-  )
-  nonLegalDicts.forEach(({ name, en, ca }) => {
-    it(`${name}/en has no unresolved placeholders`, () => {
-      const found = collectPlaceholders(en)
-      expect(found).toHaveLength(0)
+describe('i18n coverage — no unresolved placeholders in any locale (HOME-V2 A.3)', () => {
+  DICTIONARIES.forEach(({ name, es, en, ca }) => {
+    ;(
+      [
+        ['es', es],
+        ['en', en],
+        ['ca', ca],
+      ] as const
+    ).forEach(([locale, dict]) => {
+      it(`${name}/${locale} has no unresolved placeholders`, () => {
+        expect(collectPlaceholders(dict)).toEqual([])
+      })
     })
-    it(`${name}/ca has no unresolved placeholders`, () => {
-      const found = collectPlaceholders(ca)
-      expect(found).toHaveLength(0)
-    })
+  })
+  it('oportunidad/es (ES-only) has no unresolved placeholders', () => {
+    expect(collectPlaceholders(oportunidadEs)).toEqual([])
   })
 })
 

@@ -27,9 +27,9 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 
 | ID | Requirement | Status | Notes |
 |----|-------------|--------|-------|
-| R-2.1 | 9 approved key claims — use verbatim in ES | ✅ | Claims 1–4 in `sharedContent.claims` marquee; remainder in page copy |
+| R-2.1 | 9 approved key claims — use verbatim in ES | ✅ | Claim 1 is the home H1 («Automatizamos tu negocio. Escalamos contigo.») and the footer claim; remainder in page copy. HOME-V2 removed the claims marquee from the home render — `sharedContent.claims` + `ClaimsMarquee` remain (used by /styleguide) |
 | R-2.2 | Magupell proof points: verified figures, live Jul 2026, billing summaries | ✅ | Superseded by verified data (SPEC-POLISH-03 home; SPEC-CASE-01 case page): 167→216 reqs, 1.803/1,803 tests, 4 roles, 3 environments. `100+`/`200+`/invoicing retired — never state the platform issues invoices. |
-| R-2.3 | BioZero: v1 delivered, AI vision, clinical records, gamification | ✅ | In `content/es/clients.ts` |
+| R-2.3 | BioZero: v1 delivered, AI vision, clinical records, gamification | ✅ | `content/data/cases.ts` (single source); on the home as the 04 Evidencia case link, framed as a capability, never diagnosis |
 | R-2.4 | 20+ years experience, MIT certification (anonymized) | ✅ | Referenced in `/sobre-escala` (Phase 2.5) — anonymized per Libro Ch. 19 |
 
 ## §3 — Visual identity
@@ -41,11 +41,11 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 | R-3.3 | 4 color tokens: `--paper`, `--ink`, `--mar`, `--calibre` | ✅ | Tokens in `:root`; note: `--calibre` = `--ambre` + `--abisal` per DECISIONS.md |
 | R-3.4 | Typography: Archivo (display), Instrument Sans (body), IBM Plex Mono (labels) | ✅ | All 3 via `next/font` in `layout.tsx` |
 | R-3.5 | Fluid type scale with clamp() | ✅ | `--text-display-xl`, `--text-display-lg`, `--text-figure` in `:root` |
-| R-3.6 | 12-column grid, max-width 1200px | ✅ | `--content-max: 88rem`, 12-col hero grid |
-| R-3.7 | Asymmetric hero (columns 1–7 / 6–12) | ✅ | `hero__claim: grid-column 1/8`, `hero__diagram: 8/13` |
+| R-3.6 | 12-column grid, max-width 1200px | ✅ | `--content-max: 88rem` page shell. HOME-V2: the 12-col home hero grid was retired with the old hero; sections use the shared `.page-shell` + `split-heading` layout |
+| R-3.7 | Asymmetric hero (columns 1–7 / 6–12) | ✅ | HOME-V2: the home uses the shared landing hero — asymmetric `5fr / 6fr` copy | FIG. 01 (`.oport-hero__inner`), stacking below 1024px. The old `hero__claim`/`hero__diagram` grid was removed |
 | R-3.8 | Border radius ≤ 2px | ✅ | Only `border-radius: 2px` used (form inputs, buttons) |
 | R-3.9 | No photography (v1), no gradients, no glassmorphism | ✅ | No images; radial gradient only in dark framework section (approved) |
-| R-3.10 | Motion: one orchestrated hero rule draw-in + hover states | ✅ | `WordReveal` + diagram assembly animations |
+| R-3.10 | Motion: one orchestrated hero rule draw-in + hover states | ✅ | HOME-V2: FIG. 01 inbound flow-dash animation + hover states; reduced motion removes flow, pulse and score bump |
 | R-3.11 | `prefers-reduced-motion` fully respected | ✅ | CSS media query + JS check in all animated components |
 | R-3.12 | WCAG AA contrast, visible keyboard focus | ✅ | 2px `--ambre` focus outline; skip link |
 
@@ -65,23 +65,45 @@ Legend: ✅ Done · 🚧 In progress · ⬜ Not started · 🚫 Out of scope v1
 
 | ID | Requirement | Status | Notes |
 |----|-------------|--------|-------|
-| R-5.1 | Home `/` — 7 sections (Hero → FinalCTA) | ✅ | All 7 sections implemented |
-| R-5.1a | Hero: approved eyebrow, H1, subheading, 2 CTAs, rule animation | ✅ | `WordReveal` H1, `SystemDiagram` hero plate |
-| R-5.1b | ProblemSection: H2, body, symptom list, diagram | ✅ | |
-| R-5.1c | ServicesPreview: 5 service cards + link | ✅ | |
-| R-5.1d | FrameworkStrip: PhaseCycle 10 phases + section title | ✅ | Interactive ring on desktop, static list on mobile |
-| R-5.1e | ProofSection: Magupell readouts + 2 CaseStudyCards | ✅ | `Readout` ×6 (SPEC-POLISH-03 verified figures), `ClientChip` ×2 |
-| R-5.1f | AllianceTeaser: H2, body, constellation diagram | ✅ | |
-| R-5.1g | FinalCTA: H2, body, ContactForm | ✅ | |
+| R-5.1 | Home `/` — sections per HOME-V2 (00–08 + A) | ✅ | **HOME-V2 (18 Oct 2026)** supersedes the 7-section home. `components/pages/home.tsx`; see §HOME-V2 below. Tests: `tests/components/home-page.test.tsx` (×3 locales) |
+| R-5.1a | Hero: approved eyebrow, H1, subheading, 2 CTAs, rule animation | ✅ | HOME-V2 §B.3 — primary-claim H1 + amber kicker, lead, 2 CTAs (#contacto, #te-suena), FIG. 01, 5-dot alliance indicator |
+| R-5.1b | ProblemSection: H2, body, symptom list, diagram | 🚫 | **Removed from the home by HOME-V2 §B.2.** Problem framing now carried by 01 ¿Te suena? + 02 Un lunes cualquiera |
+| R-5.1c | ServicesPreview: 5 service cards + link | 🚫 | **Removed from the home by HOME-V2 §B.2.** Linked from 08 A fondo → /que-hacemos |
+| R-5.1d | FrameworkStrip: PhaseCycle 10 phases + section title | 🚫 | **Removed from the home by HOME-V2 §B.2.** PhaseCycle still renders on /como-trabajamos; linked from 08 A fondo |
+| R-5.1e | ProofSection: Magupell readouts + 2 CaseStudyCards | ✅ | Now **04 Evidencia** (HOME-V2): `Readout` DAT.01/02/04/05 (4→2→1 cols) + Magupell/BioZero links (locale-resolved). DAT.03, DAT.06 and FIG.04 timeline removed from the home |
+| R-5.1f | AllianceTeaser: H2, body, constellation diagram | ✅ | Now **05 Una alianza, no un proveedor** (shared `AllianceSection`, FIG. 02 constellation) + link to /modelo-de-alianza |
+| R-5.1g | FinalCTA: H2, body, ContactForm | ✅ | Section A — unchanged `FinalCTA` → `ContactSection` (#contacto) |
 | R-5.2 | Qué hacemos `/que-hacemos` | ✅ | SPEC-P2.2 — ServiceFig (5 variants), ServiceRow, IdealClientNote. All 3 locale slugs. 366 tests. |
 | R-5.3 | Cómo trabajamos `/como-trabajamos` | ✅ | SPEC-P2.1 — PhaseCycle reuse, ExecutionPractices (5), AiBuildBlock. SPEC-POLISH-06 — Framework moved to last section (E), closed execution-cycle FIG.06 (`ExecutionCycleFig`), layered "how we build" FIG.12 (`HowWeBuildFig`), re-lettered A–E. All 3 locale slugs. |
 | R-5.4 | Casos de éxito index + Magupell + BioZero | ✅ | SPEC-P2.3 — CaseCard, BrandHeader, CaseDossier. All 3 locale slugs. **SPEC-CASE-01** rewrote the Magupell dossier onto a canonical `CaseReadoutGrid` + `CaseNarrative` template (verified figures, 2 new sections, 2 new figures, no invoicing language, "Magupell" spelling fixed) and migrated BioZero's rendering onto the same template (copy unchanged). |
 | R-5.5 | Modelo de alianza `/modelo-de-alianza` | ✅ | SPEC-P2.4 — AllianceConstellation, AlliancePlanes, CommitmentsBand. All 3 locale slugs. |
 | R-5.6 | Sobre Escala `/sobre-escala` | ✅ | SPEC-P2.5 — CeremonialHeader, DnaBlock, ValuesList, ExpertiseGrid, Manifesto. All 3 locale slugs. |
 | R-5.7 | Contacto `/contacto` — form + API | ✅ | SPEC-P2.6 — ContactForm (dossier variant), ContactSuccess, API route, rate limit, honeypot. All 3 locale slugs. |
-| R-5.8 | Aviso legal `/aviso-legal`, Privacidad `/privacidad` | ✅ | SPEC-P4 — LegalDoc + AnchorNav, 5/6 LSSI-CE/RGPD sections, placeholders for unconfirmed data. All 3 locale slugs. |
+| R-5.8 | Aviso legal `/aviso-legal`, Privacidad `/privacidad` | ✅ | SPEC-P4 — LegalDoc + AnchorNav. **HOME-V2 Part A:** all placeholders resolved in ES/EN/CA (date 18 Oct 2026, NIF B88767520, EU region europe-west1); Registro Mercantil row removed; no jurisdiction named. Guard fails on any `{{…}}` token. Legal-advisor review still pending |
 | R-5.8a | Cookieless analytics (no cookie banner needed) | ◐ | FEAT-01 (supersedes SPEC-P4 §0 drop): Savri, prod-only, first-party proxy, 4 events, privacy §06. Awaiting site ID + prod AC-3…AC-7. |
 | R-5.9 | 404 page — identity-branded | ✅ | SPEC-P4 FR-5 — `app/not-found.tsx`: abisal + GridBackground + kit micro-diagram + «Fuera del sistema.» |
+
+## §HOME-V2 — Home redesign + legal placeholders (18 Oct 2026)
+
+Spec: HOME-V2 v1.0 (`specs/HOME-V2-home-redesign-and-legal-fixes.md`) · Wireframe: `specs/mockups/wireframe-home-v2.html`.
+
+| ID | Requirement | Status | Notes |
+|----|-------------|--------|-------|
+| AC-A1 | Legal pages render no `{{` in ES/EN/CA | ✅ | Verified on the production build |
+| AC-A2 | Date 18 Oct 2026 per locale + NIF B88767520 | ✅ | |
+| AC-A3 | Registro Mercantil exact data or row absent; no address | ✅ | Row removed in all 3 locales (Carlos) |
+| AC-A4 | §05 ends «…legislación aplicable.» | ✅ | `tests/content/legal-content.test.ts` |
+| AC-A5 | §04 names Google Cloud europe-west1 (Belgium) | ✅ | ES/EN/CA |
+| AC-A6 | Guard fails if a marker is reintroduced | ✅ | `tests/content/i18n-coverage.test.ts`; verified red → reverted |
+| AC-B1 | Home 00–08 + A, anchors, CTAs scroll | ✅ | `home-page.test.tsx` |
+| AC-B2 | H1 exact; home `<head>` unchanged | ✅ | Metadata/JSON-LD/sitemap/robots/llms compared before vs after: identical |
+| AC-B3 | Quiz identical to /oportunidad | ✅ | Same `TeSuenaSection`; ES copy shared by reference |
+| AC-B4 | No price/offer vocabulary on the home | ✅ | Visible text clean ×3. Residual: unrendered services-FAQ copy in the contact module's RSC payload (pre-existing) — see BACKLOG |
+| AC-B5 | Removed sections absent from home; inner pages unchanged | ✅ | |
+| AC-B6 | /oportunidad output identical | ✅ | Rendered markup byte-identical before vs after |
+| AC-B7 | Links resolve via routes.ts, no 404 | ✅ | All targets 200 on the production build |
+| AC-B8 | Guards, typecheck, lint, build; reduced-motion + 360px | ◐ | Automated gates green. Manual reduced-motion / 360px / Lighthouse pass pending |
+| AC-B9 | Diff limited to scope | ✅ | Deviations recorded in CHANGELOG |
 
 ## §6 — Design system
 

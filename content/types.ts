@@ -436,7 +436,7 @@ export interface LegalKvRow {
  * `index` is the display ordinal (e.g. "01").
  * `name` is the short mono nav label (e.g. "TITULAR").
  * `title` is the H2 heading.
- * `body` is the prose paragraph(s) — may contain {{PLACEHOLDER}} tokens.
+ * `body` is the prose paragraph(s) — must not contain double-brace placeholder tokens (guarded).
  * `kv` is an optional array of key-value rows (for registry data in section 01).
  */
 export interface LegalSection {
@@ -451,7 +451,7 @@ export interface LegalSection {
 /**
  * Phase 4 — full /aviso-legal content. Spec: SPEC-P4 FR-2, FR-7.1
  * 5 sections per LSSI-CE requirements.
- * Unconfirmed data uses {{PLACEHOLDER}} tokens — see FR-4.
+ * Placeholder tokens are forbidden — see tests/content/i18n-coverage.test.ts.
  */
 export interface LegalDictionary {
   readonly meta: PageMeta
@@ -462,7 +462,7 @@ export interface LegalDictionary {
     readonly h1: string
     /** Label prefix: "ÚLTIMA ACTUALIZACIÓN ·" */
     readonly updatedLabel: string
-    /** Date value — use {{FECHA_ACTUALIZACION}} until confirmed */
+    /** Date value, localized (e.g. "18 de octubre de 2026") */
     readonly updatedDate: string
   }
   /** Label for the sticky anchor nav: "EN ESTA PÁGINA" */
@@ -474,7 +474,7 @@ export interface LegalDictionary {
 /**
  * Phase 4 — full /privacidad content. Spec: SPEC-P4 FR-3, FR-7.1
  * 6 sections per RGPD requirements.
- * Unconfirmed data uses {{PLACEHOLDER}} tokens — see FR-4.
+ * Placeholder tokens are forbidden — see tests/content/i18n-coverage.test.ts.
  */
 export interface PrivacyDictionary {
   readonly meta: PageMeta
@@ -485,7 +485,7 @@ export interface PrivacyDictionary {
     readonly h1: string
     /** Label prefix: "ÚLTIMA ACTUALIZACIÓN ·" */
     readonly updatedLabel: string
-    /** Date value — use {{FECHA_ACTUALIZACION}} until confirmed */
+    /** Date value, localized (e.g. "18 de octubre de 2026") */
     readonly updatedDate: string
   }
   /** Label for the sticky anchor nav: "EN ESTA PÁGINA" */
@@ -591,7 +591,10 @@ export interface OportunidadDictionary {
   readonly hero: {
     readonly sectionIndex: OportunidadSectionIndex
     readonly title1: string
-    readonly title2: string
+    /** Amber accent line inside the H1 (/oportunidad). Absent on the home. */
+    readonly title2?: string
+    /** HOME-V2: amber display line below the H1. Absent on /oportunidad. */
+    readonly kicker?: string
     readonly lead: string
     readonly ctaPrimary: string
     readonly ctaSecondary: string
@@ -637,6 +640,8 @@ export interface OportunidadDictionary {
     readonly notLabel: string
     readonly notMark: string
     readonly notItems: ReadonlyArray<string>
+    /** HOME-V2: link to /modelo-de-alianza (home only). */
+    readonly link?: string
   }
   readonly about: {
     readonly sectionIndex: OportunidadSectionIndex
@@ -656,18 +661,50 @@ export interface OportunidadDictionary {
       readonly title: string
       readonly body: string
     }>
-    readonly price: {
+    /** /oportunidad only — the home must carry no price (HOME-V2 §B.3). */
+    readonly price?: {
       readonly label: string
       readonly value: string
       readonly note: string
     }
-    readonly offer: {
+    readonly offer?: {
       readonly label: string
       readonly big: string
       readonly line: string
       readonly note: string
     }
+    /** HOME-V2: primary CTA (#contacto) + secondary link (/como-trabajamos). Home only. */
+    readonly cta?: { readonly primary: string; readonly secondary: string }
   }
+}
+
+/** Section content shared by /oportunidad and the home (HOME-V2 §B.1). */
+export type LandingSections = Omit<OportunidadDictionary, 'meta'>
+
+/** HOME-V2 §B.3 — 04 Evidencia header. H2 = `home.proof.title`; readouts = `home.proof.readouts`. */
+export interface HomeEvidenceContent {
+  readonly sectionIndex: OportunidadSectionIndex
+  readonly lead: string
+}
+
+/** Pages an "A fondo" tile may link to; resolved per locale via getPath. */
+export type DeepLinkPage = 'services' | 'method' | 'cases' | 'alliance' | 'about'
+
+/** HOME-V2 §B.3 — 08 A fondo index. */
+export interface DeepLinksContent {
+  readonly sectionIndex: OportunidadSectionIndex
+  readonly items: ReadonlyArray<{
+    readonly label: string
+    readonly title: string
+    readonly line: string
+    readonly page: DeepLinkPage
+  }>
+}
+
+/** HOME-V2 — every visible string of home sections 00–08 (contact is the shared FinalCTA). */
+export type HomeLandingContent = LandingSections & {
+  readonly evidence: HomeEvidenceContent
+  readonly deepLinks: DeepLinksContent
 }
 
 /**
