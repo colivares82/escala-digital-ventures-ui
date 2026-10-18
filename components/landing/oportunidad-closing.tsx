@@ -1,17 +1,20 @@
 /**
- * § 04 Quién está detrás · § 05 Cómo empezamos.
- * Contact is the site-wide FinalCTA, composed in components/pages/oportunidad.tsx.
+ * § Quién está detrás · § Cómo empezamos.
+ * Shared by /oportunidad and the home (HOME-V2 §B.1). Contact is the site-wide
+ * FinalCTA, composed by each page.
  */
 import { SectionIndex } from '@/components/section-index'
 import type { OportunidadDictionary } from '@/content/types'
 import { SectionHead } from './section-head'
+import { OPORTUNIDAD_ANCHORS, toHash } from './constants'
 
 export function AboutSection({
   content,
-  casesHref,
+  linkHref,
 }: {
   content: OportunidadDictionary['about']
-  casesHref: string
+  /** /oportunidad → cases index; home → /sobre-escala. Localized by the caller. */
+  linkHref: string
 }) {
   return (
     <section className="section section--light oport-section oport-section--alt">
@@ -36,7 +39,7 @@ export function AboutSection({
             </div>
           ))}
         </dl>
-        <a className="text-link text-link--dark oport-about__link" href={casesHref}>
+        <a className="text-link text-link--dark oport-about__link" href={linkHref}>
           {content.link}
         </a>
       </div>
@@ -44,7 +47,19 @@ export function AboutSection({
   )
 }
 
-export function StartSection({ content }: { content: OportunidadDictionary['start'] }) {
+/**
+ * Investment/offer boxes render only when the dictionary carries them
+ * (/oportunidad). The home dictionary omits price + offer (HOME-V2 price rule)
+ * and supplies `cta` instead, which needs `methodHref`.
+ */
+export function StartSection({
+  content,
+  methodHref,
+}: {
+  content: OportunidadDictionary['start']
+  methodHref?: string
+}) {
+  const { price, offer, cta } = content
   return (
     <section className="section section--light oport-section">
       <div className="page-shell">
@@ -62,19 +77,33 @@ export function StartSection({ content }: { content: OportunidadDictionary['star
             </li>
           ))}
         </ol>
-        <div className="oport-invest">
-          <div className="oport-price">
-            <p className="oport-price__label">{content.price.label}</p>
-            <p className="oport-price__value">{content.price.value}</p>
-            <p className="oport-price__note">{content.price.note}</p>
+        {price && offer && (
+          <div className="oport-invest">
+            <div className="oport-price">
+              <p className="oport-price__label">{price.label}</p>
+              <p className="oport-price__value">{price.value}</p>
+              <p className="oport-price__note">{price.note}</p>
+            </div>
+            <div className="oport-offer dark-surface">
+              <p className="oport-offer__label">{offer.label}</p>
+              <p className="oport-offer__big">{offer.big}</p>
+              <p className="oport-offer__line">{offer.line}</p>
+              <p className="oport-offer__note">{offer.note}</p>
+            </div>
           </div>
-          <div className="oport-offer dark-surface">
-            <p className="oport-offer__label">{content.offer.label}</p>
-            <p className="oport-offer__big">{content.offer.big}</p>
-            <p className="oport-offer__line">{content.offer.line}</p>
-            <p className="oport-offer__note">{content.offer.note}</p>
+        )}
+        {cta && (
+          <div className="hero__actions oport-start__actions">
+            <a className="oport-cta" href={toHash(OPORTUNIDAD_ANCHORS.CONTACTO)}>
+              {cta.primary}
+            </a>
+            {methodHref && (
+              <a className="text-link text-link--dark" href={methodHref}>
+                {cta.secondary}
+              </a>
+            )}
           </div>
-        </div>
+        )}
       </div>
     </section>
   )

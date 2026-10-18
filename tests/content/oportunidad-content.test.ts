@@ -11,7 +11,7 @@ import { buildPageGraph } from '@/lib/seo/page-graph'
 import sitemap from '@/app/sitemap'
 
 const ROOT = resolve(__dirname, '../..')
-const COMPONENT_DIR = join(ROOT, 'components/oportunidad')
+const COMPONENT_DIR = join(ROOT, 'components/landing')
 const componentSources = readdirSync(COMPONENT_DIR).map((f) =>
   readFileSync(join(COMPONENT_DIR, f), 'utf8'),
 )

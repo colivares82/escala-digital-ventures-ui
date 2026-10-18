@@ -53,9 +53,12 @@ export function ScenariosSection({ content }: { content: OportunidadDictionary['
 export function AllianceSection({
   content,
   figure,
+  allianceHref,
 }: {
   content: OportunidadDictionary['alliance']
   figure: AllianceFigureContent
+  /** Home only: localized /modelo-de-alianza, rendered when `content.link` exists. */
+  allianceHref?: string
 }) {
   return (
     <section
@@ -98,6 +101,11 @@ export function AllianceSection({
             ))}
           </ul>
         </div>
+        {content.link && allianceHref && (
+          <a className="text-link oport-alliance__link" href={allianceHref}>
+            {content.link}
+          </a>
+        )}
       </div>
     </section>
   )

@@ -1,5 +1,16 @@
 # Active Context
 
+### HOME-V2 — Home redesign + legal placeholders (COMPLETE, 18 Oct 2026)
+
+Branch `33-landingNuevo` (uncommitted). **Legal:** all `{{…}}` resolved; Registro Mercantil row removed
+(Carlos); the coverage guard now fails on any placeholder in any locale. **Home:** composed from the
+/oportunidad sections, now shared in `components/landing/`. Home copy lives in
+`content/{es,en,ca}/home-landing.ts` (ES spreads the /oportunidad dictionary for unchanged sections so
+they cannot drift; EN/CA marked `REVIEW: Carlos`). `home.framework.phases` stays (used by
+/como-trabajamos); `home.proof` + `home.allianceFigure` stay (Evidencia, /oportunidad, /styleguide).
+**Pattern:** a client component's whole props are serialized into the RSC payload — the home strips
+the ES-only `oportunidad` slice before passing `dict` to FinalCTA so no price copy ships in its HTML.
+
 ### LANDING-01 — `/oportunidad` conversion landing (COMPLETE, 28 Sep 2026)
 
 ES-only, noindex/nofollow landing, reached only by direct URL or QR. No nav entry, not in the
@@ -525,9 +536,7 @@ Carlos is working on content/QA over the next few days. When ready:
 
 ## Active decisions open
 
-- **Legal data:** `{{REGISTRO_MERCANTIL}}`, `{{JURISDICCION}}`, `{{FECHA_ACTUALIZACION}}` — Carlos to provide
-- **NIF confirmation:** `{{NIF_B88767520}}` pre-filled from MAGUPELL contract — Carlos to confirm
-- **EU region:** `{{REGION_EU_GOOGLE_CLOUD}}` = **europe-west1 (Belgium)** — confirmed ✅
+- ~~**Legal data / NIF / EU region**~~ — **resolved by HOME-V2 Part A** (Registro Mercantil row removed).
 - ~~**Favicon artwork:** Carlos to review draft~~ — **resolved by BRAND-01** (real bundle shipped)
 - **Header lockup size:** rendered at 162px per spec §3; the bundle README recommends 200px for
   the header. Carlos chose 162px knowing the tagline sits at the edge of legibility at 1x.
