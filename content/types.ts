@@ -436,7 +436,7 @@ export interface LegalKvRow {
  * `index` is the display ordinal (e.g. "01").
  * `name` is the short mono nav label (e.g. "TITULAR").
  * `title` is the H2 heading.
- * `body` is the prose paragraph(s) — may contain {{PLACEHOLDER}} tokens.
+ * `body` is the prose paragraph(s) — must not contain double-brace placeholder tokens (guarded).
  * `kv` is an optional array of key-value rows (for registry data in section 01).
  */
 export interface LegalSection {
@@ -451,7 +451,7 @@ export interface LegalSection {
 /**
  * Phase 4 — full /aviso-legal content. Spec: SPEC-P4 FR-2, FR-7.1
  * 5 sections per LSSI-CE requirements.
- * Unconfirmed data uses {{PLACEHOLDER}} tokens — see FR-4.
+ * Placeholder tokens are forbidden — see tests/content/i18n-coverage.test.ts.
  */
 export interface LegalDictionary {
   readonly meta: PageMeta
@@ -462,7 +462,7 @@ export interface LegalDictionary {
     readonly h1: string
     /** Label prefix: "ÚLTIMA ACTUALIZACIÓN ·" */
     readonly updatedLabel: string
-    /** Date value — use {{FECHA_ACTUALIZACION}} until confirmed */
+    /** Date value, localized (e.g. "18 de octubre de 2026") */
     readonly updatedDate: string
   }
   /** Label for the sticky anchor nav: "EN ESTA PÁGINA" */
@@ -474,7 +474,7 @@ export interface LegalDictionary {
 /**
  * Phase 4 — full /privacidad content. Spec: SPEC-P4 FR-3, FR-7.1
  * 6 sections per RGPD requirements.
- * Unconfirmed data uses {{PLACEHOLDER}} tokens — see FR-4.
+ * Placeholder tokens are forbidden — see tests/content/i18n-coverage.test.ts.
  */
 export interface PrivacyDictionary {
   readonly meta: PageMeta
@@ -485,7 +485,7 @@ export interface PrivacyDictionary {
     readonly h1: string
     /** Label prefix: "ÚLTIMA ACTUALIZACIÓN ·" */
     readonly updatedLabel: string
-    /** Date value — use {{FECHA_ACTUALIZACION}} until confirmed */
+    /** Date value, localized (e.g. "18 de octubre de 2026") */
     readonly updatedDate: string
   }
   /** Label for the sticky anchor nav: "EN ESTA PÁGINA" */

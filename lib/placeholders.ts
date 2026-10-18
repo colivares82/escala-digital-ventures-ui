@@ -4,10 +4,9 @@
  * Scans content dictionaries for unresolved {{PLACEHOLDER}} tokens.
  * Used in tests to warn about unpublishable content.
  *
- * This does NOT fail the build — it only makes placeholders visible
- * (via the LegalDoc component's ambre highlight) and detectable in tests.
- *
- * Before go-live: all {{...}} tokens must be replaced with real data.
+ * HOME-V2 A.3: tests/content/i18n-coverage.test.ts uses this to FAIL the
+ * build if any locale dictionary contains a token. LegalDoc keeps its ambre
+ * highlight as a dev-time safety net.
  */
 
 /** Regex that matches any {{PLACEHOLDER}} token. */

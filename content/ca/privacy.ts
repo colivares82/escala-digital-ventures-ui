@@ -6,8 +6,8 @@
  * LEGAL DISCLAIMER: This is a faithful translation of the ES privacy policy.
  * It is NOT legal advice. A qualified advisor must review before go-live.
  *
- * Unconfirmed data uses {{PLACEHOLDER}} tokens — same as ES.
- * Do NOT publish with unresolved placeholders.
+ * All former double-brace placeholders resolved (HOME-V2 Part A, 18 Oct 2026).
+ * The placeholder guard fails the build if one is reintroduced.
  */
 import type { PrivacyDictionary } from '@/content/types'
 
@@ -22,7 +22,7 @@ export const privacyContent = {
     eyebrow: '· PRIVACITAT',
     h1: 'Política de privacitat',
     updatedLabel: 'DARRERA ACTUALITZACIÓ ·',
-    updatedDate: '{{FECHA_ACTUALIZACION}}',
+    updatedDate: '18 d\'octubre de 2026',
   },
   anchorLabel: 'EN AQUESTA PÀGINA',
   sections: [
@@ -39,7 +39,7 @@ export const privacyContent = {
         },
         {
           key: 'NIF',
-          value: '{{NIF_B88767520}}',
+          value: 'B88767520',
         },
         {
           key: 'Contacte',
@@ -66,7 +66,7 @@ export const privacyContent = {
       index: '04',
       name: 'CONSERVACIÓ',
       title: 'Termini de conservació',
-      body: 'Conservem les teves dades el temps estrictament necessari per atendre la teva sol·licitud i, si escau, mentre duri la relació comercial o precontractual; transcorregut aquest termini, se suprimeixen o bloquegen conforme a la normativa aplicable. Les dades s\'allotgen en servidors ubicats dins de la Unió Europea {{REGION_EU_GOOGLE_CLOUD}}.',
+      body: 'Conservem les teves dades el temps estrictament necessari per atendre la teva sol·licitud i, si escau, mentre duri la relació comercial o precontractual; transcorregut aquest termini, se suprimeixen o bloquegen conforme a la normativa aplicable. Les dades s\'allotgen en servidors ubicats dins de la Unió Europea (Google Cloud, regió europe-west1, Bèlgica).',
     },
     {
       id: 'destinatarios',
