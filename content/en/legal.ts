@@ -6,8 +6,8 @@
  * LEGAL DISCLAIMER: This is a faithful translation of the ES legal notice.
  * It is NOT legal advice. A qualified advisor must review before go-live.
  *
- * Unconfirmed data uses {{PLACEHOLDER}} tokens — same as ES.
- * Do NOT publish with unresolved placeholders.
+ * All former double-brace placeholders resolved (HOME-V2 Part A, 18 Oct 2026).
+ * The placeholder guard fails the build if one is reintroduced.
  */
 import type { LegalDictionary } from '@/content/types'
 
@@ -22,7 +22,7 @@ export const legalContent = {
     eyebrow: '· LEGAL NOTICE',
     h1: 'Legal notice',
     updatedLabel: 'LAST UPDATED ·',
-    updatedDate: '{{FECHA_ACTUALIZACION}}',
+    updatedDate: '18 October 2026',
   },
   anchorLabel: 'ON THIS PAGE',
   sections: [
@@ -39,11 +39,7 @@ export const legalContent = {
         },
         {
           key: 'Tax ID (NIF)',
-          value: '{{NIF_B88767520}}',
-        },
-        {
-          key: 'Commercial Registry',
-          value: '{{REGISTRO_MERCANTIL}}',
+          value: 'B88767520',
         },
         {
           key: 'Email',
@@ -77,7 +73,7 @@ export const legalContent = {
       index: '05',
       name: 'LEGISLATION',
       title: 'Applicable law and jurisdiction',
-      body: 'This legal notice is governed by Spanish law. For any dispute arising from the use of this website, the parties submit to the competent courts in accordance with applicable legislation {{JURISDICCION}}.',
+      body: 'This legal notice is governed by Spanish law. For any dispute arising from the use of this website, the parties submit to the competent courts in accordance with applicable legislation.',
     },
   ],
 } as const satisfies LegalDictionary

@@ -78,9 +78,9 @@ describe('buildOrganization', () => {
   })
 
   /**
-   * §10.1: /aviso-legal still holds {{NIF_B88767520}} and
-   * {{REGISTRO_MERCANTIL}} placeholders, so vatID/taxID are omitted entirely
-   * rather than emitting an unresolved token into structured data.
+   * §10.1: vatID/taxID are omitted. The legal placeholders were resolved in
+   * HOME-V2 Part A, but adding vatID would change the JSON-LD, which HOME-V2 §0
+   * froze; it is a separate SEO decision.
    *
    * The pattern matches a placeholder TOKEN — `{{IDENTIFIER}}` — not a bare
    * `}}`, because JSON.stringify legitimately produces `}}` whenever two

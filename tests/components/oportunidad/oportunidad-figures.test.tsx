@@ -2,9 +2,9 @@
  * LANDING-01 — page-local figures and table.
  */
 import { render, screen } from '@testing-library/react'
-import { OportunidadHeroFig } from '@/components/oportunidad/oportunidad-hero-fig'
-import { DayComparison } from '@/components/oportunidad/day-comparison'
-import { ScenarioFlow } from '@/components/oportunidad/scenario-flow'
+import { OportunidadHeroFig } from '@/components/landing/oportunidad-hero-fig'
+import { DayComparison } from '@/components/landing/day-comparison'
+import { ScenarioFlow } from '@/components/landing/scenario-flow'
 import { oportunidadContent as c } from '@/content/es/oportunidad'
 
 describe('OportunidadHeroFig', () => {

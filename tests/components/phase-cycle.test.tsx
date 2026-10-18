@@ -2,18 +2,22 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { PhaseCycle } from '@/components/phase-cycle'
 import { homeContent } from '@/content/es/home'
+import { methodContent } from '@/content/es/method'
 
 // window.scrollTo is not implemented in jsdom
 Object.defineProperty(window, 'scrollTo', { writable: true, value: vi.fn() })
 
+// HOME-V2: the home no longer renders the ring; its labels come from the
+// /como-trabajamos dictionary (the remaining consumer). `action` exercises the
+// optional link branch.
 const PROPS = {
   phases: homeContent.framework.phases,
-  title: homeContent.framework.title,
-  action: homeContent.framework.action,
-  sectionLabel: homeContent.labels.framework,
-  lead: homeContent.labels.frameworkLead,
-  ariaLabel: homeContent.labels.frameworkAria,
-  phasePrefix: homeContent.labels.phasePrefix,
+  title: methodContent.phaseCycle.title,
+  action: 'Cómo trabajamos',
+  sectionLabel: methodContent.phaseCycle.sectionEyebrow,
+  lead: methodContent.phaseCycle.lead,
+  ariaLabel: methodContent.phaseCycle.ariaLabel,
+  phasePrefix: methodContent.phaseCycle.phasePrefix,
 }
 
 // Regression props for the method page (no action, letter sectionIndex)
