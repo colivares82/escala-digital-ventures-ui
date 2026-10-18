@@ -1,5 +1,5 @@
 /**
- * Readout — a single evidence cell in the ProofSection 2×3 grid.
+ * Readout — a single evidence cell (home 04 Evidencia row, /styleguide).
  * SPEC-POLISH-03: redesigned for real Magupell data.
  *
  * Props:

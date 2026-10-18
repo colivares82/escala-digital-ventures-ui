@@ -19,7 +19,7 @@ import biozeroLogo from '@/app/assets/brand/biozero-logo.png'
 import type { CaseSlug } from '@/lib/i18n/types'
 
 // ---------------------------------------------------------------------------
-// Per-locale index copy (used by home ProofSection / CaseCard)
+// Per-locale index copy (used by home 04 Evidencia case links / CaseCard)
 // ---------------------------------------------------------------------------
 
 export type CaseStudyCopy = {
@@ -220,7 +220,7 @@ export type CaseStudy = {
   /** Drives which block is protagonist in CaseDossier. */
   readonly mode: CaseMode
   readonly brand: CaseBrand
-  /** Per-locale index card copy (used by home ProofSection + CaseCard). */
+  /** Per-locale index card copy (used by home 04 Evidencia + CaseCard). */
   readonly content: {
     readonly es: CaseStudyCopy
     readonly en: CaseStudyCopy
