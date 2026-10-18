@@ -34,9 +34,22 @@ Items ordered by PLAN.md phase. The first open item in the first open phase is a
   §7.1 decision to permit AI crawlers.
 - ⬜ Google Search Console — domain property, DNS TXT verification, submit sitemap.
 - ⬜ Bing Webmaster Tools — verify, import from GSC, submit sitemap.
-- ⬜ Resolve `{{NIF_B88767520}}` / `{{REGISTRO_MERCANTIL}}` in `/aviso-legal` if `vatID`
-  should appear in `Organization` (deliberately omitted while placeholders remain).
+- ~~Resolve legal placeholders~~ ✅ HOME-V2 Part A (NIF confirmed; Registro Mercantil row removed).
+- ⬜ **Decision (Carlos): emit `vatID: "B88767520"` in `Organization`?** Unblocked now that the NIF
+  is confirmed. Deliberately not done in HOME-V2 because §0 froze the JSON-LD. Touches
+  `lib/seo/schema.ts` and its `vatID`/`taxID` assertion in `tests/lib/seo/schema.test.ts`.
 - ⬜ Company LinkedIn URL → `Organization.sameAs` (currently omitted, never a personal profile).
+
+### [HOME-V2-FOLLOWUP] Open after HOME-V2 (18 Oct 2026)
+- ⬜ **Manual QA (AC-B8):** reduced-motion pass, 360px no-horizontal-scroll pass and Lighthouse
+  vs. the previous home baseline on `/`, `/en`, `/ca`.
+- ⬜ **Carlos register review** of every string marked `// REVIEW: Carlos` in
+  `content/{en,ca}/home-landing.ts`.
+- ⬜ **Narrow the contact module's props (AC-B4, strict reading).** `ContactSection` is a client
+  component, so its whole `dict` prop is serialized into each page's RSC payload. The home already
+  strips `oportunidad`, but unrendered `dict.services` FAQ copy («…con qué inversión») still ships
+  in the home HTML. Fix: pass only `contact` + `shared` copy. Touches a shared component used by
+  every page, so it was out of HOME-V2 §0 scope. Pre-existing on every page, not introduced here.
 
 ### [SEO-02] Deferred (SEO-01 §13 — do not pre-build)
 - ⬜ Per-page generated OG images
